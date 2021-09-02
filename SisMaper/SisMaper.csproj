@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>E:\RiderProjects\GitProjects\Persistence\bin\Debug\netcoreapp3.1\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySqlConnector">
+      <HintPath>E:\RiderProjects\GitProjects\MySqlConnector\bin\Debug\netcoreapp3.1\MySqlConnector.dll</HintPath>
+    </Reference>
+    <Reference Include="Persistence">
+      <HintPath>E:\RiderProjects\GitProjects\Persistence\bin\Debug\netcoreapp3.1\Persistence.dll</HintPath>
+    </Reference>
+    <Reference Include="PriorityQueue">
+      <HintPath>E:\RiderProjects\GitProjects\Persistence\bin\Debug\netcoreapp3.1\PriorityQueue.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
