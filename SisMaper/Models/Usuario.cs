@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using Persistence;
 
@@ -6,6 +7,16 @@ namespace SisMaper.Models
     [Table(Name = "Usuario")]
     public class Usuario: DAO
     {
+        [Flags]
+        public enum Tipo_Permissao
+        {
+            Venda = 0x01,
+            Recebimento = 0x02,
+            Cadastros = 0x04,
+            Gerenciamento = 0x08,
+            Databaser = 0x10,
+        }
+
         [Field(FieldType = SqlDbType.VarChar, Length = 45)]
         public string Login { get; set; }
 
@@ -15,8 +26,8 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.VarChar, Length = 512)]
         public string Senha { get; set; }
 
-        [Field(FieldType = SqlDbType.Binary, Length = 5)]
-        public byte[] Permissao { get; set; }
+        [Field(FieldType = SqlDbType.Bit, Length = 5)]
+        public Tipo_Permissao Permissao { get; set; }
     }
 
 }

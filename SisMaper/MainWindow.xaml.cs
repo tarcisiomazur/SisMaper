@@ -1,26 +1,52 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows;
+using System.Threading;
+using System.Windows.Controls;
+using MahApps.Metro.Controls;
 using MySqlConnector;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.Tools;
+using SisMaper.Views;
 
 namespace SisMaper
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
+        private const string DbCfg = "D:\\RiderProjects\\GitProjects\\SisMaper\\SisMaper\\Database.cfg";
+
         [DllImport(@"kernel32.dll")]
         static extern bool AllocConsole();
+
         public MainWindow()
         {
-            InitializeComponent();
             AllocConsole();
-            Persistence.Persistence.Init(new MySqlProtocol());
-            Test();
+            new Thread(Run).Start();
+            try
+            {
+                var login = new Login();
+                var ok = login.ShowDialog();
+                if (!ok.HasValue || !ok.Value)
+                {
+                    Environment.Exit(0);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            InitializeComponent();
+        }
+
+        private void Run()
+        {
+            Persistence.Persistence.Init(new MySqlProtocol(DbCfg){SkipVerification = true});
+
         }
 
         public void Test()
