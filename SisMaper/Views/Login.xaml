@@ -88,15 +88,17 @@
             VerticalAlignment="Top"
             FontSize="16" />
 
-        <TextBox Style="{DynamicResource TextBoxLogin}"
-                 x:Name="tb_senha"
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Top"
-                 Margin="322,127,0,0"
-                 Width="164"
-                 Height="32"
-                 Text="{Binding Password, Mode=TwoWay, ElementName=pb_senha, UpdateSourceTrigger=PropertyChanged}"
-                 Visibility="Collapsed" />
+        <TextBox
+            Style="{DynamicResource TextBoxLogin}"
+            x:Name="tb_senha"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Margin="322,127,0,0"
+            Width="164"
+            Height="32"
+            KeyDown="Confirm_Login"
+            Text="{Binding Password, Mode=TwoWay, ElementName=pb_senha, UpdateSourceTrigger=PropertyChanged}"
+            Visibility="Collapsed" />
         <PasswordBox
             x:Name="pb_senha"
             Style="{DynamicResource PasswordBoxLogin}"
@@ -155,8 +157,10 @@
         <Label x:Name="LblTheme" Content="Tema atual: Light.Teal" HorizontalAlignment="Left" Margin="86,222,0,0"
                VerticalAlignment="Top" Height="26" Width="123" Visibility="Collapsed" />
         <Image HorizontalAlignment="Left" Height="88" Margin="10,62,0,0" VerticalAlignment="Top" Width="275"
-               Source="/Images/Sismaper Logo.png" Stretch="Fill"/>
-        <Rectangle HorizontalAlignment="Center" Height="24" Margin="0,248,0,0" VerticalAlignment="Bottom" Width="510" Fill="#FF18343F"/>
-        <Label Content="Versão: 1.1.0" HorizontalAlignment="Right" Margin="0,0,13,3" VerticalAlignment="Bottom" Height="16" Width="92" Padding="0,0,0,0" Foreground="White" FlowDirection="RightToLeft" FontSize="11"/>
+               Source="/Images/Sismaper Logo.png" Stretch="Fill" />
+        <Rectangle HorizontalAlignment="Center" Height="24" Margin="0,248,0,0" VerticalAlignment="Bottom" Width="510"
+                   Fill="#FF18343F" />
+        <Label Content="Versão: 1.1.0" HorizontalAlignment="Right" Margin="0,0,13,3" VerticalAlignment="Bottom"
+               Height="16" Width="92" Padding="0,0,0,0" Foreground="White" FlowDirection="RightToLeft" FontSize="11" />
     </Grid>
 </mah:MetroWindow>

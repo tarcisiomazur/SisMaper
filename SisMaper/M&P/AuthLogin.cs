@@ -11,13 +11,20 @@ namespace SisMaper.M_P
         public static Usuario? Login(Usuario user)
         {
             var functionLogin = new StoredProcedure<Usuario>("efetuarLogin", "login_t", "senha_t");
-            var users = functionLogin.Execute(user.Login, user.Senha);
-            foreach (var usuario in users)
+            try
             {
-                Console.WriteLine(usuario);
-            }
+                var users = functionLogin.Execute(user.Login, user.Senha);
+                foreach (var usuario in users)
+                {
+                    Console.WriteLine(usuario);
+                }
 
-            return users.FirstOrDefault();
+                return users.FirstOrDefault();
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

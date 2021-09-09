@@ -17,7 +17,7 @@ namespace SisMaper
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private const string DbCfg = "D:\\RiderProjects\\GitProjects\\SisMaper\\SisMaper\\Database.cfg";
+        private const string DbCfg = "Database.cfg";
 
         [DllImport(@"kernel32.dll")]
         static extern bool AllocConsole();
@@ -45,8 +45,14 @@ namespace SisMaper
 
         private void Run()
         {
-            Persistence.Persistence.Init(new MySqlProtocol(DbCfg){SkipVerification = true});
-
+            try
+            {
+                Persistence.Persistence.Init(new MySqlProtocol(DbCfg) {SkipVerification = true});
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         public void Test()
