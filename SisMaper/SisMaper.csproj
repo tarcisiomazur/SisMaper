@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
   <ItemGroup>
     <Folder Include="Library" />
   </ItemGroup>
@@ -22,6 +26,8 @@
   <ItemGroup>
     <Resource Include="Images\Hide.png" />
     <Resource Include="Images\Show.png" />
+    <None Remove="Images\Sismaper Logo.png" />
+    <Resource Include="Images\Sismaper Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
