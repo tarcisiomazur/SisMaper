@@ -28,6 +28,7 @@
     <Resource Include="Images\Show.png" />
     <None Remove="Images\Sismaper Logo.png" />
     <Resource Include="Images\Sismaper Logo.png" />
+    <Resource Include="Images\warning.png" />
   </ItemGroup>
 
   <ItemGroup>

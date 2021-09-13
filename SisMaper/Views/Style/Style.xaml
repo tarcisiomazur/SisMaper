@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    xmlns:converters="clr-namespace:MahApps.Metro.Converters;assembly=MahApps.Metro">
+                    xmlns:templates="clr-namespace:SisMaper.Views.Templates">
     <Style x:Key="FocusVisualButton">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -62,5 +61,47 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    <Style x:Key="{x:Type templates:MyToolTip}" TargetType="templates:MyToolTip">
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="HasDropShadow" Value="True" />
+        <Setter Property="Foreground" Value="#5095D6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="templates:MyToolTip">
+                    <Border CornerRadius="7" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="5"
+                            BorderThickness="3,3,3,3">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#CF181818" Offset="0" />
+                                <GradientStop Color="#BE1C1C1C" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <!--<Border.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#80FFFFFF" Offset="0"/>
+                                    <GradientStop Color="#7FFFFFFF" Offset="1"/>
+                                    <GradientStop Color="#FFFFF18D" Offset="0.344"/>
+                                    <GradientStop Color="#FFFFF4AB" Offset="0.647"/>
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.1*" />
+                                <ColumnDefinition Width="0.9*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image Source="{TemplateBinding Image}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                                   Margin="3" MaxHeight="28" MaxWidth="28" />
+                            <TextBlock FontFamily="Tahoma" Grid.Row="0" Grid.Column="1"
+                                       FontSize="{TemplateBinding FontSize}" Text="{TemplateBinding Text}"
+                                       Foreground="{TemplateBinding Foreground}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

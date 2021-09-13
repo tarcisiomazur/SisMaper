@@ -12,31 +12,38 @@ namespace SisMaper.Tools
     {
         public class Raw
         {
-            public List<Estado> estados{ get; set; }
-            
+            public List<Estado> estados { get; set; }
+
             public class Estado
             {
-                public string sigla{ get; set; }
-                public string nome{ get; set; }
-                public List<string> cidades{ get; set; }
+                public string sigla { get; set; }
+                public string nome { get; set; }
+                public List<string> cidades { get; set; }
             }
         }
-        
-        private const string URL = "https://gist.githubusercontent.com/letanure/3012978/raw/78474bd9db11e87de65a9d3c9fc4452458dc8a68/estados-cidades.json";
+
+        private const string URL =
+            "https://gist.githubusercontent.com/letanure/3012978/raw/78474bd9db11e87de65a9d3c9fc4452458dc8a68/estados-cidades.json";
+
         public static PList<Estado> Build()
         {
+            var r = new PList<Estado>();
             using (WebClient wc = new WebClient())
             {
                 var json = wc.DownloadString(URL);
                 var j = JsonSerializer.Deserialize<Raw>(json);
-                return j.estados.Select(estado => new Estado
+                foreach (var jEstado in j.estados)
                 {
-                    Nome = estado.nome,
-                    Cidades = estado.cidades.Select(cidade => new Cidade
+                    var e = new Estado {Nome = jEstado.nome, Cidades = new PList<Cidade>()};
+                    e.Save();
+                    foreach (var c in jEstado.cidades.Select(jCidade => new Cidade {Nome = jCidade, Estado = e}))
                     {
-                        Nome = cidade,
-                    }).ToPList()
-                }).ToPList();
+                        c.Save();
+                        e.Cidades.Add(c);
+                    }
+                }
+
+                return r;
             }
         }
     }

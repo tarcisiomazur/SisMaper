@@ -29,8 +29,7 @@ namespace SisMaper
             try
             {
                 var login = new Login();
-                var ok = login.ShowDialog();
-                if (!ok.HasValue || !ok.Value)
+                if (!login.ShowDialog().IsTrue())
                 {
                     Environment.Exit(0);
                 }
@@ -47,7 +46,7 @@ namespace SisMaper
         {
             try
             {
-                Persistence.Persistence.Init(new MySqlProtocol(DbCfg) {SkipVerification = true});
+                Persistence.Persistence.Init(new MySqlProtocol(DbCfg) {SkipVerification = true});  //ForwardEngineer = true
             }
             catch(Exception ex)
             {

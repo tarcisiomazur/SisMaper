@@ -1,11 +1,5 @@
-﻿using System;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using SisMaper.M_P;
@@ -66,15 +60,6 @@ namespace SisMaper.Views
             if (e.Key == Key.Enter)
                 Confirm_Login();
         }
-        
-        private void ChangeTheme(object sender, MouseButtonEventArgs e)
-        {
-            if (i == themes.Length)
-                i = 0;
-            var themename = "Light" + "." + themes[i++];
-            LblTheme.Content = "Tema atual: " + themename;
-            ThemeManager.Current.ChangeTheme(this, themename);
-        }
 
         private void Confirm_Login()
         {
@@ -98,20 +83,13 @@ namespace SisMaper.Views
 
         private void ShowPassword(object sender, RoutedEventArgs routedEventArgs)
         {
-            pb_senha.Visibility = Visibility.Collapsed;
-            tb_senha.Visibility = Visibility.Visible;
-            tb_senha.Text = pb_senha.Password;
-            tb_senha.FocusEnd();
-            img_hideShow.Source = new BitmapImage(new Uri("/Images/Hide.png", UriKind.Relative));
+            pb_senha.IsShow = true;
         }
 
         private void HidePassword(object sender, RoutedEventArgs routedEventArgs)
         {
-            pb_senha.Visibility = Visibility.Visible;
-            tb_senha.Visibility = Visibility.Collapsed;
-            pb_senha.FocusTo(tb_senha);
-            img_hideShow.Source = new BitmapImage(new Uri("/Images/Show.png", UriKind.Relative));
+            pb_senha.IsShow = false;
         }
-        
+
     }
 }
