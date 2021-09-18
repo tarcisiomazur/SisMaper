@@ -68,6 +68,11 @@ namespace SisMaper.Views.Templates
         [Bindable(true)]
         public Thickness ContentPadding { get; set; }
 
+        public new bool Focus()
+        {
+            return _isShow && _textBox.Focus() || !_isShow && _passwordBox.Focus();
+        }
+
         public MyPasswordBox()
         {
             InitializeComponent();

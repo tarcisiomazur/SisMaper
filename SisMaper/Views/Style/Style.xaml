@@ -12,6 +12,8 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <SolidColorBrush x:Key="SisMaper.Dark.Theme" Color="#FF18343F"/>
+    <SolidColorBrush x:Key="SisMaper.Ligth.Theme" Color="Turquoise"/>
     <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6" />
     <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4" />
     <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5" />
@@ -104,4 +106,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="Head1" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+    <Style x:Key="Button1" TargetType="{x:Type Button}"
+               BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Base}">
+        <Setter Property="Width" Value="75" />
+        <Setter Property="Height" Value="75" />
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Background" Value="{StaticResource MahApps.Brushes.Gray9}" />
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition
+                            Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
+                            Value="False" />
+                    <Condition
+                            Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
+                            Value="False" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Foreground" Value="{DynamicResource TabItemForegroundIsSelectedBrush}" />
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+
+
 </ResourceDictionary>

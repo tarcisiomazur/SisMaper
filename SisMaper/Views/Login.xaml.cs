@@ -13,15 +13,7 @@ namespace SisMaper.Views
     /// </summary>
     public partial class Login: MetroWindow
     {
-        private string[] themes = new[]
-        {
-            "Red", "Green", "Blue", "Purple", "Orange", "Lime", "Emerald", "Teal", "Cyan", "Cobalt", "Indigo", "Violet",
-            "Pink", "Magenta", "Crimson", "Amber", "Yellow", "Brown", "Olive", "Steel", "Mauve", "Taupe", "Sienna"
-        };
-
-        private int i = 0;
-        
-        RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SisMaper");
+        readonly RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SisMaper");
         public Usuario? Usuario { get; set; }
         public Login()
         {

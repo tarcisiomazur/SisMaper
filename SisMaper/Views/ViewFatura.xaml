@@ -1,0 +1,335 @@
+﻿<mah:MetroWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:local="clr-namespace:SisMaper.Views"
+    xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    x:Class="SisMaper.Views.ViewFatura"
+    mc:Ignorable="d"
+    Title="Fatura - 00001"
+    TitleCharacterCasing="Normal"
+    Height="599"
+    Width="812"
+    SaveWindowPosition="True">
+    <mah:MetroWindow.Resources>
+        <Style
+            TargetType="{x:Type TextBlock}">
+            <Setter
+                Property="TextWrapping"
+                Value="NoWrap" />
+            <Setter
+                Property="TextTrimming"
+                Value="None" />
+            <Setter
+                Property="FontSize"
+                Value="16" />
+        </Style>
+        <Style
+            x:Key="TextBoxStyle1"
+            TargetType="{x:Type TextBox}"
+            BasedOn="{StaticResource MahApps.Styles.TextBox}">
+            <Setter
+                Property="FontSize"
+                Value="16" />
+            <Setter
+                Property="Height"
+                Value="32" />
+        </Style>
+        <Style
+            x:Key="OptionsButtonStyle"
+            TargetType="{x:Type Button}">
+            <Setter
+                Property="FocusVisualStyle"
+                Value="{DynamicResource FocusVisual}" />
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter
+                Property="HorizontalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="VerticalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="Padding"
+                Value="10,4" />
+            <Setter
+                Property="FontSize"
+                Value="14" />
+            <Setter
+                Property="Height"
+                Value="31" />
+            <Setter
+                Property="Width"
+                Value="auto" />
+
+            <Setter
+                Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+                        TargetType="{x:Type Button}">
+                        <Border
+                            x:Name="border"
+                            CornerRadius="3,3,3,3"
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true"
+                            Visibility="Visible"
+                            BorderBrush="#FF939393">
+                            <ContentPresenter
+                                x:Name="contentPresenter"
+                                Focusable="False"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger
+                                Property="IsDefaulted"
+                                Value="true">
+                                <Setter
+                                    Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsMouseOver"
+                                Value="true">
+                                <Setter
+                                    Property="BorderThickness"
+                                    TargetName="border"
+                                    Value="1" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsPressed"
+                                Value="true">
+                                <Setter
+                                    Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Pressed.Background}" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsEnabled"
+                                Value="false">
+                                <Setter
+                                    Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Disabled.Background}" />
+                                <Setter
+                                    Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Disabled.Border}" />
+                                <Setter
+                                    Property="TextElement.Foreground"
+                                    TargetName="contentPresenter"
+                                    Value="{StaticResource Button.Disabled.Foreground}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </mah:MetroWindow.Resources>
+    <Grid>
+        <DatePicker
+            FontSize="15"
+            HorizontalAlignment="Right"
+            Margin="0,25,20,0"
+            SelectedDate="2021/05/15"
+            VerticalAlignment="Top"
+            Height="30"
+            Width="211" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="26,75,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"><Run
+                Language="pt-br"
+                Text="Cliente" /></TextBlock>
+
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Cancelar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,84,20" />
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Salvar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,20,20" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="26,29,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"><Run
+                Language="pt-br"
+                Text="Número Fatura" /></TextBlock>
+        <TextBlock
+            HorizontalAlignment="Right"
+            Margin="0,29,246,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"><Run
+                Language="pt-br"
+                Text="Data" /></TextBlock>
+        <TextBlock
+            HorizontalAlignment="Right"
+            Margin="0,29,487,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Text="Status" />
+        <TextBox
+            IsEnabled="False"
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Right"
+            Margin="0,24,410,0"
+            TextWrapping="Wrap"
+            Text="Aberto"
+            VerticalAlignment="Top"
+            Width="66" />
+        <TextBox
+            IsEnabled="False"
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Left"
+            Margin="151,24,0,0"
+            TextWrapping="Wrap"
+            Text="00001"
+            VerticalAlignment="Top"
+            Width="66" />
+        <TabControl
+            Margin="20,123,20,66"
+            mah:TabControlHelper.UnderlineBrush="Black"
+            mah:TabControlHelper.UnderlinePlacement="Bottom"
+            mah:TabControlHelper.UnderlineSelectedBrush="Black"
+            mah:TabControlHelper.Underlined="SelectedTabItem"
+            Background="WhiteSmoke"
+            mah:HeaderedControlHelper.HeaderFontSize="18">
+            <TabItem
+                Header="   Parcelas   "
+                mah:HeaderedControlHelper.HeaderBackground="Black">
+                <Grid>
+                    <DataGrid
+                        BorderThickness="1"
+                        Style="{DynamicResource MahApps.Styles.DataGrid}"
+                        HorizontalContentAlignment="Stretch"
+                        ColumnWidth="*"
+                        x:Name="Parcelas"
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding}"
+                        CanUserAddRows="False"
+                        Height="auto"
+                        Width="auto"
+                        Margin="10,62,10,34"
+                        BorderBrush="#FFD2D2D2">
+                        <DataGrid.Columns>
+                            <mah:DataGridNumericUpDownColumn
+                                Width="8*"
+                                Header="Nº"
+                                Binding="{Binding Indice}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="20*"
+                                Header="Status"
+                                Binding="{Binding Status}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="25*"
+                                Header="Data Vencimento"
+                                Binding="{Binding DataVencimento, StringFormat=\{0:dd/MM/yyyy\}}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="25*"
+                                Header="Data Pagamento"
+                                Binding="{Binding DataPagamento, StringFormat=\{0:dd/MM/yyyy\}}"
+                                IsReadOnly="True" />
+                            <mah:DataGridNumericUpDownColumn
+                                Width="25*"
+                                Header="Valor(R$)"
+                                StringFormat="{}{0:N2}"
+                                Culture="pt-BR"
+                                Binding="{Binding Valor}"
+                                IsReadOnly="false" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button
+                        Style="{DynamicResource OptionsButtonStyle}"
+                        Content="Adicionar"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,10,675,0" />
+                    <TextBox
+                        IsEnabled="False"
+                        x:Name="ValorTotal"
+                        Style="{DynamicResource TextBoxStyle1}"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,10,1"
+                        TextWrapping="Wrap"
+                        Text="R$ 0,00"
+                        VerticalAlignment="Bottom"
+                        Width="119"
+                        HorizontalContentAlignment="Right"
+                        VerticalContentAlignment="Bottom" />
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        Margin="0,0,134,8"
+                        VerticalAlignment="Bottom"
+                        RenderTransformOrigin="0.529,-0.024"><Run
+                            Language="pt-br"
+                            Text="Valor Total" /></TextBlock>
+                    <Button
+                        Style="{DynamicResource OptionsButtonStyle}"
+                        Content="Receber"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="96,10,0,0" />
+                    <Button
+                        Style="{DynamicResource OptionsButtonStyle}"
+                        Content="Remover"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="172,10,0,0" />
+
+                </Grid>
+            </TabItem>
+            <TabItem
+                Header="   Pedidos Referenciados   ">
+                <Grid />
+            </TabItem>
+        </TabControl>
+        <ComboBox
+            Grid.Row="0"
+            x:Name="cmbCliente"
+            IsEnabled="false"
+            Text="Tarcísio Mazur Junior"
+            Height="32"
+            Margin="96,70,410,0"
+            FontSize="16"
+            mah:TextBoxHelper.Watermark="Buscar Cliente"
+            DisplayMemberPath="Nome"
+            IsEditable="True"
+            MaxDropDownHeight="125"
+            mah:TextBoxHelper.WatermarkAlignment="Right"
+            mah:TextBoxHelper.AutoWatermark="True"
+            Grid.IsSharedSizeScope="True"
+            VerticalAlignment="Top" />
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Encerrar Fatura"
+            IsEnabled="false"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,672,20" />
+        <iconpacks:PackIconMaterial
+            Kind="AccountDetails"
+            Margin="0,75,375,0"
+            Height="24"
+            Width="23"
+            Foreground="#FF939393"
+            HorizontalAlignment="Right" />
+    </Grid>
+</mah:MetroWindow>

@@ -20,15 +20,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetProjects.WpfToolkit.Input" Version="6.0.90" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.1.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.7" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\Hide.png" />
     <Resource Include="Images\Show.png" />
-    <None Remove="Images\Sismaper Logo.png" />
     <Resource Include="Images\Sismaper Logo.png" />
     <Resource Include="Images\warning.png" />
+    <Resource Include="Images\Edit.png" />
+    <Resource Include="Images\Delete.png" />
+    <Resource Include="Images\Add.png" />
   </ItemGroup>
 
   <ItemGroup>

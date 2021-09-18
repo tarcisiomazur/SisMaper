@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Runtime.Serialization;
 using Persistence;
 
 namespace SisMaper.Models
@@ -8,16 +10,24 @@ namespace SisMaper.Models
     [Table(Name = "Pedido", VersionControl = true)]
     public class Pedido : DAO
     {
+        public enum Pedido_Status
+        {
+            Aberto = 0x00,
+            Fechado = 0x01,
+            Cancelado = 0x02
+        }
+        
         [Field(FieldType = SqlDbType.DateTime)]
         public DateTime Data { get; set; }
 
-        [Field(FieldType = SqlDbType.Binary, Length = 3)]
-        public byte[] Status { get; set; }
+        [Field(FieldType = SqlDbType.Bit, Length = 3)]
+        public Pedido_Status Status { get; set; }
 
-        [ManyToOne(Cascade = Cascade.SAVE)]
+        [ManyToOne(Fetch = Fetch.Eager)]
         public Cliente Cliente { get; set; }
 
-        [ManyToOne] public Fatura Fatura { get; set; }
+        [ManyToOne(Cascade = Cascade.SAVE)]
+        public Fatura Fatura { get; set; }
 
         [ManyToOne] public Usuario Usuario { get; set; }
 

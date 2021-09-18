@@ -6,6 +6,12 @@ namespace SisMaper.Models
     [Table(Name = "Produto", VersionControl = true)]
     public class Produto : DAO
     {
+        public enum Produto_Status
+        {
+            Ativo,
+            Inativo
+        }
+        
         [Field(FieldType = SqlDbType.VarChar, Length = 256)]
         public string CodigoBarras { get; set; }
 
@@ -22,14 +28,15 @@ namespace SisMaper.Models
         public bool Fracionado { get; set; }
 
         [Field(FieldType = SqlDbType.Bit, Length = 5)]
-        public byte[] Status { get; set; }
+        public Produto_Status Status { get; set; }
 
-        [ManyToOne(Cascade = Cascade.SAVE)]
+        [ManyToOne(Cascade = Cascade.SAVE, Fetch = Fetch.Eager)]
         public Categoria Categoria { get; set; }
 
-        [ManyToOne] public NCM NCM { get; set; }
+        [ManyToOne(Fetch = Fetch.Eager)]
+        public NCM NCM { get; set; }
 
-        [ManyToOne(Cascade = Cascade.SAVE)]
+        [ManyToOne(Cascade = Cascade.SAVE, Fetch = Fetch.Eager)]
         public Unidade Unidade { get; set; }
 
         [OneToMany] public PList<Lote> Lotes { get; set; }

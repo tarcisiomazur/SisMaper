@@ -6,7 +6,7 @@ namespace SisMaper.Models
     [Table(Name = "Item", VersionControl = true)]
     public class Item : DAO
     {
-        [ManyToOne(Nullable = Nullable.NotNull)]
+        [ManyToOne(Nullable = Nullable.NotNull, Fetch = Fetch.Eager)]
         public Produto Produto { get; set; }
 
         [ManyToOne(Nullable = Nullable.NotNull)]
@@ -22,7 +22,7 @@ namespace SisMaper.Models
         public int CFOP { get; set; }
 
         [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
-        public double Desconto { get; set; }
+        public decimal Desconto { get; set; }
 
         [ManyToOne] public Lote Lote { get; set; }
         
