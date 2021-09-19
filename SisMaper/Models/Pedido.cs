@@ -1,7 +1,5 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Runtime.Serialization;
 using Persistence;
 
 namespace SisMaper.Models
@@ -29,7 +27,8 @@ namespace SisMaper.Models
         [ManyToOne(Cascade = Cascade.SAVE)]
         public Fatura Fatura { get; set; }
 
-        [ManyToOne] public Usuario Usuario { get; set; }
+        [ManyToOne(Nullable = Persistence.Nullable.NotNull)]
+        public Usuario Usuario { get; set; }
 
         [ManyToOne] public Natureza Natureza { get; set; }
 

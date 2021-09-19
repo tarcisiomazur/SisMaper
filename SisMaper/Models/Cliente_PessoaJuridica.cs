@@ -8,6 +8,12 @@ namespace SisMaper.Models
     {
         [PrimaryKey(FieldType = SqlDbType.VarChar, Length = 14)]
         public string CNPJ { get; set; }
+
+        [Field(FieldType = SqlDbType.VarChar, Length = 256)]
+        public string RazaoSocial { get; set; }
+
+        [Field(FieldType = SqlDbType.VarChar, Length = 9)]
+        public string InscricaoEstadual { get; set; }
         
     }
 }

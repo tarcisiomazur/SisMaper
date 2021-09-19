@@ -13,14 +13,13 @@ namespace SisMaper.Models
         public enum Status_Parcela
         {
             Pendente = 0x00,
-            Parcialmente = 0x01,
-            Pago = 0x02
+            Pago = 0x01
         }
         
         [ManyToOne(Nullable = Nullable.NotNull)]
         public Fatura Fatura { get; set; }
         
-        [Field(FieldType = SqlDbType.Bit, Length = 2)]
+        [Field(FieldType = SqlDbType.Bit, Length = 1)]
         public Status_Parcela Status { get; set; }
 
         [Field(FieldType = SqlDbType.Int)]
