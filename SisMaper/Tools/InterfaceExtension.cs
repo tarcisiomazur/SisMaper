@@ -38,7 +38,7 @@ namespace SisMaper.Tools
             return "";
         }
     }
-    
+
     public static class InterfaceExtension
     {
         

@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>D:\RiderProjects\GitProjects\SisMaper\SisMaper\Images\ico.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -40,6 +41,14 @@
     <None Update="Database.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Tools\ShowCreateTable.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\ViewEscolherLote.xaml~" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,135 @@
+﻿<mah:MetroWindow
+    x:Class="SisMaper.Views.ViewEscolherLote"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:local="clr-namespace:SisMaper.Views"
+    mc:Ignorable="d"
+    Title="Escolher Lote"
+    Height="271"
+    Width="410">
+    <mah:MetroWindow.Resources>
+
+        <Style
+            x:Key="OptionsButtonStyle"
+            TargetType="{x:Type Button}">
+            <Setter
+                Property="FocusVisualStyle"
+                Value="{DynamicResource FocusVisual}" />
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter
+                Property="HorizontalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="VerticalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="Padding"
+                Value="10,4" />
+            <Setter
+                Property="FontSize"
+                Value="14" />
+            <Setter
+                Property="Height"
+                Value="31" />
+            <Setter
+                Property="Width"
+                Value="auto" />
+
+            <Setter
+                Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+                        TargetType="{x:Type Button}">
+                        <Border
+                            x:Name="border"
+                            CornerRadius="3,3,3,3"
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true"
+                            Visibility="Visible"
+                            BorderBrush="#FF939393">
+                            <ContentPresenter
+                                x:Name="contentPresenter"
+                                Focusable="False"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger
+                                Property="IsDefaulted"
+                                Value="true">
+                                <Setter
+                                    Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsMouseOver"
+                                Value="true">
+                                <Setter
+                                    Property="BorderThickness"
+                                    TargetName="border"
+                                    Value="1" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsPressed"
+                                Value="true">
+                                <Setter
+                                    Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Pressed.Background}" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsEnabled"
+                                Value="false">
+                                <Setter
+                                    Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Disabled.Background}" />
+                                <Setter
+                                    Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Disabled.Border}" />
+                                <Setter
+                                    Property="TextElement.Foreground"
+                                    TargetName="contentPresenter"
+                                    Value="{StaticResource Button.Disabled.Foreground}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </mah:MetroWindow.Resources>
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="10,22,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="49" Width="302" FontSize="14"><Run Text="O produto possui um ou mais lotes."/><LineBreak/><Run Text="Selecione o Lote"/><Run Language="pt-br" Text=" "/><Run Text=" para adicionar no pedido"/></TextBlock>
+        <DataGrid x:Name="LOTES" ItemsSource="{Binding}" AutoGenerateColumns="False" BorderThickness="1" Margin="10,76,10,42" SelectionMode="Single" BorderBrush="#CC848484">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Lote" Width="5*" Binding="{Binding Descricao}"/>
+                <DataGridTextColumn Header="Informações" Width="10*" Binding="{Binding Informacoes}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Cancelar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,10,6" />
+        <Button
+                Style="{DynamicResource OptionsButtonStyle}"
+                Content="OK"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,95,6" />
+
+    </Grid>
+</mah:MetroWindow>

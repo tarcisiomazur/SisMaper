@@ -6,13 +6,14 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    x:Class="SisMaper.Views.ViewFatura"
+    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+    x:Class="SisMaper.Views.CrudProduto"
+    x:Name="this"
     mc:Ignorable="d"
-    Title="Fatura - 00001"
+    Title="Produto - 00001"
     TitleCharacterCasing="Normal"
-    Height="599"
-    Width="812"
-    SaveWindowPosition="True">
+    Height="489"
+    Width="750">
     <mah:MetroWindow.Resources>
         <Style
             TargetType="{x:Type TextBlock}">
@@ -134,180 +135,46 @@
             </Setter>
         </Style>
     </mah:MetroWindow.Resources>
-    <Grid>
-        <DatePicker
-            FontSize="15"
-            HorizontalAlignment="Right"
-            Margin="0,25,20,0"
-            SelectedDate="2021/05/15"
-            VerticalAlignment="Top"
-            Height="30"
-            Width="211" />
-        <TextBlock
-            HorizontalAlignment="Left"
-            Margin="26,75,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top"><Run
-                Language="pt-br"
-                Text="Cliente" /></TextBlock>
-
+    <Grid x:Name="grid" DataContext="{Binding}">
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,84,20" />
+            Margin="0,0,95,17" />
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,20,20" />
+            Margin="0,0,31,17" />
         <TextBlock
             HorizontalAlignment="Left"
-            Margin="26,29,0,0"
+            Margin="35,93,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"><Run
                 Language="pt-br"
-                Text="Número Fatura" /></TextBlock>
+                Text="Descrição" /></TextBlock>
         <TextBlock
-            HorizontalAlignment="Right"
-            Margin="0,29,246,0"
+            HorizontalAlignment="Left"
+            Margin="396,50,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"><Run
                 Language="pt-br"
-                Text="Data" /></TextBlock>
-        <TextBlock
-            HorizontalAlignment="Right"
-            Margin="0,29,487,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top"
-            Text="Status" />
-        <TextBox
-            IsEnabled="False"
-            Style="{DynamicResource TextBoxStyle1}"
-            HorizontalAlignment="Right"
-            Margin="0,24,410,0"
-            TextWrapping="Wrap"
-            Text="Aberto"
-            VerticalAlignment="Top"
-            Width="66" />
+                Text="Id" /></TextBlock>
         <TextBox
             IsEnabled="False"
             Style="{DynamicResource TextBoxStyle1}"
             HorizontalAlignment="Left"
-            Margin="151,24,0,0"
+            Margin="424,44,0,0"
             TextWrapping="Wrap"
-            Text="00001"
+            Text="00006"
             VerticalAlignment="Top"
-            Width="66" />
-        <TabControl
-            Margin="20,123,20,66"
-            mah:TabControlHelper.UnderlineBrush="Black"
-            mah:TabControlHelper.UnderlinePlacement="Bottom"
-            mah:TabControlHelper.UnderlineSelectedBrush="Black"
-            mah:TabControlHelper.Underlined="SelectedTabItem"
-            Background="WhiteSmoke"
-            mah:HeaderedControlHelper.HeaderFontSize="18">
-            <TabItem
-                Header="   Parcelas   "
-                mah:HeaderedControlHelper.HeaderBackground="Black">
-                <Grid>
-                    <DataGrid
-                        BorderThickness="1"
-                        Style="{DynamicResource MahApps.Styles.DataGrid}"
-                        HorizontalContentAlignment="Stretch"
-                        ColumnWidth="*"
-                        x:Name="Parcelas"
-                        AutoGenerateColumns="False"
-                        ItemsSource="{Binding}"
-                        CanUserAddRows="False"
-                        Height="auto"
-                        Width="auto"
-                        Margin="10,62,10,34"
-                        BorderBrush="#FFD2D2D2">
-                        <DataGrid.Columns>
-                            <mah:DataGridNumericUpDownColumn
-                                Width="8*"
-                                Header="Nº"
-                                Binding="{Binding Indice}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Width="20*"
-                                Header="Status"
-                                Binding="{Binding Status}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Width="25*"
-                                Header="Data Vencimento"
-                                Binding="{Binding DataVencimento, StringFormat=\{0:dd/MM/yyyy\}}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Width="25*"
-                                Header="Data Pagamento"
-                                Binding="{Binding DataPagamento, StringFormat=\{0:dd/MM/yyyy\}}"
-                                IsReadOnly="True" />
-                            <mah:DataGridNumericUpDownColumn
-                                Width="25*"
-                                Header="Valor(R$)"
-                                StringFormat="{}{0:N2}"
-                                Culture="pt-BR"
-                                Binding="{Binding Valor}"
-                                IsReadOnly="false" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
-                        Content="Adicionar"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="10,10,0,0" />
-                    <TextBox
-                        IsEnabled="False"
-                        x:Name="ValorTotal"
-                        Style="{DynamicResource TextBoxStyle1}"
-                        HorizontalAlignment="Right"
-                        Margin="0,0,10,1"
-                        TextWrapping="Wrap"
-                        Text="R$ 0,00"
-                        VerticalAlignment="Bottom"
-                        Width="119"
-                        HorizontalContentAlignment="Right"
-                        VerticalContentAlignment="Bottom" />
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        Margin="0,0,134,8"
-                        VerticalAlignment="Bottom"
-                        RenderTransformOrigin="0.529,-0.024"><Run
-                            Language="pt-br"
-                            Text="Valor Total" /></TextBlock>
-                    <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
-                        Content="Receber"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="96,10,0,0" />
-                    <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
-                        Content="Remover"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="172,10,0,0" />
-
-                </Grid>
-            </TabItem>
-            <TabItem
-                Header="   Pedidos Referenciados   ">
-                <Grid />
-            </TabItem>
-        </TabControl>
+            Width="63" />
         <ComboBox
-            Grid.Row="0"
-            x:Name="cmbCliente"
-            IsEnabled="false"
-            Text="Tarcísio Mazur Junior"
+            Text="Rações"
             Height="32"
-            Margin="96,70,410,0"
+            Margin="158,164,427,0"
             FontSize="16"
             mah:TextBoxHelper.Watermark="Buscar Cliente"
             DisplayMemberPath="Nome"
@@ -315,21 +182,133 @@
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
-            Grid.IsSharedSizeScope="True"
             VerticalAlignment="Top" />
-        <Button
-            Style="{DynamicResource OptionsButtonStyle}"
-            Content="Encerrar Fatura"
-            IsEnabled="false"
+        <TextBlock
             HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Margin="20,0,0,20" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" />
-        <iconpacks:PackIconMaterial
-            Kind="AccountDetails"
-            Margin="0,75,375,0"
-            Height="24"
-            Width="23"
-            Foreground="#FF939393"
-            HorizontalAlignment="Right" />
+            Margin="34,168,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"><Run
+                Language="pt-br"
+                Text="Categoria" /></TextBlock>
+        <TextBox
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Left"
+            Margin="157,88,0,0"
+            TextWrapping="Wrap"
+            Text = "{Binding Descricao}"
+            VerticalAlignment="Top"
+            Width="562" Height="64" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" />
+        <CheckBox FontSize="16" Content="Inativo" HorizontalAlignment="Left" Margin="647,49,0,0" VerticalAlignment="Top"/>
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="35,36,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top" Height="46" Width="84"><Run
+                Language="pt-br"
+                Text="Código de Barras" /></TextBlock>
+        <TextBox
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Left"
+            Margin="159,43,0,0"
+            TextWrapping="Wrap"
+            Text="{Binding CodigoBarras}"
+            VerticalAlignment="Top"
+            Width="216" />
+        <ComboBox
+            Grid.Row="0"
+            Text="Saco"
+            Height="32"
+            Margin="158,206,427,0"
+            FontSize="16"
+            mah:TextBoxHelper.Watermark="Buscar Cliente"
+            DisplayMemberPath="Nome"
+            IsEditable="True"
+            MaxDropDownHeight="125"
+            mah:TextBoxHelper.WatermarkAlignment="Right"
+            mah:TextBoxHelper.AutoWatermark="True"
+            VerticalAlignment="Top" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="34,210,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"><Run Language="pt-br" Text="Unidade"/></TextBlock>
+        <ComboBox
+            Grid.Row="0"
+            Text="2309.90.10"
+            Height="32"
+            Margin="158,248,427,0"
+            FontSize="16"
+            mah:TextBoxHelper.Watermark="Buscar Cliente"
+            DisplayMemberPath="Nome"
+            IsEditable="True"
+            MaxDropDownHeight="125"
+            mah:TextBoxHelper.WatermarkAlignment="Right"
+            mah:TextBoxHelper.AutoWatermark="True"
+            VerticalAlignment="Top" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="35,252,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"><Run Language="pt-br" Text="NCM"/></TextBlock>
+        <CheckBox IsEnabled="False" FontSize="16" Content="Fracionado" HorizontalAlignment="Left" Margin="515,49,0,0" VerticalAlignment="Top"/>
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="34,293,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Preço de Custo"/><LineBreak/><Run Language="pt-br"/></TextBlock>
+        <TextBox
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            Margin="158,292,0,0"
+            TextWrapping="Wrap"
+            Text="{Binding PrecoCusto, Mode=OneWay}"
+            VerticalAlignment="Top"
+            Width="165" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="34,336,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Margem"/></TextBlock>
+        <TextBox
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Right"
+            Margin="158,336,0,0"
+            TextWrapping="Wrap"
+            Text="{Binding Porcentagem, Mode=OneWay}"
+            VerticalAlignment="Top"
+            Width="165" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="34,378,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top" Height="32" Width="122"><Run Text="Preço de "/><Run Language="pt-br" Text="Venda"/><LineBreak/><Run/></TextBlock>
+        <TextBox
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Left"
+            Margin="158,378,0,0"
+            HorizontalContentAlignment="Right"
+            TextWrapping="Wrap"
+            Text="{Binding PrecoVenda, Mode=OneWay}"
+            VerticalAlignment="Top"
+            Width="165" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="365,169,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top" Height="27"><Run Language="pt-br" Text="Lotes"/><LineBreak/><Run Language="pt-br"/></TextBlock>
+        <DataGrid BorderThickness="1" Margin="365,206,31,63" BorderBrush="#CC5A5A5A" CanUserAddRows="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Descricao" Width="*" IsReadOnly="false"/>
+                <DataGridTextColumn Header="Informações" Width="*" IsReadOnly="false"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <Button Style="{DynamicResource MahApps.Styles.Button}"  Content="Adicionar" HorizontalAlignment="Left" Margin="580,172,0,0" VerticalAlignment="Top" Height="26" Width="68" FontWeight="Regular" FontFamily="Segoe UI"/>
+        <Button Style="{DynamicResource MahApps.Styles.Button}"  Content="Remover" HorizontalAlignment="Left" Margin="655,172,0,0" VerticalAlignment="Top" Height="26" Width="64" FontWeight="Normal"/>
+
+
+
     </Grid>
 </mah:MetroWindow>

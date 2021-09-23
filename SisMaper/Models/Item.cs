@@ -25,7 +25,21 @@ namespace SisMaper.Models
         public decimal Desconto { get; set; }
 
         [ManyToOne] public Lote Lote { get; set; }
-        
-        public decimal Total => (decimal)Quantidade * Valor;
+
+        public decimal Total
+        {
+            get => (decimal) Quantidade * Valor - Desconto;
+            set => value = value;
+        }
+
+        public double DescontoPorcentagem
+        {
+            get => 100.0 * (double) Desconto * Quantidade / (double) Valor;
+            set
+            {
+                Desconto = new decimal(value * (double) Valor * Quantidade / 100.0);
+                Total++;
+            }
+        }
     }
 }

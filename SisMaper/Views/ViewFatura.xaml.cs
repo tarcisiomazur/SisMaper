@@ -54,7 +54,6 @@ namespace SisMaper.Views
             ValorTotal.Text = x.Sum(p => p.Valor).ToString("N2");
             Parcelas.DataContext = x;
             
-            
         }
     }
 }

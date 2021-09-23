@@ -14,7 +14,7 @@
             <ToolBar DockPanel.Dock="Top" >
                 <RibbonGroup Header="Alterar Produto">
                     <StackPanel Orientation="Horizontal">
-                        <Button Style="{DynamicResource Button1}">
+                        <Button Style="{DynamicResource Button1}" Click="NovoProduto">
                             <StackPanel>
                                 <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" />
                                 <TextBlock Style="{DynamicResource Head1}" Text="Novo" />
@@ -78,6 +78,45 @@
                           ColumnWidth="*" x:Name="Produtos" ItemsSource="{Binding}" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
                           >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                                Width="40*"
+                                Header="Código de Barras"
+                                Binding="{Binding CodigoBarras}"
+                                IsReadOnly="True" />
+                        <DataGridTextColumn
+                                Width="80*"
+                                Header="Descrição"
+                                Binding="{Binding Descricao}"
+                                IsReadOnly="True" />
+                        <DataGridTextColumn
+                                Width="30*"
+                                Header="NCM"
+                                Binding="{Binding NCM.Id}"
+                                IsReadOnly="True" />
+                        <DataGridTextColumn
+                                Width="30*"
+                                Header="Categoria"
+                                Binding="{Binding Categoria.Descricao}"
+                                IsReadOnly="True" />
+                        <mah:DataGridNumericUpDownColumn
+                                Width="25*"
+                                Header="Preço de Custo(R$)"
+                                StringFormat="{}{0:N2}"
+                                Culture="pt-BR"
+                                Binding="{Binding PrecoCusto}"
+                                IsReadOnly="true" />
+                        <mah:DataGridNumericUpDownColumn
+                                Width="25*"
+                                Header="Preço de Venda(R$)"
+                                StringFormat="{}{0:N2}"
+                                Culture="pt-BR"
+                                Binding="{Binding PrecoVenda}"
+                                IsReadOnly="true" />
+                    </DataGrid.Columns>
+
+
+              
                 </DataGrid>
             </Border>
         </DockPanel>

@@ -79,7 +79,6 @@
             Margin="322,96,0,0"
             VerticalAlignment="Top"
             FontSize="16" />
-
         <templates:MyPasswordBox
             x:Name="pb_senha"
             HorizontalAlignment="Left"

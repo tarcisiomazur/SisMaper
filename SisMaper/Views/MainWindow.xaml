@@ -1,4 +1,5 @@
 ﻿<mah:MetroWindow
+    x:Name="userControl"
     x:Class="SisMaper.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -33,6 +34,9 @@
     <mah:MetroWindow.Resources>
         <SolidColorBrush x:Key="TabItemForegroundIsSelectedBrush" Color="#FF606060" />
         <SolidColorBrush x:Key="TabItemBackgroundIsSelectedBrush" Color="#FFC0C0C0" />
+        <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource MahApps.Styles.ToolTip}">
+            <Setter Property="OpacityMask" Value="#80000000" />
+        </Style>
         <Style x:Key="Tab1" BasedOn="{StaticResource MahApps.Styles.TabItem}" TargetType="{x:Type TabItem}">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -58,7 +62,14 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
+        <Style x:Key="Head2" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+            <Setter Property="TextWrapping" Value="NoWrap" />
+            <Setter Property="TextTrimming" Value="None" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="Black" />
+        </Style>
         <Style x:Key="Head1" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
             <Setter Property="TextWrapping" Value="NoWrap" />
             <Setter Property="TextTrimming" Value="None" />
@@ -402,22 +413,22 @@
                     <ToolBar Grid.Row="0" Style="{DynamicResource ToolBarStyle}" OverridesDefaultStyle="True" VerticalAlignment="Top">
                         <RibbonGroup Header="Alterar Pedido">
                             <StackPanel Orientation="Horizontal">
-                                <Button Style="{DynamicResource Button1}" Click="NovaVenda">
+                                <Button Style="{DynamicResource Button2}" Click="NovaVenda">
                                     <StackPanel>
                                         <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" Foreground="Black" Width="20" Height="20" />
-                                        <TextBlock Style="{DynamicResource Head1}" Text="Novo" />
+                                        <TextBlock Style="{DynamicResource Head2}" Text="Novo" />
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{DynamicResource Button1}">
+                                <Button Style="{DynamicResource Button2}">
                                     <StackPanel>
                                         <icons:PackIconModern Kind="EditBox" HorizontalAlignment="Center" Foreground="Black" Width="20" Height="20" />
-                                        <TextBlock Style="{DynamicResource Head1}" Text="Editar" />
+                                        <TextBlock Style="{DynamicResource Head2}" Text="Editar" />
                                     </StackPanel>
                                 </Button>
-                                <Button Style="{DynamicResource Button1}">
+                                <Button Style="{DynamicResource Button2}">
                                     <StackPanel>
                                         <icons:PackIconMaterial Kind="DeleteForever" HorizontalAlignment="Center" Foreground="Black" Width="20" Height="20" />
-                                        <TextBlock Style="{DynamicResource Head1}" Text="Excluir" />
+                                        <TextBlock Style="{DynamicResource Head2}" Text="Excluir" />
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
@@ -430,7 +441,7 @@
                                  Background="{DynamicResource MahApps.Brushes.Gray9}"
                                  BorderThickness="0"
                                  Style="{DynamicResource TextBox.Search}"
-                                 Text="{Binding FilterText, Delay=300, ElementName=userControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding FiltroPedido, Delay=300, ElementName=userControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Height="35" VerticalAlignment="Top">
                                     <TextBox.ToolTip>
                                         <StackPanel>
@@ -520,11 +531,11 @@
                         <RibbonGroup Header="Filtrar" Width="489">
                             <Grid>
                                 <TextBox x:Name="FilterRecebimento" Margin="7,46,3,0"
-                                 mah:TextBoxHelper.Watermark="Buscar pedido... (Ctrl + F)"
+                                 mah:TextBoxHelper.Watermark="Buscar fatura... (Ctrl + F)"
                                  Background="{DynamicResource MahApps.Brushes.Gray9}"
                                  BorderThickness="0"
                                  Style="{DynamicResource TextBox.Search}"
-                                 Text="{Binding FilterText, Delay=300, ElementName=userControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding FiltroRecebimento, Delay=300, ElementName=userControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  Height="35" VerticalAlignment="Top">
                                     <TextBox.ToolTip>
                                         <StackPanel>

@@ -28,7 +28,7 @@ namespace SisMaper
         {
             try
             {
-                Persistence.Persistence.Init(new MySqlProtocol(DbCfg){ForwardEngineer = true});  //ForwardEngineer = true
+                Persistence.Persistence.Init(new MySqlProtocol(DbCfg){SkipVerification = true});  //ForwardEngineer = true
             }
             catch(Exception ex)
             {

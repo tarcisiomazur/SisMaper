@@ -14,6 +14,23 @@ namespace SisMaper.Views
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private string _filtroRecebimento;
+
+        public string FiltroRecebimento
+        {
+            get => _filtroRecebimento;
+            set => _filtroRecebimento = value;
+        }
+
+        private string _filtroProduto;
+
+        public string FiltroProduto
+        {
+            get => _filtroProduto;
+            set => _filtroProduto = value;
+        }
+
+
         public void RandomPedido()
         {
             var p = new Pedido()
@@ -42,7 +59,7 @@ namespace SisMaper.Views
         {
             try
             {
-                new ViewFatura().ShowDialog();
+                new Login().ShowDialog();
             }
             catch(Exception ex)
             {
@@ -64,10 +81,21 @@ namespace SisMaper.Views
                 Console.WriteLine(pedido);
             }
             Pedidos.Columns.AddSelector("Status",nameof(Pedido.Status));
+            Pedidos.Columns.AddSelector("Fatura", "Fatura.Status");
             Pedidos.Columns.AddSelector("Id",nameof(Pedido.Id));
             Pedidos.Columns.AddSelector<Pedido>("Data","Data", p=>p.Data.DmaFormat());
             Pedidos.Columns.AddSelector("Cliente","Cliente.Nome");
-            Pedidos.Columns.AddSelector<Pedido>("Valor Total", "ValorTotal",p=>p.ValorTotal.RealFormat());
+            Pedidos.Columns.AddSelector<Pedido>("Valor Total", "ValorTotal", p => p.ValorTotal.RealFormat());
+            var r = new Random(DateTime.Now.Second);
+            pedidos[0].Status = Pedido.Pedido_Status.Fechado;
+            pedidos[1].Status = Pedido.Pedido_Status.Fechado;
+            pedidos[2].Status = Pedido.Pedido_Status.Fechado;
+            pedidos[3].Status = Pedido.Pedido_Status.Fechado;
+            pedidos[0].Fatura = new Fatura { Status = Fatura.Fatura_Status.Fechada };
+            pedidos[1].Fatura = new Fatura { Status = Fatura.Fatura_Status.Fechada };
+            pedidos[2].Fatura = new Fatura { Status = Fatura.Fatura_Status.Fechada };
+            pedidos[3].Fatura = new Fatura { Status = Fatura.Fatura_Status.Aberta };
+            pedidos[4].Fatura = new Fatura { Status = Fatura.Fatura_Status.Aberta };
             foreach (var pedido in pedidos)
             {
                 pedido.ValorTotal = pedido.Itens.Sum(i => i.Total);
