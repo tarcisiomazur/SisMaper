@@ -1,20 +1,28 @@
-﻿<mah:MetroWindow
+﻿<mah:MetroWindow 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+    xmlns:m="clr-namespace:SisMaper.ViewModel"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    Dialog:DialogParticipation.Register="{Binding}"
     x:Class="SisMaper.Views.CrudProduto"
     x:Name="this"
     mc:Ignorable="d"
     Title="Produto - 00001"
     TitleCharacterCasing="Normal"
-    Height="489"
-    Width="750">
+    MinHeight="500"
+    MinWidth="750"
+    Height="500"
+    Width="750"
+    >
     <mah:MetroWindow.Resources>
+        <Dialog:DialogCoordinator x:Key="dialogCoordinator"/>
         <Style
             TargetType="{x:Type TextBlock}">
             <Setter
@@ -135,19 +143,26 @@
             </Setter>
         </Style>
     </mah:MetroWindow.Resources>
-    <Grid x:Name="grid" DataContext="{Binding}">
+    
+
+    
+    <Grid x:Name="grid" >
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,95,17" />
+            Margin="0,0,95,17" 
+            Click="CancelarButtonClick"/>
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,31,17" />
+            Margin="0,0,31,17"
+            CommandParameter="{Binding}"
+            Command="{Binding Salvar}"
+            Click="Button_Click"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="35,93,0,0"
@@ -168,21 +183,28 @@
             HorizontalAlignment="Left"
             Margin="424,44,0,0"
             TextWrapping="Wrap"
-            Text="00006"
+            Text="{Binding Produtos[0].Id}"
             VerticalAlignment="Top"
             Width="63" />
-        <ComboBox
-            Text="Rações"
+
+        <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}" x:Name="cat"
+            SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
+            Grid.Row="0"
             Height="32"
             Margin="158,164,427,0"
             FontSize="16"
-            mah:TextBoxHelper.Watermark="Buscar Cliente"
-            DisplayMemberPath="Nome"
-            IsEditable="True"
+            mah:TextBoxHelper.Watermark="Buscar Categoria"
+            IsEditable="true"
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top" 
+            Text="{Binding TextoCategoria}">
+
+        </ComboBox>
+        
+
+
         <TextBlock
             HorizontalAlignment="Left"
             Margin="34,168,0,0"
@@ -195,10 +217,10 @@
             HorizontalAlignment="Left"
             Margin="157,88,0,0"
             TextWrapping="Wrap"
-            Text = "{Binding Descricao}"
+            Text = "{Binding Produtos[0].Descricao, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="562" Height="64" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" />
-        <CheckBox FontSize="16" Content="Inativo" HorizontalAlignment="Left" Margin="647,49,0,0" VerticalAlignment="Top"/>
+        <CheckBox FontSize="16" Content="Inativo" HorizontalAlignment="Left" Margin="647,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produtos[0].Inativo}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="35,36,0,0"
@@ -206,51 +228,57 @@
             VerticalAlignment="Top" Height="46" Width="84"><Run
                 Language="pt-br"
                 Text="Código de Barras" /></TextBlock>
-        <TextBox
+        <TextBox  
             Style="{DynamicResource TextBoxStyle1}"
             HorizontalAlignment="Left"
             Margin="159,43,0,0"
             TextWrapping="Wrap"
-            Text="{Binding CodigoBarras}"
+            Text="{Binding Produtos[0].CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             VerticalAlignment="Top"
             Width="216" />
-        <ComboBox
+        <ComboBox ItemsSource="{Binding Unidades}"
+            SelectedItem="{Binding UnidadeSelecionada, Mode=TwoWay}"
             Grid.Row="0"
-            Text="Saco"
             Height="32"
             Margin="158,206,427,0"
             FontSize="16"
-            mah:TextBoxHelper.Watermark="Buscar Cliente"
-            DisplayMemberPath="Nome"
-            IsEditable="True"
+            mah:TextBoxHelper.Watermark="Unidade"
+            IsEditable="true"
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Text="{Binding TextoUnidade}">
+
+        </ComboBox>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="34,210,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"><Run Language="pt-br" Text="Unidade"/></TextBlock>
-        <ComboBox
+
+        <ComboBox ItemsSource="{Binding ListaNCM}"
+            SelectedItem="{Binding NCMSelecionado}"
             Grid.Row="0"
-            Text="2309.90.10"
             Height="32"
             Margin="158,248,427,0"
             FontSize="16"
-            mah:TextBoxHelper.Watermark="Buscar Cliente"
-            DisplayMemberPath="Nome"
-            IsEditable="True"
+            mah:TextBoxHelper.Watermark="NCM"
+            IsEditable="false"
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top" 
+            >
+
+        </ComboBox>
+
         <TextBlock
             HorizontalAlignment="Left"
             Margin="35,252,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"><Run Language="pt-br" Text="NCM"/></TextBlock>
-        <CheckBox IsEnabled="False" FontSize="16" Content="Fracionado" HorizontalAlignment="Left" Margin="515,49,0,0" VerticalAlignment="Top"/>
+        <CheckBox IsEnabled="True" FontSize="16" Content="Fracionado" HorizontalAlignment="Left" Margin="515,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produtos[0].Fracionado}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="34,293,0,0"
@@ -262,7 +290,7 @@
             HorizontalContentAlignment="Right"
             Margin="158,292,0,0"
             TextWrapping="Wrap"
-            Text="{Binding PrecoCusto, Mode=OneWay}"
+            Text="{Binding Produtos[0].PrecoCusto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="165" />
         <TextBlock
@@ -276,9 +304,10 @@
             HorizontalContentAlignment="Right"
             Margin="158,336,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Porcentagem, Mode=OneWay}"
+            Text="{Binding Produtos[0].Porcentagem, Mode=OneWay}"
             VerticalAlignment="Top"
-            Width="165" />
+            Width="165" 
+            IsEnabled="false"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="34,378,0,0"
@@ -290,7 +319,7 @@
             Margin="158,378,0,0"
             HorizontalContentAlignment="Right"
             TextWrapping="Wrap"
-            Text="{Binding PrecoVenda, Mode=OneWay}"
+            Text="{Binding Produtos[0].PrecoVenda, Mode=TwoWay}"
             VerticalAlignment="Top"
             Width="165" />
         <TextBlock
@@ -298,15 +327,36 @@
             Margin="365,169,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top" Height="27"><Run Language="pt-br" Text="Lotes"/><LineBreak/><Run Language="pt-br"/></TextBlock>
-        <DataGrid BorderThickness="1" Margin="365,206,31,63" BorderBrush="#CC5A5A5A" CanUserAddRows="True">
+        <DataGrid BorderThickness="1" Margin="365,206,31,63" BorderBrush="#CC5A5A5A" CanUserAddRows="false"  CanUserDeleteRows="false" AutoGenerateColumns="false" IsReadOnly="false" SelectionMode="Single" ItemsSource="{Binding Lotes, Mode=TwoWay}" SelectedItem="{Binding LoteSelecionado}" x:Name="LotesDataGrid">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Descricao" Width="*" IsReadOnly="false"/>
-                <DataGridTextColumn Header="Informações" Width="*" IsReadOnly="false"/>
-            </DataGrid.Columns>
+                <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding Descricao}"/>
+                <DataGridTextColumn Header="Informações" Width="*" Binding="{Binding Informacoes}"/>
 
+
+            </DataGrid.Columns>
         </DataGrid>
-        <Button Style="{DynamicResource MahApps.Styles.Button}"  Content="Adicionar" HorizontalAlignment="Left" Margin="580,172,0,0" VerticalAlignment="Top" Height="26" Width="68" FontWeight="Regular" FontFamily="Segoe UI"/>
-        <Button Style="{DynamicResource MahApps.Styles.Button}"  Content="Remover" HorizontalAlignment="Left" Margin="655,172,0,0" VerticalAlignment="Top" Height="26" Width="64" FontWeight="Normal"/>
+
+        <Button
+            Style="{DynamicResource MahApps.Styles.Button}"  
+            Content="Adicionar" HorizontalAlignment="Left" 
+            Margin="580,172,0,0" VerticalAlignment="Top" 
+            Height="26" Width="68" FontWeight="Regular" 
+            FontFamily="Segoe UI"
+            CommandParameter="{Binding}"
+            Command="{Binding Adicionar}">
+        </Button>
+
+        <Button
+            Style="{DynamicResource MahApps.Styles.Button}"  
+            Content="Remover" HorizontalAlignment="Left" 
+            Margin="655,172,0,0" VerticalAlignment="Top" 
+            Height="26" Width="64" 
+            FontWeight="Normal"
+            CommandParameter="{Binding}"
+            Command="{Binding Remover}">
+        </Button>
+
+
 
 
 

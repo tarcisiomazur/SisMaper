@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Data;
-using Google.Protobuf.WellKnownTypes;
+//using System.Windows;
+//using System.Windows.Data;
+//using Google.Protobuf.WellKnownTypes;
 using MahApps.Metro.Controls;
 using SisMaper.Models;
 

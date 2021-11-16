@@ -3,6 +3,7 @@ using Persistence;
 
 namespace SisMaper.Models
 {
+    //[Table(Name = "Produto", VersionControl = true)]
     [Table(Name = "Produto", VersionControl = true)]
     public class Produto : DAO
     {
@@ -27,15 +28,15 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.Bit, Length = 1)]
         public bool Fracionado { get; set; }
 
-        [Field(FieldType = SqlDbType.Bit, Length = 5)]
-        public Produto_Status Status { get; set; }
+        [Field(FieldType = SqlDbType.Bit, Length = 1)]
+        public bool Inativo { get; set; }
 
         [ManyToOne(Cascade = Cascade.SAVE, Fetch = Fetch.Eager)]
         public Categoria Categoria { get; set; }
 
         [ManyToOne(Fetch = Fetch.Eager)]
         public NCM NCM { get; set; }
-
+        
         [ManyToOne(Cascade = Cascade.SAVE, Fetch = Fetch.Eager)]
         public Unidade Unidade { get; set; }
 

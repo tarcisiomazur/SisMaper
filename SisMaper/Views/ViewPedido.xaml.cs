@@ -25,6 +25,7 @@ namespace SisMaper.Views
         {
             InitializeComponent();
             
+            /*
             var pedido = DAO.Load<Pedido>(24);
             cmbCliente.Text = pedido.Cliente.Nome;
             ValorTotal.Text = $"R$ {pedido.Itens.Sum(item => item.Total).RealFormat()}";
@@ -33,6 +34,7 @@ namespace SisMaper.Views
             BoxProdutos = new List<Produto>();
             cmbProduto.DataContext = BoxProdutos;
             TbBuscarProduto = FindTextBox(cmbProduto);
+            */
         }
 
         private static TextBox FindTextBox(DependencyObject element)

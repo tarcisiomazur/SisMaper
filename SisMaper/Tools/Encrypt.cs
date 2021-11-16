@@ -14,7 +14,6 @@ namespace SisMaper.Tools
                 //return System.Text.Encoding.UTF8.GetString(hash);
             }
 
-            return null;
         }
     }
 }

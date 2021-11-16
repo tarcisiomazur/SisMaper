@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 using MySqlConnector;
+using SisMaper.Models;  /**/
+using SisMaper.Tools;   /**/
 
 namespace SisMaper
 {
@@ -13,10 +14,10 @@ namespace SisMaper
     {
         private const string DbCfg = "Database.cfg";
         [DllImport(@"kernel32.dll")]
-        
+
         static extern bool AllocConsole();
 
-        public new static App Current => (App) Application.Current; 
+        public new static App Current => (App)Application.Current;
         public App()
         {
             AllocConsole();
@@ -24,16 +25,40 @@ namespace SisMaper
             //new Thread(Init).Start();
         }
         
+
         public void Init()
         {
             try
             {
-                Persistence.Persistence.Init(new MySqlProtocol(DbCfg){SkipVerification = true});  //ForwardEngineer = true
+                //Persistence.Persistence.Init(new MySqlProtocol(DbCfg) { SkipVerification = true });  //ForwardEngineer = true
+                Persistence.Persistence.Init(new MySqlProtocol(DbCfg) { SkipVerification = true });
+                //Persistence.Persistence.Init(new MySqlProtocol(DbCfg) { SkipVerification = false, ForwardEngineer = true});
+
+                //CriaUsuario();
+
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
         }
+
+
+        private void CriaUsuario()
+        {
+            var user = new Usuario()
+            {
+                Login = "admin",
+                Senha = Encrypt.ToSha512("admin"),
+                Permissao = Usuario.Tipo_Permissao.Databaser,
+                Nome = "André",
+            };
+            user.Save();
+        }
+
+
+
+
     }
 }

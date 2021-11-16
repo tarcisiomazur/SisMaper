@@ -8,6 +8,7 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SisMaper.Views"
+    xmlns:vm="clr-namespace:SisMaper.ViewModel"
     mc:Ignorable="d"
     TitleCharacterCasing="Normal"
     Title="SisMaper"
@@ -19,6 +20,11 @@
     xmlns:converter="clr-namespace:MahApps.Metro.IconPacks.Converter;assembly=MahApps.Metro.IconPacks.Core"
     
     >
+
+
+
+    
+    
     <mah:MetroWindow.TitleTemplate>
         <DataTemplate>
             <TextBlock Text="{TemplateBinding Content}"
@@ -32,6 +38,8 @@
         </DataTemplate>
     </mah:MetroWindow.TitleTemplate>
     <mah:MetroWindow.Resources>
+        
+        
         <SolidColorBrush x:Key="TabItemForegroundIsSelectedBrush" Color="#FF606060" />
         <SolidColorBrush x:Key="TabItemBackgroundIsSelectedBrush" Color="#FFC0C0C0" />
         <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource MahApps.Styles.ToolTip}">
@@ -409,8 +417,10 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="110"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="317*"/>
+                        <RowDefinition Height="212*"/>
                     </Grid.RowDefinitions>
-                    <ToolBar Grid.Row="0" Style="{DynamicResource ToolBarStyle}" OverridesDefaultStyle="True" VerticalAlignment="Top">
+                    <ToolBar Style="{DynamicResource ToolBarStyle}" OverridesDefaultStyle="True" VerticalAlignment="Center">
                         <RibbonGroup Header="Alterar Pedido">
                             <StackPanel Orientation="Horizontal">
                                 <Button Style="{DynamicResource Button2}" Click="NovaVenda">
@@ -481,7 +491,7 @@
                         </RibbonGroup>
                         <Separator />
                     </ToolBar>
-                    <Border Grid.Row="1" BorderThickness="3" Margin="5" CornerRadius="5" BorderBrush="#FFC4C4C4">
+                    <Border Grid.Row="1" BorderThickness="3" Margin="5,5,5,5" CornerRadius="5" BorderBrush="#FFC4C4C4">
                         <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch"
                           ColumnWidth="*" x:Name="Pedidos" ItemsSource="{Binding}" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True" VerticalContentAlignment="Stretch" Margin="0,0,0,0">
@@ -639,7 +649,7 @@
                                 </StackPanel>
                             </ItemContainerTemplate>
                         </TabItem.HeaderTemplate>
-                        <local:ViewProdutos Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <local:ViewProdutos Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseCommand="{Binding MCommand}" MouseCommandParameter="{Binding}" x:Name="ProdutosView"/>
                     </TabItem>
                     <TabItem x:Name="Clientes" Style="{DynamicResource Tab2}">
                         <TabItem.HeaderTemplate>
@@ -703,5 +713,7 @@
 
         </StatusBar>
     </Grid>
+    
+    
 
 </mah:MetroWindow>

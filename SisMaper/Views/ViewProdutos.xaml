@@ -1,32 +1,46 @@
-﻿<UserControl
+﻿<UserControl 
+    x:Class="SisMaper.Views.ViewProdutos"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    x:Name="userControl" x:Class="SisMaper.Views.ViewProdutos"
+    x:Name="userControl" 
+    xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    Dialog:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d"
-    Height="450" Width="800">
+    Height="450" Width="800"
+    
+    
+    >
 
-    <Grid Background="#FFF6F6F6">
+    
+    
+    <UserControl.DataContext>
+        <viewModels:ProdutosViewModel/>
+    </UserControl.DataContext>
+
+
+    <Grid Background="#FFF6F6F6" >
         <DockPanel>
             <ToolBar DockPanel.Dock="Top" >
                 <RibbonGroup Header="Alterar Produto">
                     <StackPanel Orientation="Horizontal">
-                        <Button Style="{DynamicResource Button1}" Click="NovoProduto">
+                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding NovoProduto}">
                             <StackPanel>
                                 <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" />
                                 <TextBlock Style="{DynamicResource Head1}" Text="Novo" />
                             </StackPanel>
                         </Button>
-                        <Button Style="{DynamicResource Button1}">
+                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding Editar}">
                             <StackPanel>
                                 <icons:PackIconModern Kind="EditBox" HorizontalAlignment="Center" />
                                 <TextBlock Style="{DynamicResource Head1}" Text="Editar" />
                             </StackPanel>
                         </Button>
-                        <Button Style="{DynamicResource Button1}">
+                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding Deletar}">
                             <StackPanel>
                                 <icons:PackIconMaterial Kind="DeleteForever" HorizontalAlignment="Center" />
                                 <TextBlock Style="{DynamicResource Head1}" Text="Excluir" />
@@ -71,13 +85,29 @@
 
                     </Grid>
                 </RibbonGroup>
-                <Separator />
+                <Separator/>
+                
+                <StackPanel >
+                    <Button
+                        Height="30" Width="120" Margin="5, 10" Content="Categorias" Background="LightGray" CommandParameter="{Binding}" Command="{Binding AbrirCategorias}">
+                    </Button>
+                    
+                    <Button
+                        Height="30" Width="120" Margin="5, 10"  Content="Unidades" Background="LightGray" CommandParameter="{Binding}" Command="{Binding AbrirUnidades}">
+                    </Button>
+                    
+                    
+                </StackPanel>
+
+
+
             </ToolBar>
             <Border BorderThickness="3" Margin="5" CornerRadius="5" BorderBrush="#FFC4C4C4">
-                <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch"
-                          ColumnWidth="*" x:Name="Produtos" ItemsSource="{Binding}" AutoGenerateColumns="False"
+                <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch" x:Name="ProdutosDataGrid"
+                          ColumnWidth="*" ItemsSource="{Binding ProdutosList}" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
-                          >
+                          MouseDoubleClick="Produtos_MouseDoubleClick"
+                          SelectedItem="{Binding ProdutoSelecionado, Mode=TwoWay}">
                     <DataGrid.Columns>
                         <DataGridTextColumn
                                 Width="40*"
@@ -116,9 +146,10 @@
                     </DataGrid.Columns>
 
 
-              
+
                 </DataGrid>
             </Border>
+
         </DockPanel>
     </Grid>
 

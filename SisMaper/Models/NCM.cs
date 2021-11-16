@@ -8,5 +8,11 @@ namespace SisMaper.Models
     {
         [Field(FieldType = SqlDbType.VarChar, Length = 45)]
         public string Descricao { get; set; }
+
+
+        public override string ToString()
+        {
+            return Descricao;
+        }
     }
 }

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    xmlns:vm="clr-namespace:SisMaper.ViewModel"
     mc:Ignorable="d"
     Title="Login - SisMaper"
     TitleCharacterCasing="Normal"
@@ -22,19 +23,19 @@
             <Setter Property="BorderBrush" Value="Gray" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CaretBrush" Value="{DynamicResource MahApps.Brushes.ThemeForeground}" />
-            <Setter Property="ContextMenu" Value="{DynamicResource MahApps.TextBox.ContextMenu}" />
+            <Setter Property="CaretBrush" Value="{DynamicResource  MahApps.Brushes.ThemeForeground}" />
+            <Setter Property="ContextMenu" Value="{DynamicResource  MahApps.TextBox.ContextMenu}"  />
             <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
+            <Setter Property="Foreground" Value="{DynamicResource  MahApps.Brushes.Text}"    />
             <Setter Property="Padding" Value="4" />
-            <Setter Property="SelectionBrush" Value="{DynamicResource MahApps.Brushes.Highlight}" />
+            <Setter Property="SelectionBrush" Value="{DynamicResource  MahApps.Brushes.Highlightt}"/>
             <Setter Property="SnapsToDevicePixels" Value="True" />
         </Style>
         <Style x:Key="ToggleButtonImage" TargetType="{x:Type templates:ToggleImage}">
-            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Transparent}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Transparent}" />
+            <Setter Property="Background" Value="{DynamicResource  MahApps.Brushes.Transparent}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource  MahApps.Brushes.Transparent}" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Transparent}" />
+            <Setter Property="Foreground" Value="{DynamicResource  MahApps.Brushes.Transparent}" />
             <Setter Property="MinHeight" Value="0" />
             <Setter Property="Padding" Value="0 0" />
 

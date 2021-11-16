@@ -5,7 +5,8 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>D:\RiderProjects\GitProjects\SisMaper\SisMaper\Images\ico.ico</ApplicationIcon>
+    <ApplicationIcon></ApplicationIcon>
+    <Win32Resource />
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -13,11 +14,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Library" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\MySqlConnector\MySqlConnector.csproj" />
-    <ProjectReference Include="..\..\Persistence\Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,10 +41,26 @@
 
   <ItemGroup>
     <Compile Remove="Tools\ShowCreateTable.cs" />
+    <Compile Remove="ViewModel\UniViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Views\ViewEscolherLote.xaml~" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\testes\SisMaper-master\SisMaper\Library\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySqlConnector">
+      <HintPath>..\..\testes\SisMaper-master\SisMaper\Library\MySqlConnector.dll</HintPath>
+    </Reference>
+    <Reference Include="Persistence">
+      <HintPath>..\..\testes\SisMaper-master\SisMaper\Library\Persistence.dll</HintPath>
+    </Reference>
+    <Reference Include="PriorityQueue">
+      <HintPath>..\..\testes\SisMaper-master\SisMaper\Library\PriorityQueue.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

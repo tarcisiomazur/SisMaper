@@ -6,6 +6,7 @@ using MahApps.Metro.Controls;
 using Persistence;
 using SisMaper.Models;
 using SisMaper.Tools;
+using SisMaper.ViewModel;
 
 namespace SisMaper.Views
 {
@@ -57,6 +58,13 @@ namespace SisMaper.Views
         }
         public MainWindow()
         {
+
+            //new Login().ShowDialog();
+
+            //Show();
+
+            
+
             try
             {
                 new Login().ShowDialog();
@@ -75,6 +83,14 @@ namespace SisMaper.Views
                 Console.WriteLine(ex);
                 Console.ReadLine();
             }
+
+
+            Closing += CloseApplication;
+
+
+
+            /*
+
             var pedidos = PList<Pedido>.FindWhereQuery("Id>0");
             foreach (var pedido in pedidos)
             {
@@ -141,7 +157,23 @@ namespace SisMaper.Views
             });
             Faturas.DataContext = faturas;
             
+            */
         }
+
+        private void CloseApplication(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+
+        private void OpenCrudProduto(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("DataContext: " + ProdutosView.DataContext);
+
+            new CrudProduto().ShowDialog();
+        }
+
+
 
         public void Test1()
         {
@@ -250,7 +282,7 @@ namespace SisMaper.Views
                 Unidade = new Unidade() { Descricao = "Saco" },
             };
             Console.WriteLine(produto.Save() ? "Produto Salvo" : "Erro");
-            Console.WriteLine("Produto: " + produto);
+            Console.WriteLine("Produto: " + produto); 
 
             #endregion
 
