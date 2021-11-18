@@ -67,7 +67,10 @@ namespace SisMaper.Views
 
             try
             {
-                new Login().ShowDialog();
+                if (!new Login().ShowDialog()!.Value)
+                {
+                    Environment.Exit(0);
+                }
             }
             catch(Exception ex)
             {

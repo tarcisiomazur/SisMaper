@@ -1,22 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 //using System.Windows;
 //using System.Windows.Data;
 //using Google.Protobuf.WellKnownTypes;
-using MahApps.Metro.Controls;
 using SisMaper.Models;
 
 namespace SisMaper.Views
 {
-    public partial class ViewFatura : MetroWindow
+    public sealed partial class ViewFatura
     {
+        public ObservableCollection<Parcela> ListParcelas = new();
+        
         public ViewFatura()
         {
             InitializeComponent();
-            var x = new List<Parcela>();
+            Parcelas.DataContext = ListParcelas;
             var d = new DateTime(2021, 06, 15);
-            x.Add(new Parcela()
+            ListParcelas.Add(new Parcela()
             {
                 Indice = 1,
                 DataVencimento = d,
@@ -25,7 +27,7 @@ namespace SisMaper.Views
                 Valor = 100
             });
             d=d.AddMonths(1);
-            x.Add(new Parcela()
+            ListParcelas.Add(new Parcela()
             {
                 Indice = 2,
                 DataVencimento = d,
@@ -34,7 +36,7 @@ namespace SisMaper.Views
                 Valor = 200
             });
             d=d.AddMonths(1);
-            x.Add(new Parcela()
+            ListParcelas.Add(new Parcela()
             {
                 Indice = 3,
                 DataVencimento = d,
@@ -43,7 +45,7 @@ namespace SisMaper.Views
                 Valor = 100
             });
             d=d.AddMonths(1);
-            x.Add(new Parcela()
+            ListParcelas.Add(new Parcela()
             {
                 Indice = 4,
                 DataVencimento = d,
@@ -51,9 +53,21 @@ namespace SisMaper.Views
                 DataPagamento = null,
                 Valor = 100
             });
-            ValorTotal.Text = x.Sum(p => p.Valor).ToString("N2");
-            Parcelas.DataContext = x;
-            
+            ValorTotal.Text = ListParcelas.Sum(p => p.Valor).ToString("N2");
+        }
+
+        private void AdicionarParcela(object sender, MouseButtonEventArgs e)
+        {
+            ListParcelas.Add(new Parcela()
+            {
+                Indice = ListParcelas.Count+1,
+                DataVencimento = DateTime.Now,
+                Status = Parcela.Status_Parcela.Pendente,
+                DataPagamento = null,
+                Valor = 100
+            });
+            ListParcelas[0].Valor += 1000;
+            ListParcelas.Clear();
         }
     }
 }

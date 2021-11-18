@@ -161,8 +161,7 @@
             VerticalAlignment="Bottom"
             Margin="0,0,31,17"
             CommandParameter="{Binding}"
-            Command="{Binding Salvar}"
-            Click="Button_Click"/>
+            Command="{Binding Salvar}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="35,93,0,0"
@@ -264,7 +263,7 @@
             Margin="158,248,427,0"
             FontSize="16"
             mah:TextBoxHelper.Watermark="NCM"
-            IsEditable="false"
+            IsEditable="True"
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"

@@ -12,7 +12,7 @@ namespace SisMaper.Views
 {
     public partial class CrudProduto : MetroWindow
     {
-        public static Produto Produto { get; set; }
+        private CrudProdutoViewModel cpvm => (CrudProdutoViewModel) DataContext;
         
         public CrudProduto()
         {
@@ -21,19 +21,16 @@ namespace SisMaper.Views
             //grid.DataContext = Produto;
             //Title = "Editar Produto - " + Produto.Descricao;
 
+            cpvm.OnSave += Close;
 
-            Loaded += CrudProdutoLoaded;
 
         }
 
         private void CrudProdutoLoaded(object sender, RoutedEventArgs e)
         {
-            if(this.DataContext is ICloseWindow vm)
+            if(this.DataContext is CrudProdutoViewModel vm)
             {
-                vm.Close += () =>
-                {
-                    this.Close();
-                };
+                vm.OnSave += Close;
             }
         }
 

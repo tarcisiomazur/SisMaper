@@ -1,16 +1,17 @@
-﻿using SisMaper.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Windows;
+using SisMaper.Models;
+using Microsoft.Win32;
+using SisMaper.M_P;
 
 namespace SisMaper.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {
-        private Usuario? _Usuario;
-        public AcessarCommand Acessar { get; private set; } = new AcessarCommand();
+        readonly RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SisMaper");
+
+        private Usuario _Usuario;
+        public SimpleCommand Login { get; private set; }
 
         public Usuario Usuario
         {
@@ -18,37 +19,38 @@ namespace SisMaper.ViewModel
             set { SetField(ref _Usuario, value); }
         }
 
+        public event Action OnLogin;
+        public bool PasswordFocus { get; set; }
+        public bool UsuarioFocus { get; set; }
+
         public LoginViewModel()
         {
+            Login = new SimpleCommand(_ => ConfirmLogin());
             Usuario = new Usuario();
+            var username = key.GetValue("LastUsername");
+            if (username is string usernamestr)
+            {
+                Usuario.Login = usernamestr;
+            }
+
         }
 
         public void ConfirmLogin()
         {
+            var user = AuthLogin.Login(Usuario);
+            
+            if (user is {Permissao:>0})
+            {
+                Usuario = user;
+                key.SetValue("LastUsername", Usuario.Login);
+                OnLogin.Invoke();
+            }
+            else
+            {
+                MessageBox.Show("Usuário ou senha incorreto", "Tentativa de Acesso", MessageBoxButton.OK);
+            }
+
             Console.WriteLine("Login Confirmado. Login: " + Usuario.Login + ". Senha: " + Usuario.Senha);
         }
     }
-
-
-
-    public class AcessarCommand : BaseCommand
-    {
-        /*
-        public override bool CanExecute(object parameter)
-        {
-            var viewModel = (LoginViewModel) parameter;
-            return viewModel.Usuario.Login != null && viewModel.Usuario.Senha != null;
-        }
-
-        */
-
-        public override void Execute(object parameter)
-        {
-            var viewModel = (LoginViewModel)parameter;
-            //viewModel.ConfirmLogin();
-
-            //new CrudProdutoViewModel();
-        }
-    }
-
 }
