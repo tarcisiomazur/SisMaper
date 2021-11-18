@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Persistence;
+using SisMaper.Models;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views

@@ -15,7 +15,7 @@ namespace SisMaper.ViewModel
     public class ProdutosViewModel : BaseViewModel, IProdutos
     {
 
-        private Produto _produtoSelecionado;
+        private Produto? _produtoSelecionado;
 
         public Produto ProdutoSelecionado
         {
@@ -25,16 +25,13 @@ namespace SisMaper.ViewModel
 
         public ObservableCollection<Produto> Produtos { get; set; }
         public PList<Produto> ProdutosList { get; private set; }
-
-
         public MouseCommand MCommand { get; private set; }
         public NovoProdutoCommand NovoProduto { get; private set; }
         public EditarProdutoCommand Editar { get; private set; }
         public ExcluirProdutoCommand Deletar { get; private set; }
         public OpenCategoriaCommand AbrirCategorias { get; private set; }
         public OpenUnidadeCommand AbrirUnidades { get; private set; }
-
-
+        
         public IDialogCoordinator DialogCoordinator { get; set; }
 
 

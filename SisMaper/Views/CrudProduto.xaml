@@ -161,7 +161,8 @@
             VerticalAlignment="Bottom"
             Margin="0,0,31,17"
             CommandParameter="{Binding}"
-            Command="{Binding Salvar}"/>
+            Command="{Binding Salvar}"
+            Click="Button_Click"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="35,93,0,0"
@@ -182,11 +183,11 @@
             HorizontalAlignment="Left"
             Margin="424,44,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produtos[0].Id}"
+            Text="{Binding Produto.Id}"
             VerticalAlignment="Top"
             Width="63" />
 
-        <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}" x:Name="cat"
+        <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" x:Name="cat"
             SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
             Grid.Row="0"
             Height="32"
@@ -216,10 +217,10 @@
             HorizontalAlignment="Left"
             Margin="157,88,0,0"
             TextWrapping="Wrap"
-            Text = "{Binding Produtos[0].Descricao, UpdateSourceTrigger=PropertyChanged}"
+            Text = "{Binding Produto.Descricao, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="562" Height="64" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" />
-        <CheckBox FontSize="16" Content="Inativo" HorizontalAlignment="Left" Margin="647,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produtos[0].Inativo}"/>
+        <CheckBox FontSize="16" Content="Inativo" HorizontalAlignment="Left" Margin="647,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produto.Inativo}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="35,36,0,0"
@@ -232,7 +233,7 @@
             HorizontalAlignment="Left"
             Margin="159,43,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produtos[0].CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            Text="{Binding Produto.CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             VerticalAlignment="Top"
             Width="216" />
         <ComboBox ItemsSource="{Binding Unidades}"
@@ -277,7 +278,7 @@
             Margin="35,252,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"><Run Language="pt-br" Text="NCM"/></TextBlock>
-        <CheckBox IsEnabled="True" FontSize="16" Content="Fracionado" HorizontalAlignment="Left" Margin="515,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produtos[0].Fracionado}"/>
+        <CheckBox IsEnabled="True" FontSize="16" Content="Fracionado" HorizontalAlignment="Left" Margin="515,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produto.Fracionado}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="34,293,0,0"
@@ -289,7 +290,7 @@
             HorizontalContentAlignment="Right"
             Margin="158,292,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produtos[0].PrecoCusto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding Produto.PrecoCusto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="165" />
         <TextBlock
@@ -303,7 +304,7 @@
             HorizontalContentAlignment="Right"
             Margin="158,336,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produtos[0].Porcentagem, Mode=OneWay}"
+            Text="{Binding Produto.Porcentagem, Mode=OneWay}"
             VerticalAlignment="Top"
             Width="165" 
             IsEnabled="false"/>
@@ -318,7 +319,7 @@
             Margin="158,378,0,0"
             HorizontalContentAlignment="Right"
             TextWrapping="Wrap"
-            Text="{Binding Produtos[0].PrecoVenda, Mode=TwoWay}"
+            Text="{Binding Produto.PrecoVenda, Mode=TwoWay}"
             VerticalAlignment="Top"
             Width="165" />
         <TextBlock

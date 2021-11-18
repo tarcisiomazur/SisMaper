@@ -1,12 +1,8 @@
 ﻿using MahApps.Metro.Controls;
-using Persistence;
-using SisMaper.Models;
 using SisMaper.ViewModel;
 using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using static SisMaper.ViewModel.CrudProdutoViewModel;
+
 
 namespace SisMaper.Views
 {
@@ -14,17 +10,18 @@ namespace SisMaper.Views
     {
         private CrudProdutoViewModel cpvm => (CrudProdutoViewModel) DataContext;
         
-        public CrudProduto()
+        public CrudProduto(object selectedItem = null)
         {
             InitializeComponent();
+            //cpvm.OnSave += Close;
             //Produto = DAO.Load<Produto>(6);
             //grid.DataContext = Produto;
             //Title = "Editar Produto - " + Produto.Descricao;
 
-            cpvm.OnSave += Close;
 
 
         }
+        
 
         private void CrudProdutoLoaded(object sender, RoutedEventArgs e)
         {

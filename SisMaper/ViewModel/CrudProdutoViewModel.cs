@@ -17,6 +17,7 @@ using System.Windows;
 
 namespace SisMaper.ViewModel
 {
+    
     public class CrudProdutoViewModel : BaseViewModel, ICloseWindow
     {
         private NCM _ncmSelecionado;
@@ -26,6 +27,8 @@ namespace SisMaper.ViewModel
             get { return _ncmSelecionado; }
             set { SetField(ref _ncmSelecionado, value); }
         }
+
+        public event Action OnSave;
 
         private Categoria _categoriaSelecionada;
 
@@ -54,17 +57,14 @@ namespace SisMaper.ViewModel
 
         public string TextoCategoria { get; set; }
         public string TextoUnidade { get; set; }
+        public Produto Produto { get; set; }
 
-        public ObservableCollection<Produto> Produtos { get; set; }
         public ObservableCollection<NCM> NCMs { get; private set; }
         public ObservableCollection<Categoria> Categorias { get; private set; }
         public ObservableCollection<Unidade> Unidades { get; private set; }
         public ObservableCollection<Lote> Lotes { get; set; }
 
-
         public PList<NCM> ListaNCM { get; private set; }
-
-        public DAO ProdutoSelecionado { get; set; }
 
         public SalvarCommand Salvar { get; private set; }
         public AdicionarLoteCommand Adicionar { get; private set; }
@@ -82,7 +82,7 @@ namespace SisMaper.ViewModel
             Adicionar = new AdicionarLoteCommand();
             Remover = new RemoverLoteCommand();
 
-            ProdutoSelecionado = (DAO)produtoSelecionado;
+            Produto = (Produto) produtoSelecionado;
 
             ListaNCM = DAO.FindWhereQuery<NCM>("Id > 0");
             PList<Categoria> listaCategorias = DAO.FindWhereQuery<Categoria>("Id > 0");
@@ -97,10 +97,7 @@ namespace SisMaper.ViewModel
             Lotes = new ObservableCollection<Lote>();
 
             _loteSelecionado = LoteSelecionado = new Lote();
-
-
-
-            Produtos = new ObservableCollection<Produto>();
+            
             Categorias = new ObservableCollection<Categoria>();
             Unidades = new ObservableCollection<Unidade>();
 
@@ -116,12 +113,11 @@ namespace SisMaper.ViewModel
             }
 
 
-            if (!Equals(ProdutoSelecionado, null))
+            if (Produto is not null)
             {
-                Produtos.Add((Produto)ProdutoSelecionado);
 
-                CategoriaSelecionada = Produtos[0].Categoria;
-                UnidadeSelecionada = Produtos[0].Unidade;
+                CategoriaSelecionada = Produto.Categoria;
+                UnidadeSelecionada = Produto.Unidade;
 
                 if(!Equals(CategoriaSelecionada, null))
                 {
@@ -150,7 +146,7 @@ namespace SisMaper.ViewModel
                 foreach(Lote l in lotesBanco)
                 {
                     //Console.WriteLine(l);
-                    if(l.Produto.Id.Equals(Produtos[0].Id))
+                    if(l.Produto.Id.Equals(Produto.Id))
                     {
                         Console.WriteLine(l);
                         Lotes.Add(l);
@@ -165,20 +161,21 @@ namespace SisMaper.ViewModel
 
                 if (pl.Count == 0)
                 {
-                    Produtos.Add(new Produto()
+                    Produto=new Produto()
                     {
                         Id = 1
-                    });
+                    };
+                    
                 }
                 else
                 {
 
                     Produto p2 = pl.Last();
 
-                    Produtos.Add(new Produto()
+                    Produto=new Produto()
                     {
                         Id = p2.Id + 1
-                    });
+                    };
                 }
                 NCMSelecionado = null;
                 CategoriaSelecionada = null;
@@ -270,24 +267,24 @@ namespace SisMaper.ViewModel
 
             PList<Lote> listaLotesPraAdicionar = new PList<Lote>();
 
-            Produtos[0].Lotes = new PList<Lote>();
+            Produto.Lotes = new PList<Lote>();
 
             foreach(Lote l in Lotes)
             {
                 listaLotesPraAdicionar.Add(l);
-                Produtos[0].Lotes.Add(l);
+                Produto.Lotes.Add(l);
             }
 
-            Produtos[0].Categoria = CategoriaSelecionada;
-            Produtos[0].Unidade = UnidadeSelecionada;
+            Produto.Categoria = CategoriaSelecionada;
+            Produto.Unidade = UnidadeSelecionada;
 
             try
             {
-                Produtos[0].Save();
+                Produto.Save();
 
                 foreach (Lote l in listaLotesPraAdicionar)
                 {
-                    l.Produto = Produtos[0];
+                    l.Produto = Produto;
                 }
 
                 listaLotesPraAdicionar.Save();
@@ -345,6 +342,7 @@ namespace SisMaper.ViewModel
                 vm.ExcluirLote();
             }
         }
+
     }
 
 
