@@ -24,7 +24,7 @@ namespace SisMaper.Models
         public string Nome { get; set; }
 
         [Field(FieldType = SqlDbType.VarChar, Length = 512)]
-        public string Senha { get; set; }
+        public string Senha { get; set; } = "";
 
         [Field(FieldType = SqlDbType.Bit, Length = 5)]
         public Tipo_Permissao Permissao { get; set; }

@@ -1,11 +1,15 @@
 ﻿<mah:MetroWindow
     x:Class="SisMaper.Views.Login"
+    x:Name="ViewLogin"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
     xmlns:vm="clr-namespace:SisMaper.ViewModel"
     mc:Ignorable="d"
     Title="Login - SisMaper"
@@ -17,38 +21,90 @@
     WindowStartupLocation="CenterScreen"
     ShowMaxRestoreButton="False">
 
-    <mah:MetroWindow.Resources>
-        <Style x:Key="TextBoxLogin" TargetType="{x:Type TextBox}">
-            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Control.Background}" />
-            <Setter Property="BorderBrush" Value="Gray" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CaretBrush" Value="{DynamicResource  MahApps.Brushes.ThemeForeground}" />
-            <Setter Property="ContextMenu" Value="{DynamicResource  MahApps.TextBox.ContextMenu}"  />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="Foreground" Value="{DynamicResource  MahApps.Brushes.Text}"    />
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="SelectionBrush" Value="{DynamicResource  MahApps.Brushes.Highlightt}"/>
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-        </Style>
-        <Style x:Key="ToggleButtonImage" TargetType="{x:Type templates:ToggleImage}">
-            <Setter Property="Background" Value="{DynamicResource  MahApps.Brushes.Transparent}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource  MahApps.Brushes.Transparent}" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Foreground" Value="{DynamicResource  MahApps.Brushes.Transparent}" />
-            <Setter Property="MinHeight" Value="0" />
-            <Setter Property="Padding" Value="0 0" />
+    <mah:MetroWindow.DataContext>
+        <vm:LoginViewModel/>
+    </mah:MetroWindow.DataContext>
 
-            <Setter Property="Template">
+    <mah:MetroWindow.Resources>
+        <tools:StringToSha512
+            x:Key="StringToSha512" />
+        <Style
+            x:Key="TextBoxLogin"
+            TargetType="{x:Type TextBox}">
+            <Setter
+                Property="Background"
+                Value="{DynamicResource MahApps.Brushes.Control.Background}" />
+            <Setter
+                Property="BorderBrush"
+                Value="Gray" />
+            <Setter
+                Property="VerticalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="BorderThickness"
+                Value="1" />
+            <Setter
+                Property="CaretBrush"
+                Value="{DynamicResource  MahApps.Brushes.ThemeForeground}" />
+            <Setter
+                Property="ContextMenu"
+                Value="{DynamicResource  MahApps.TextBox.ContextMenu}" />
+            <Setter
+                Property="FontSize"
+                Value="16" />
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource  MahApps.Brushes.Text}" />
+            <Setter
+                Property="Padding"
+                Value="4" />
+            <Setter
+                Property="SelectionBrush"
+                Value="{DynamicResource  MahApps.Brushes.Highlightt}" />
+            <Setter
+                Property="SnapsToDevicePixels"
+                Value="True" />
+        </Style>
+        <Style
+            x:Key="ToggleButtonImage"
+            TargetType="{x:Type templates:ToggleImage}">
+            <Setter
+                Property="Background"
+                Value="{DynamicResource  MahApps.Brushes.Transparent}" />
+            <Setter
+                Property="BorderBrush"
+                Value="{DynamicResource  MahApps.Brushes.Transparent}" />
+            <Setter
+                Property="BorderThickness"
+                Value="0" />
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource  MahApps.Brushes.Transparent}" />
+            <Setter
+                Property="MinHeight"
+                Value="0" />
+            <Setter
+                Property="Padding"
+                Value="0 0" />
+
+            <Setter
+                Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="templates:ToggleImage">
+                    <ControlTemplate
+                        TargetType="templates:ToggleImage">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition
+                                    Height="Auto" />
+                                <RowDefinition
+                                    Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Image Source="{TemplateBinding Image}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
-                                   Margin="0" />
+                            <Image
+                                Source="{TemplateBinding Image}"
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Margin="0" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -58,7 +114,8 @@
     </mah:MetroWindow.Resources>
     <Grid
         MouseLeftButtonDown="ArrastarTela"
-        Background="White" Margin="0,0,0,0">
+        Background="White"
+        Margin="0,0,0,0">
         <Label
             x:Name="lb_usuario"
             Content="Usuário"
@@ -66,13 +123,16 @@
             Margin="322,30,0,0"
             VerticalAlignment="Top"
             FontSize="16" />
-        <TextBox Style="{DynamicResource TextBoxLogin}"
-                 x:Name="tb_usuario"
-                 HorizontalAlignment="Left"
-                 Margin="322,61,0,0"
-                 VerticalAlignment="Top"
-                 Width="164"
-                 Height="32" />
+        <TextBox
+            Style="{DynamicResource TextBoxLogin}"
+            x:Name="tb_usuario"
+            HorizontalAlignment="Left"
+            Margin="322,61,0,0"
+            Text="{Binding  Usuario.Login, UpdateSourceTrigger=PropertyChanged}"
+            templates:FocusExtension.IsFocused="{Binding UsuarioFocus, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            VerticalAlignment="Top"
+            Width="164"
+            Height="32" />
         <Label
             x:Name="lb_senha"
             Content="Senha"
@@ -84,37 +144,46 @@
             x:Name="pb_senha"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Password="{Binding Usuario.Senha, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToSha512}, Mode=OneWayToSource}"
             Margin="322,127,0,0"
             Width="164"
             Height="32"
             FontSize="16"
-            KeyDown="Confirm_Login"
+            templates:FocusExtension.IsFocused="{Binding PasswordFocus, NotifyOnSourceUpdated=True, Mode=TwoWay}"
             ContentPadding="4,4,28,4"
-            MaxLength="30"/>
-         
+            MaxLength="30" />
+
         <Button
             Style="{DynamicResource LoginButtonStyle}"
             x:Name="btn_login"
-            Content="Acessar"
+            Content="Login"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Margin="322,189,0,0"
             Height="33"
             Width="109"
-            PreviewMouseLeftButtonUp="Confirm_Login"
+            Command="{Binding Login}"
             Foreground="{DynamicResource SisMaper.Dark.Theme}"
             Background="{DynamicResource SisMaper.Ligth.Theme}"
-            BorderBrush="{DynamicResource SisMaper.Dark.Theme}"/>
+            BorderBrush="{DynamicResource SisMaper.Dark.Theme}" >
+            <!---
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding Login}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            -->
+        </Button>
         <Button
             Style="{DynamicResource LoginButtonStyle}"
             x:Name="btn_cancelar"
             Content="Sair"
+            PreviewMouseLeftButtonDown="Sair"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Margin="440,189,0,0"
             Height="33"
             Width="46"
-            PreviewMouseLeftButtonUp="Close_Login"
             Background="#FFFF9A9A"
             BorderBrush="#FF5C0000"
             Foreground="#FF5C0000" />
@@ -123,21 +192,49 @@
             Height="197"
             Stroke="Gray"
             VerticalAlignment="Center"
-            Width="1" Margin="298,0,0,0" />
+            Width="1"
+            Margin="298,0,0,0" />
         <templates:ToggleImage
             Style="{DynamicResource ToggleButtonImage}"
-            HorizontalAlignment="Left" Margin="459,133,0,0"
-            VerticalAlignment="Top" Height="19" Width="27"
-            Padding="0,0,0,0" Checked="ShowPassword" Unchecked="HidePassword"
-            CheckImage="/Images/Hide.png" UncheckImage="/Images/Show.png"
+            HorizontalAlignment="Left"
+            Margin="459,133,0,0"
+            VerticalAlignment="Top"
+            Height="19"
+            Width="27"
+            Padding="0,0,0,0"
+            Checked="ShowPassword"
+            Unchecked="HidePassword"
+            CheckImage="/Images/Hide.png"
+            UncheckImage="/Images/Show.png"
             Image="/Images/Show.png"
             Opacity="0.5"
-            Focusable="False" ClickMode="Press" />
-        <Image HorizontalAlignment="Left" Height="88" Margin="10,77,0,0" VerticalAlignment="Top" Width="275"
-               Source="/Images/Sismaper Logo.png" Stretch="Fill" />
-        <Rectangle HorizontalAlignment="Center" Height="24" Margin="0,248,0,0" VerticalAlignment="Bottom" Width="510"
-                   Fill="{DynamicResource SisMaper.Dark.Theme}" />
-        <Label Content="Versão: 1.1.0" HorizontalAlignment="Right" Margin="0,0,13,3" VerticalAlignment="Bottom"
-               Height="16" Width="92" Padding="0,0,0,0" Foreground="White" FlowDirection="RightToLeft" FontSize="11" />
+            Focusable="False"
+            ClickMode="Press" />
+        <Image
+            HorizontalAlignment="Left"
+            Height="88"
+            Margin="10,77,0,0"
+            VerticalAlignment="Top"
+            Width="275"
+            Source="/Images/Sismaper Logo.png"
+            Stretch="Fill" />
+        <Rectangle
+            HorizontalAlignment="Center"
+            Height="24"
+            Margin="0,248,0,0"
+            VerticalAlignment="Bottom"
+            Width="510"
+            Fill="{DynamicResource SisMaper.Dark.Theme}" />
+        <Label
+            Content="Versão: 1.1.0"
+            HorizontalAlignment="Right"
+            Margin="0,0,13,3"
+            VerticalAlignment="Bottom"
+            Height="16"
+            Width="92"
+            Padding="0,0,0,0"
+            Foreground="White"
+            FlowDirection="RightToLeft"
+            FontSize="11" />
     </Grid>
 </mah:MetroWindow>

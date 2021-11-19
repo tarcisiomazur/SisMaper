@@ -1,4 +1,6 @@
+using System;
 using System.Data;
+using System.Globalization;
 using Persistence;
 
 namespace SisMaper.Models
@@ -8,11 +10,11 @@ namespace SisMaper.Models
     {
         [Field(FieldType = SqlDbType.VarChar, Length = 45)]
         public string Descricao { get; set; }
-
-
+        
         public override string ToString()
         {
-            return Descricao;
+            return Id.ToString(@"####\.##\.##") + " - " + Descricao;
         }
+        
     }
 }

@@ -38,6 +38,18 @@ namespace SisMaper.Tools
             return "";
         }
     }
+    
+    public class StringToSha512 : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return "";
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Encrypt.ToSha512((string) value);
+        }
+    }
 
     public static class InterfaceExtension
     {

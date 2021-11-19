@@ -7,21 +7,23 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Name="userControl" 
+    xmlns:views="clr-namespace:SisMaper.Views"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     Dialog:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d"
-    Height="450" Width="800"
+<<<<<<< HEAD
+    Height="500" Width="1000"
     
     
     >
+=======
+    Height="450" Width="800">
+>>>>>>> faefa09cc491a18e0c5af519d711049cc15de4d3
 
-    
-    
     <UserControl.DataContext>
         <viewModels:ProdutosViewModel/>
     </UserControl.DataContext>
-
 
     <Grid Background="#FFF6F6F6" >
         <DockPanel>
@@ -99,6 +101,17 @@
                     
                 </StackPanel>
 
+                <Separator/>
+
+                <StackPanel Width="200">
+                    <CheckBox Height="20" Width="150" Margin="5, 1" Content="Descrição" HorizontalAlignment="Left" x:Name="DescricaoCheckBox" Click="CheckBoxClick" IsChecked="true"/>
+                    <CheckBox Height="20" Width="150" Margin="5, 1" Content="Código De Barras" HorizontalAlignment="Left" x:Name="CodigoDeBarrasCheckBox" Click="CheckBoxClick" IsChecked="true"/>
+                    <CheckBox Height="20" Width="150" Margin="5, 1" Content="NCM" HorizontalAlignment="Left" x:Name="NCMCheckBox" Click="CheckBoxClick" IsChecked="true"/>
+                    <CheckBox Height="20" Width="150" Margin="5, 1" Content="Categoria" HorizontalAlignment="Left" x:Name="CategoriaCheckBox" Click="CheckBoxClick" IsChecked="true"/>
+                    <CheckBox Height="20" Width="150" Margin="5, 1" Content="Unidade" HorizontalAlignment="Left" x:Name="UnidadeCheckBox" Click="CheckBoxClick" />
+                    <CheckBox Height="20" Width="150" Margin="5, 1" Content="Preço Custo" HorizontalAlignment="Left" x:Name="PrecoCustoCheckBox" Click="CheckBoxClick" IsChecked="true"/>
+                    <CheckBox Height="20" Width="150" Margin="5, 1" Content="Preço Venda" HorizontalAlignment="Left" x:Name="PrecoVendaCheckBox" Click="CheckBoxClick" IsChecked="true"/>
+                </StackPanel>
 
 
             </ToolBar>
@@ -106,45 +119,55 @@
                 <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch" x:Name="ProdutosDataGrid"
                           ColumnWidth="*" ItemsSource="{Binding ProdutosList}" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
+<<<<<<< HEAD
+                          PreviewMouseLeftButtonDown="Produtos_MouseDown" MouseDoubleClick="Produtos_MouseDoubleClick" SelectionMode="Single"
+=======
                           MouseDoubleClick="Produtos_MouseDoubleClick"
+                          
+>>>>>>> faefa09cc491a18e0c5af519d711049cc15de4d3
                           SelectedItem="{Binding ProdutoSelecionado, Mode=TwoWay}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn
+                        <DataGridTextColumn x:Name="DescricaoDataColumn"
+                                Width="60*"
+                                Header="Descrição"
+                                Binding="{Binding Descricao}"
+                                IsReadOnly="True" />
+                        <DataGridTextColumn x:Name="CodigoDeBarrasDataColumn"
                                 Width="40*"
                                 Header="Código de Barras"
                                 Binding="{Binding CodigoBarras}"
                                 IsReadOnly="True" />
-                        <DataGridTextColumn
-                                Width="80*"
-                                Header="Descrição"
-                                Binding="{Binding Descricao}"
-                                IsReadOnly="True" />
-                        <DataGridTextColumn
+                        <DataGridTextColumn x:Name="NCMDataColumn"
                                 Width="30*"
                                 Header="NCM"
-                                Binding="{Binding NCM.Id}"
+                                Binding="{Binding NCM}"
                                 IsReadOnly="True" />
-                        <DataGridTextColumn
+                        <DataGridTextColumn x:Name="CategoriaDataColumn"
                                 Width="30*"
                                 Header="Categoria"
-                                Binding="{Binding Categoria.Descricao}"
+                                Binding="{Binding Categoria}"
                                 IsReadOnly="True" />
-                        <mah:DataGridNumericUpDownColumn
+                        <DataGridTextColumn x:Name="UnidadeDataColumn"
+                                Width="30*"
+                                Header="Unidade"
+                                Binding="{Binding Unidade}"
+                                IsReadOnly="True" Visibility="Hidden"/>
+                        <mah:DataGridNumericUpDownColumn x:Name="PrecoCustoDataColumn"
                                 Width="25*"
                                 Header="Preço de Custo(R$)"
                                 StringFormat="{}{0:N2}"
                                 Culture="pt-BR"
                                 Binding="{Binding PrecoCusto}"
                                 IsReadOnly="true" />
-                        <mah:DataGridNumericUpDownColumn
+                        <mah:DataGridNumericUpDownColumn x:Name="PrecoVendaDataColumn"
                                 Width="25*"
                                 Header="Preço de Venda(R$)"
                                 StringFormat="{}{0:N2}"
                                 Culture="pt-BR"
                                 Binding="{Binding PrecoVenda}"
                                 IsReadOnly="true" />
-                    </DataGrid.Columns>
 
+                    </DataGrid.Columns>
 
 
                 </DataGrid>

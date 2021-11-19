@@ -220,7 +220,7 @@
                         ColumnWidth="*"
                         x:Name="Parcelas"
                         AutoGenerateColumns="False"
-                        ItemsSource="{Binding}"
+                        ItemsSource="{Binding }"
                         CanUserAddRows="False"
                         Height="auto"
                         Width="auto"
@@ -261,6 +261,7 @@
                         Content="Adicionar"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
+                        PreviewMouseLeftButtonDown="AdicionarParcela"
                         Margin="10,10,0,0" />
                     <TextBox
                         IsEnabled="False"

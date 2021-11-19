@@ -1,39 +1,33 @@
 ﻿using MahApps.Metro.Controls;
-using Persistence;
-using SisMaper.Models;
 using SisMaper.ViewModel;
 using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using static SisMaper.ViewModel.CrudProdutoViewModel;
+
 
 namespace SisMaper.Views
 {
     public partial class CrudProduto : MetroWindow
     {
-        public static Produto Produto { get; set; }
+        private CrudProdutoViewModel cpvm => (CrudProdutoViewModel) DataContext;
         
-        public CrudProduto()
+        public CrudProduto(object selectedItem = null)
         {
             InitializeComponent();
+            //cpvm.OnSave += Close;
             //Produto = DAO.Load<Produto>(6);
             //grid.DataContext = Produto;
             //Title = "Editar Produto - " + Produto.Descricao;
 
 
-            Loaded += CrudProdutoLoaded;
 
         }
+        
 
         private void CrudProdutoLoaded(object sender, RoutedEventArgs e)
         {
-            if(this.DataContext is ICloseWindow vm)
+            if(this.DataContext is CrudProdutoViewModel vm)
             {
-                vm.Close += () =>
-                {
-                    this.Close();
-                };
+                vm.OnSave += Close;
             }
         }
 

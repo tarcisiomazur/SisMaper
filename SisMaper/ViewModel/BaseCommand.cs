@@ -1,12 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SisMaper.ViewModel
 {
+    public class SimpleCommand : BaseCommand
+    {
+        public SimpleCommand(Action<object> execute = null, Predicate<object> canExecute = null)
+        {
+            CanExecuteDelegate = canExecute;
+            ExecuteDelegate = execute;
+        }
+
+        public Predicate<object> CanExecuteDelegate { get; set; }
+        public Action<object> ExecuteDelegate { get; set; }
+
+        public override bool CanExecute(object parameter)
+        {
+            return CanExecuteDelegate == null || CanExecuteDelegate(parameter);
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public override void Execute(object parameter)
+        {
+            this.ExecuteDelegate?.Invoke(parameter);
+        }
+    }
+    
     public abstract class BaseCommand : ICommand
     {
         //public event EventHandler CanExecuteChanged;

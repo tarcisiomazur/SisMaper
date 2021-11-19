@@ -29,7 +29,6 @@ namespace SisMaper.Views
         {
             InitializeComponent();
             SetActions();
-
         }
 
 

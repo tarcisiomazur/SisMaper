@@ -1,0 +1,427 @@
+﻿<mah:MetroWindow 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:SisMaper.Views"
+    xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+    xmlns:m="clr-namespace:SisMaper.ViewModel"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    Dialog:DialogParticipation.Register="{Binding}"
+    x:Class="SisMaper.Views.CrudPessoaFisica"
+    x:Name="this"
+    mc:Ignorable="d"
+    Title="Pessoa Física"
+    TitleCharacterCasing="Normal"
+    MinHeight="450"
+    MinWidth="400"
+    Height="450"
+    Width="450"
+    >
+    <mah:MetroWindow.Resources>
+        <Dialog:DialogCoordinator x:Key="dialogCoordinator"/>
+        <Style
+            TargetType="{x:Type TextBlock}">
+            <Setter
+                Property="TextWrapping"
+                Value="NoWrap" />
+            <Setter
+                Property="TextTrimming"
+                Value="None" />
+            <Setter
+                Property="FontSize"
+                Value="16" />
+        </Style>
+        <Style
+            x:Key="TextBoxStyle1"
+            TargetType="{x:Type TextBox}"
+            BasedOn="{StaticResource MahApps.Styles.TextBox}">
+            <Setter
+                Property="FontSize"
+                Value="16" />
+            <Setter
+                Property="Height"
+                Value="32" />
+        </Style>
+        <Style
+            x:Key="OptionsButtonStyle"
+            TargetType="{x:Type Button}">
+            <Setter
+                Property="FocusVisualStyle"
+                Value="{DynamicResource FocusVisual}" />
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter
+                Property="HorizontalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="VerticalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="Padding"
+                Value="10,4" />
+            <Setter
+                Property="FontSize"
+                Value="14" />
+            <Setter
+                Property="Height"
+                Value="31" />
+            <Setter
+                Property="Width"
+                Value="auto" />
+
+            <Setter
+                Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+                        TargetType="{x:Type Button}">
+                        <Border
+                            x:Name="border"
+                            CornerRadius="3,3,3,3"
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true"
+                            Visibility="Visible"
+                            BorderBrush="#FF939393">
+                            <ContentPresenter
+                                x:Name="contentPresenter"
+                                Focusable="False"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger
+                                Property="IsDefaulted"
+                                Value="true">
+                                <Setter
+                                    Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsMouseOver"
+                                Value="true">
+                                <Setter
+                                    Property="BorderThickness"
+                                    TargetName="border"
+                                    Value="1" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsPressed"
+                                Value="true">
+                                <Setter
+                                    Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Pressed.Background}" />
+                            </Trigger>
+                            <Trigger
+                                Property="IsEnabled"
+                                Value="false">
+                                <Setter
+                                    Property="Background"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Disabled.Background}" />
+                                <Setter
+                                    Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="{StaticResource Button.Disabled.Border}" />
+                                <Setter
+                                    Property="TextElement.Foreground"
+                                    TargetName="contentPresenter"
+                                    Value="{StaticResource Button.Disabled.Foreground}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </mah:MetroWindow.Resources>
+
+
+
+    <Grid x:Name="grid" >
+        <StackPanel>
+            
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Language="pt-br" Text="Nome" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox  
+                Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                HorizontalAlignment="Left"
+                Margin="30,20,0,0"
+                TextWrapping="Wrap"
+                Text=""
+                VerticalAlignment="Top"
+                Width="220" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Language="pt-br" Text="CPF" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox  
+                Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                HorizontalAlignment="Left"
+                Margin="30,20,0,0"
+                TextWrapping="Wrap"
+                Text=""
+                VerticalAlignment="Top"
+                Width="220" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Language="pt-br" Text="Estado" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}" x:Name="cat"
+                SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
+                Grid.Row="0" BorderThickness="2"
+                Height="32"
+                Width="220"
+                Margin="30,20,0,0"
+                FontSize="16"
+                mah:TextBoxHelper.Watermark="Buscar Estado"
+                IsEditable="true"
+                MaxDropDownHeight="125"
+                mah:TextBoxHelper.WatermarkAlignment="Right"
+                mah:TextBoxHelper.AutoWatermark="True"
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left"
+                Text="{Binding TextoCategoria}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Language="pt-br" Text="Cidade" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}"
+                SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
+                Grid.Row="0" BorderThickness="2"
+                Height="32"
+                Width="220"
+                Margin="30,20,0,0"
+                FontSize="16"
+                mah:TextBoxHelper.Watermark="Buscar Cidade"
+                IsEditable="true"
+                MaxDropDownHeight="125"
+                mah:TextBoxHelper.WatermarkAlignment="Right"
+                mah:TextBoxHelper.AutoWatermark="True"
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left"
+                Text="{Binding TextoCategoria}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Language="pt-br" Text="Endereço" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox  
+                Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                HorizontalAlignment="Left"
+                Margin="30,20,0,0"
+                TextWrapping="Wrap"
+                Text=""
+                VerticalAlignment="Top"
+                Width="220" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                HorizontalAlignment="Left" FontSize="22"
+                Margin="20,20,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top" Height="60" Width="100"><Run
+                    Language="pt-br"
+                    Text="Limite de crédito" /></TextBlock>
+                <TextBox  
+                Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                HorizontalAlignment="Left"
+                Margin="30,30,0,0"
+                TextWrapping="Wrap"
+                Text=""
+                VerticalAlignment="Top"
+                Width="220" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button
+                Style="{DynamicResource OptionsButtonStyle}"
+                Content="Cancelar"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0, 30, 30, 0"
+                CommandParameter="{Binding}"
+                Command="{Binding Salvar}"/>
+
+                <Button
+                Style="{DynamicResource OptionsButtonStyle}"
+                Content="Salvar"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0, 30, 30, 0"
+                CommandParameter="{Binding}"
+                Command="{Binding Salvar}"/>
+            </StackPanel>
+
+
+        </StackPanel>
+
+
+        <StackPanel>
+
+        </StackPanel>
+        
+
+            <!--
+            <Button
+                Style="{DynamicResource OptionsButtonStyle}"
+                Content="Cancelar"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,95,17" 
+                Click="CancelarButtonClick"/>
+            <Button
+                Style="{DynamicResource OptionsButtonStyle}"
+                Content="Salvar"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,31,17"
+                CommandParameter="{Binding}"
+                Command="{Binding Salvar}"
+                Click="Button_Click"/>
+
+            <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}" x:Name="cat"
+                SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
+                Grid.Row="0"
+                Height="32"
+                Width="200"
+                Margin="158,164,0,0"
+                FontSize="16"
+                mah:TextBoxHelper.Watermark="Buscar Categoria"
+                IsEditable="true"
+                MaxDropDownHeight="125"
+                mah:TextBoxHelper.WatermarkAlignment="Right"
+                mah:TextBoxHelper.AutoWatermark="True"
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left"
+                Text="{Binding TextoCategoria}">
+
+            </ComboBox>
+
+
+
+            <TextBlock
+                HorizontalAlignment="Left"
+                Margin="34,168,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top"><Run
+                    Language="pt-br"
+                    Text="Categoria" /></TextBlock>
+            <TextBlock
+                HorizontalAlignment="Left"
+                Margin="35,36,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top" Height="46" Width="84"><Run
+                    Language="pt-br"
+                    Text="Código de Barras" /></TextBlock>
+            <TextBox  
+                Style="{DynamicResource TextBoxStyle1}"
+                HorizontalAlignment="Left"
+                Margin="159,43,0,0"
+                TextWrapping="Wrap"
+                Text="{Binding Produtos[0].CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                VerticalAlignment="Top"
+                Width="216" />
+            <ComboBox ItemsSource="{Binding Unidades}"
+                SelectedItem="{Binding UnidadeSelecionada, Mode=TwoWay}"
+                Grid.Row="0"
+                Height="32"
+                Margin="158,206,427,0"
+                FontSize="16"
+                mah:TextBoxHelper.Watermark="Unidade"
+                IsEditable="true"
+                MaxDropDownHeight="125"
+                mah:TextBoxHelper.WatermarkAlignment="Right"
+                mah:TextBoxHelper.AutoWatermark="True"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Text="{Binding TextoUnidade}" >
+
+            </ComboBox>
+            <TextBlock
+                HorizontalAlignment="Left"
+                Margin="34,210,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top"><Run Language="pt-br" Text="Unidade"/></TextBlock>
+
+            <ComboBox ItemsSource="{Binding ListaNCM}"
+                SelectedItem="{Binding NCMSelecionado}"
+                Grid.Row="0"
+                Height="32"
+                Margin="158,248,427,0"
+                FontSize="16"
+                mah:TextBoxHelper.Watermark="NCM"
+                IsEditable="false"
+                MaxDropDownHeight="125"
+                mah:TextBoxHelper.WatermarkAlignment="Right"
+                mah:TextBoxHelper.AutoWatermark="True"
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Left"
+                >
+
+            </ComboBox>
+
+            <TextBlock
+                HorizontalAlignment="Left"
+                Margin="35,252,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top"><Run Language="pt-br" Text="NCM"/></TextBlock>
+            <TextBlock
+                HorizontalAlignment="Left"
+                Margin="34,293,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Preço de Custo"/><LineBreak/><Run Language="pt-br"/></TextBlock>
+            <TextBox
+                Style="{DynamicResource TextBoxStyle1}"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Right"
+                Margin="158,292,0,0"
+                TextWrapping="Wrap"
+                Text="{Binding Produtos[0].PrecoCusto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                VerticalAlignment="Top"
+                Width="165" />
+            <TextBlock
+                HorizontalAlignment="Left"
+                Margin="34,336,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Margem"/></TextBlock>
+            <TextBox
+                Style="{DynamicResource TextBoxStyle1}"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Right"
+                Margin="158,336,0,0"
+                TextWrapping="Wrap"
+                Text="{Binding Produtos[0].Porcentagem, Mode=OneWay}"
+                VerticalAlignment="Top"
+                Width="165" 
+                IsEnabled="false"/>
+            <TextBlock
+                HorizontalAlignment="Left"
+                Margin="34,378,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top" Height="32" Width="122"><Run Text="Preço de "/><Run Language="pt-br" Text="Venda"/><LineBreak/><Run/></TextBlock>
+            <TextBox
+                Style="{DynamicResource TextBoxStyle1}"
+                HorizontalAlignment="Left"
+                Margin="158,378,0,0"
+                HorizontalContentAlignment="Right"
+                TextWrapping="Wrap"
+                Text="{Binding Produtos[0].PrecoVenda, Mode=TwoWay}"
+                VerticalAlignment="Top"
+                Width="165" />
+
+
+        -->
+        
+
+    </Grid>
+</mah:MetroWindow>
+
