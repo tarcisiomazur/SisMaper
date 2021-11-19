@@ -11,7 +11,7 @@ namespace SisMaper.Models
         public string Chave { get; set; }
 
         [Field(FieldType = SqlDbType.DateTime)]
-        public DateTime DataEmissao { get; set; }
+        public DateTime DataEmissao { get; set;  }
 
         [Field(FieldType = SqlDbType.Xml)]
         public byte[] XML { get; set; }
