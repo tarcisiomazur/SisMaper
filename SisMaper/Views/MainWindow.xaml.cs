@@ -59,17 +59,26 @@ namespace SisMaper.Views
         public MainWindow()
         {
 
-            //new Login().ShowDialog();
-
+            var login = new Login();
+            if (login.ShowDialog().IsTrue())
+            {
+                Main.Usuario = login.ViewModel?.Usuario;
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+            
+            
             //Show();
 
             
 
             try
             {
-                if (!new Login().ShowDialog()!.Value)
+                //if (!new Login().ShowDialog()!.Value)
                 {
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
             }
             catch(Exception ex)
@@ -251,8 +260,8 @@ namespace SisMaper.Views
                 Console.WriteLine(estado.Nome + " " + estado.Cidades.Count);
             }
 
-            var parana = estados.Find(estado => estado.Nome.Like("paraná"));
-            var prudentopolis = parana.Cidades.Find(cidade => cidade.Nome.Like("pruden%"));
+            var parana = estados.First(estado => estado.Nome.Like("paraná"));
+            var prudentopolis = parana.Cidades.First(cidade => cidade.Nome.Like("pruden%"));
 
             #endregion
 
@@ -323,12 +332,6 @@ namespace SisMaper.Views
             Console.WriteLine(e.NewSize.ToString());
         }
 
-        private void NovaVenda(object sender, RoutedEventArgs e)
-        {
-            var viewPedido = new ViewPedido();
-            viewPedido.Owner = this;
-            viewPedido.Show();
-        }
         private void NovaFatura(object sender, RoutedEventArgs e)
         {
             var viewFatura = new ViewFatura();

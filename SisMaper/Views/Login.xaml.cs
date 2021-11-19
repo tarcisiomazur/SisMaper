@@ -18,7 +18,9 @@ namespace SisMaper.Views
     /// </summary>
     public partial class Login: MetroWindow
     {
-
+        public LoginViewModel? ViewModel => DataContext as LoginViewModel ?? null;
+            
+            
         public Login()
         {
             InitializeComponent();

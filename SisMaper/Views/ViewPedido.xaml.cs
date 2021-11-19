@@ -10,6 +10,7 @@ using MahApps.Metro.Controls;
 using Persistence;
 using SisMaper.Models;
 using SisMaper.Tools;
+using SisMaper.ViewModel;
 using Xceed.Wpf.Toolkit.Core;
 
 namespace SisMaper.Views
@@ -21,20 +22,17 @@ namespace SisMaper.Views
     {
         private List<Produto> BoxProdutos;
         private TextBox TbBuscarProduto;
-        public ViewPedido()
+
+        private PedidoViewModel? ViewModel => DataContext as PedidoViewModel ?? null;
+        
+        public ViewPedido(Pedido pedido)
         {
             InitializeComponent();
-            
-            
-            var pedido = DAO.Load<Pedido>(24);
-            cmbCliente.Text = pedido.Cliente.Nome;
-            ValorTotal.Text = $"R$ {pedido.Itens.Sum(item => item.Total).RealFormat()}";
-            Console.WriteLine(pedido.Itens.Count);
-            Itens.ItemsSource = pedido.Itens;
-            BoxProdutos = new List<Produto>();
-            cmbProduto.DataContext = BoxProdutos;
-            TbBuscarProduto = FindTextBox(cmbProduto);
-            
+            ViewModel!.Pedido = pedido;
+        }
+
+        private void SetActions()
+        {
         }
 
         private static TextBox FindTextBox(DependencyObject element)

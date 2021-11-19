@@ -5,22 +5,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:tools="clr-namespace:SisMaper.Tools"
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+    xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:models="clr-namespace:SisMaper.Models"
     xmlns:s="clr-namespace:System;assembly=mscorlib"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Class="SisMaper.Views.ViewPedido"
     x:Name="this"
     mc:Ignorable="d"
-    Title="Pedido - 00024"
+    Title="{Binding Pedido.Id, StringFormat=Pedido - {0}}"
     TitleCharacterCasing="Normal"
     Height="599"
     Width="812"
     SaveWindowPosition="True">
+    <mah:MetroWindow.DataContext>
+        <viewModels:PedidoViewModel/>
+    </mah:MetroWindow.DataContext>
     <mah:MetroWindow.Resources>
         <tools:DecimalToRealString
             x:Key="DecimalToRealString" />
