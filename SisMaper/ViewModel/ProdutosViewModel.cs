@@ -14,12 +14,8 @@ namespace SisMaper.ViewModel
 {
     public class ProdutosViewModel : BaseViewModel, IProdutos
     {
-<<<<<<< HEAD
-        private Produto _produtoSelecionado;
-=======
 
         private Produto? _produtoSelecionado;
->>>>>>> faefa09cc491a18e0c5af519d711049cc15de4d3
 
         public Produto ProdutoSelecionado
         {
@@ -27,6 +23,7 @@ namespace SisMaper.ViewModel
             set { SetField(ref _produtoSelecionado, value); }
         }
 
+        public ObservableCollection<Produto> Produtos { get; set; }
         public PList<Produto> ProdutosList { get; private set; }
         public MouseCommand MCommand { get; private set; }
         public NovoProdutoCommand NovoProduto { get; private set; }
@@ -46,6 +43,7 @@ namespace SisMaper.ViewModel
 
         public ProdutosViewModel()
         {
+            Produtos = new ObservableCollection<Produto>();
 
             ProdutosList = DAO.FindWhereQuery<Produto>("Id > 0");
 
@@ -101,7 +99,9 @@ namespace SisMaper.ViewModel
 
         internal void OpenCrudProdutos()
         {
+            Console.WriteLine("OPEN CRUDD");
             OpenNovoProduto?.Invoke();
+            //OpenW?.Invoke(new Produto());
         }
 
 
@@ -197,15 +197,7 @@ namespace SisMaper.ViewModel
     {
         public override void Execute(object parameter)
         {
-            //var vm = (ProdutosViewModel)parameter;
-
-            //Console.WriteLine("Double Click certo");
-            //new CrudProduto() { DataContext = new CrudProdutoViewModel((Produto)parameter) }.ShowDialog();
-
-            //MessageBox.Show(vm.ProdutoSelecionado.CodigoBarras);
-
-            //MessageBox.Show("Double Click!!!");
-            //MessageBox.Show("Clicloe");
+            var vm = (ProdutosViewModel)parameter;
         }
     }
 

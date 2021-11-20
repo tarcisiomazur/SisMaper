@@ -118,7 +118,9 @@ namespace SisMaper.Views
             MouseCommand?.Execute(MouseCommandParameter);
         }
 
+        private void Produtos_MouseDown(object sender, MouseButtonEventArgs e)
+        {
 
-       
+        }
     }
 }

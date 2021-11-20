@@ -419,57 +419,9 @@
                     </StackPanel>
                 </RibbonGroup>
                 <Separator />
-                <RibbonGroup Header="Filtrar" Width="332">
-                    <Grid Width="468">
-                        <TextBox x:Name="FilterTextBox" Margin="7,46,161,0"
-                                 mah:TextBoxHelper.Watermark="Buscar produto... (Ctrl + F)"
-                                 Background="{DynamicResource MahApps.Brushes.Gray9}"
-                                 BorderThickness="0"
-                                 Style="{DynamicResource TextBox.Search}"
-                                 Text="{Binding FilterText, Delay=300, ElementName=userControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="35" Width="300" VerticalAlignment="Top">
-                            <TextBox.ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold"
-                                               Foreground="{DynamicResource MahApps.Brushes.Accent}"
-                                               Text="Filtro Avançado:" />
-                                    <TextBlock>
-                                        <Run Text="Use these chars to match all substrings: &#x9;" />
-                                        <Run Text=" " />
-                                        <Run Text=" " />
-                                        <Run Text=" " />
-                                        <Run FontFamily="Courier New" Text="'&amp;' '+' ',' ';'" />
-                                    </TextBlock>
-                                    <TextBlock>
-                                        <Run Text="Use this chars to match any substring: &#x9;" />
-                                        <Run Text=" " />
-                                        <Run Text=" " />
-                                        <Run Text=" " />
-                                        <Run FontFamily="Courier New" Text="'|'" />
-                                    </TextBlock>
-                                </StackPanel>
-                            </TextBox.ToolTip>
-                        </TextBox>
-                        <CheckBox Margin="234,12,163,0" IsChecked="{x:Null}" Content="Inativos" VerticalAlignment="Top" IsThreeState="True"/>
-                        <ComboBox x:Name="FiltrarCategorias" Margin="10,9,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="198" mah:TextBoxHelper.Watermark="Categoria" />
-
-                    </Grid>
-                </RibbonGroup>
-                <Separator/>
-
-                <StackPanel >
-                    <Button
-                        Height="30" Width="120" Margin="5, 10" Content="Categorias" Background="LightGray" CommandParameter="{Binding}" Command="{Binding AbrirCategorias}">
-                    </Button>
-
-                    <Button
-                        Height="30" Width="120" Margin="5, 10"  Content="Unidades" Background="LightGray" CommandParameter="{Binding}" Command="{Binding AbrirUnidades}">
-                    </Button>
 
 
-                </StackPanel>
 
-                <Separator/>
 
 
             </ToolBar>

@@ -251,8 +251,8 @@ namespace SisMaper.Views
                 Console.WriteLine(estado.Nome + " " + estado.Cidades.Count);
             }
 
-            var parana = estados.Find(estado => estado.Nome.Like("paraná"));
-            var prudentopolis = parana.Cidades.Find(cidade => cidade.Nome.Like("pruden%"));
+            var parana = estados.First(estado => estado.Nome.Like("paraná"));
+            var prudentopolis = parana.Cidades.First(cidade => cidade.Nome.Like("pruden%"));
 
             #endregion
 
@@ -264,7 +264,7 @@ namespace SisMaper.Views
                 Nome = "Tarcisio",
                 LimiteCredito = 500,
                 Endereco = "Av. Visconde de Guarapuava, 347",
-                Cidade = prudentopolis
+                //Cidade = prudentopolis
             };
 
             Console.WriteLine(cliente.Save() ? "Cliente Salvo" : "Erro");

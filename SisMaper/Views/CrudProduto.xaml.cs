@@ -18,7 +18,7 @@ namespace SisMaper.Views
             //grid.DataContext = Produto;
             //Title = "Editar Produto - " + Produto.Descricao;
 
-
+            Loaded += CrudProdutoLoaded;
 
         }
         
@@ -27,7 +27,8 @@ namespace SisMaper.Views
         {
             if(this.DataContext is CrudProdutoViewModel vm)
             {
-                vm.OnSave += Close;
+                //vm.OnSave += Close;
+                vm.Close += Close;
             }
         }
 

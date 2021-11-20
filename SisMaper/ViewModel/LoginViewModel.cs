@@ -43,7 +43,7 @@ namespace SisMaper.ViewModel
             {
                 Usuario = user;
                 key.SetValue("LastUsername", Usuario.Login);
-                OnLogin.Invoke();
+                OnLogin?.Invoke();
             }
             else
             {

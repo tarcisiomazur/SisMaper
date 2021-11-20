@@ -17,7 +17,7 @@ using System.Windows;
 
 namespace SisMaper.ViewModel
 {
-    
+
     public class CrudProdutoViewModel : BaseViewModel, ICloseWindow
     {
         private NCM _ncmSelecionado;
@@ -71,7 +71,7 @@ namespace SisMaper.ViewModel
         public RemoverLoteCommand Remover { get; private set; }
 
         public IDialogCoordinator DialogCoordinator { get; set; }
-        
+
         public Action Close { get; set; }
 
 
@@ -82,12 +82,12 @@ namespace SisMaper.ViewModel
             Adicionar = new AdicionarLoteCommand();
             Remover = new RemoverLoteCommand();
 
-            Produto = (Produto) produtoSelecionado;
+            Produto = (Produto)produtoSelecionado;
 
             ListaNCM = DAO.FindWhereQuery<NCM>("Id > 0");
             PList<Categoria> listaCategorias = DAO.FindWhereQuery<Categoria>("Id > 0");
             PList<Unidade> listaUnidades = DAO.FindWhereQuery<Unidade>("Id > 0");
-            
+
 
             DialogCoordinator = new DialogCoordinator();
 
@@ -97,17 +97,17 @@ namespace SisMaper.ViewModel
             Lotes = new ObservableCollection<Lote>();
 
             _loteSelecionado = LoteSelecionado = new Lote();
-            
+
             Categorias = new ObservableCollection<Categoria>();
             Unidades = new ObservableCollection<Unidade>();
 
 
-            foreach(Categoria c in listaCategorias)
+            foreach (Categoria c in listaCategorias)
             {
                 Categorias.Add(c);
             }
 
-            foreach(Unidade u in listaUnidades)
+            foreach (Unidade u in listaUnidades)
             {
                 Unidades.Add(u);
             }
@@ -119,7 +119,7 @@ namespace SisMaper.ViewModel
                 CategoriaSelecionada = Produto.Categoria;
                 UnidadeSelecionada = Produto.Unidade;
 
-                if(!Equals(CategoriaSelecionada, null))
+                if (!Equals(CategoriaSelecionada, null))
                 {
                     TextoCategoria = CategoriaSelecionada.Descricao;
                 }
@@ -143,16 +143,16 @@ namespace SisMaper.ViewModel
                 var lotesBanco = DAO.FindWhereQuery<Lote>("Id > 0");
 
 
-                foreach(Lote l in lotesBanco)
+                foreach (Lote l in lotesBanco)
                 {
                     //Console.WriteLine(l);
-                    if(l.Produto.Id.Equals(Produto.Id))
+                    if (l.Produto.Id.Equals(Produto.Id))
                     {
                         Console.WriteLine(l);
                         Lotes.Add(l);
                     }
                 }
-                
+
             }
 
             else
@@ -161,18 +161,18 @@ namespace SisMaper.ViewModel
 
                 if (pl.Count == 0)
                 {
-                    Produto=new Produto()
+                    Produto = new Produto()
                     {
                         Id = 1
                     };
-                    
+
                 }
                 else
                 {
 
                     Produto p2 = pl.Last();
 
-                    Produto=new Produto()
+                    Produto = new Produto()
                     {
                         Id = p2.Id + 1
                     };
@@ -181,18 +181,6 @@ namespace SisMaper.ViewModel
                 CategoriaSelecionada = null;
                 UnidadeSelecionada = null;
             }
-
-            /*
-            _ncmSelecionado = NCMSelecionado = null;
-            _categoriaSelecionada = CategoriaSelecionada = null;
-            _unidadeSelecionada = UnidadeSelecionada = null;
-            */
-
-
-            //Produtos.CollectionChanged += OnProdutosCollectionChanged;
-            //Produtos.CollectionChanged += new NotifyCollectionChangedEventHandler(OnProdutosCollectionChanged);
-
-            //Produtos[0].PropertyChanged += OnProdutosCollectionChanged;
         }
 
 
@@ -209,14 +197,14 @@ namespace SisMaper.ViewModel
 
         private void CheckCategoria()
         {
-            
-            if(string.IsNullOrWhiteSpace(TextoCategoria))
+
+            if (string.IsNullOrWhiteSpace(TextoCategoria))
             {
                 CategoriaSelecionada = null;
                 return;
             }
 
-            if(!object.Equals(CategoriaSelecionada, null) && CategoriaSelecionada.Descricao.Equals(TextoCategoria))
+            if (!object.Equals(CategoriaSelecionada, null) && CategoriaSelecionada.Descricao.Equals(TextoCategoria))
             {
                 return;
             }
@@ -227,20 +215,20 @@ namespace SisMaper.ViewModel
 
             SalvarCategoriaNoBanco(c);
 
-            
-            
+
+
         }
 
         private void CheckUnidade()
         {
-            
-            if(string.IsNullOrWhiteSpace(TextoUnidade))
+
+            if (string.IsNullOrWhiteSpace(TextoUnidade))
             {
                 UnidadeSelecionada = null;
                 return;
             }
 
-            if(!object.Equals(UnidadeSelecionada, null) && UnidadeSelecionada.Descricao.Equals(TextoUnidade))
+            if (!object.Equals(UnidadeSelecionada, null) && UnidadeSelecionada.Descricao.Equals(TextoUnidade))
             {
                 return;
             }
@@ -251,8 +239,8 @@ namespace SisMaper.ViewModel
 
             SalvarUnidadeNoBanco(u);
 
-            
-            
+
+
         }
 
         public void ExcluirLote()
@@ -269,7 +257,7 @@ namespace SisMaper.ViewModel
 
             Produto.Lotes = new PList<Lote>();
 
-            foreach(Lote l in Lotes)
+            foreach (Lote l in Lotes)
             {
                 listaLotesPraAdicionar.Add(l);
                 Produto.Lotes.Add(l);
@@ -297,9 +285,6 @@ namespace SisMaper.ViewModel
                 MessageBox.Show("Erro: " + ex.Message);
             }
         }
-
-
-
 
         public class SalvarCommand : BaseCommand
         {

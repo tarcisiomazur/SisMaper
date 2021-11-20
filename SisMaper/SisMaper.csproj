@@ -50,16 +50,16 @@
 
   <ItemGroup>
     <Reference Include="MySql.Data">
-      <HintPath>..\..\testes\SisMaper-master\SisMaper\Library\MySql.Data.dll</HintPath>
+      <HintPath>Library\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="MySqlConnector">
-      <HintPath>..\..\testes\SisMaper-master\SisMaper\Library\MySqlConnector.dll</HintPath>
+      <HintPath>Library\MySqlConnector.dll</HintPath>
     </Reference>
     <Reference Include="Persistence">
-      <HintPath>..\..\testes\SisMaper-master\SisMaper\Library\Persistence.dll</HintPath>
+      <HintPath>..\..\Persistence\bin\Debug\net5.0\Persistence.dll</HintPath>
     </Reference>
     <Reference Include="PriorityQueue">
-      <HintPath>..\..\testes\SisMaper-master\SisMaper\Library\PriorityQueue.dll</HintPath>
+      <HintPath>Library\PriorityQueue.dll</HintPath>
     </Reference>
   </ItemGroup>
 

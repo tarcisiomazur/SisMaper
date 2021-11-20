@@ -15,7 +15,8 @@ namespace SisMaper.Views
 
         private void OpenPedido(Pedido pedido)
         {
-            new ViewPedido(pedido).ShowDialog();
+            //new ViewPedido(pedido).ShowDialog();
+            new ViewPedido().ShowDialog();
         }
     }
 }

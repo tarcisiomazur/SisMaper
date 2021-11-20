@@ -5,7 +5,11 @@ namespace SisMaper.ViewModel
     public class PedidoViewModel: BaseViewModel
     {
         public Pedido Pedido { get; set; }
-        
-        
+
+
+        public PedidoViewModel()
+        {
+
+        }
     }
 }

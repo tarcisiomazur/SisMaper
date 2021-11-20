@@ -994,7 +994,12 @@
                                 </StackPanel>
                             </ItemContainerTemplate>
                         </TabItem.HeaderTemplate>
-                        <Grid />
+                        <local:ViewClientes
+                            Width="auto"
+                            Height="auto"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            x:Name="ClientesView" />
                     </TabItem>
                     <TabItem
                         x:Name="Usuários"
