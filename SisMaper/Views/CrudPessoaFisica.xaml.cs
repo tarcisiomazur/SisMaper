@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using SisMaper.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,43 @@ namespace SisMaper.Views
     /// </summary>
     public partial class CrudPessoaFisica : MetroWindow
     {
+        public bool isSelectedPessoaFisicaTab { get; set; }
+
         public CrudPessoaFisica()
         {
             InitializeComponent();
+
+            Loaded += CrudPessoaFisica_Loaded;
+        }
+
+
+
+
+
+        private void CrudPessoaFisica_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(isSelectedPessoaFisicaTab)
+            {
+                PessoaFisicaTabItem.IsSelected = true;
+                PessoaJuridicaTabItem.IsEnabled = false;
+            }
+
+            else
+            {
+                PessoaJuridicaTabItem.IsSelected = true;
+                PessoaFisicaTabItem.IsEnabled = false;
+            }
+
+            if(DataContext is IClienteSave vm)
+            {
+                vm.SaveCliente += () => Close();
+            }
+
+        }
+
+        private void CancelarButtonLeftClick(object sender, MouseButtonEventArgs e)
+        {
+            Close();
         }
     }
 }

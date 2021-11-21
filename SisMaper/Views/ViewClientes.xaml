@@ -398,19 +398,19 @@
             <ToolBar DockPanel.Dock="Top" >
                 <RibbonGroup Header="Alterar Produto">
                     <StackPanel Orientation="Horizontal">
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding NovoProduto}">
+                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding NovoCliente}">
                             <StackPanel>
                                 <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" />
                                 <TextBlock Style="{DynamicResource Head1}" Text="Novo" />
                             </StackPanel>
                         </Button>
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding Editar}">
+                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding EditarCliente}">
                             <StackPanel>
                                 <icons:PackIconModern Kind="EditBox" HorizontalAlignment="Center" />
                                 <TextBlock Style="{DynamicResource Head1}" Text="Editar" />
                             </StackPanel>
                         </Button>
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding Deletar}">
+                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding ExcluirCliente}">
                             <StackPanel>
                                 <icons:PackIconMaterial Kind="DeleteForever" HorizontalAlignment="Center" />
                                 <TextBlock Style="{DynamicResource Head1}" Text="Excluir" />
@@ -429,8 +429,8 @@
 
 
                 <TabControl Margin="0" Background="#FFF6F6F6">
-                    <TabItem Style="{DynamicResource Tab2}" Width="150 " >
-                        <TabItem.HeaderTemplate>
+                <TabItem Style="{DynamicResource Tab2}" Width="150 " x:Name="PessoaFisicaTabItem" GotFocus="PessoaFisicaTabItem_GotFocus" >
+                    <TabItem.HeaderTemplate>
                             <ItemContainerTemplate>
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <icons:PackIconOcticons Style="{DynamicResource MenuPackIconOcticons}" Kind="Person" />
@@ -441,7 +441,7 @@
                         </TabItem.HeaderTemplate>
                         
                     <Border BorderThickness="3" Margin="5" CornerRadius="5" BorderBrush="#FFC4C4C4">
-                        <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch"
+                        <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch" x:Name="PessoaFisicaDataGrid"
                           ColumnWidth="*" ItemsSource="{Binding PessoaFisicaList}" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
                           SelectionMode="Single"
@@ -487,7 +487,7 @@
                     </Border>
 
                 </TabItem>
-                    <TabItem Style="{DynamicResource Tab2}" Width="150">
+                <TabItem Style="{DynamicResource Tab2}" Width="150" x:Name="PessoaJuridicaTabItem" GotFocus="PessoaJuridicaTabItem_GotFocus">
                         <TabItem.HeaderTemplate>
                             <ItemContainerTemplate>
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
@@ -499,7 +499,7 @@
                         </TabItem.HeaderTemplate>
 
                     <Border BorderThickness="3" Margin="5" CornerRadius="5" BorderBrush="#FFC4C4C4">
-                        <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch"
+                        <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch" x:Name="PessoaJuridicaDataGrid"
                           ColumnWidth="*" ItemsSource="{Binding PessoaJuridicaList}" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
                           SelectionMode="Single"

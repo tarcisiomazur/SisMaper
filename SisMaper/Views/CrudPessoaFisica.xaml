@@ -16,9 +16,9 @@
     mc:Ignorable="d"
     Title="Pessoa Física"
     TitleCharacterCasing="Normal"
-    MinHeight="450"
+    MinHeight="650"
     MinWidth="400"
-    Height="450"
+    Height="650"
     Width="450"
     >
     <mah:MetroWindow.Resources>
@@ -144,283 +144,283 @@
         </Style>
     </mah:MetroWindow.Resources>
 
-
+    
+    
 
     <Grid x:Name="grid" >
-        <StackPanel>
+        <TabControl>
+            <TabItem Header="Pessoa Física" Height="35" x:Name="PessoaFisicaTabItem">
+                <StackPanel>
             
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Language="pt-br" Text="Nome" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  
-                Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
-                HorizontalAlignment="Left"
-                Margin="30,20,0,0"
-                TextWrapping="Wrap"
-                Text=""
-                VerticalAlignment="Top"
-                Width="220" />
-            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Language="pt-br" Text="Nome" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,20,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaFisica.Nome}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                        </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Language="pt-br" Text="CPF" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  
-                Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
-                HorizontalAlignment="Left"
-                Margin="30,20,0,0"
-                TextWrapping="Wrap"
-                Text=""
-                VerticalAlignment="Top"
-                Width="220" />
-            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Language="pt-br" Text="CPF" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,20,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaFisica.CPF}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                        </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Language="pt-br" Text="Estado" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}" x:Name="cat"
-                SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
-                Grid.Row="0" BorderThickness="2"
-                Height="32"
-                Width="220"
-                Margin="30,20,0,0"
-                FontSize="16"
-                mah:TextBoxHelper.Watermark="Buscar Estado"
-                IsEditable="true"
-                MaxDropDownHeight="125"
-                mah:TextBoxHelper.WatermarkAlignment="Right"
-                mah:TextBoxHelper.AutoWatermark="True"
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Left"
-                Text="{Binding TextoCategoria}"/>
-            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Language="pt-br" Text="Estado" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}" 
+                            SelectedItem="{Binding EstadoSelecionado, Mode=TwoWay}"
+                            Grid.Row="0" BorderThickness="2"
+                            Height="32"
+                            Width="220"
+                            Margin="30,20,0,0"
+                            FontSize="16"
+                            mah:TextBoxHelper.Watermark="Buscar Estado"
+                            IsEditable="true"
+                            MaxDropDownHeight="125"
+                            mah:TextBoxHelper.WatermarkAlignment="Right"
+                            mah:TextBoxHelper.AutoWatermark="True"
+                            VerticalAlignment="Top" 
+                            HorizontalAlignment="Left"/>
+                        </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Language="pt-br" Text="Cidade" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}"
-                SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
-                Grid.Row="0" BorderThickness="2"
-                Height="32"
-                Width="220"
-                Margin="30,20,0,0"
-                FontSize="16"
-                mah:TextBoxHelper.Watermark="Buscar Cidade"
-                IsEditable="true"
-                MaxDropDownHeight="125"
-                mah:TextBoxHelper.WatermarkAlignment="Right"
-                mah:TextBoxHelper.AutoWatermark="True"
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Left"
-                Text="{Binding TextoCategoria}"/>
-            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Language="pt-br" Text="Cidade" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <ComboBox ItemsSource="{Binding Cidades, Mode=OneWay}"
+                            SelectedItem="{Binding CidadeSelecionada, Mode=TwoWay}"
+                            Grid.Row="0" BorderThickness="2"
+                            Height="32"
+                            Width="220"
+                            Margin="30,20,0,0"
+                            FontSize="16"
+                            mah:TextBoxHelper.Watermark="Buscar Cidade"
+                            IsEditable="true"
+                            MaxDropDownHeight="125"
+                            mah:TextBoxHelper.WatermarkAlignment="Right"
+                            mah:TextBoxHelper.AutoWatermark="True"
+                            VerticalAlignment="Top" 
+                            HorizontalAlignment="Left"/>
+                        </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Language="pt-br" Text="Endereço" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  
-                Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
-                HorizontalAlignment="Left"
-                Margin="30,20,0,0"
-                TextWrapping="Wrap"
-                Text=""
-                VerticalAlignment="Top"
-                Width="220" />
-            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Language="pt-br" Text="Endereço" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,20,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaFisica.Endereco}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                        </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock
-                HorizontalAlignment="Left" FontSize="22"
-                Margin="20,20,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top" Height="60" Width="100"><Run
-                    Language="pt-br"
-                    Text="Limite de crédito" /></TextBlock>
-                <TextBox  
-                Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
-                HorizontalAlignment="Left"
-                Margin="30,30,0,0"
-                TextWrapping="Wrap"
-                Text=""
-                VerticalAlignment="Top"
-                Width="220" />
-            </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                            HorizontalAlignment="Left" FontSize="22"
+                            Margin="20,20,0,0"
+                            TextWrapping="Wrap"
+                            VerticalAlignment="Top" Height="60" Width="100"><Run
+                                Language="pt-br"
+                                Text="Limite de crédito" /></TextBlock>
+                            <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,30,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaFisica.LimiteCredito}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                        </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button
-                Style="{DynamicResource OptionsButtonStyle}"
-                Content="Cancelar"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0, 30, 30, 0"
-                CommandParameter="{Binding}"
-                Command="{Binding Salvar}"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
+                            Style="{DynamicResource OptionsButtonStyle}"
+                            Content="Cancelar"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0, 30, 30, 0"/>
 
-                <Button
-                Style="{DynamicResource OptionsButtonStyle}"
-                Content="Salvar"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0, 30, 30, 0"
-                CommandParameter="{Binding}"
-                Command="{Binding Salvar}"/>
-            </StackPanel>
+                        <Button
+                            Style="{DynamicResource OptionsButtonStyle}"
+                            Content="Salvar"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0, 30, 30, 0"
+                            CommandParameter="{Binding}"
+                            Command="{Binding SavePessoaFisica}"/>
+
+                    </StackPanel>
 
 
-        </StackPanel>
+                    </StackPanel>
+
+            </TabItem>
+
+            <TabItem Header="Pessoa Jurídica" Height="35" x:Name="PessoaJuridicaTabItem">
+                <StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Language="pt-br" Text="Nome" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,20,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaJuridica.Nome}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Language="pt-br" Text="CNPJ" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,20,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaJuridica.CNPJ}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            HorizontalAlignment="Left" FontSize="22"
+                            Margin="20,20,0,0"
+                            TextWrapping="Wrap"
+                            VerticalAlignment="Top" Height="60" Width="100"><Run
+                                Language="pt-br"
+                                Text="Razão Social" /></TextBlock>
+                        <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,30,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaJuridica.RazaoSocial}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            HorizontalAlignment="Left" FontSize="22"
+                            Margin="20,20,0,0"
+                            TextWrapping="Wrap"
+                            VerticalAlignment="Top" Height="60" Width="100"><Run
+                                Language="pt-br"
+                                Text="Inscrição Estadual" /></TextBlock>
+                        <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,30,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaJuridica.InscricaoEstadual}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Language="pt-br" Text="Estado" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}" x:Name="cat"
+                            SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
+                            Grid.Row="0" BorderThickness="2"
+                            Height="32"
+                            Width="220"
+                            Margin="30,20,0,0"
+                            FontSize="16"
+                            mah:TextBoxHelper.Watermark="Buscar Estado"
+                            IsEditable="true"
+                            MaxDropDownHeight="125"
+                            mah:TextBoxHelper.WatermarkAlignment="Right"
+                            mah:TextBoxHelper.AutoWatermark="True"
+                            VerticalAlignment="Top" 
+                            HorizontalAlignment="Left"
+                            Text="{Binding TextoCategoria}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Language="pt-br" Text="Cidade" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}"
+                            SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
+                            Grid.Row="0" BorderThickness="2"
+                            Height="32"
+                            Width="220"
+                            Margin="30,20,0,0"
+                            FontSize="16"
+                            mah:TextBoxHelper.Watermark="Buscar Cidade"
+                            IsEditable="true"
+                            MaxDropDownHeight="125"
+                            mah:TextBoxHelper.WatermarkAlignment="Right"
+                            mah:TextBoxHelper.AutoWatermark="True"
+                            VerticalAlignment="Top" 
+                            HorizontalAlignment="Left"
+                            Text="{Binding TextoCategoria}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Language="pt-br" Text="Endereço" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,20,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaJuridica.Endereco}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            HorizontalAlignment="Left" FontSize="22"
+                            Margin="20,20,0,0"
+                            TextWrapping="Wrap"
+                            VerticalAlignment="Top" Height="60" Width="100"><Run
+                                Language="pt-br"
+                                Text="Limite de crédito" /></TextBlock>
+                        <TextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            HorizontalAlignment="Left"
+                            Margin="30,30,0,0"
+                            TextWrapping="Wrap"
+                            Text="{Binding PessoaJuridica.LimiteCredito}"
+                            VerticalAlignment="Top"
+                            Width="220" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
+                            Style="{DynamicResource OptionsButtonStyle}"
+                            Content="Cancelar"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0, 30, 30, 0"/>
+
+                        <Button
+                            Style="{DynamicResource OptionsButtonStyle}"
+                            Content="Salvar"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0, 30, 30, 0"
+                            CommandParameter="{Binding}"
+                            Command="{Binding SavePessoaJuridica}"/>
+                    </StackPanel>
 
 
-        <StackPanel>
+                </StackPanel>
 
-        </StackPanel>
-        
+            </TabItem>
 
-            <!--
-            <Button
-                Style="{DynamicResource OptionsButtonStyle}"
-                Content="Cancelar"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0,0,95,17" 
-                Click="CancelarButtonClick"/>
-            <Button
-                Style="{DynamicResource OptionsButtonStyle}"
-                Content="Salvar"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0,0,31,17"
-                CommandParameter="{Binding}"
-                Command="{Binding Salvar}"
-                Click="Button_Click"/>
-
-            <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay}" x:Name="cat"
-                SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
-                Grid.Row="0"
-                Height="32"
-                Width="200"
-                Margin="158,164,0,0"
-                FontSize="16"
-                mah:TextBoxHelper.Watermark="Buscar Categoria"
-                IsEditable="true"
-                MaxDropDownHeight="125"
-                mah:TextBoxHelper.WatermarkAlignment="Right"
-                mah:TextBoxHelper.AutoWatermark="True"
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Left"
-                Text="{Binding TextoCategoria}">
-
-            </ComboBox>
-
-
-
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="34,168,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top"><Run
-                    Language="pt-br"
-                    Text="Categoria" /></TextBlock>
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="35,36,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top" Height="46" Width="84"><Run
-                    Language="pt-br"
-                    Text="Código de Barras" /></TextBlock>
-            <TextBox  
-                Style="{DynamicResource TextBoxStyle1}"
-                HorizontalAlignment="Left"
-                Margin="159,43,0,0"
-                TextWrapping="Wrap"
-                Text="{Binding Produtos[0].CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                VerticalAlignment="Top"
-                Width="216" />
-            <ComboBox ItemsSource="{Binding Unidades}"
-                SelectedItem="{Binding UnidadeSelecionada, Mode=TwoWay}"
-                Grid.Row="0"
-                Height="32"
-                Margin="158,206,427,0"
-                FontSize="16"
-                mah:TextBoxHelper.Watermark="Unidade"
-                IsEditable="true"
-                MaxDropDownHeight="125"
-                mah:TextBoxHelper.WatermarkAlignment="Right"
-                mah:TextBoxHelper.AutoWatermark="True"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Left"
-                Text="{Binding TextoUnidade}" >
-
-            </ComboBox>
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="34,210,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top"><Run Language="pt-br" Text="Unidade"/></TextBlock>
-
-            <ComboBox ItemsSource="{Binding ListaNCM}"
-                SelectedItem="{Binding NCMSelecionado}"
-                Grid.Row="0"
-                Height="32"
-                Margin="158,248,427,0"
-                FontSize="16"
-                mah:TextBoxHelper.Watermark="NCM"
-                IsEditable="false"
-                MaxDropDownHeight="125"
-                mah:TextBoxHelper.WatermarkAlignment="Right"
-                mah:TextBoxHelper.AutoWatermark="True"
-                VerticalAlignment="Top" 
-                HorizontalAlignment="Left"
-                >
-
-            </ComboBox>
-
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="35,252,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top"><Run Language="pt-br" Text="NCM"/></TextBlock>
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="34,293,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Preço de Custo"/><LineBreak/><Run Language="pt-br"/></TextBlock>
-            <TextBox
-                Style="{DynamicResource TextBoxStyle1}"
-                HorizontalAlignment="Left"
-                HorizontalContentAlignment="Right"
-                Margin="158,292,0,0"
-                TextWrapping="Wrap"
-                Text="{Binding Produtos[0].PrecoCusto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                VerticalAlignment="Top"
-                Width="165" />
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="34,336,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Margem"/></TextBlock>
-            <TextBox
-                Style="{DynamicResource TextBoxStyle1}"
-                HorizontalAlignment="Left"
-                HorizontalContentAlignment="Right"
-                Margin="158,336,0,0"
-                TextWrapping="Wrap"
-                Text="{Binding Produtos[0].Porcentagem, Mode=OneWay}"
-                VerticalAlignment="Top"
-                Width="165" 
-                IsEnabled="false"/>
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="34,378,0,0"
-                TextWrapping="Wrap"
-                VerticalAlignment="Top" Height="32" Width="122"><Run Text="Preço de "/><Run Language="pt-br" Text="Venda"/><LineBreak/><Run/></TextBlock>
-            <TextBox
-                Style="{DynamicResource TextBoxStyle1}"
-                HorizontalAlignment="Left"
-                Margin="158,378,0,0"
-                HorizontalContentAlignment="Right"
-                TextWrapping="Wrap"
-                Text="{Binding Produtos[0].PrecoVenda, Mode=TwoWay}"
-                VerticalAlignment="Top"
-                Width="165" />
-
-
-        -->
-        
+        </TabControl>
 
     </Grid>
 </mah:MetroWindow>

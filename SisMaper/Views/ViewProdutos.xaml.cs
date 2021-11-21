@@ -115,12 +115,37 @@ namespace SisMaper.Views
 
         private void Produtos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MouseCommand?.Execute(MouseCommandParameter);
+            //MouseCommand?.Execute(MouseCommandParameter);
+
+            if (sender != null)
+            {
+                DataGrid? grid = sender as DataGrid;
+                if (grid != null)
+                {
+                    DataGridRow? dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+                    if (dgr != null && dgr.IsMouseOver)
+                    {
+                        new CrudProduto() { DataContext = new CrudProdutoViewModel(grid.SelectedItem) }.ShowDialog();
+                    }
+                }
+            }
+
         }
 
         private void Produtos_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            if (sender != null)
+            {
+                DataGrid? grid = sender as DataGrid;
+                if (grid != null && grid.SelectedItems != null)
+                {
+                    DataGridRow? dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+                    if (dgr != null && !dgr.IsMouseOver)
+                    {
+                        dgr.IsSelected = false;
+                    }
+                }
+            }
         }
     }
 }

@@ -145,7 +145,6 @@ namespace SisMaper.ViewModel
 
                 foreach (Lote l in lotesBanco)
                 {
-                    //Console.WriteLine(l);
                     if (l.Produto.Id.Equals(Produto.Id))
                     {
                         Console.WriteLine(l);
@@ -157,9 +156,9 @@ namespace SisMaper.ViewModel
 
             else
             {
-                PList<Produto> pl = DAO.FindWhereQuery<Produto>("Id > 0");
+                PList<Produto> produtos = DAO.FindWhereQuery<Produto>("Id > 0");
 
-                if (pl.Count == 0)
+                if (produtos.Count == 0)
                 {
                     Produto = new Produto()
                     {
@@ -170,13 +169,14 @@ namespace SisMaper.ViewModel
                 else
                 {
 
-                    Produto p2 = pl.Last();
+                    Produto p2 = produtos.Last();
 
                     Produto = new Produto()
                     {
                         Id = p2.Id + 1
                     };
                 }
+
                 NCMSelecionado = null;
                 CategoriaSelecionada = null;
                 UnidadeSelecionada = null;
@@ -215,8 +215,6 @@ namespace SisMaper.ViewModel
 
             SalvarCategoriaNoBanco(c);
 
-
-
         }
 
         private void CheckUnidade()
@@ -238,8 +236,6 @@ namespace SisMaper.ViewModel
             UnidadeSelecionada = u;
 
             SalvarUnidadeNoBanco(u);
-
-
 
         }
 
@@ -282,7 +278,7 @@ namespace SisMaper.ViewModel
 
             catch (Exception ex)
             {
-                MessageBox.Show("Erro: " + ex.Message);
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar produto", "Erro: " + ex.Message, MessageDialogStyle.Affirmative, new MetroDialogSettings() {AffirmativeButtonText = "Ok" });
             }
         }
 

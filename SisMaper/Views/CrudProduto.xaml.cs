@@ -25,7 +25,7 @@ namespace SisMaper.Views
 
         private void CrudProdutoLoaded(object sender, RoutedEventArgs e)
         {
-            if(this.DataContext is CrudProdutoViewModel vm)
+            if(this.DataContext is ICloseWindow vm)
             {
                 //vm.OnSave += Close;
                 vm.Close += Close;
@@ -59,115 +59,6 @@ namespace SisMaper.Views
         public static readonly DependencyProperty ProdutoPropertyProperty =
             DependencyProperty.Register("ProdutoProperty", typeof(Object), typeof(CrudProduto), new PropertyMetadata(null));
 
-
-
-
-
-
-
-        /* tentativa de deseleção das linhas
-        private void DataGrid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-            if (sender != null)
-            {
-                DataGridRow dgr = gridLotes.ItemContainerGenerator.ContainerFromItem(gridLotes.SelectedItem) as DataGridRow;
-                //gridLotes.UnselectAllCells();
-
-                if (!dgr.IsMouseOver)
-                {
-                    //(dgr as DataGridRow).IsSelected = false;
-                }
-            }
-            
-        }
-        */
-
-
-        /* 
-        private void dataGrid1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender != null)
-            {
-                DataGrid grid = sender as DataGrid;
-                if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
-                {
-                    DataGridRow dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
-                    if (!dgr.IsMouseOver)
-                    {
-                        (dgr as DataGridRow).IsSelected = false;
-                    }
-                }
-            }
-        }
-        */
-
-
-
-        /*
-         * NCM comboBox
-         * 
-            Grid.Row="0"
-            Height="32"
-            Margin="158,248,427,0"
-            FontSize="16"
-            mah:TextBoxHelper.Watermark="NCM"
-            DisplayMemberPath="Nome"
-            IsEditable="False"
-            MaxDropDownHeight="125"
-            mah:TextBoxHelper.WatermarkAlignment="Right"
-            mah:TextBoxHelper.AutoWatermark="True"
-            VerticalAlignment="Top" /> 
-
-         */
-
-
-
-        /*
-                     <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Descricao}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-
-
-
-
-                <ComboBox ItemsSource="{Binding Unidades}"
-            Grid.Row="0"
-            SelectedItem="{Binding UnidadeSelecionada}"
-            Height="32"
-            Width="165"
-            Margin="158,206,427,0"
-            FontSize="16"
-            IsEditable="True"
-            DisplayMemberPath="Descricao"
-            MaxDropDownHeight="125"
-            VerticalAlignment="Top"
-            HorizontalAlignment="Left">
-
-
-         */
-
-
-
-
-
-
-        /*Data COntext
-         * 
-         *     <mah:MetroWindow.DataContext>
-        <m:CrudProdutoViewModel DialogCoordinator="{StaticResource dialogCoordinator}"/>
-    </mah:MetroWindow.DataContext>
-         
-         
-         
-         */
     }
 
-
-    public interface IView
-    {
-        public bool? Open();
-    }
 }

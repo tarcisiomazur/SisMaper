@@ -23,7 +23,6 @@ namespace SisMaper.ViewModel
             set { SetField(ref _produtoSelecionado, value); }
         }
 
-        public ObservableCollection<Produto> Produtos { get; set; }
         public PList<Produto> ProdutosList { get; private set; }
         public MouseCommand MCommand { get; private set; }
         public NovoProdutoCommand NovoProduto { get; private set; }
@@ -43,7 +42,6 @@ namespace SisMaper.ViewModel
 
         public ProdutosViewModel()
         {
-            Produtos = new ObservableCollection<Produto>();
 
             ProdutosList = DAO.FindWhereQuery<Produto>("Id > 0");
 
@@ -77,7 +75,7 @@ namespace SisMaper.ViewModel
                     }
                 }
 
-                MessageDialogResult confirmacao = DialogCoordinator.ShowModalMessageExternal(this, "Excluir Produto", "Deseja Excluir produto selecionado?", MessageDialogStyle.AffirmativeAndNegative);
+                MessageDialogResult confirmacao = DialogCoordinator.ShowModalMessageExternal(this, "Excluir Produto", "Deseja Excluir produto selecionado?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
 
                 if (confirmacao.Equals(MessageDialogResult.Affirmative))
                 {
@@ -99,9 +97,7 @@ namespace SisMaper.ViewModel
 
         internal void OpenCrudProdutos()
         {
-            Console.WriteLine("OPEN CRUDD");
             OpenNovoProduto?.Invoke();
-            //OpenW?.Invoke(new Produto());
         }
 
 
@@ -214,77 +210,3 @@ namespace SisMaper.ViewModel
     }
 
 }
-
-/*
- 
-<Grid>
-
-        <StackPanel Height="50" VerticalAlignment="Top">
-            <Button Content="botão 1"  Margin="15, 10"></Button>
-            <Button Content="botão 2" Margin="15, 10"></Button>
-        </StackPanel>
-
-        <DataGrid 
-            Style="{DynamicResource MahApps.Styles.DataGrid}" 
-            HorizontalContentAlignment="Stretch"        
-            ColumnWidth="*"
-            ItemsSource="{Binding Categorias}" 
-            AutoGenerateColumns="false"
-            CanUserAddRows="False" 
-            IsReadOnly="True" 
-            Margin="0,200,0,0">
-
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Width="*"
-                    Header="Categoria"
-                    Binding="{Binding Descricao}"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-            
-        </DataGrid>
-
-
-
-    </Grid>
-
-
-
-
-
-
-
-
-
-
-
-<StackPanel Width="150" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Button Content="botão 1" Width="100" Margin="15, 10" HorizontalAlignment="Left"></Button>
-            <Button Content="botão 2" Width="100" Margin="15, 10" HorizontalAlignment="Left"></Button>
-        </StackPanel>
-
-        <Separator BorderThickness="10"/>
-
-        <DataGrid 
-            Style="{DynamicResource MahApps.Styles.DataGrid}" 
-            HorizontalContentAlignment="Stretch"        
-            ColumnWidth="*"
-            ItemsSource="{Binding Categorias}" 
-            AutoGenerateColumns="false"
-            CanUserAddRows="False" 
-            IsReadOnly="True" 
-            Margin="200,0,0,0">
-
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Width="*"
-                    Header="Categoria"
-                    Binding="{Binding Descricao}"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-
-        </DataGrid>
-
-
- 
- */
