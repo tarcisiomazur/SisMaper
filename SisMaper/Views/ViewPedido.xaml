@@ -23,11 +23,11 @@
     TitleCharacterCasing="Normal"
     Height="599"
     Width="812"
+    Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
     SaveWindowPosition="True">
     <mah:MetroWindow.DataContext>
         <viewModels:PedidoViewModel />
     </mah:MetroWindow.DataContext>
-
     <mah:MetroWindow.Resources>
         <tools:DecimalToRealString
             x:Key="DecimalToRealString" />
@@ -182,6 +182,48 @@
         </Style>
     </mah:MetroWindow.Resources>
     <Grid>
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="26,29,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top">
+            <Run
+                Language="pt-br"
+                Text="Número Pedido" />
+        </TextBlock>
+        <TextBox
+            IsEnabled="False"
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Left"
+            Margin="151,24,0,0"
+            TextWrapping="Wrap"
+            Text="{Binding Pedido.Id}"
+            VerticalAlignment="Top"
+            Width="66" />
+        <TextBlock
+            HorizontalAlignment="Right"
+            Margin="0,29,487,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Text="Status" />
+        <TextBox
+            IsEnabled="False"
+            Style="{DynamicResource TextBoxStyle1}"
+            HorizontalAlignment="Right"
+            Margin="0,24,410,0"
+            TextWrapping="Wrap"
+            Text="{Binding Pedido.Status}"
+            VerticalAlignment="Top"
+            Width="66" />
+        <TextBlock
+            HorizontalAlignment="Right"
+            Margin="0,29,277,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top">
+            <Run
+                Language="pt-br"
+                Text="Data" />
+        </TextBlock>
         <DatePicker
             FontSize="15"
             HorizontalAlignment="Right"
@@ -199,76 +241,121 @@
                 Language="pt-br"
                 Text="Cliente" />
         </TextBlock>
+        <ComboBox
+            Grid.Row="0"
+            Height="32"
+            Margin="96,70,410,0"
+            FontSize="16"
+            mah:TextBoxHelper.Watermark="Buscar Cliente"
+            ItemsSource="{Binding Clientes}"
+            SelectedItem="{Binding Pedido.Cliente}"
+            DisplayMemberPath="Nome"
+            IsEditable="True"
+            MaxDropDownHeight="125"
+            mah:TextBoxHelper.WatermarkAlignment="Right"
+            mah:TextBoxHelper.AutoWatermark="True"
+            Grid.IsSharedSizeScope="True"
+            VerticalAlignment="Top" />
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
-            Content="Cancelar"
+            Margin="0,70,373,0"
+            Command="{Binding EditarCliente}"
+            Focusable="False"
             HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Command="{Binding Cancelar}"
-            CommandParameter="{Binding }"
-            Margin="0,0,84,20" />
+            VerticalAlignment="Top"
+            Height="32"
+            Width="32">
+            <StackPanel>
+                <iconpacks:PackIconMaterial
+                    Kind="AccountEditOutline"
+                    Height="20"
+                    Width="20"
+                    Foreground="#FF939393"
+                    HorizontalAlignment="Left" />
+            </StackPanel>
+        </Button>
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
-            Content="Salvar"
+            Margin="0,70,336,0"
+            Command="{Binding AdicionarClienteContextMenu}"
+            CommandParameter="{Binding ElementName=Menu}"
+            Focusable="False"
             HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Command="{Binding Salvar}"
-            CommandParameter="{Binding }"
-            Margin="0,0,20,20" />
-        <Button
-            Style="{DynamicResource OptionsButtonStyle}"
-            Content="Receber"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Margin="20,0,0,20" />
-        <Button
-            Style="{DynamicResource OptionsButtonStyle}"
-            Content="Emitir NF-e"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Margin="96,0,0,20" />
+            VerticalAlignment="Top"
+            Width="32"
+            Height="32">
+            <StackPanel>
+                <iconpacks:PackIconMaterial
+                    Kind="AccountPlusOutline"
+                    Height="20"
+                    Width="20"
+                    Foreground="#FF939393"
+                    HorizontalAlignment="Left" />
+            </StackPanel>
+        </Button>
+        <Menu
+            x:Name="Menu" Visibility="Hidden"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Width="140" BorderThickness="1"
+            Margin="0,81,196,0" Background="White" Panel.ZIndex="1" BorderBrush="DarkGray">
+            <i:Interaction.Triggers>
+                <i:EventTrigger
+                    EventName="MouseLeave">
+                    <i:InvokeCommandAction Command="{Binding MouseLeave}" CommandParameter="{Binding ElementName=Menu}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+            <MenuItem
+                Header="Pessoa Física"
+                Command="{Binding AdicionarCliente}"
+                CommandParameter="PF"
+                Width="138">
+                <MenuItem.Icon>
+                    <iconpacks:PackIconOcticons
+                        Kind="Person" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem
+                Header="Pessoa Jurídica"
+                Command="{Binding AdicionarCliente}"
+                CommandParameter="PJ"
+                Width="138">
+                <MenuItem.Icon>
+                    <iconpacks:PackIconOcticons
+                        Kind="Organization" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </Menu>
+
         <TextBlock
-            HorizontalAlignment="Left"
-            Margin="26,29,0,0"
+            HorizontalAlignment="Right"
+            Margin="0,75,246,0"
             TextWrapping="Wrap"
-            VerticalAlignment="Top">
+            VerticalAlignment="Top"
+            Height="27"
+            RenderTransformOrigin="0.624,0.464">
             <Run
                 Language="pt-br"
-                Text="Número Pedido" />
-        </TextBlock>
-        <TextBlock
-            HorizontalAlignment="Right"
-            Margin="0,29,246,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top">
+                Text="Natureza" />
+            <LineBreak />
             <Run
-                Language="pt-br"
-                Text="Data" />
+                Language="pt-br" />
         </TextBlock>
-        <TextBlock
+        <ComboBox
+            Grid.Row="0"
+            Height="32"
+            Margin="0,70,20,0"
+            FontSize="16"
+            VerticalAlignment="Top"
+            MaxDropDownHeight="125"
+            ItemsSource="{Binding Naturezas}"
+            SelectedItem="{Binding Pedido.Natureza, Mode=TwoWay}"
+            DisplayMemberPath="Descricao"
+            IsEditable="True"
+            mah:TextBoxHelper.Watermark="Buscar Natureza"
+            mah:TextBoxHelper.WatermarkAlignment="Right"
+            mah:TextBoxHelper.AutoWatermark="True"
             HorizontalAlignment="Right"
-            Margin="0,29,487,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top"
-            Text="Status" />
-        <TextBox
-            IsEnabled="False"
-            Style="{DynamicResource TextBoxStyle1}"
-            HorizontalAlignment="Right"
-            Margin="0,24,410,0"
-            TextWrapping="Wrap"
-            Text="{Binding Pedido.Status}"
-            VerticalAlignment="Top"
-            Width="66" />
-        <TextBox
-            IsEnabled="False"
-            Style="{DynamicResource TextBoxStyle1}"
-            HorizontalAlignment="Left"
-            Margin="151,24,0,0"
-            TextWrapping="Wrap"
-            Text="{Binding Pedido.Id}"
-            VerticalAlignment="Top"
-            Width="66" />
+            Width="211" />
         <TabControl
             Margin="20,123,20,66"
             mah:TabControlHelper.UnderlineBrush="Black"
@@ -296,7 +383,15 @@
                         mah:TextBoxHelper.WatermarkAlignment="Right"
                         mah:TextBoxHelper.AutoWatermark="True"
                         mah:TextBoxHelper.Watermark="Buscar Produto"
-                        Grid.IsSharedSizeScope="True" />
+                        Grid.IsSharedSizeScope="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger
+                                EventName="PreviewKeyDown">
+                                <prism:InvokeCommandAction
+                                    Command="{Binding PreviewKeyDownAddItem}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ComboBox>
                     <TextBox
                         Style="{DynamicResource TextBoxStyle1}"
                         HorizontalAlignment="Right"
@@ -306,15 +401,30 @@
                         Width="106"
                         mah:TextBoxHelper.Watermark="Quantidade"
                         InputScope="Number"
-                        Text="{Binding NovoItem.Quantidade, Mode=OneWay}"
-                        RenderTransformOrigin="0.379,0.595"
-                    >
+                        Text="{Binding StringQuantidade}"
+                        RenderTransformOrigin="0.379,0.595">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="TextChanged">
-                                <prism:InvokeCommandAction Command="{Binding VerificaQuantidade}"/>
+                            <i:EventTrigger
+                                EventName="TextChanged">
+                                <prism:InvokeCommandAction
+                                    Command="{Binding VerificaQuantidade}" />
+                            </i:EventTrigger>
+                            <i:EventTrigger
+                                EventName="PreviewKeyDown">
+                                <prism:InvokeCommandAction
+                                    Command="{Binding PreviewKeyDownAddItem}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
+                    <Button
+                        Style="{DynamicResource OptionsButtonStyle}"
+                        Content="Adicionar"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Focusable="True"
+                        Command="{Binding Adicionar}"
+                        CommandParameter="{Binding ''}"
+                        Margin="0,10,10,0" />
                     <DataGrid
                         BorderThickness="1"
                         Style="{DynamicResource MahApps.Styles.DataGrid}"
@@ -393,22 +503,14 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
-                    <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
-                        Content="Adicionar"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Command="{Binding Adicionar}"
-                        CommandParameter="{Binding }"
-                        Margin="0,10,10,0" />
                     <TextBox
                         IsEnabled="False"
                         Style="{DynamicResource TextBoxStyle1}"
                         HorizontalAlignment="Right"
                         Margin="0,0,10,1"
                         TextWrapping="Wrap"
-                        
-                        Text="{Binding Pedido.ValorTotal, StringFormat='R$ #,##0.00', ConverterCulture=pt-BR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+
+                        Text="{Binding Pedido.ValorTotal, ConverterCulture=pt-BR, Mode=TwoWay, StringFormat=R$ #\,##0.00, UpdateSourceTrigger=PropertyChanged}"
                         VerticalAlignment="Bottom"
                         Width="119"
                         HorizontalContentAlignment="Right"
@@ -429,7 +531,7 @@
                         Width="23"
                         Foreground="#FF939393"
                         HorizontalAlignment="Right"
-                        PreviewMouseDoubleClick="WindowLote" />
+                        />
 
                 </Grid>
             </TabItem>
@@ -444,60 +546,38 @@
         </TabControl>
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
+            Content="Receber"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Margin="20,0,0,20" />
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Emitir NF-e"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Margin="96,0,0,20" />
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
             Content="Imprimir"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="193,0,0,20" />
-        <ComboBox
-            Grid.Row="0"
-            Height="32"
-            Margin="96,70,410,0"
-            FontSize="16"
-            mah:TextBoxHelper.Watermark="Buscar Cliente"
-            ItemsSource="{Binding Clientes}"
-            SelectedItem="{Binding Pedido.Cliente}"
-            DisplayMemberPath="Nome"
-            IsEditable="True"
-            MaxDropDownHeight="125"
-            mah:TextBoxHelper.WatermarkAlignment="Right"
-            mah:TextBoxHelper.AutoWatermark="True"
-            Grid.IsSharedSizeScope="True"
-            VerticalAlignment="Top" />
-        <iconpacks:PackIconMaterial
-            Kind="AccountEditOutline"
-            Margin="0,75,375,0"
-            Height="24"
-            Width="23"
-            Foreground="#FF939393"
-            HorizontalAlignment="Right" />
-        <TextBlock
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Cancelar"
             HorizontalAlignment="Right"
-            Margin="0,75,246,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top"
-            Height="27"
-            RenderTransformOrigin="0.624,0.464">
-            <Run
-                Language="pt-br"
-                Text="Natureza" />
-            <LineBreak />
-            <Run
-                Language="pt-br" />
-        </TextBlock>
-        <ComboBox
-            Grid.Row="0"
-            Height="32"
-            Margin="581,70,20,0"
-            FontSize="16"
-            VerticalAlignment="Top"
-            MaxDropDownHeight="125"
-            ItemsSource="{Binding Naturezas}"
-            SelectedItem="{Binding Pedido.Natureza, Mode=TwoWay}"
-            DisplayMemberPath="Descricao"
-            IsEditable="True"
-            mah:TextBoxHelper.Watermark="Buscar Natureza"
-            mah:TextBoxHelper.WatermarkAlignment="Right"
-            mah:TextBoxHelper.AutoWatermark="True"
-            Grid.IsSharedSizeScope="True" />
+            VerticalAlignment="Bottom"
+            Command="{Binding Cancelar}"
+            CommandParameter="{Binding ''}"
+            Margin="0,0,84,20" />
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Salvar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding Salvar}"
+            CommandParameter="{Binding ''}"
+            Margin="0,0,20,20" />
+
     </Grid>
 </mah:MetroWindow>

@@ -5,11 +5,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:local="clr-namespace:SisMaper.Views"
     mc:Ignorable="d"
     Title="Escolher Lote"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    Dialog:DialogParticipation.Register="{Binding}"
     Height="271"
-    Width="410">
+    Width="410"
+    SaveWindowPosition="True">
+
+    <mah:MetroWindow.DataContext>
+        <viewModels:EscolherLoteViewModel />
+    </mah:MetroWindow.DataContext>
     <mah:MetroWindow.Resources>
 
         <Style
@@ -110,11 +118,40 @@
         </Style>
     </mah:MetroWindow.Resources>
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="10,22,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="49" Width="302" FontSize="14"><Run Text="O produto possui um ou mais lotes."/><LineBreak/><Run Text="Selecione o Lote"/><Run Language="pt-br" Text=" "/><Run Text=" para adicionar no pedido"/></TextBlock>
-        <DataGrid x:Name="LOTES" ItemsSource="{Binding}" AutoGenerateColumns="False" BorderThickness="1" Margin="10,76,10,42" SelectionMode="Single" BorderBrush="#CC848484">
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="10,22,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Height="49"
+            Width="302"
+            FontSize="14">
+            <Run
+                Text="O produto possui um ou mais lotes." />
+            <LineBreak />
+            <Run
+                Text="Selecione o Lote para adicionar no pedido" />
+        </TextBlock>
+        <DataGrid
+            ItemsSource="{Binding Lotes}"
+            SelectedItem="{Binding LoteSelecionado}"
+            AutoGenerateColumns="False"
+            BorderThickness="1"
+            Margin="10,76,10,42"
+            SelectionMode="Single"
+            CanUserAddRows="False"
+            BorderBrush="#CC848484">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Lote" Width="5*" Binding="{Binding Descricao}"/>
-                <DataGridTextColumn Header="Informações" Width="10*" Binding="{Binding Informacoes}"/>
+                <DataGridTextColumn
+                    Header="Lote"
+                    Width="5*"
+                    Binding="{Binding Descricao}"
+                    IsReadOnly="True"/>
+                <DataGridTextColumn
+                    Header="Informações"
+                    Width="10*"
+                    Binding="{Binding Informacoes}"
+                    IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -123,13 +160,15 @@
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
+            Command="{Binding CancelarCommand}"
             Margin="0,0,10,6" />
         <Button
-                Style="{DynamicResource OptionsButtonStyle}"
-                Content="OK"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="0,0,95,6" />
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="OK"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding OKCommand}"
+            Margin="0,0,95,6" />
 
     </Grid>
 </mah:MetroWindow>

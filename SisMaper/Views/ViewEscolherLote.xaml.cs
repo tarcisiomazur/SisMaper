@@ -1,15 +1,33 @@
 ﻿using MahApps.Metro.Controls;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.ViewModel;
 
 namespace SisMaper.Views
 {
     public partial class ViewEscolherLote : MetroWindow
     {
-        public ViewEscolherLote()
+        public EscolherLoteViewModel ViewModel => (EscolherLoteViewModel) DataContext;
+        public ViewEscolherLote(PList<Lote> lotes)
         {
             InitializeComponent();
-            LOTES.DataContext = DAO.FindWhereQuery<Lote>("Produto_Id = 14");
+            SetActions();
+            ViewModel.Initialize(lotes);
+        }
+
+        private void SetActions()
+        {
+            ViewModel.OnOK += () =>
+            {
+                DialogResult = true;
+                Close();
+            };
+            ViewModel.OnCancel += () =>
+            {
+                DialogResult = false;
+                Close();
+            };
+            
         }
     }
 }

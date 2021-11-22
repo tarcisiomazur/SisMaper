@@ -32,7 +32,8 @@ namespace SisMaper.Models
             set => DescontoPorcentagem = 100.0 * (double) value / ((double) Valor * Quantidade);
         }
 
-        [ManyToOne] public Lote? Lote { get; set; }
+        [ManyToOne(Fetch = Fetch.Eager)]
+        public Lote? Lote { get; set; }
 
         public decimal Total => decimal.Round((decimal) Quantidade * Valor - Desconto, 2);
         

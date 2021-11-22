@@ -53,7 +53,10 @@ namespace SisMaper.Tools
 
     public static class InterfaceExtension
     {
-        
+        public static bool IsNatural(this double value)
+        {
+            return value == Math.Floor(value) && !double.IsInfinity(value);
+        }
         public static bool IsTrue(this bool? b)
         {
             return b.HasValue && b.Value;

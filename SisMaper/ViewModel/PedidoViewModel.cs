@@ -1,70 +1,47 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Media;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using MvvmCross.Core.ViewModels;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.Tools;
 using SisMaper.Views;
 
 namespace SisMaper.ViewModel
 {
     public class PedidoViewModel: BaseViewModel
     {
-        private Pedido _pedido;
-        private PList<Cliente> _clientes;
-        private PList<Natureza> _naturezas;
-        private PList<Produto> _produtos;
-
-        public Pedido Pedido
-        {
-            get => _pedido;
-            set => SetField(ref _pedido, value);
-        }
-
-        public PList<Cliente> Clientes
-        {
-            get => _clientes;
-            set => SetField(ref _clientes, value);
-        }
-
-        public PList<Natureza> Naturezas 
-        {
-            get => _naturezas;
-            set => SetField(ref _naturezas, value);
-        }
-        public PList<Produto> Produtos 
-        {
-            get => _produtos;
-            set => SetField(ref _produtos, value);
-        }
         
-        private Item _novoItem;
 
-        public Item NovoItem
-        {
-            get => _novoItem;
-            set => SetField(ref _novoItem, value);
-        }
-        
+        public Pedido Pedido { get; set; }
+        public PList<Cliente> Clientes{ get; set; }
+        public PList<Natureza> Naturezas { get; set; }
+        public PList<Produto> Produtos { get; set; }
+        public Item NovoItem{ get; set; }
         public IMvxCommand VerificaQuantidade => new MvxCommand<TextChangedEventArgs>(VerificaQuantidadeEventHandler);
+        public IMvxCommand PreviewKeyDownAddItem => new MvxCommand<KeyEventArgs>(AdicionarItemEventHandler);
 
         public event Action? OnCancel;
         public event Action? OnSave;
         public SimpleCommand Adicionar => new (AddItem);
-        public SimpleCommand EditarCliente => new (EditCliente, o => Pedido.Cliente is not null);
+        public SimpleCommand EditarCliente => new (EditCliente, o => Pedido?.Cliente is not null);
+        public SimpleCommand AdicionarCliente => new (NewCliente);
+        public SimpleCommand AdicionarClienteContextMenu => new (NewClienteContextMenu);
+        public SimpleCommand MouseLeave => new (MouseLeaveContextMenu);
         public SimpleCommand Salvar => new (SavePedido);
         public SimpleCommand Cancelar => new (CancelPedido);
 
         private IDialogCoordinator DialogCoordinator;
-        
+
         private PersistenceContext PersistenceContext { get; set; }
+
+        public string StringQuantidade { get; set; }
 
         public PedidoViewModel()
         {
@@ -76,17 +53,6 @@ namespace SisMaper.ViewModel
             Naturezas = PersistenceContext.Get<Natureza>("ID>0");
             Clientes = PersistenceContext.Get<Cliente>("ID>0");
             Produtos = PersistenceContext.Get<Produto>("ID>0");
-            
-            Console.WriteLine("\n\n\n\n\n\n");
-            foreach (var pcs in PersistenceContext.Storages)
-            {
-                Console.WriteLine(pcs.Key.Name);
-                foreach (var keyValuePair in pcs.Value.Objects)
-                {
-                    Console.WriteLine("\t" + keyValuePair.Value);
-                }
-            }
-            
             Pedido = PersistenceContext.Get<Pedido>(pedidoId);
             if (pedidoId == null) Pedido.Usuario = Main.Usuario;
 
@@ -102,6 +68,12 @@ namespace SisMaper.ViewModel
             {
                 SumPedido();
             }
+        }
+        
+        private void AdicionarItemEventHandler(KeyEventArgs obj)
+        {
+            if(obj.Key == Key.Enter)
+                AddItem();
         }
 
         private void SumPedido() => Pedido.ValorTotal = Pedido.Itens.Sum(i => i.Total);
@@ -134,11 +106,31 @@ namespace SisMaper.ViewModel
 
         private void AddItem()
         {
-            if (NovoItem.Produto is not null && NovoItem.Quantidade > 0)
+            if (NovoItem.Produto is not null)
             {
+                if (NovoItem.Quantidade == 0) NovoItem.Quantidade = 1;
+                if (!NovoItem.Produto.Fracionado && !NovoItem.Quantidade.IsNatural())
+                {
+                    DialogCoordinator.ShowMessageAsync(this, "Adicionar Item", "O item não aceita quantidade fracionada!");
+                    return;
+                }
+                NovoItem.Produto.Lotes.Load();
+                if (NovoItem.Produto.Lotes?.Count>0)
+                {
+                    var view = new ViewEscolherLote(NovoItem.Produto.Lotes);
+                    if (view.ShowDialog().IsTrue())
+                    {
+                        NovoItem.Lote = view.ViewModel.LoteSelecionado;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
                 NovoItem.Valor = NovoItem.Produto.PrecoVenda;
                 Pedido.Itens.Add(NovoItem);
                 SumPedido();
+                StringQuantidade = "";
                 NovoItem = new Item(){Pedido = Pedido, Context = PersistenceContext};
             }
             else
@@ -147,23 +139,38 @@ namespace SisMaper.ViewModel
             }
         }
 
+        private void NewCliente(object obj)
+        {
+            new CrudPessoaFisica()
+            {
+                isSelectedPessoaFisicaTab = obj.Equals("PF"),
+                DataContext = new CrudPessoaFisicaViewModel(null)
+            }.ShowDialog();
+
+        }
+        private void MouseLeaveContextMenu(object obj)
+        {
+            ((Menu) obj).Visibility = Visibility.Hidden;
+        }
+        private void NewClienteContextMenu(object obj)
+        {
+            if (obj is Menu menu)
+            {
+                menu.Visibility = Visibility.Visible;
+            }
+        }
+        
         private void EditCliente()
         {
             if (DAO.Load<PessoaFisica>(Pedido.Cliente.Id) is var pf and not null)
             {
-                var crud = new CrudPessoaFisica();
-                var vm = (CrudPessoaFisicaViewModel) crud.DataContext;
-                vm.PessoaFisica = pf;
-                crud.ShowDialog();
-                Pedido.Cliente = PersistenceContext.GetOrRefresh<Cliente>(vm.PessoaFisica.Id);
+                new CrudPessoaFisica() { isSelectedPessoaFisicaTab = true, DataContext = new CrudPessoaFisicaViewModel(pf) }.ShowDialog();
+                Pedido.Cliente = PersistenceContext.GetOrRefresh<Cliente>(pf.Id);
             }
             else if (DAO.Load<PessoaJuridica>(Pedido.Cliente.Id) is var pj and not null)
             {
-                var crud = new CrudPessoaFisica();
-                var vm = (CrudPessoaFisicaViewModel) crud.DataContext;
-                vm.PessoaJuridica = pj;
-                crud.ShowDialog();
-                Pedido.Cliente = PersistenceContext.GetOrRefresh<Cliente>(vm.PessoaJuridica.Id);
+                new CrudPessoaFisica() { isSelectedPessoaFisicaTab = false, DataContext = new CrudPessoaFisicaViewModel(pj) }.ShowDialog();
+                Pedido.Cliente = PersistenceContext.GetOrRefresh<Cliente>(pj.Id);
             }
             else
             {
@@ -176,7 +183,7 @@ namespace SisMaper.ViewModel
         {
             TextBox tb = (TextBox) e.Source;
             double quantidade = 0;
-            if (!string.IsNullOrEmpty(tb.Text) && !double.TryParse(tb.Text, out quantidade) &&
+            if (!Regex.IsMatch(tb.Text,@"^(\d*,?\d*)?$") || !string.IsNullOrEmpty(tb.Text) && !double.TryParse(tb.Text, out quantidade) &&
                 quantidade is >= 0 and <= 10e10)
             {
                 SystemSounds.Beep.Play();
@@ -185,7 +192,6 @@ namespace SisMaper.ViewModel
             }
             else
             {
-                Console.WriteLine(quantidade);
                 NovoItem.Quantidade = quantidade;
             }
         }
