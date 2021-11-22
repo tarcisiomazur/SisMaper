@@ -10,6 +10,7 @@ using MahApps.Metro.Controls;
 using Persistence;
 using SisMaper.Models;
 using SisMaper.Tools;
+using SisMaper.ViewModel;
 using Xceed.Wpf.Toolkit.Core;
 
 namespace SisMaper.Views
@@ -21,20 +22,20 @@ namespace SisMaper.Views
     {
         private List<Produto> BoxProdutos;
         private TextBox TbBuscarProduto;
-        public ViewPedido()
+
+        public PedidoViewModel ViewModel => (PedidoViewModel) DataContext;
+        
+        public ViewPedido(long? pedidoId)
         {
             InitializeComponent();
-            
-            
-            var pedido = DAO.Load<Pedido>(24);
-            cmbCliente.Text = pedido.Cliente.Nome;
-            ValorTotal.Text = $"R$ {pedido.Itens.Sum(item => item.Total).RealFormat()}";
-            Console.WriteLine(pedido.Itens.Count);
-            Itens.ItemsSource = pedido.Itens;
-            BoxProdutos = new List<Produto>();
-            cmbProduto.DataContext = BoxProdutos;
-            TbBuscarProduto = FindTextBox(cmbProduto);
-            
+            ViewModel.Initialize(pedidoId);
+            SetActions();
+        }
+
+        private void SetActions()
+        {
+            ViewModel.OnSave += Close;
+            ViewModel.OnCancel += Close;
         }
 
         private static TextBox FindTextBox(DependencyObject element)
@@ -63,7 +64,6 @@ namespace SisMaper.Views
             var txt = TbBuscarProduto.Text.Remove(TbBuscarProduto.SelectionStart, TbBuscarProduto.SelectionLength);
             Console.WriteLine(txt);
             BoxProdutos.Clear();
-            BoxProdutos.AddRange(new PList<Produto>($"Descricao LIKE '%{txt+tce.Text}%'", 0,100));
         }
 
         private void FiltrarCliente(object sender, RoutedEventArgs e)
@@ -71,24 +71,7 @@ namespace SisMaper.Views
             Console.WriteLine("Filtrando Cliente");
         }
 
-        private void VerificaQuantidade(object? sender, QueryValueFromTextEventArgs e)
-        {
-            Console.WriteLine(e.HasParsingError);
-            if (e.Value != null)
-            {
-                Console.WriteLine(e.Value);
-            }
-            Console.WriteLine(Quantidade.Text);
-        }
-        private void VerificaQuantidade2(object? sender, QueryTextFromValueEventArgs e)
-        {
-            Console.WriteLine(e.Text);
-            if (e.Value != null)
-            {
-                Console.WriteLine(e.Value);
-            }
-            Console.WriteLine(Quantidade.Text);
-        }
+
 
         private void AdicionarItem(object sender, KeyEventArgs e)
         {
@@ -109,5 +92,6 @@ namespace SisMaper.Views
         {
             new ViewEscolherLote().ShowDialog();
         }
+
     }
 }

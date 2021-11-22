@@ -16,11 +16,11 @@ namespace SisMaper.ViewModel
             set { SetField(ref _pedidoSelecionado, value); }
         }
 
-        public event Action<Pedido> OpenPedido;
+        public event Action<long?>? OpenPedido;
         
         public ObservableCollection<ViewListarPedido> Pedidos { get; set; }
 
-        public SimpleCommand NovoPedido => new (_ => NewVenda());
+        public SimpleCommand NovoPedido => new (NewVenda);
         public SimpleCommand EditarPedido => new (_ => OpenVenda(), _ => PedidoSelecionado is not null);
         public SimpleCommand ExcluirPedido => new (_ => DeleteVenda(), _ => PedidoSelecionado is not null);
         
@@ -34,15 +34,13 @@ namespace SisMaper.ViewModel
 
         private void NewVenda()
         {
-            OpenPedido.Invoke(new Pedido());
+            OpenPedido?.Invoke(null);
         }
         
         private void OpenVenda()
         {
             if (PedidoSelecionado == null) return;
-            var pedido = DAO.Load<Pedido>(PedidoSelecionado.Id);
-            if (pedido == null) return;
-            OpenPedido.Invoke(pedido);
+            OpenPedido?.Invoke(PedidoSelecionado.Id);
         }
 
         private void DeleteVenda()
@@ -67,6 +65,9 @@ namespace SisMaper.ViewModel
             }
         }
         
-        
+        public void UpdatePedidos(object? sender, EventArgs e)
+        {
+            Pedidos = new ObservableCollection<ViewListarPedido>(View.Execute<ViewListarPedido>());
+        }
     }
 }

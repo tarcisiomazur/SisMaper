@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using SisMaper.Models;
 using SisMaper.ViewModel;
 
@@ -6,17 +7,21 @@ namespace SisMaper.Views
 {
     public partial class ViewVendas : UserControl
     {
-        private VendasViewModel? ViewModel => (DataContext as VendasViewModel) ?? null;
+        private VendasViewModel ViewModel => (VendasViewModel) DataContext;
+
         public ViewVendas()
         {
             InitializeComponent();
-            ViewModel!.OpenPedido += OpenPedido;
+            ViewModel.OpenPedido += OpenPedido;
         }
 
-        private void OpenPedido(Pedido pedido)
+        private void OpenPedido(long? pedidoId)
         {
-            //new ViewPedido(pedido).ShowDialog();
-            new ViewPedido().ShowDialog();
+            var viewPedido = new ViewPedido(pedidoId);
+            viewPedido.Closed += ViewModel.UpdatePedidos;
+            viewPedido.ShowDialog();
         }
+
+
     }
 }

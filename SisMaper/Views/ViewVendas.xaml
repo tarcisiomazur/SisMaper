@@ -10,7 +10,9 @@
     xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
     mc:Ignorable="d"
     Height="450"
-    Width="800">
+    Width="800"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    Dialog:DialogParticipation.Register="{Binding}">
     <UserControl.DataContext>
         <viewModel:VendasViewModel />
     </UserControl.DataContext>
@@ -36,6 +38,8 @@
                 <StackPanel
                     Orientation="Horizontal">
                     <Button
+                        CommandParameter="{Binding}" 
+                        Command="{Binding NovoPedido}"
                         Style="{DynamicResource Button2}">
                         <StackPanel>
                             <iconpacks:PackIconPixelartIcons
@@ -63,6 +67,8 @@
                         </StackPanel>
                     </Button>
                     <Button
+                        CommandParameter="{Binding}" 
+                        Command="{Binding ExcluirPedido}"
                         Style="{DynamicResource Button2}">
                         <StackPanel>
                             <iconpacks:PackIconMaterial
@@ -176,7 +182,11 @@
                 VerticalContentAlignment="Stretch"
                 Margin="0,0,0,0"
                 SelectedItem="{Binding PedidoSelecionado, Mode=TwoWay}">
-
+                <DataGrid.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" 
+                        Command="{Binding EditarPedido}" 
+                        CommandParameter="{Binding }" />
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="30*"

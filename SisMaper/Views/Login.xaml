@@ -177,7 +177,7 @@
             Style="{DynamicResource LoginButtonStyle}"
             x:Name="btn_cancelar"
             Content="Sair"
-            PreviewMouseLeftButtonDown="Sair"
+            Command="{Binding Cancel}"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Margin="440,189,0,0"

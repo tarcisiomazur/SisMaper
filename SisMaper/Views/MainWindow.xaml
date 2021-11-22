@@ -9,16 +9,16 @@
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:vm="clr-namespace:SisMaper.ViewModel"
+    xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
+    xmlns:converter="clr-namespace:MahApps.Metro.IconPacks.Converter;assembly=MahApps.Metro.IconPacks.Core"
     mc:Ignorable="d"
     TitleCharacterCasing="Normal"
     Title="SisMaper"
     TitleForeground="{DynamicResource SisMaper.Dark.Theme}"
     Height="728"
     Width="1366"
-    SizeChanged="ev"
-    xmlns:converters="clr-namespace:MahApps.Metro.Converters;assembly=MahApps.Metro"
-    xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
-    xmlns:converter="clr-namespace:MahApps.Metro.IconPacks.Converter;assembly=MahApps.Metro.IconPacks.Core">
+    SaveWindowPosition="True"
+    >
     <mah:MetroWindow.DataContext>
         <vm:MainViewModel/>
     </mah:MetroWindow.DataContext>
@@ -690,7 +690,7 @@
         <TabControl
             Style="{DynamicResource StyleTabControl}"
             x:Name="TabCtrl"
-            Margin="0,0,0,22" SelectedIndex="2">
+            Margin="0,0,0,22" SelectedIndex="0">
             <TabItem
                 x:Name="Vendas"
                 Style="{DynamicResource Tab1}"

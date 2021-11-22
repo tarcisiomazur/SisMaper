@@ -18,16 +18,23 @@ namespace SisMaper.Views
     /// </summary>
     public partial class Login : MetroWindow
     {
-
+        private LoginViewModel ViewModel => (LoginViewModel) DataContext;
         public Login()
         {
             InitializeComponent();
+            SetActions();
+        }
 
-            (DataContext as LoginViewModel)!.OnLogin += () =>
+        private void SetActions()
+        {
+            if (ViewModel is not null)
             {
-                DialogResult = true;
-                Close();
-            };
+                ViewModel.OnLogin += () =>
+                {
+                    DialogResult = true;
+                    Close();
+                };
+            }
         }
 
         private void ArrastarTela(object sender, MouseButtonEventArgs e)
@@ -43,11 +50,6 @@ namespace SisMaper.Views
         private void HidePassword(object sender, RoutedEventArgs routedEventArgs)
         {
             pb_senha.IsShow = false;
-        }
-
-        private void Sair(object sender, MouseButtonEventArgs e)
-        {
-            Close();
         }
     }
 }

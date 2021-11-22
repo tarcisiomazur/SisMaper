@@ -59,18 +59,21 @@ namespace SisMaper.Views
         public MainWindow()
         {
 
-            //new Login().ShowDialog();
-
-            //Show();
-
-            
-
             try
             {
-                if (!new Login().ShowDialog()!.Value)
+                //if (!new Login().ShowDialog()!.Value)
+                //{
+                //    Environment.Exit(0);
+                //}
+                Main.Usuario = new Usuario()
                 {
-                    Environment.Exit(0);
-                }
+                    Id = 1,
+                    Nome = "Admin",
+                    Login = "Admin",
+                    Senha = "",
+                    Permissao = Usuario.Tipo_Permissao.All
+                };
+                
             }
             catch(Exception ex)
             {
@@ -86,10 +89,6 @@ namespace SisMaper.Views
                 Console.WriteLine(ex);
                 Console.ReadLine();
             }
-
-
-            Closing += CloseApplication;
-
 
 
             /*
@@ -162,12 +161,7 @@ namespace SisMaper.Views
             
             */
         }
-
-        private void CloseApplication(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Environment.Exit(0);
-        }
-
+        
 
         private void OpenCrudProduto(object sender, RoutedEventArgs e)
         {
@@ -317,18 +311,7 @@ namespace SisMaper.Views
 
             #endregion
         }
-
-        private void ev(object sender, SizeChangedEventArgs e)
-        {
-            Console.WriteLine(e.NewSize.ToString());
-        }
-
-        private void NovaVenda(object sender, RoutedEventArgs e)
-        {
-            var viewPedido = new ViewPedido();
-            viewPedido.Owner = this;
-            viewPedido.Show();
-        }
+        
         private void NovaFatura(object sender, RoutedEventArgs e)
         {
             var viewFatura = new ViewFatura();

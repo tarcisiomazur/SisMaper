@@ -11,7 +11,8 @@ namespace SisMaper.ViewModel
         readonly RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SisMaper");
 
         private Usuario _Usuario;
-        public SimpleCommand Login { get; private set; }
+        public SimpleCommand Login => new (ConfirmLogin);
+        public SimpleCommand Cancel => new (CancelLogin);
 
         public Usuario Usuario
         {
@@ -19,13 +20,12 @@ namespace SisMaper.ViewModel
             set { SetField(ref _Usuario, value); }
         }
 
-        public event Action OnLogin;
+        public event Action? OnLogin;
         public bool PasswordFocus { get; set; }
         public bool UsuarioFocus { get; set; }
 
         public LoginViewModel()
         {
-            Login = new SimpleCommand(_ => ConfirmLogin());
             Usuario = new Usuario();
             var username = key.GetValue("LastUsername");
             if (username is string usernamestr)
@@ -51,6 +51,12 @@ namespace SisMaper.ViewModel
             }
 
             Console.WriteLine("Login Confirmado. Login: " + Usuario.Login + ". Senha: " + Usuario.Senha);
+        }
+
+
+        public void CancelLogin()
+        {
+            
         }
     }
 }

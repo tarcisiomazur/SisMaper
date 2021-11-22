@@ -16,13 +16,13 @@ namespace SisMaper.Models
         }
         
         [Field(FieldType = SqlDbType.DateTime)]
-        public DateTime Data { get; set; }
+        public DateTime Data { get; set; } = DateTime.Now;
 
         [Field(FieldType = SqlDbType.Bit, Length = 3)]
-        public Pedido_Status Status { get; set; }
+        public Pedido_Status Status { get; set; } = Pedido_Status.Aberto;
 
         [ManyToOne(Fetch = Fetch.Eager)]
-        public Cliente Cliente { get; set; }
+        public Cliente? Cliente { get; set; }
 
         [ManyToOne(Cascade = Cascade.SAVE)]
         public Fatura Fatura { get; set; }
@@ -32,7 +32,7 @@ namespace SisMaper.Models
 
         [ManyToOne] public Natureza Natureza { get; set; }
 
-        [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
+        [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2, ReadOnly = true)]
         public decimal ValorTotal { get; set; }
         
         [OneToMany(orphanRemoval = true, Fetch = Fetch.Eager, Cascade = Cascade.ALL)]

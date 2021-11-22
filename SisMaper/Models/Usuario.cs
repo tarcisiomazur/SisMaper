@@ -15,6 +15,7 @@ namespace SisMaper.Models
             Cadastros = 0x04,
             Gerenciamento = 0x08,
             Databaser = 0x10,
+            All = Venda | Recebimento | Cadastros | Gerenciamento | Databaser,
         }
 
         [Field(FieldType = SqlDbType.VarChar, Length = 45)]

@@ -1,5 +1,8 @@
+using System;
 using System.Data;
 using Persistence;
+using PropertyChanged;
+using Nullable = Persistence.Nullable;
 
 namespace SisMaper.Models
 {
@@ -7,10 +10,11 @@ namespace SisMaper.Models
     public class Item : DAO
     {
         [ManyToOne(Nullable = Nullable.NotNull, Fetch = Fetch.Eager)]
-        public Produto Produto { get; set; }
-
+        public Produto? Produto { get; set; }
+        
+        [AlsoNotifyFor(nameof(Total))]
         [ManyToOne(Nullable = Nullable.NotNull)]
-        public Pedido Pedido { get; set; }
+        public Pedido? Pedido { get; set; }
 
         [Field(FieldType = SqlDbType.Real, Length = 20, Precision = 10)]
         public double Quantidade { get; set; }
@@ -22,24 +26,16 @@ namespace SisMaper.Models
         public int CFOP { get; set; }
 
         [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
-        public decimal Desconto { get; set; }
-
-        [ManyToOne] public Lote Lote { get; set; }
-
-        public decimal Total
+        public decimal Desconto
         {
-            get => (decimal) Quantidade * Valor - Desconto;
-            set => value = value;
+            get => new (Math.Round(DescontoPorcentagem * (double) Valor * Quantidade /100.0, 2));
+            set => DescontoPorcentagem = 100.0 * (double) value / ((double) Valor * Quantidade);
         }
 
-        public double DescontoPorcentagem
-        {
-            get => 100.0 * (double) Desconto * Quantidade / (double) Valor;
-            set
-            {
-                Desconto = new decimal(value * (double) Valor * Quantidade / 100.0);
-                Total++;
-            }
-        }
+        [ManyToOne] public Lote? Lote { get; set; }
+
+        public decimal Total => decimal.Round((decimal) Quantidade * Valor - Desconto, 2);
+        
+        public double DescontoPorcentagem { get; set; }
     }
 }

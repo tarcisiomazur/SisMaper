@@ -11,6 +11,12 @@ namespace SisMaper.ViewModel
             ExecuteDelegate = execute;
         }
 
+        public SimpleCommand(Action execute = null, Predicate<object> canExecute = null)
+        {
+            CanExecuteDelegate = canExecute;
+            ExecuteDelegate = _ => execute();
+        }
+
         public Predicate<object> CanExecuteDelegate { get; set; }
         public Action<object> ExecuteDelegate { get; set; }
 
@@ -30,12 +36,9 @@ namespace SisMaper.ViewModel
             this.ExecuteDelegate?.Invoke(parameter);
         }
     }
-    
+
     public abstract class BaseCommand : ICommand
     {
-        //public event EventHandler CanExecuteChanged;
-
-
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
