@@ -4,12 +4,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:m="clr-namespace:SisMaper.ViewModel"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Dialog:DialogParticipation.Register="{Binding}"
     x:Class="SisMaper.Views.CrudProduto"
     x:Name="this"
@@ -228,14 +229,16 @@
             VerticalAlignment="Top" Height="46" Width="84"><Run
                 Language="pt-br"
                 Text="Código de Barras" /></TextBlock>
+
         <TextBox  
             Style="{DynamicResource TextBoxStyle1}"
             HorizontalAlignment="Left"
             Margin="159,43,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produto.CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            Text="{Binding Produto.CodigoBarras, UpdateSourceTrigger=LostFocus, Mode=TwoWay, StringFormat={}{###.###.###-##}}"
             VerticalAlignment="Top"
             Width="216" />
+
         <ComboBox ItemsSource="{Binding Unidades}"
             SelectedItem="{Binding UnidadeSelecionada, Mode=TwoWay}"
             Grid.Row="0"

@@ -153,22 +153,5 @@ namespace SisMaper.ViewModel
         public Action ClienteExcluido { get; set; }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+

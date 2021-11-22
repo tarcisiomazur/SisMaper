@@ -59,5 +59,19 @@ namespace SisMaper.Views
         {
             Close();
         }
+
+        private void CPFMaskedTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            CPFMaskedTextBox.Focus();
+            CPFMaskedTextBox.Select(0, 0);
+            e.Handled = true;
+        }
+
+        private void CNPJMaskedTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            CNPJMaskedTextBox.Focus();
+            CNPJMaskedTextBox.Select(0, 0);
+            e.Handled = true;
+        }
     }
 }

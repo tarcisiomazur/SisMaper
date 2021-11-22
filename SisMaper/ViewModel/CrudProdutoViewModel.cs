@@ -20,6 +20,7 @@ namespace SisMaper.ViewModel
 
     public class CrudProdutoViewModel : BaseViewModel, ICloseWindow
     {
+
         private NCM _ncmSelecionado;
 
         public NCM NCMSelecionado
@@ -181,6 +182,7 @@ namespace SisMaper.ViewModel
                 CategoriaSelecionada = null;
                 UnidadeSelecionada = null;
             }
+
         }
 
 

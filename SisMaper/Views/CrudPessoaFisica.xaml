@@ -4,12 +4,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:m="clr-namespace:SisMaper.ViewModel"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Dialog:DialogParticipation.Register="{Binding}"
     x:Class="SisMaper.Views.CrudPessoaFisica"
     x:Name="this"
@@ -166,14 +167,16 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Language="pt-br" Text="CPF" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            
+                            <xctk:MaskedTextBox  
+                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Mask="000\.000\.000-00" ValueDataType="{x:Type system:String}" x:Name="CPFMaskedTextBox" PreviewMouseLeftButtonDown="CPFMaskedTextBox_PreviewMouseLeftButtonDown"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
                             Text="{Binding PessoaFisica.CPF}"
                             VerticalAlignment="Top"
                             Width="220" />
+                            
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -283,7 +286,8 @@
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="CNPJ" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox  
+
+                        <xctk:MaskedTextBox Mask="00\.000\.000/0000-00" ValueDataType="{x:Type system:String}" x:Name="CNPJMaskedTextBox" PreviewMouseLeftButtonDown="CNPJMaskedTextBox_PreviewMouseLeftButtonDown"  
                             Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
@@ -291,6 +295,7 @@
                             Text="{Binding PessoaJuridica.CNPJ}"
                             VerticalAlignment="Top"
                             Width="220" />
+                        
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
