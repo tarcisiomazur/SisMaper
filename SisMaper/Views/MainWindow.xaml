@@ -50,7 +50,7 @@
                 Value="#80000000" />
         </Style>
         <Style
-            x:Key="Tab1"
+            x:Key="MainWindow.TabItem.Menu"
             BasedOn="{StaticResource MahApps.Styles.TabItem}"
             TargetType="{x:Type TabItem}">
             <Setter
@@ -458,7 +458,7 @@
             </Style.Triggers>
         </Style>
         <Style
-            x:Key="StyleTabControl"
+            x:Key="MainWindow.TabControl.Menu"
             TargetType="{x:Type TabControl}">
             <Setter
                 Property="OverridesDefaultStyle"
@@ -688,12 +688,13 @@
     </mah:MetroWindow.Resources>
     <Grid>
         <TabControl
-            Style="{DynamicResource StyleTabControl}"
+            Style="{DynamicResource MainWindow.TabControl.Menu}"
             x:Name="TabCtrl"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
             Margin="0,0,0,22" SelectedIndex="0">
             <TabItem
                 x:Name="Vendas"
-                Style="{DynamicResource Tab1}"
+                Style="{DynamicResource MainWindow.TabItem.Menu}"
                 Foreground="#FF1B4441">
                 <TabItem.HeaderTemplate>
                     <ItemContainerTemplate>
@@ -717,7 +718,7 @@
             </TabItem>
             <TabItem
                 x:Name="Recebimento"
-                Style="{DynamicResource Tab1}"
+                Style="{DynamicResource MainWindow.TabItem.Menu}"
                 Foreground="#FF117200">
                 <TabItem.HeaderTemplate>
                     <ItemContainerTemplate>
@@ -933,7 +934,7 @@
                 </Grid>
             </TabItem>
             <TabItem
-                Style="{DynamicResource Tab1}"
+                Style="{DynamicResource MainWindow.TabItem.Menu}"
                 Foreground="#FF843700">
                 <TabItem.HeaderTemplate>
                     <ItemContainerTemplate>
@@ -1023,7 +1024,7 @@
                 </TabControl>
             </TabItem>
             <TabItem
-                Style="{DynamicResource Tab1}"
+                Style="{DynamicResource MainWindow.TabItem.Menu}"
                 Foreground="#CC25A0FF">
                 <TabItem.HeaderTemplate>
                     <ItemContainerTemplate>
@@ -1042,7 +1043,7 @@
             </TabItem>
             <TabItem
                 x:Name="Configuações"
-                Style="{DynamicResource Tab1}">
+                Style="{DynamicResource MainWindow.TabItem.Menu}">
                 <TabItem.HeaderTemplate>
                     <ItemContainerTemplate>
                         <StackPanel

@@ -8,6 +8,7 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:tools="clr-namespace:SisMaper.Tools"
     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:models="clr-namespace:SisMaper.Models"
     xmlns:s="clr-namespace:System;assembly=mscorlib"
@@ -23,14 +24,11 @@
     TitleCharacterCasing="Normal"
     Height="599"
     Width="812"
-    Tag="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
     SaveWindowPosition="True">
     <mah:MetroWindow.DataContext>
         <viewModels:PedidoViewModel />
     </mah:MetroWindow.DataContext>
     <mah:MetroWindow.Resources>
-        <tools:DecimalToRealString
-            x:Key="DecimalToRealString" />
         <DataTemplate
             x:Key="AutoCompleteBoxItemTemplate"
             DataType="models:Produto">
@@ -202,7 +200,7 @@
             Width="66" />
         <TextBlock
             HorizontalAlignment="Right"
-            Margin="0,29,487,0"
+            Margin="0,29,508,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Text="Status" />
@@ -214,7 +212,7 @@
             TextWrapping="Wrap"
             Text="{Binding Pedido.Status}"
             VerticalAlignment="Top"
-            Width="66" />
+            Width="87" />
         <TextBlock
             HorizontalAlignment="Right"
             Margin="0,29,277,0"
@@ -231,6 +229,7 @@
             VerticalAlignment="Top"
             Height="32"
             Width="211"
+            IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             SelectedDate="{Binding Pedido.Data, Mode=TwoWay}" />
         <TextBlock
             HorizontalAlignment="Left"
@@ -247,6 +246,7 @@
             Margin="96,70,410,0"
             FontSize="16"
             mah:TextBoxHelper.Watermark="Buscar Cliente"
+            IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             ItemsSource="{Binding Clientes}"
             SelectedItem="{Binding Pedido.Cliente}"
             DisplayMemberPath="Nome"
@@ -292,15 +292,22 @@
             </StackPanel>
         </Button>
         <Menu
-            x:Name="Menu" Visibility="Hidden"
+            x:Name="Menu"
+            Visibility="Hidden"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Width="140" BorderThickness="1"
-            Margin="0,81,196,0" Background="White" Panel.ZIndex="1" BorderBrush="DarkGray">
+            Width="140"
+            BorderThickness="1"
+            Margin="0,81,196,0"
+            Background="White"
+            Panel.ZIndex="1"
+            BorderBrush="DarkGray">
             <i:Interaction.Triggers>
                 <i:EventTrigger
                     EventName="MouseLeave">
-                    <i:InvokeCommandAction Command="{Binding MouseLeave}" CommandParameter="{Binding ElementName=Menu}" />
+                    <i:InvokeCommandAction
+                        Command="{Binding MouseLeave}"
+                        CommandParameter="{Binding ElementName=Menu}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
@@ -349,6 +356,7 @@
             MaxDropDownHeight="125"
             ItemsSource="{Binding Naturezas}"
             SelectedItem="{Binding Pedido.Natureza, Mode=TwoWay}"
+            IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             DisplayMemberPath="Descricao"
             IsEditable="True"
             mah:TextBoxHelper.Watermark="Buscar Natureza"
@@ -367,7 +375,8 @@
             <TabItem
                 Header="  Itens  "
                 mah:HeaderedControlHelper.HeaderBackground="Black">
-                <Grid>
+                <Grid
+                    IsEnabled="{Binding Pedido.Status, Mode=OneWay, Converter={StaticResource PedidoStatusIsEditable}}">
                     <ComboBox
                         Grid.Row="0"
                         x:Name="cmbProduto"
@@ -426,6 +435,8 @@
                         CommandParameter="{Binding ''}"
                         Margin="0,10,10,0" />
                     <DataGrid
+                        x:Name="DataGridItens"
+                        templates:ColumnDataGridSave.SaveSizes="True"
                         BorderThickness="1"
                         Style="{DynamicResource MahApps.Styles.DataGrid}"
                         HorizontalContentAlignment="Stretch"
@@ -530,14 +541,167 @@
                         Height="24"
                         Width="23"
                         Foreground="#FF939393"
-                        HorizontalAlignment="Right"
-                        />
+                        HorizontalAlignment="Right" />
 
                 </Grid>
             </TabItem>
             <TabItem
                 Header="  Fatura  ">
-                <Grid />
+                <Grid>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Margin="6,10,0,0"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"><Run
+                            Language="pt-br"
+                            Text="Número Fatura" /></TextBlock>
+                    <TextBox
+                        IsEnabled="False"
+                        Style="{DynamicResource TextBoxStyle1}"
+                        HorizontalAlignment="Left"
+                        Margin="125,5,0,0"
+                        TextWrapping="Wrap"
+                        Text="{Binding Pedido.Fatura.Id, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Top"
+                        Width="66" />
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        Margin="0,11,502,0"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                        Text="Status" />
+                    <TextBox
+                        IsEnabled="False"
+                        Style="{DynamicResource TextBoxStyle1}"
+                        HorizontalAlignment="Right"
+                        Margin="0,5,423,0"
+                        TextWrapping="Wrap"
+                        Text="{Binding Pedido.Fatura.Status}"
+                        VerticalAlignment="Top"
+                        Width="66"
+                        RenderTransformOrigin="0.197,0.486" />
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        Margin="0,11,192,0"
+                        Text="Data Faturação"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                        Width="108" />
+                    <DatePicker
+                        FontSize="15"
+                        HorizontalAlignment="Right"
+                        Margin="0,7,8,0"
+                        IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}"
+                        SelectedDate="{Binding Pedido.Fatura.Data, Mode=TwoWay}"
+                        VerticalAlignment="Top"
+                        Height="30"
+                        Width="175" />
+                    <TabControl
+                        Margin="0,42,0,0"
+                        mah:TabControlHelper.UnderlineBrush="Black"
+                        mah:TabControlHelper.UnderlinePlacement="Bottom"
+                        mah:TabControlHelper.UnderlineSelectedBrush="Black"
+                        mah:TabControlHelper.Underlined="SelectedTabItem"
+                        Background="WhiteSmoke"
+                        mah:HeaderedControlHelper.HeaderFontSize="18">
+                        <TabItem
+                            Header="   Parcelas   "
+                            mah:HeaderedControlHelper.HeaderBackground="Black">
+                            <Grid>
+                                <DataGrid
+                                    BorderThickness="1"
+                                    Style="{DynamicResource MahApps.Styles.DataGrid}"
+                                    HorizontalContentAlignment="Stretch"
+                                    ColumnWidth="*"
+                                    x:Name="Parcelas"
+                                    AutoGenerateColumns="False"
+                                    ItemsSource="{Binding ''}"
+                                    CanUserAddRows="False"
+                                    Height="auto"
+                                    Width="auto"
+                                    Margin="10,46,10,34"
+                                    BorderBrush="#FFD2D2D2">
+                                    <DataGrid.Columns>
+                                        <mah:DataGridNumericUpDownColumn
+                                            Width="8*"
+                                            Header="Nº"
+                                            Binding="{Binding Indice}"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            Width="20*"
+                                            Header="Status"
+                                            Binding="{Binding Status}"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            Width="25*"
+                                            Header="Data Vencimento"
+                                            Binding="{Binding DataVencimento, StringFormat=\{0:dd/MM/yyyy\}}"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            Width="25*"
+                                            Header="Data Pagamento"
+                                            Binding="{Binding DataPagamento, StringFormat=\{0:dd/MM/yyyy\}}"
+                                            IsReadOnly="True" />
+                                        <mah:DataGridNumericUpDownColumn
+                                            Width="25*"
+                                            Header="Valor(R$)"
+                                            StringFormat="{}{0:N2}"
+                                            Culture="pt-BR"
+                                            Binding="{Binding Valor}"
+                                            IsReadOnly="false" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <Button
+                                    Style="{DynamicResource OptionsButtonStyle}"
+                                    Content="Adicionar"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Margin="10,8,0,0" />
+                                <TextBox
+                                    IsEnabled="False"
+                                    x:Name="ValorTotal"
+                                    Style="{DynamicResource TextBoxStyle1}"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,0,10,1"
+                                    TextWrapping="Wrap"
+                                    Text="R$ 0,00"
+                                    VerticalAlignment="Bottom"
+                                    Width="119"
+                                    HorizontalContentAlignment="Right"
+                                    VerticalContentAlignment="Bottom" />
+                                <TextBlock
+                                    HorizontalAlignment="Right"
+                                    Margin="0,249,138,0"
+                                    Text="Valor Fatura"
+                                    RenderTransformOrigin="0.529,-0.024"
+                                    Height="21"
+                                    VerticalAlignment="Top"/>
+                                <Button
+                                    Style="{DynamicResource OptionsButtonStyle}"
+                                    Content="Receber"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Margin="96,8,0,0" />
+                                <Button
+                                    Style="{DynamicResource OptionsButtonStyle}"
+                                    Content="Remover"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Margin="172,8,0,0" />
+                                <Button
+                                    Style="{DynamicResource OptionsButtonStyle}"
+                                    Content="Encerrar Fatura"
+                                    IsEnabled="false"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Margin="10,0,0,2"
+                                    HorizontalContentAlignment="Left"
+                                    VerticalContentAlignment="Bottom" />
+
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
             </TabItem>
             <TabItem
                 Header="  Nota Fiscal  ">
@@ -547,6 +711,7 @@
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Receber"
+            Command="{Binding Receber}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="20,0,0,20" />
@@ -578,6 +743,7 @@
             Command="{Binding Salvar}"
             CommandParameter="{Binding ''}"
             Margin="0,0,20,20" />
+
 
     </Grid>
 </mah:MetroWindow>

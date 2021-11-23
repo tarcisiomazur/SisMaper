@@ -22,6 +22,9 @@ namespace SisMaper.Models
         [OneToMany(orphanRemoval = true, Cascade = Cascade.ALL)]
         public PList<Parcela> Parcelas { get; set; }
         
+        [OneToMany(Cascade = Cascade.SAVE)]
+        public PList<Pedido> Pedidos { get; set; }
+
         [ManyToOne] public Cliente Cliente { get; set; }
         
         [Field(FieldType = SqlDbType.Bit, Length = 1)]

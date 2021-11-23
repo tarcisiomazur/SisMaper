@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Media;
@@ -17,8 +18,6 @@ namespace SisMaper.ViewModel
 {
     public class PedidoViewModel: BaseViewModel
     {
-        
-
         public Pedido Pedido { get; set; }
         public PList<Cliente> Clientes{ get; set; }
         public PList<Natureza> Naturezas { get; set; }
@@ -36,6 +35,7 @@ namespace SisMaper.ViewModel
         public SimpleCommand MouseLeave => new (MouseLeaveContextMenu);
         public SimpleCommand Salvar => new (SavePedido);
         public SimpleCommand Cancelar => new (CancelPedido);
+        public SimpleCommand Receber => new(ReceberPedido);
 
         private IDialogCoordinator DialogCoordinator;
 
@@ -130,8 +130,8 @@ namespace SisMaper.ViewModel
                 NovoItem.Valor = NovoItem.Produto.PrecoVenda;
                 Pedido.Itens.Add(NovoItem);
                 SumPedido();
-                StringQuantidade = "";
                 NovoItem = new Item(){Pedido = Pedido, Context = PersistenceContext};
+                StringQuantidade = "";
             }
             else
             {
@@ -139,13 +139,103 @@ namespace SisMaper.ViewModel
             }
         }
 
+        private void ReceberPedido()
+        {
+            var metodopagamento = new ViewMetodoPagamento();
+            metodopagamento.Closed += MetodoSelecionado;
+            metodopagamento.Show();
+            
+        }
+
+        private void MetodoSelecionado(object? sender, EventArgs e)
+        {
+            if (sender is not ViewMetodoPagamento pgmto || pgmto.Selecionado == ViewMetodoPagamento.OptionPagamento.Null) return;
+            if (!Pedido.Save())
+            {
+                DialogCoordinator.ShowMessageAsync(this, "Salvar Pedido", "O pedido não pode ser fechado!");
+                OnCancel?.Invoke();
+                return;
+            }
+            switch (pgmto.Selecionado)
+            {
+                case ViewMetodoPagamento.OptionPagamento.AVista:
+                    Pedido.Fatura = CreateFatura();
+                    Pedido.Fatura.Parcelas.Add(new Parcela()
+                    {
+                        Indice = 0,
+                        Status = Parcela.Status_Parcela.Pago,
+                        Valor = Pedido.ValorTotal,
+                        DataVencimento = DateTime.Now,
+                        DataPagamento = DateTime.Now,
+                        Context = PersistenceContext,
+                        Pagamentos = new PList<Pagamento>(new List<Pagamento>()
+                        {
+                            new()
+                            {
+                                ValorPagamento = Pedido.ValorTotal,
+                                Usuario = Main.Usuario,
+                                Context = PersistenceContext
+                            }
+                        })
+                    });
+                    Pedido.Status = Pedido.Pedido_Status.Fechado;
+                    if (!Pedido.Fatura.Save())
+                    {
+                        DialogCoordinator.ShowMessageAsync(this, "Salvar Fatura", "A fatura do pedido não pode ser salva!");
+                        OnCancel?.Invoke();
+                    }
+                    else
+                    {
+                        DialogCoordinator.ShowMessageAsync(this, "Pedido Recebido", "O pedido foi salvo e recebido!");
+                        RaisePropertyChanged(nameof(Pedido));
+                        SystemSounds.Beep.Play();
+                    }
+                    break;
+                case ViewMetodoPagamento.OptionPagamento.NovaFatura:
+                    Pedido.Status = Pedido.Pedido_Status.Fechado;
+                    Pedido.Fatura = CreateFatura();
+                    break;
+                case ViewMetodoPagamento.OptionPagamento.FaturaExistente:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private Fatura CreateFatura()
+        {
+            var fatura = new Fatura()
+            {
+                Cliente = Pedido.Cliente,
+                ValorTotal = Pedido.ValorTotal,
+                Data = DateTime.Now,
+                Context = PersistenceContext,
+            };
+            fatura.Parcelas = new PList<Parcela>()
+            {
+                Context = PersistenceContext
+            };
+            fatura.Pedidos = new PList<Pedido>(new []{Pedido})
+            {
+                Context = PersistenceContext
+            };
+            return fatura;
+        }
+
         private void NewCliente(object obj)
         {
-            new CrudPessoaFisica()
+            var isPf = obj.Equals("PF");
+            var dc = new CrudPessoaFisicaViewModel(null);
+            var crud = new CrudPessoaFisica()
             {
-                isSelectedPessoaFisicaTab = obj.Equals("PF"),
-                DataContext = new CrudPessoaFisicaViewModel(null)
+                isSelectedPessoaFisicaTab = isPf,
+                DataContext = dc
             }.ShowDialog();
+            if (crud.IsTrue())
+            {
+                var newClient = (Cliente) (isPf ? dc.PessoaFisica : dc.PessoaJuridica);
+                Pedido.Cliente = PersistenceContext.Get<Cliente>(newClient.Id);
+            }
 
         }
         private void MouseLeaveContextMenu(object obj)

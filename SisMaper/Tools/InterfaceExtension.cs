@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
-using MahApps.Metro.Controls;
+using SisMaper.Models;
 
 namespace SisMaper.Tools
 {
@@ -36,6 +36,29 @@ namespace SisMaper.Tools
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return "";
+        }
+    }
+    
+    public class PedidoStatusToBooleanIsEditable : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is Pedido.Pedido_Status.Aberto;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is true ? Pedido.Pedido_Status.Aberto : Pedido.Pedido_Status.Fechado;
+        }
+    }
+    public class FaturaStatusToBooleanIsEditable : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is Fatura.Fatura_Status.Aberta;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is true ? Fatura.Fatura_Status.Aberta : Fatura.Fatura_Status.Fechada;
         }
     }
     

@@ -23,14 +23,6 @@ namespace SisMaper.Views
             set => _filtroRecebimento = value;
         }
 
-        private string _filtroProduto;
-
-        public string FiltroProduto
-        {
-            get => _filtroProduto;
-            set => _filtroProduto = value;
-        }
-
 
         public void RandomPedido()
         {

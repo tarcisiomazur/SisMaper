@@ -8,18 +8,9 @@ namespace SisMaper.ViewModel
 {
     public class VendasViewModel: BaseViewModel
     {
-        private ViewListarPedido? _pedidoSelecionado;
-
-        public ViewListarPedido? PedidoSelecionado
-        {
-            get { return _pedidoSelecionado; }
-            set { SetField(ref _pedidoSelecionado, value); }
-        }
-
+        public ViewListarPedido? PedidoSelecionado { get; set; }
         public event Action<long?>? OpenPedido;
-        
         public ObservableCollection<ViewListarPedido> Pedidos { get; set; }
-
         public SimpleCommand NovoPedido => new (NewVenda);
         public SimpleCommand EditarPedido => new (_ => OpenVenda(), _ => PedidoSelecionado is not null);
         public SimpleCommand ExcluirPedido => new (_ => DeleteVenda(), _ => PedidoSelecionado is not null);
@@ -28,7 +19,6 @@ namespace SisMaper.ViewModel
 
         public VendasViewModel()
         {
-            Pedidos = new ObservableCollection<ViewListarPedido>(View.Execute<ViewListarPedido>());
             DialogCoordinator = new DialogCoordinator();
         }
 

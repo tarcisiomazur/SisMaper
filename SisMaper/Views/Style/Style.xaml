@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:templates="clr-namespace:SisMaper.Views.Templates">
+                    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    
+                    xmlns:tools="clr-namespace:SisMaper.Tools"
+                    >
     <Style x:Key="FocusVisualButton">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -12,6 +15,13 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <tools:DecimalToRealString
+        x:Key="DecimalToRealString" />
+    <tools:PedidoStatusToBooleanIsEditable
+        x:Key="PedidoStatusIsEditable" />
+    <tools:FaturaStatusToBooleanIsEditable
+        x:Key="FaturaStatusIsEditable" />
     <SolidColorBrush x:Key="SisMaper.Dark.Theme" Color="#FF18343F"/>
     <SolidColorBrush x:Key="SisMaper.Ligth.Theme" Color="Turquoise"/>
     <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6" />

@@ -24,7 +24,7 @@ namespace SisMaper.Models
         [ManyToOne(Fetch = Fetch.Eager)]
         public Cliente? Cliente { get; set; }
 
-        [ManyToOne(Cascade = Cascade.SAVE)]
+        [ManyToOne(Fetch = Fetch.Eager)]
         public Fatura Fatura { get; set; }
 
         [ManyToOne(Nullable = Persistence.Nullable.NotNull)]

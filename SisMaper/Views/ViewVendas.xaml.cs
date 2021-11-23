@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Windows.Controls;
-using SisMaper.Models;
 using SisMaper.ViewModel;
+using SisMaper.Views.Templates;
 
 namespace SisMaper.Views
 {
-    public partial class ViewVendas : UserControl
+    public partial class ViewVendas : MyUserControl
     {
         private VendasViewModel ViewModel => (VendasViewModel) DataContext;
 
         public ViewVendas()
         {
             InitializeComponent();
+            OnOpen += ViewModel.UpdatePedidos;
             ViewModel.OpenPedido += OpenPedido;
         }
 
