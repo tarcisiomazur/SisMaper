@@ -12,5 +12,10 @@ namespace SisMaper.Models
         [ManyToOne(Nullable = Nullable.NotNull, Cascade = Cascade.ALL)]
         public Estado Estado { get; set; }
 
+        public override string ToString()
+        {
+            return Nome;
+        }
+
     }
 }

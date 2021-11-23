@@ -13,5 +13,10 @@ namespace SisMaper.Models
         [OneToMany(Fetch = Fetch.Eager, Cascade = Cascade.SAVE)]
         public PList<Cidade> Cidades { get; set; }
 
+
+        public override string ToString()
+        {
+            return Nome;
+        }
     }
 }

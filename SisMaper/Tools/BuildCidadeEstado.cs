@@ -38,7 +38,9 @@ namespace SisMaper.Tools
                     e.Save();
                     foreach (var c in jEstado.cidades.Select(jCidade => new Cidade {Nome = jCidade, Estado = e}))
                     {
+                        
                         c.Save();
+                        c.Estado = e;
                         e.Cidades.Add(c);
                     }
                 }

@@ -16,7 +16,11 @@ namespace SisMaper.ViewModel
         public Estado EstadoSelecionado
         {
             get { return _estadoSelecionado; }
-            set { SetField(ref _estadoSelecionado, value); }
+            set
+            {
+                SetField(ref _estadoSelecionado, value);
+                SetCidades(value);
+            }
         }
 
 
@@ -28,13 +32,6 @@ namespace SisMaper.ViewModel
             set { SetField(ref _cidadeSelecionada, value); }
         }
 
-        public string _textoCPF;
-        public string TextoCPF
-        {
-            get { return _textoCPF; }
-            set { SetField(ref _textoCPF, value); }
-        }
-
         public PessoaFisica PessoaFisica { get; set; }
         public PessoaJuridica PessoaJuridica { get; set; }
 
@@ -42,7 +39,13 @@ namespace SisMaper.ViewModel
 
 
         public PList<Estado> Estados { get; private set; }
-        public PList<Cidade> Cidades { get; private set; }
+
+        private PList<Cidade> _cidades;
+        public PList<Cidade> Cidades
+        {
+            get { return _cidades; }
+            set { SetField(ref _cidades, value); }
+        }
 
         public SavePessoaFisicaCommand SavePessoaFisica { get; private set; }
 
@@ -55,6 +58,39 @@ namespace SisMaper.ViewModel
         {
 
             cliente = (Cliente)clienteSelecionado;
+
+            Estados = DAO.FindWhereQuery<Estado>("Id > 0");
+
+            if (cliente is not null)
+            {
+                CidadeSelecionada = cliente.Cidade;
+                EstadoSelecionado = CidadeSelecionada.Estado;
+
+                foreach(Estado e in Estados)
+                {
+                    if(e.Id == CidadeSelecionada.Estado.Id)
+                    {
+                        EstadoSelecionado = e;
+                        foreach(Cidade c in e.Cidades)
+                        {
+                            if(c.Id == cliente.Cidade.Id)
+                            {
+                                CidadeSelecionada = c;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+            }
+            else
+            {
+                CidadeSelecionada = null;
+                EstadoSelecionado = null;
+                Cidades = null;
+            }
+
 
             SavePessoaFisica = new SavePessoaFisicaCommand();
             SavePessoaJuridica = new SavePessoaJuridicaCommand();
@@ -76,16 +112,29 @@ namespace SisMaper.ViewModel
         }
 
 
+        private void SetCidades(Estado e)
+        {
+            if (e is not null)
+            {
+                Cidades = e.Cidades;
+                if(Cidades is not null && Cidades.Count > 0)
+                {
+                    CidadeSelecionada = Cidades.First();
+                }
+                
+            }
+
+        }
+
+
         private bool SearchCliente(Cliente c)
         {
-            
-
-            if(c is PessoaFisica pf)
+            if (c is PessoaFisica pf)
             {
                 PList<PessoaFisica> pessoas = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
-                foreach(PessoaFisica p in pessoas)
+                foreach (PessoaFisica p in pessoas)
                 {
-                    if(p.CPF == pf.CPF)
+                    if (p.CPF == pf.CPF && p.Id != pf.Id)
                     {
                         return true;
                     }
@@ -97,7 +146,7 @@ namespace SisMaper.ViewModel
                 PList<PessoaJuridica> pessoas = DAO.FindWhereQuery<PessoaJuridica>("Cliente_Id > 0");
                 foreach (PessoaJuridica p in pessoas)
                 {
-                    if (p.CNPJ == pj.CNPJ)
+                    if (p.CNPJ == pj.CNPJ && p.Id != pj.Id)
                     {
                         return true;
                     }
@@ -135,16 +184,11 @@ namespace SisMaper.ViewModel
 
                 if (clienteParameter is PessoaFisica pf)
                 {
+
                     if (CidadeSelecionada is not null)
                     {
                         pf.Cidade = CidadeSelecionada;
                     }
-
-
-
-                    cliente.Nome = pf.Nome;
-                    cliente.Cidade = pf.Cidade;
-                    cliente.Endereco = pf.Endereco;
 
                     if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
                     {
@@ -162,13 +206,11 @@ namespace SisMaper.ViewModel
                         throw new InvalidOperationException("CPF incompleto");
                     }
 
-                    if(SearchCliente(pf))
+                    if (SearchCliente(pf))
                     {
                         cliente = null;
                         throw new InvalidOperationException("CPF já registrado");
                     }
-
-                    cliente.Save();
 
                     pf.Id = cliente.Id;
                     pf.Save();
@@ -181,10 +223,6 @@ namespace SisMaper.ViewModel
                     {
                         pj.Cidade = CidadeSelecionada;
                     }
-
-                    cliente.Nome = pj.Nome;
-                    cliente.Cidade = pj.Cidade;
-                    cliente.Endereco = pj.Endereco;
 
                     if (pj.CNPJ is null || pj.CNPJ.Equals("__.___.___/____-__"))
                     {
@@ -204,19 +242,16 @@ namespace SisMaper.ViewModel
                     }
 
 
-                    if(SearchCliente(pj))
+                    if (SearchCliente(pj))
                     {
                         cliente = null;
                         throw new InvalidOperationException("CNPJ já registrado");
                     }
 
-                    cliente.Save();
-
                     pj.Id = cliente.Id;
 
                     pj.Save();
                 }
-
 
             }
 
@@ -224,6 +259,10 @@ namespace SisMaper.ViewModel
             {
                 if (clienteParameter is PessoaFisica pf)
                 {
+                    if(CidadeSelecionada is not null)
+                    {
+                        pf.Cidade = CidadeSelecionada;
+                    }
 
                     if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
                     {
@@ -254,8 +293,13 @@ namespace SisMaper.ViewModel
 
                 }
 
-                else if(clienteParameter is PessoaJuridica pj)
+                else if (clienteParameter is PessoaJuridica pj)
                 {
+                    if(CidadeSelecionada is not null)
+                    {
+                        pj.Cidade = CidadeSelecionada;
+                    }
+
                     if (pj.CNPJ is null || pj.CNPJ.Equals("__.___.___/____-__"))
                     {
                         throw new InvalidOperationException("CNPJ não pode ser vazio");
@@ -317,8 +361,8 @@ namespace SisMaper.ViewModel
             }
         }
     }
-            
-    
+
+
 
 
     public class SavePessoaFisicaCommand : BaseCommand

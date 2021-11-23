@@ -51,14 +51,11 @@
   <ItemGroup>
     <None Remove="Views\ViewEscolherLote.xaml~" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="BidirectionalDict.dll">
-      <HintPath>Library\BidirectionalDict.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="BidirectionalDict">
+      <HintPath>Library\BidirectionalDict.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>Library\MySql.Data.dll</HintPath>
     </Reference>
@@ -66,7 +63,7 @@
       <HintPath>Library\MySqlConnector.dll</HintPath>
     </Reference>
     <Reference Include="Persistence">
-      <HintPath>..\..\Persistence\bin\Debug\net5.0\Persistence.dll</HintPath>
+      <HintPath>Library\Persistence.dll</HintPath>
     </Reference>
     <Reference Include="PriorityQueue">
       <HintPath>Library\PriorityQueue.dll</HintPath>
