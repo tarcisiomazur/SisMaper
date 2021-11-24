@@ -6,16 +6,11 @@ using SisMaper.Models;
 namespace SisMaper.ViewModel
 {
     
-    public class FaturaViewModel: INotifyPropertyChanged
+    public class FaturaViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        
-        public ObservableCollection<Parcela> ListParcelas { get; set; }
-
-        public FaturaViewModel()
+        public FaturaViewModel(object faturaSelecionada)
         {
-            ListParcelas = new ObservableCollection<Parcela>();
+
         }
-        
     }
 }

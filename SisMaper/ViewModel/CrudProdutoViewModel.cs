@@ -31,17 +31,17 @@ namespace SisMaper.ViewModel
 
         public event Action OnSave;
 
-        private Categoria _categoriaSelecionada;
+        private Categoria? _categoriaSelecionada;
 
-        public Categoria CategoriaSelecionada
+        public Categoria? CategoriaSelecionada
         {
             get { return _categoriaSelecionada; }
             set { SetField(ref _categoriaSelecionada, value); }
         }
 
-        private Unidade _unidadeSelecionada;
+        private Unidade? _unidadeSelecionada;
 
-        public Unidade UnidadeSelecionada
+        public Unidade? UnidadeSelecionada
         {
             get { return _unidadeSelecionada; }
             set { SetField(ref _unidadeSelecionada, value); }
@@ -97,7 +97,6 @@ namespace SisMaper.ViewModel
 
             Lotes = new ObservableCollection<Lote>();
 
-            _loteSelecionado = LoteSelecionado = new Lote();
 
             Categorias = new ObservableCollection<Categoria>();
             Unidades = new ObservableCollection<Unidade>();
@@ -243,7 +242,15 @@ namespace SisMaper.ViewModel
 
         public void ExcluirLote()
         {
-            Lotes.Remove(LoteSelecionado);
+            try
+            {
+                Lotes.Remove(LoteSelecionado);
+                LoteSelecionado.Delete();
+            }
+            catch(Exception ex)
+            {
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao remover lote", "Erro" + ex.Message);
+            }
         }
 
         public void SalvarProduto()
@@ -274,18 +281,24 @@ namespace SisMaper.ViewModel
                 }
 
                 listaLotesPraAdicionar.Save();
+                
 
                 Close?.Invoke();
             }
 
             catch (Exception ex)
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar produto", "Erro: " + ex.Message, MessageDialogStyle.Affirmative, new MetroDialogSettings() {AffirmativeButtonText = "Ok" });
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar produto", "Erro: " + ex.Message + ex.StackTrace, MessageDialogStyle.Affirmative, new MetroDialogSettings() {AffirmativeButtonText = "Ok" });
             }
         }
 
         public class SalvarCommand : BaseCommand
         {
+            public override bool CanExecute(object parameter)
+            {
+                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
+                return !string.IsNullOrWhiteSpace(vm.Produto.Descricao);
+            }
 
             public override void Execute(object parameter)
             {

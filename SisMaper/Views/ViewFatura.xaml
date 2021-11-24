@@ -220,7 +220,7 @@
                         ColumnWidth="*"
                         x:Name="Parcelas"
                         AutoGenerateColumns="False"
-                        ItemsSource="{Binding }"
+                        ItemsSource="{Binding}"
                         CanUserAddRows="False"
                         Height="auto"
                         Width="auto"

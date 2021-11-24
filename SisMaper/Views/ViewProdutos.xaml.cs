@@ -77,45 +77,8 @@ namespace SisMaper.Views
             new CrudProduto().ShowDialog();
         }
 
-
-
-
-
-
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MouseCommandProperty =
-            DependencyProperty.Register("MouseCommand", typeof(ICommand), typeof(ViewProdutos), new PropertyMetadata(null));
-
-        public ICommand MouseCommand
-        {
-            get { return (BaseCommand)GetValue(MouseCommandProperty); }
-            set { SetValue(MouseCommandProperty, value); }
-        }
-
-
-
-
-        // Using a DependencyProperty as the backing store for MouseCommandParameter.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MouseCommandParameterProperty =
-            DependencyProperty.Register("MouseCommandParameter", typeof(Object), typeof(ViewProdutos), new PropertyMetadata(null));
-
-        public Object MouseCommandParameter
-        {
-            get { return (Object)GetValue(MouseCommandParameterProperty); }
-            set { SetValue(MouseCommandParameterProperty, value); }
-        }
-
-
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MouseCommand?.Execute(null);
-        }
-
         private void Produtos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //MouseCommand?.Execute(MouseCommandParameter);
 
             if (sender != null)
             {

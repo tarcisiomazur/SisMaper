@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SisMaper.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,34 @@ namespace SisMaper.Views
         public ViewRecebimentos()
         {
             InitializeComponent();
+            SetActions();
+        }
+
+
+        private void SetActions()
+        {
+            if(DataContext is IFaturas vm)
+            {
+                vm.OpenNovaFatura += () =>
+                {
+                    new ViewFatura() { DataContext = new FaturaViewModel(null) }.ShowDialog();
+                    DataContext = new RecebimentosViewModel();
+                    SetActions();
+                };
+
+                vm.OpenEditarFatura += () =>
+                {
+                    new ViewFatura() { DataContext = new FaturaViewModel(FaturasDataGrid.SelectedItem) }.ShowDialog();
+                    DataContext = new RecebimentosViewModel();
+                    SetActions();
+                };
+
+                vm.FaturaExcluida += () =>
+                {
+                    DataContext = new RecebimentosViewModel();
+                    SetActions();
+                };
+            }
         }
     }
 }

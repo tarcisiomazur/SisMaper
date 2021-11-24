@@ -32,11 +32,4 @@ namespace SisMaper.ViewModel
         }
     }
 
-
-    /* mainView
-     * 
-         <mah:MetroWindow.DataContext>
-        <vm:ProdutosViewModel/>
-    </mah:MetroWindow.DataContext>
-     */
 }

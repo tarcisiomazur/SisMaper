@@ -32,13 +32,13 @@ namespace SisMaper.Models
         public bool Inativo { get; set; }
 
         [ManyToOne(Cascade = Cascade.SAVE, Fetch = Fetch.Eager)]
-        public Categoria Categoria { get; set; }
+        public Categoria? Categoria { get; set; }
 
         [ManyToOne(Fetch = Fetch.Eager)]
-        public NCM NCM { get; set; }
+        public NCM? NCM { get; set; }
         
         [ManyToOne(Cascade = Cascade.SAVE, Fetch = Fetch.Eager)]
-        public Unidade Unidade { get; set; }
+        public Unidade? Unidade { get; set; }
 
         [OneToMany] public PList<Lote> Lotes { get; set; }
 

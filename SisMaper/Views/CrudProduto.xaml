@@ -162,8 +162,7 @@
             VerticalAlignment="Bottom"
             Margin="0,0,31,17"
             CommandParameter="{Binding}"
-            Command="{Binding Salvar}"
-            Click="Button_Click"/>
+            Command="{Binding Salvar}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="35,93,0,0"
@@ -235,7 +234,7 @@
             HorizontalAlignment="Left"
             Margin="159,43,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produto.CodigoBarras, UpdateSourceTrigger=LostFocus, Mode=TwoWay, StringFormat={}{###.###.###-##}}"
+            Text="{Binding Produto.CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             VerticalAlignment="Top"
             Width="216" />
 
@@ -322,7 +321,7 @@
             Margin="158,378,0,0"
             HorizontalContentAlignment="Right"
             TextWrapping="Wrap"
-            Text="{Binding Produto.PrecoVenda, Mode=TwoWay}"
+            Text="{Binding Produto.PrecoVenda, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="165" />
         <TextBlock

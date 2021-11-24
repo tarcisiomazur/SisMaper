@@ -24,7 +24,6 @@ namespace SisMaper.ViewModel
         }
 
         public PList<Produto> ProdutosList { get; private set; }
-        public MouseCommand MCommand { get; private set; }
         public NovoProdutoCommand NovoProduto { get; private set; }
         public EditarProdutoCommand Editar { get; private set; }
         public ExcluirProdutoCommand Deletar { get; private set; }
@@ -45,7 +44,6 @@ namespace SisMaper.ViewModel
 
             ProdutosList = DAO.FindWhereQuery<Produto>("Id > 0");
 
-            MCommand = new MouseCommand();
             NovoProduto = new NovoProdutoCommand();
             Editar = new EditarProdutoCommand();
             Deletar = new ExcluirProdutoCommand();
@@ -95,27 +93,13 @@ namespace SisMaper.ViewModel
             }
         }
 
-        internal void OpenCrudProdutos()
-        {
-            OpenNovoProduto?.Invoke();
-        }
+        internal void OpenCrudProdutos() => OpenNovoProduto?.Invoke();
 
+        internal void OpenEditarCrudProdutos() => OpenEditarProduto?.Invoke();
 
-        internal void OpenEditarCrudProdutos()
-        {
-            OpenEditarProduto?.Invoke();
-        }
+        public void OpenCategorias() => OpenCategoria?.Invoke();
 
-
-        public void OpenCategorias()
-        {
-            OpenCategoria?.Invoke();
-        }
-
-        public void OpenUnidades()
-        {
-            OpenUnidade?.Invoke();
-        }
+        public void OpenUnidades() => OpenUnidade?.Invoke();
 
     }
 
@@ -187,16 +171,6 @@ namespace SisMaper.ViewModel
             vm.ExcluirProduto();
         }
     }
-
-
-    public class MouseCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            var vm = (ProdutosViewModel)parameter;
-        }
-    }
-
 
 
 
