@@ -13,7 +13,7 @@ namespace SisMaper.Models
         public string Endereco { get; set; }
 
         [ManyToOne(Fetch = Fetch.Eager)]
-        public Cidade Cidade { get; set; }
+        public Cidade? Cidade { get; set; }
 
         [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
         public decimal LimiteCredito { get; set; }

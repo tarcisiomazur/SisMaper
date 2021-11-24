@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -29,7 +30,12 @@ namespace SisMaper.ViewModel
         public Cidade CidadeSelecionada
         {
             get { return _cidadeSelecionada; }
-            set { SetField(ref _cidadeSelecionada, value); }
+            set 
+            { 
+                SetField(ref _cidadeSelecionada, value);
+                TextoCidade = value.Nome;
+            }
+
         }
 
         public PessoaFisica PessoaFisica { get; set; }
@@ -54,6 +60,18 @@ namespace SisMaper.ViewModel
         public Action SaveCliente { get; set; }
 
 
+        public string _textoCidade;
+        public string TextoCidade
+        {
+            get { return _textoCidade; }
+            set 
+            {
+                SetField(ref _textoCidade, value);
+                SetTextoCidade(value);
+            } 
+        }
+
+
         public CrudPessoaFisicaViewModel(object clienteSelecionado)
         {
 
@@ -63,23 +81,27 @@ namespace SisMaper.ViewModel
 
             if (cliente is not null)
             {
-                CidadeSelecionada = cliente.Cidade;
-                EstadoSelecionado = CidadeSelecionada.Estado;
-
-                foreach(Estado e in Estados)
+                if (cliente.Cidade is not null)
                 {
-                    if(e.Id == CidadeSelecionada.Estado.Id)
+                    
+                    EstadoSelecionado = cliente.Cidade.Estado;
+                    CidadeSelecionada = cliente.Cidade;
+
+                    foreach (Estado e in Estados)
                     {
-                        EstadoSelecionado = e;
-                        foreach(Cidade c in e.Cidades)
+                        if (e.Id == CidadeSelecionada.Estado.Id)
                         {
-                            if(c.Id == cliente.Cidade.Id)
+                            EstadoSelecionado = e;
+                            foreach (Cidade c in e.Cidades)
                             {
-                                CidadeSelecionada = c;
-                                break;
+                                if (c.Id == cliente.Cidade.Id)
+                                {
+                                    CidadeSelecionada = c;
+                                    break;
+                                }
                             }
+                            break;
                         }
-                        break;
                     }
                 }
 
@@ -120,10 +142,25 @@ namespace SisMaper.ViewModel
                 if(Cidades is not null && Cidades.Count > 0)
                 {
                     CidadeSelecionada = Cidades.First();
+                    TextoCidade = CidadeSelecionada.Nome;
                 }
                 
             }
 
+            else
+            {
+                CidadeSelecionada = null;
+                TextoCidade = null;
+                Cidades = null;
+            }
+        }
+
+        private void SetTextoCidade(string cidade)
+        {
+            if(String.IsNullOrWhiteSpace(cidade))
+            {
+                EstadoSelecionado = null;
+            }
         }
 
 
@@ -156,6 +193,14 @@ namespace SisMaper.ViewModel
             return false;
         }
 
+
+        private void NullText(ref string? texto)
+        {
+            if(string.IsNullOrWhiteSpace(texto))
+            {
+                texto = null;
+            }
+        }
 
         private void SalvarCliente<T>(T clienteParameter) where T : Cliente
         {
@@ -263,6 +308,10 @@ namespace SisMaper.ViewModel
                     {
                         pf.Cidade = CidadeSelecionada;
                     }
+                    else
+                    {
+                        pf.Cidade = null;
+                    }
 
                     if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
                     {
@@ -288,6 +337,15 @@ namespace SisMaper.ViewModel
 
                     if (cliente.Id == pf.Id)
                     {
+                        string nome = pf.Nome;
+                        string endereco = pf.Endereco;
+
+                        NullText(ref nome);
+                        NullText(ref endereco);
+
+                        pf.Nome = nome;
+                        pf.Endereco = endereco;
+
                         pf.Save();
                     }
 
@@ -298,6 +356,10 @@ namespace SisMaper.ViewModel
                     if(CidadeSelecionada is not null)
                     {
                         pj.Cidade = CidadeSelecionada;
+                    }
+                    else
+                    {
+                        pj.Cidade = null;
                     }
 
                     if (pj.CNPJ is null || pj.CNPJ.Equals("__.___.___/____-__"))
@@ -325,6 +387,18 @@ namespace SisMaper.ViewModel
 
                     if (cliente.Id == pj.Id)
                     {
+                        string nome = pj.Nome;
+                        string endereco = pj.Endereco;
+                        string razaoSocial = pj.RazaoSocial;
+
+                        NullText(ref nome);
+                        NullText(ref endereco);
+                        NullText(ref razaoSocial);
+
+                        pj.Nome = nome;
+                        pj.Endereco = endereco;
+                        pj.RazaoSocial = razaoSocial;
+
                         pj.Save();
                     }
                 }
