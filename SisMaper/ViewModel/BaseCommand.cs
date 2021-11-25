@@ -11,10 +11,10 @@ namespace SisMaper.ViewModel
             ExecuteDelegate = execute;
         }
 
-        public SimpleCommand(Action execute = null, Predicate<object> canExecute = null)
+        public SimpleCommand(Action? execute = null, Predicate<object>? canExecute = null)
         {
             CanExecuteDelegate = canExecute;
-            ExecuteDelegate = _ => execute();
+            ExecuteDelegate = _ => execute?.Invoke();
         }
 
         public Predicate<object> CanExecuteDelegate { get; set; }

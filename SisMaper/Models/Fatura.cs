@@ -19,7 +19,7 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
         public decimal ValorPago { get; set; }
         
-        [OneToMany(orphanRemoval = true, Cascade = Cascade.ALL)]
+        [OneToMany(orphanRemoval = true, Cascade = Cascade.ALL, Fetch = Fetch.Eager)]
         public PList<Parcela> Parcelas { get; set; }
         
         [OneToMany(Cascade = Cascade.SAVE)]
