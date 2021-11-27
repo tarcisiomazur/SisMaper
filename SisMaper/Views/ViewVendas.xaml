@@ -94,7 +94,7 @@
                         Background="{DynamicResource MahApps.Brushes.Gray9}"
                         BorderThickness="0"
                         Style="{DynamicResource TextBox.Search}"
-                        Text="{Binding FiltroPedido, Delay=300, ElementName=userControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding TextoFiltro, Delay=300, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Height="35"
                         VerticalAlignment="Top">
                         <TextBox.ToolTip>
@@ -119,6 +119,9 @@
                         FontSize="16"
                         Margin="7,4,0,0"
                         HorizontalAlignment="Left"
+                        ItemsSource="{Binding StatusList}"
+                        SelectedItem="{Binding StatusSelecionado}"
+                        mah:TextBoxHelper.ClearTextButton="True"
                         VerticalAlignment="Top"
                         Width="136"
                         mah:TextBoxHelper.Watermark="Status"
@@ -127,20 +130,19 @@
                         FontSize="14"
                         HorizontalAlignment="Left"
                         Margin="210,4,0,0"
-
+                        SelectedDate="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         VerticalAlignment="Top"
                         Width="121"
                         mah:TextBoxHelper.Watermark="De"
                         mah:TextBoxHelper.UseFloatingWatermark="True"
                         VerticalContentAlignment="Center"
-                        SelectedDate="2021-09-17"
                         Height="39" />
                     <DatePicker
                         FontSize="14"
                         HorizontalAlignment="Left"
                         Margin="337,4,0,0"
+                        SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         VerticalAlignment="Top"
-                        SelectedDate="2021-09-18"
                         Height="39"
                         mah:TextBoxHelper.UseFloatingWatermark="True"
                         Width="121"
@@ -173,7 +175,7 @@
                 HorizontalContentAlignment="Stretch"
                 ColumnWidth="*"
                 x:Name="DataGridPedidos"
-                ItemsSource="{Binding Pedidos}"
+                ItemsSource="{Binding PedidosFiltrados}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 IsReadOnly="True"
@@ -204,7 +206,7 @@
                     <DataGridTextColumn
                         Width="30*"
                         Header="Data"
-                        Binding="{Binding Data}"
+                        Binding="{Binding Data, StringFormat='dd/MM/yyyy'}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Width="80*"

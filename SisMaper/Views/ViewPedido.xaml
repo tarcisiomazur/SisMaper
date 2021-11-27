@@ -11,9 +11,8 @@
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:models="clr-namespace:SisMaper.Models"
-    xmlns:s="clr-namespace:System;assembly=mscorlib"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     x:Class="SisMaper.Views.ViewPedido"
@@ -24,6 +23,8 @@
     TitleCharacterCasing="Normal"
     Height="599"
     Width="812"
+    MinHeight="400"
+    MinWidth="812"
     SaveWindowPosition="True">
     <mah:MetroWindow.DataContext>
         <viewModels:PedidoViewModel />
@@ -82,102 +83,6 @@
                 Property="Height"
                 Value="32" />
         </Style>
-        <Style
-            x:Key="OptionsButtonStyle"
-            TargetType="{x:Type Button}">
-            <Setter
-                Property="FocusVisualStyle"
-                Value="{DynamicResource FocusVisual}" />
-            <Setter
-                Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter
-                Property="HorizontalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="VerticalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="Padding"
-                Value="10,4" />
-            <Setter
-                Property="FontSize"
-                Value="14" />
-            <Setter
-                Property="Height"
-                Value="31" />
-            <Setter
-                Property="Width"
-                Value="auto" />
-
-            <Setter
-                Property="Template">
-                <Setter.Value>
-                    <ControlTemplate
-                        TargetType="{x:Type Button}">
-                        <Border
-                            x:Name="border"
-                            CornerRadius="3,3,3,3"
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}"
-                            SnapsToDevicePixels="true"
-                            Visibility="Visible"
-                            BorderBrush="#FF939393">
-                            <ContentPresenter
-                                x:Name="contentPresenter"
-                                Focusable="False"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                Margin="{TemplateBinding Padding}"
-                                RecognizesAccessKey="True"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger
-                                Property="IsDefaulted"
-                                Value="true">
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsMouseOver"
-                                Value="true">
-                                <Setter
-                                    Property="BorderThickness"
-                                    TargetName="border"
-                                    Value="1" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsPressed"
-                                Value="true">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Pressed.Background}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsEnabled"
-                                Value="false">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Background}" />
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Border}" />
-                                <Setter
-                                    Property="TextElement.Foreground"
-                                    TargetName="contentPresenter"
-                                    Value="{StaticResource Button.Disabled.Foreground}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </mah:MetroWindow.Resources>
     <Grid>
         <TextBlock
@@ -224,6 +129,7 @@
         </TextBlock>
         <DatePicker
             FontSize="15"
+            DisplayDateEnd="{x:Static sys:DateTime.Now}"
             HorizontalAlignment="Right"
             Margin="0,24,20,0"
             VerticalAlignment="Top"
@@ -249,11 +155,13 @@
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             ItemsSource="{Binding Clientes}"
             SelectedItem="{Binding Pedido.Cliente}"
+            Text="{Binding Pedido.Cliente.Nome, Mode=OneWay}"
             DisplayMemberPath="Nome"
             IsEditable="True"
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
+            mah:TextBoxHelper.ClearTextButton="True"
             Grid.IsSharedSizeScope="True"
             VerticalAlignment="Top" />
         <Button
@@ -362,6 +270,7 @@
             mah:TextBoxHelper.Watermark="Buscar Natureza"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
+            mah:TextBoxHelper.ClearTextButton="True"
             HorizontalAlignment="Right"
             Width="211" />
         <TabControl
@@ -386,7 +295,7 @@
                         FontSize="16"
                         IsEditable="True"
                         MaxDropDownHeight="125"
-                        ItemsSource="{Binding Produtos}"
+                        ItemsSource="{Binding ProdutosAtivos}"
                         SelectedItem="{Binding NovoItem.Produto, Mode=TwoWay}"
                         DisplayMemberPath="Descricao"
                         mah:TextBoxHelper.WatermarkAlignment="Right"
@@ -442,7 +351,7 @@
                         HorizontalContentAlignment="Stretch"
                         ColumnWidth="*"
                         AutoGenerateColumns="False"
-                        ItemsSource="{Binding Pedido.Itens}"
+                        ItemsSource="{Binding Pedido.Itens, UpdateSourceTrigger=PropertyChanged}"
                         CanUserAddRows="False"
                         Height="auto"
                         Width="auto"
@@ -452,8 +361,10 @@
                             <mah:DataGridNumericUpDownColumn
                                 Width="17*"
                                 Header="Qtde"
-                                Binding="{Binding Quantidade}"
-                                IsReadOnly="True" />
+                                Minimum="0"
+                                Interval="0.1"
+                                Binding="{Binding Quantidade, UpdateSourceTrigger=LostFocus}"
+                                IsReadOnly="False" />
                             <DataGridTextColumn
                                 Width="18*"
                                 Header="Un"
@@ -479,7 +390,7 @@
                                 Maximum="100"
                                 Interval="0.1"
                                 Culture="pt-BR"
-                                Binding="{Binding DescontoPorcentagem}"
+                                Binding="{Binding DescontoPorcentagem, UpdateSourceTrigger=LostFocus}"
                                 IsReadOnly="false" />
                             <mah:DataGridNumericUpDownColumn
                                 Width="35*"
@@ -535,17 +446,27 @@
                             Language="pt-br"
                             Text="Valor Total" />
                     </TextBlock>
-                    <iconpacks:PackIconMaterial
-                        Kind="MagnifyPlus"
-                        Margin="0,14,268,0"
-                        Height="24"
-                        Width="23"
-                        Foreground="#FF939393"
-                        HorizontalAlignment="Right" />
-
+                    <Button
+            Margin="0,10,257,0"
+            Command="{Binding OpenBuscarProduto}"
+            Focusable="False"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Width="34"
+            Height="33">
+                        <StackPanel>
+                            <iconpacks:PackIconMaterial
+                    Kind="MagnifyPlus"
+                    Height="19"
+                    Width="19"
+                    Foreground="#FF939393"
+                    HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Button>
                 </Grid>
             </TabItem>
-            <TabItem
+            <TabItem 
+                IsSelected="{Binding FaturaTabItemIsSelected}"
                 Header="  Fatura  ">
                 <Grid>
                     <TextBlock
@@ -574,23 +495,24 @@
                         IsEnabled="False"
                         Style="{DynamicResource TextBoxStyle1}"
                         HorizontalAlignment="Right"
-                        Margin="0,5,423,0"
+                        Margin="0,5,401,0"
                         TextWrapping="Wrap"
                         Text="{Binding Pedido.Fatura.Status}"
                         VerticalAlignment="Top"
-                        Width="66"
+                        Width="88"
                         RenderTransformOrigin="0.197,0.486" />
                     <TextBlock
                         HorizontalAlignment="Right"
                         Margin="0,11,192,0"
-                        Text="Data Faturação"
+                        Text="Data Faturamento"
                         TextWrapping="Wrap"
                         VerticalAlignment="Top"
-                        Width="108" />
+                        Width="130" />
                     <DatePicker
                         FontSize="15"
                         HorizontalAlignment="Right"
                         Margin="0,7,8,0"
+                        DisplayDateEnd="{x:Static sys:DateTime.Now}"
                         IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}"
                         SelectedDate="{Binding Pedido.Fatura.Data, Mode=TwoWay}"
                         VerticalAlignment="Top"
@@ -607,20 +529,21 @@
                         <TabItem
                             Header="   Parcelas   "
                             mah:HeaderedControlHelper.HeaderBackground="Black">
-                            <Grid>
+                            <Grid IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}">
                                 <DataGrid
+                                    x:Name="DataGridParcelas"
                                     BorderThickness="1"
                                     Style="{DynamicResource MahApps.Styles.DataGrid}"
                                     HorizontalContentAlignment="Stretch"
                                     ColumnWidth="*"
-                                    x:Name="Parcelas"
                                     AutoGenerateColumns="False"
-                                    ItemsSource="{Binding ''}"
                                     CanUserAddRows="False"
                                     Height="auto"
                                     Width="auto"
+                                    ItemsSource="{Binding Pedido.Fatura.Parcelas}"
                                     Margin="10,46,10,34"
-                                    BorderBrush="#FFD2D2D2">
+                                    BorderBrush="#FFD2D2D2"
+                                    templates:ColumnDataGridSave.SaveSizes="True">
                                     <DataGrid.Columns>
                                         <mah:DataGridNumericUpDownColumn
                                             Width="8*"
@@ -664,18 +587,19 @@
                                     HorizontalAlignment="Right"
                                     Margin="0,0,10,1"
                                     TextWrapping="Wrap"
-                                    Text="R$ 0,00"
+                                    Text="{Binding Pedido.ValorTotal, ConverterCulture=pt-BR, Mode=OneWay, StringFormat=R$ #\,##0.00, UpdateSourceTrigger=PropertyChanged}"
+                       
                                     VerticalAlignment="Bottom"
                                     Width="119"
                                     HorizontalContentAlignment="Right"
                                     VerticalContentAlignment="Bottom" />
                                 <TextBlock
                                     HorizontalAlignment="Right"
-                                    Margin="0,249,138,0"
+                                    Margin="0,0,139,7"
                                     Text="Valor Fatura"
                                     RenderTransformOrigin="0.529,-0.024"
                                     Height="21"
-                                    VerticalAlignment="Top"/>
+                                    VerticalAlignment="Bottom"/>
                                 <Button
                                     Style="{DynamicResource OptionsButtonStyle}"
                                     Content="Receber"
@@ -691,7 +615,6 @@
                                 <Button
                                     Style="{DynamicResource OptionsButtonStyle}"
                                     Content="Encerrar Fatura"
-                                    IsEnabled="false"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
                                     Margin="10,0,0,2"
@@ -704,29 +627,24 @@
                 </Grid>
             </TabItem>
             <TabItem
+                Visibility="{Binding HasNotaFiscal, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Header="  Nota Fiscal  ">
                 <Grid />
             </TabItem>
         </TabControl>
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
-            Content="Receber"
+            Content="Faturar"
             Command="{Binding Receber}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Margin="20,0,0,20" />
-        <Button
-            Style="{DynamicResource OptionsButtonStyle}"
-            Content="Emitir NF-e"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Margin="96,0,0,20" />
+            Margin="20,0,0,20" Width="96" />
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Imprimir"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Margin="193,0,0,20" />
+            Margin="121,0,0,20" Width="79" />
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Cancelar"

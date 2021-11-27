@@ -9,18 +9,12 @@ namespace SisMaper.ViewModel
     public class LoginViewModel : BaseViewModel
     {
         readonly RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SisMaper");
-
-        private Usuario _Usuario;
         public SimpleCommand Login => new (ConfirmLogin);
-        public SimpleCommand Cancel => new (CancelLogin);
-
-        public Usuario Usuario
-        {
-            get { return _Usuario; }
-            set { SetField(ref _Usuario, value); }
-        }
+        public SimpleCommand Cancel => new (OnCancel);
+        public Usuario Usuario { get; set; }
 
         public event Action? OnLogin;
+        public event Action? OnCancel;
         public bool PasswordFocus { get; set; }
         public bool UsuarioFocus { get; set; }
 
@@ -52,11 +46,6 @@ namespace SisMaper.ViewModel
 
             Console.WriteLine("Login Confirmado. Login: " + Usuario.Login + ". Senha: " + Usuario.Senha);
         }
-
-
-        public void CancelLogin()
-        {
-            
-        }
+        
     }
 }

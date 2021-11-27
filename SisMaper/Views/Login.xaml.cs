@@ -27,14 +27,12 @@ namespace SisMaper.Views
 
         private void SetActions()
         {
-            if (ViewModel is not null)
+            ViewModel.OnLogin += () =>
             {
-                ViewModel.OnLogin += () =>
-                {
-                    DialogResult = true;
-                    Close();
-                };
-            }
+                DialogResult = true;
+                Close();
+            };
+            ViewModel.OnCancel += Close;
         }
 
         private void ArrastarTela(object sender, MouseButtonEventArgs e)

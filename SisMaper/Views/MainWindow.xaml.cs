@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using MahApps.Metro.Controls;
 using Persistence;
 using SisMaper.Models;
-using SisMaper.Tools;
-using SisMaper.ViewModel;
 
 namespace SisMaper.Views
 {
@@ -53,10 +50,10 @@ namespace SisMaper.Views
 
             try
             {
-                //if (!new Login().ShowDialog()!.Value)
-                //{
-                //    Environment.Exit(0);
-                //}
+                /*if (!new Login().ShowDialog()!.Value)
+                {
+                    Close();
+                }*/
                 Main.Usuario = new Usuario()
                 {
                     Id = 1,

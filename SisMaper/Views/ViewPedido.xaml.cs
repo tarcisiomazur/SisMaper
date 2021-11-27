@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
+using SisMaper.API.WebMania;
+using SisMaper.Models;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
@@ -23,8 +26,8 @@ namespace SisMaper.Views
 
         private void SetActions()
         {
-            ViewModel.OnSave += Close;
-            ViewModel.OnCancel += Close;
+            ViewModel.Save += Close;
+            ViewModel.Cancel += Close;
         }
 
 
@@ -33,5 +36,17 @@ namespace SisMaper.Views
             
         }
 
+        private void EmitirNF(object sender, RoutedEventArgs e)
+        {
+            var nf = new NotaFiscalEletronica(new NotaFiscal()
+            {
+                Pedido = ViewModel.Pedido,
+                Id = 99,
+            });
+            var result = nf.BuildJsonDefault();
+            Console.WriteLine(nf.Json);
+            MessageBox.Show(nf.Json, result);
+            
+        }
     }
 }
