@@ -29,7 +29,7 @@ namespace SisMaper.Models
         public DateTime DataVencimento { get; set; }
 
         [Field(FieldType = SqlDbType.DateTime)]
-        public DateTime ?DataPagamento { get; set; }
+        public DateTime? DataPagamento { get; set; }
 
         [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
         public decimal Valor { get; set; }

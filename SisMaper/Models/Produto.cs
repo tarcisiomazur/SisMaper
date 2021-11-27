@@ -16,7 +16,7 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.VarChar, Length = 256)]
         public string CodigoBarras { get; set; }
 
-        [Field(FieldType = SqlDbType.VarChar, Length = 256)]
+        [Field(FieldType = SqlDbType.VarChar, Length = 256 )]
         public string Descricao { get; set; }
 
         [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
@@ -34,6 +34,7 @@ namespace SisMaper.Models
         [ManyToOne(Cascade = Cascade.SAVE, Fetch = Fetch.Eager)]
         public Categoria? Categoria { get; set; }
 
+        
         [ManyToOne(Fetch = Fetch.Eager)]
         public NCM? NCM { get; set; }
         

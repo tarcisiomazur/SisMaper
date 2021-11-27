@@ -71,6 +71,8 @@ namespace SisMaper.ViewModel
             } 
         }
 
+        public Action ClientePessoaFisica { get; set; }
+        public Action ClientePessoaJuridica { get; set; }
 
         public CrudPessoaFisicaViewModel(object clienteSelecionado)
         {
@@ -78,6 +80,15 @@ namespace SisMaper.ViewModel
             cliente = (Cliente)clienteSelecionado;
 
             Estados = DAO.FindWhereQuery<Estado>("Id > 0");
+
+
+            //Cliente fisica = (PessoaFisica) clienteSelecionado;
+            //Cliente juridica = (PessoaJuridica) clienteSelecionado;
+
+            
+            //Console.WriteLine("FISICA: " + (fisica is null).ToString() + "  / / / / JURIDICA: " + (juridica is null).ToString() );
+            
+           
 
             if (cliente is not null)
             {
@@ -105,6 +116,36 @@ namespace SisMaper.ViewModel
                     }
                 }
 
+
+
+
+
+
+                PList<PessoaFisica> pessoasFisicas = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
+                PList<PessoaJuridica> pessoasJuridicas = DAO.FindWhereQuery<PessoaJuridica>("Cliente_Id > 0");
+
+                int countPf = pessoasFisicas.Count;
+                int countPj = pessoasJuridicas.Count;
+
+                for (int i = 0; i < Math.Max(countPf, countPj); i++)
+                {
+                    if (i < countPf && pessoasFisicas[i].Id == cliente.Id)
+                    {
+                        cliente = pessoasFisicas[i];
+                        break;
+                    }
+
+                    if (i < countPj && pessoasJuridicas[i].Id == cliente.Id)
+                    {
+                        cliente = pessoasJuridicas[i];
+                        break;
+                    }
+                }
+
+
+
+
+
             }
             else
             {
@@ -121,14 +162,16 @@ namespace SisMaper.ViewModel
             PessoaFisica = new PessoaFisica();
             PessoaJuridica = new PessoaJuridica();
 
-            if (clienteSelecionado is PessoaFisica pf)
+            if (cliente is PessoaFisica pf)
             {
                 PessoaFisica = pf;
+                //ClientePessoaFisica?.Invoke();
             }
 
-            else if (clienteSelecionado is PessoaJuridica pj)
+            else if (cliente is PessoaJuridica pj)
             {
                 PessoaJuridica = pj;
+                //ClientePessoaJuridica?.Invoke();
             }
 
         }
@@ -465,6 +508,10 @@ namespace SisMaper.ViewModel
     public interface IClienteSave
     {
         public Action SaveCliente { get; set; }
+        public Action ClientePessoaFisica { get; set; }
+        public Action ClientePessoaJuridica { get; set; }
     }
+
+
 }
 

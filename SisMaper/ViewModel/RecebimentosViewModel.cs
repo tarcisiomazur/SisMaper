@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SisMaper.ViewModel
 {
-    public class RecebimentosViewModel : BaseViewModel, IFaturas
+    public class RecebimentosViewModel : BaseViewModel, IRecebimento
     {
         public PList<Fatura> Faturas { get; private set; }
 
@@ -21,7 +21,6 @@ namespace SisMaper.ViewModel
         }
 
 
-        public NovaFaturaCommand NovaFatura { get; private set; }
         public EditarFaturaCommand EditarFatura { get; private set; }
         public ExcluirFaturaCommand DeletarFatura { get; private set; }
 
@@ -33,14 +32,15 @@ namespace SisMaper.ViewModel
         {
             Faturas = DAO.FindWhereQuery<Fatura>("Id > 0");
 
-            NovaFatura = new NovaFaturaCommand();
+            foreach(Fatura f in Faturas)
+            {
+                f?.Cliente.Load();
+            }
+
             EditarFatura = new EditarFaturaCommand();
             DeletarFatura = new ExcluirFaturaCommand();
         }
 
-
-
-        public void OpenCrudNovaFatura() => OpenNovaFatura?.Invoke();
 
         public void OpenCrudEditarFatura() => OpenEditarFatura?.Invoke();
 
@@ -53,15 +53,6 @@ namespace SisMaper.ViewModel
     }
 
 
-
-    public class NovaFaturaCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            RecebimentosViewModel vm = (RecebimentosViewModel)parameter;
-            vm.OpenCrudNovaFatura();
-        }
-    }
 
 
     public class EditarFaturaCommand : BaseCommand
@@ -93,9 +84,8 @@ namespace SisMaper.ViewModel
     }
 
 
-    public interface IFaturas
+    public interface IRecebimento
     {
-        public Action OpenNovaFatura { get; set; }
         public Action OpenEditarFatura { get; set; }
         public Action FaturaExcluida { get; set; }
     }

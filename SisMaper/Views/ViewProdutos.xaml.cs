@@ -60,11 +60,15 @@ namespace SisMaper.Views
                 vm.OpenCategoria += () =>
                 {
                     new ViewCategorias().ShowDialog();
+                    DataContext = new ProdutosViewModel();
+                    SetActions();
                 };
 
                 vm.OpenUnidade += () =>
                 {
                     new ViewUnidades().ShowDialog();
+                    DataContext = new ProdutosViewModel();
+                    SetActions();
                 };
             }
 

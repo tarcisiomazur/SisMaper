@@ -38,22 +38,6 @@
                     <Button
                         Style="{DynamicResource Button1}"
                         CommandParameter="{Binding}"
-                        Command="{Binding NovaFatura}">
-                        <StackPanel>
-                            <icons:PackIconPixelartIcons
-                                Kind="AddBox"
-                                HorizontalAlignment="Center"
-                                Foreground="Black"
-                                Width="20"
-                                Height="20" />
-                            <TextBlock
-                                Style="{DynamicResource Head1}"
-                                Text="Novo" />
-                        </StackPanel>
-                    </Button>
-                    <Button
-                        Style="{DynamicResource Button1}"
-                        CommandParameter="{Binding}"
                         Command="{Binding EditarFatura}">
                         <StackPanel>
                             <icons:PackIconModern

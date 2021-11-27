@@ -32,6 +32,13 @@ namespace SisMaper.Models
         
         [Field(FieldType = SqlDbType.DateTime)]
         public DateTime Data { get; set; }
+
+
+        public Fatura()
+        {
+            Status = Fatura_Status.Aberta;
+            Data = DateTime.Today;
+        }
         
     }
 }

@@ -76,6 +76,10 @@ namespace SisMaper.ViewModel
         public Action Close { get; set; }
 
 
+        private bool prontoPraSalvarCategoria;
+        private bool prontoPraSalvarUnidade;
+
+
         public CrudProdutoViewModel(object produtoSelecionado)
         {
 
@@ -185,15 +189,6 @@ namespace SisMaper.ViewModel
         }
 
 
-        private void SalvarCategoriaNoBanco(Categoria c)
-        {
-            c.Save();
-        }
-
-        private void SalvarUnidadeNoBanco(Unidade u)
-        {
-            u.Save();
-        }
 
 
         private void CheckCategoria()
@@ -202,19 +197,32 @@ namespace SisMaper.ViewModel
             if (string.IsNullOrWhiteSpace(TextoCategoria))
             {
                 CategoriaSelecionada = null;
+                prontoPraSalvarCategoria = true;
                 return;
             }
 
             if (!object.Equals(CategoriaSelecionada, null) && CategoriaSelecionada.Descricao.Equals(TextoCategoria))
             {
+                prontoPraSalvarCategoria = true;
                 return;
             }
 
-            Categoria c = new Categoria() { Descricao = TextoCategoria };
-            Categorias.Add(c);
-            CategoriaSelecionada = c;
 
-            SalvarCategoriaNoBanco(c);
+            MessageDialogResult resultado = DialogCoordinator.ShowModalMessageExternal(this, "Categoria", "Categoria selecionada não existe. Deseja criar nova categoria?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
+
+            if (resultado == MessageDialogResult.Affirmative)
+            {
+                prontoPraSalvarCategoria = true;
+
+                Categoria c = new Categoria() { Descricao = TextoCategoria };
+                Categorias.Add(c);
+                CategoriaSelecionada = c;
+
+                c.Save();
+                return;
+            }
+
+            prontoPraSalvarCategoria = false;
 
         }
 
@@ -223,20 +231,32 @@ namespace SisMaper.ViewModel
 
             if (string.IsNullOrWhiteSpace(TextoUnidade))
             {
+                prontoPraSalvarUnidade = true;
                 UnidadeSelecionada = null;
                 return;
             }
 
             if (!object.Equals(UnidadeSelecionada, null) && UnidadeSelecionada.Descricao.Equals(TextoUnidade))
             {
+                prontoPraSalvarUnidade = true;
                 return;
             }
 
-            Unidade u = new Unidade() { Descricao = TextoUnidade };
-            Unidades.Add(u);
-            UnidadeSelecionada = u;
+            MessageDialogResult resultado = DialogCoordinator.ShowModalMessageExternal(this, "Unidade", "Unidade selecionada não existe. Deseja criar nova unidade?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
 
-            SalvarUnidadeNoBanco(u);
+            if (resultado == MessageDialogResult.Affirmative)
+            {
+                prontoPraSalvarUnidade = true;
+
+                Unidade u = new Unidade() { Descricao = TextoUnidade };
+                Unidades.Add(u);
+                UnidadeSelecionada = u;
+
+                u.Save();
+                return;
+            }
+
+            prontoPraSalvarUnidade = false;
 
         }
 
@@ -257,6 +277,11 @@ namespace SisMaper.ViewModel
         {
             CheckCategoria();
             CheckUnidade();
+
+            if(!prontoPraSalvarCategoria || ! prontoPraSalvarUnidade)
+            {
+                return;
+            }
 
             PList<Lote> listaLotesPraAdicionar = new PList<Lote>();
 

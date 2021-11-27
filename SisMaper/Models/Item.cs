@@ -19,7 +19,7 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.Real, Length = 20, Precision = 10)]
         public double Quantidade { get; set; }
 
-        [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
+        [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2, FieldName = "ValorTotal")]
         public decimal Valor { get; set; }
 
         [Field(FieldType = SqlDbType.Int)]

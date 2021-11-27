@@ -30,15 +30,8 @@ namespace SisMaper.Views
 
         private void SetActions()
         {
-            if(DataContext is IFaturas vm)
+            if(DataContext is IRecebimento vm)
             {
-                vm.OpenNovaFatura += () =>
-                {
-                    new ViewFatura() { DataContext = new FaturaViewModel(null) }.ShowDialog();
-                    DataContext = new RecebimentosViewModel();
-                    SetActions();
-                };
-
                 vm.OpenEditarFatura += () =>
                 {
                     new ViewFatura() { DataContext = new FaturaViewModel(FaturasDataGrid.SelectedItem) }.ShowDialog();

@@ -1,11 +1,12 @@
-﻿<mah:MetroWindow
+﻿<mah:MetroWindow 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:local="clr-namespace:SisMaper.Views"
-    xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
+    xmlns:viewmodel="clr-namespace:SisMaper.ViewModel"
     x:Class="SisMaper.Views.ViewFatura"
     mc:Ignorable="d"
     Title="Fatura - 00001"
@@ -13,6 +14,8 @@
     Height="599"
     Width="812"
     SaveWindowPosition="True">
+
+    
     <mah:MetroWindow.Resources>
         <Style
             TargetType="{x:Type TextBlock}">
@@ -134,15 +137,15 @@
             </Setter>
         </Style>
     </mah:MetroWindow.Resources>
-    <Grid>
-        <DatePicker
-            FontSize="15"
+    <Grid >
+        <DatePicker IsEnabled="{Binding IsFaturaAberta}"
+            FontSize="15" IsTodayHighlighted="true" Focusable="false"
             HorizontalAlignment="Right"
             Margin="0,25,20,0"
-            SelectedDate="2021/05/15"
+            SelectedDate="{Binding Fatura.Data}"
             VerticalAlignment="Top"
             Height="30"
-            Width="211" />
+            Width="211"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="26,75,0,0"
@@ -156,13 +159,16 @@
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,84,20" />
+            Margin="0,0,84,20" 
+            PreviewMouseLeftButtonDown="CloseWindow"/>
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,20,20" />
+            Margin="0,0,20,20" 
+            CommandParameter="{Binding}"
+            Command="{Binding Salvar}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="26,29,0,0"
@@ -187,18 +193,18 @@
             IsEnabled="False"
             Style="{DynamicResource TextBoxStyle1}"
             HorizontalAlignment="Right"
-            Margin="0,24,410,0"
+            Margin="0,24,396,0"
             TextWrapping="Wrap"
-            Text="Aberto"
+            Text="{Binding Fatura.Status}"
             VerticalAlignment="Top"
-            Width="66" />
+            Width="80" />
         <TextBox
             IsEnabled="False"
             Style="{DynamicResource TextBoxStyle1}"
             HorizontalAlignment="Left"
             Margin="151,24,0,0"
             TextWrapping="Wrap"
-            Text="00001"
+            Text="{Binding Fatura.Id}"
             VerticalAlignment="Top"
             Width="66" />
         <TabControl
@@ -212,15 +218,15 @@
             <TabItem
                 Header="   Parcelas   "
                 mah:HeaderedControlHelper.HeaderBackground="Black">
-                <Grid>
-                    <DataGrid
+                <Grid IsEnabled="{Binding IsFaturaAberta}">
+                    <DataGrid x:Name="ParcelasDataGrid"
                         BorderThickness="1"
                         Style="{DynamicResource MahApps.Styles.DataGrid}"
                         HorizontalContentAlignment="Stretch"
                         ColumnWidth="*"
-                        x:Name="Parcelas"
                         AutoGenerateColumns="False"
-                        ItemsSource="{Binding}"
+                        ItemsSource="{Binding Fatura.Parcelas}"
+                        SelectedItem="{Binding ParcelaSelecionada}"
                         CanUserAddRows="False"
                         Height="auto"
                         Width="auto"
@@ -262,7 +268,9 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         PreviewMouseLeftButtonDown="AdicionarParcela"
-                        Margin="10,10,0,0" />
+                        Margin="10,10,0,0" 
+                        CommandParameter="{Binding}"
+                        Command="{Binding NovaParcela}"/>
                     <TextBox
                         IsEnabled="False"
                         x:Name="ValorTotal"
@@ -299,38 +307,101 @@
             </TabItem>
             <TabItem
                 Header="   Pedidos Referenciados   ">
-                <Grid />
+                <Grid IsEnabled="{Binding IsFaturaAberta}">
+                    <DataGrid
+                        BorderThickness="1"
+                        Style="{DynamicResource MahApps.Styles.DataGrid}"
+                        HorizontalContentAlignment="Stretch"
+                        ColumnWidth="*"
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding Fatura.Pedidos}"
+                        SelectedItem="{Binding PedidoSelecionado}"
+                        CanUserAddRows="False"
+                        Height="auto"
+                        Width="auto"
+                        Margin="10,62,10,34"
+                        BorderBrush="#FFD2D2D2">
+                        <DataGrid.Columns>
+                            <mah:DataGridNumericUpDownColumn
+                                Width="50*"
+                                Header="Cliente"
+                                Binding="{Binding Cliente}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="20*"
+                                Header="Data"
+                                Binding="{Binding Data}"
+                                IsReadOnly="True" />
+                            <mah:DataGridNumericUpDownColumn
+                                Width="25*"
+                                Header="Valor(R$)"
+                                StringFormat="{}{0:N2}"
+                                Culture="pt-BR"
+                                Binding="{Binding ValorTotal}"
+                                IsReadOnly="false" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button
+                        Style="{DynamicResource OptionsButtonStyle}"
+                        Content="Remover"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        PreviewMouseLeftButtonDown="AdicionarParcela"
+                        Margin="10,10,0,0" />
+                    <TextBox
+                        IsEnabled="False"
+                        Style="{DynamicResource TextBoxStyle1}"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,10,1"
+                        TextWrapping="Wrap"
+                        Text="R$ 0,00"
+                        VerticalAlignment="Bottom"
+                        Width="119"
+                        HorizontalContentAlignment="Right"
+                        VerticalContentAlignment="Bottom" />
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        Margin="0,0,134,8"
+                        VerticalAlignment="Bottom"
+                        RenderTransformOrigin="0.529,-0.024"><Run
+                            Language="pt-br"
+                            Text="Valor Total" /></TextBlock>
+                </Grid>
             </TabItem>
         </TabControl>
-        <ComboBox
+        <ComboBox ItemsSource="{Binding Clientes}" x:Name="ClientesComboBox"
             Grid.Row="0"
-            x:Name="cmbCliente"
-            IsEnabled="false"
-            Text="Tarcísio Mazur Junior"
+            IsEnabled="{Binding IsFaturaAberta}"
+            SelectedItem="{Binding ClienteSelecionado, Mode=TwoWay}"
+            DisplayMemberPath="Nome"
             Height="32"
             Margin="96,70,410,0"
             FontSize="16"
             mah:TextBoxHelper.Watermark="Buscar Cliente"
-            DisplayMemberPath="Nome"
-            IsEditable="True"
+            IsEditable="false" 
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
             Grid.IsSharedSizeScope="True"
             VerticalAlignment="Top" />
-        <Button
+        
+        <Button x:Name="ChangeFaturaButton"
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Encerrar Fatura"
-            IsEnabled="false"
+            CommandParameter="{Binding}"
+            Command="{Binding AlterarFatura}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="20,0,0,20" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" />
-        <iconpacks:PackIconMaterial
+
+        <iconpacks:PackIconMaterial  MouseLeftButtonDown="OpenViewCliente"
             Kind="AccountDetails"
             Margin="0,75,375,0"
             Height="24"
             Width="23"
-            Foreground="#FF939393"
-            HorizontalAlignment="Right" />
+            Foreground="Black"
+            HorizontalAlignment="Right">
+        </iconpacks:PackIconMaterial>
+
     </Grid>
 </mah:MetroWindow>

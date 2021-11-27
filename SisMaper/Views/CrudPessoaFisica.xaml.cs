@@ -22,11 +22,15 @@ namespace SisMaper.Views
     public partial class CrudPessoaFisica : MetroWindow
     {
         public bool isSelectedPessoaFisicaTab { get; set; }
+        public bool IsGridEnabled { get; set; }
+        
 
         public CrudPessoaFisica()
         {
-            InitializeComponent();
+            IsGridEnabled = true;
 
+            InitializeComponent();
+            
             Loaded += CrudPessoaFisica_Loaded;
         }
 
@@ -36,6 +40,8 @@ namespace SisMaper.Views
 
         private void CrudPessoaFisica_Loaded(object sender, RoutedEventArgs e)
         {
+            
+
             if(isSelectedPessoaFisicaTab)
             {
                 PessoaFisicaTabItem.IsSelected = true;
@@ -52,6 +58,8 @@ namespace SisMaper.Views
             {
                 vm.SaveCliente += () => Close();
             }
+
+            grid.IsEnabled = IsGridEnabled;
 
         }
 
