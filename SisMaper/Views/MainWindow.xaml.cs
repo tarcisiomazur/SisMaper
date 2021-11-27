@@ -307,5 +307,16 @@ namespace SisMaper.Views
             viewFatura.Owner = this;
             viewFatura.Show();
         }
+
+        private void Configuações_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        private void OpenConfig(object sender, RoutedEventArgs e)
+        {
+            new ViewConfiguracoes(Main.Empresa).ShowDialog();
+            e.Handled = true;
+        }
     }
 }

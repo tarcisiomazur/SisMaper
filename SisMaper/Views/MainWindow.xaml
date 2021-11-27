@@ -849,6 +849,7 @@
             </TabItem>
             <TabItem
                 x:Name="Configuações"
+                PreviewMouseLeftButtonDown="OpenConfig"
                 Style="{DynamicResource MainWindow.TabItem.Menu}">
                 <TabItem.HeaderTemplate>
                     <ItemContainerTemplate>
@@ -864,6 +865,7 @@
                         </StackPanel>
                     </ItemContainerTemplate>
                 </TabItem.HeaderTemplate>
+
             </TabItem>
         </TabControl>
 
@@ -876,12 +878,12 @@
                     <Button
                         Style="{DynamicResource MahApps.Styles.Button.WindowCommands}"
                         Content="Status"
-                        Margin="1220,0,72,0" />
+                        Margin="1209,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     <Label
                         Content="Versão: 1.1.0"
-                        HorizontalAlignment="Left"
+                        HorizontalAlignment="Right"
                         Margin="1262,0,0,0"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Bottom"
                         Height="16"
                         Width="92"
                         Padding="0,0,0,0"

@@ -18,10 +18,16 @@
     
     <tools:DecimalToRealString
         x:Key="DecimalToRealString" />
-    <tools:PedidoStatusToBooleanIsEditable
+    <tools:PedidoStatusToBoolean IsEditable="True"
         x:Key="PedidoStatusIsEditable" />
-    <tools:FaturaStatusToBooleanIsEditable
+    <tools:PedidoStatusToBoolean IsEditable="False"
+        x:Key="PedidoStatusIsReadOnly" />
+    <tools:FaturaStatusToBooleanIsEditable IsEditable="True"
         x:Key="FaturaStatusIsEditable" />
+    <tools:FaturaStatusToBooleanIsEditable IsEditable="False"
+        x:Key="FaturaStatusIsReadOnly" />
+    <tools:MyRSAConverter 
+        x:Key="RSAConverter" />
     <SolidColorBrush x:Key="SisMaper.Dark.Theme" Color="#FF18343F"/>
     <SolidColorBrush x:Key="SisMaper.Ligth.Theme" Color="Turquoise"/>
     <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6" />

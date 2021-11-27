@@ -1,0 +1,121 @@
+﻿<mah:MetroWindow
+    x:Name="this"
+    x:Class="SisMaper.Views.ViewConfiguracoes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:local="clr-namespace:SisMaper.Views"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    Dialog:DialogParticipation.Register="{Binding}"
+    mc:Ignorable="d"
+    Title="{Binding Empresa.Razao_Social, StringFormat='Configurações - {0}'}"
+    MinHeight="450"
+    MinWidth="708"
+    MaxHeight="450"
+    MaxWidth="708"
+    SaveWindowPosition="True"
+    DataContext="{Binding ElementName=this}">
+    <Grid Margin="1,0,-1,0">
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="28,99,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Height="23"
+            Width="92" FontSize="14"><Run Language="pt-br" Text="Razão Social"/></TextBlock>
+
+        <xctk:MaskedTextBox
+            Style="{StaticResource MahApps.Styles.TextBox}"
+            Mask="00\.000\.000/0000-00"
+            HorizontalAlignment="Left"
+            Margin="125,96,0,0"
+            Text="{Binding Empresa.CNPJ, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+            VerticalAlignment="Top"
+            Width="196" Height="30" UndoLimit="99" FontSize="14" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="28,140,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Height="22"
+            Width="92" FontSize="14"><Run Language="pt-br" Text="Consumer Key"/></TextBlock>
+        <PasswordBox
+            x:Name="ConsumerKey"
+            HorizontalAlignment="Left"
+            Margin="125,136,0,0"
+            VerticalAlignment="Top"
+            mah:TextBoxHelper.SelectAllOnFocus="true"
+            Width="196" Height="30" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="28,182,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Height="24"
+            Width="92" FontSize="14"><Run Text="Access Token"/><LineBreak/><Run/></TextBlock>
+        <PasswordBox
+            x:Name="Token"
+            Style="{StaticResource MahApps.Styles.PasswordBox}"
+            HorizontalAlignment="Left"
+            Margin="125,178,0,0"
+            VerticalAlignment="Top"
+            mah:TextBoxHelper.SelectAllOnFocus="true"
+            Width="196" Height="30" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="354,140,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Height="24"
+            Width="111" FontSize="14"><Run Text="Consumer Secret"/><LineBreak/><Run/></TextBlock>
+        <PasswordBox
+            x:Name="ConsumerSecret"
+            HorizontalAlignment="Left"
+            Margin="481,136,0,0"
+            VerticalAlignment="Top"
+            mah:TextBoxHelper.SelectAllOnFocus="true"
+            Width="196" Height="30" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="354,182,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Height="24"
+            Width="126" Text="Access Token Secret" FontSize="14"/>
+        <PasswordBox
+            x:Name="TokenSecret"
+            HorizontalAlignment="Left"
+            Margin="481,178,0,0"
+            VerticalAlignment="Top"
+            mah:TextBoxHelper.SelectAllOnFocus="true"
+            Width="196" Height="30" />
+
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Salvar"
+            PreviewMouseLeftButtonDown="Salvar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,31,25" Width="75" />
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Atualizar NCMs"
+            PreviewMouseLeftButtonDown="AtualizarNCMs"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,10,31,0" Width="123"/>
+        <Button
+            Style="{DynamicResource OptionsButtonStyle}"
+            Content="Importar PEM"
+            PreviewMouseLeftButtonDown="ImportPem"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,10,173,0" Width="123" />
+
+    </Grid>
+</mah:MetroWindow>

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using MvvmCross.Core.ViewModels;
 using Persistence;
+using SisMaper.API.WebMania;
 using SisMaper.Models;
 using SisMaper.Tools;
 using SisMaper.Views;
@@ -39,14 +40,20 @@ namespace SisMaper.ViewModel
             o => Pedido?.Cliente is not null && Pedido?.Status == Pedido.Pedido_Status.Aberto);
 
         public SimpleCommand AdicionarCliente => new(NewCliente);
+        public SimpleCommand EmitirNF => new(NewNF);
 
         public SimpleCommand AdicionarClienteContextMenu =>
-            new(NewClienteContextMenu, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
+            new(ShowContextMenu, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
 
-        public SimpleCommand MouseLeave => new(MouseLeaveContextMenu);
+        public SimpleCommand EmitirNotaFiscalContextMenu =>
+            new(ShowContextMenu, _ => Pedido?.Status == Pedido.Pedido_Status.Fechado);
+
         public SimpleCommand Salvar => new(SavePedido, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
         public SimpleCommand Cancelar => new(CancelPedido, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
-        public SimpleCommand Receber => new(ReceberPedido, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
+
+        public SimpleCommand Receber => new(ReceberPedido,
+            _ => Pedido?.Status == Pedido.Pedido_Status.Aberto && Pedido?.Itens.Count > 0);
+
         public SimpleCommand OpenBuscarProduto => new(AbrirBuscarProduto);
 
         private IDialogCoordinator DialogCoordinator;
@@ -54,6 +61,10 @@ namespace SisMaper.ViewModel
         private PersistenceContext PersistenceContext { get; set; }
 
         public string StringQuantidade { get; set; }
+
+        public bool IsDataGridEditable => false;
+
+        public Uri DANFE { get; set; }
 
         public PedidoViewModel()
         {
@@ -95,6 +106,12 @@ namespace SisMaper.ViewModel
 
         private void SavePedido()
         {
+            if (Pedido.Itens.Count == 0)
+            {
+                DialogCoordinator.ShowMessageAsync(this, "Salvar Pedido", "O pedido deve conter um ou mais itens!");
+                return;
+            }
+
             try
             {
                 if (!Pedido.Save())
@@ -301,17 +318,43 @@ namespace SisMaper.ViewModel
             }
         }
 
-        private void MouseLeaveContextMenu(object obj)
+        private void NewNF(object obj)
         {
-            ((Menu) obj).Visibility = Visibility.Hidden;
+            var isNFC = obj.Equals("NFC-e");
+            Pedido.NotasFiscais.Load();
+            DANFE = new Uri(@"E:/Downloads/202109180159288929420211018.pdf");
+            if (Pedido.NotasFiscais.FirstOrDefault(n => n.Situacao.BeEmitted()) is { } _nf)
+            {
+                DialogCoordinator.ShowMessageAsync(this, "Emitir Nota Fiscal",
+                    $"O pedido possui uma Nota Fiscal {_nf.Serie}-{_nf.Chave} " +
+                    (_nf.Situacao.IsAprovado()
+                        ? $"Aprovada"
+                        : $" com a situação {_nf.Situacao}. Caso deseje reemitir, atualize a Nota Fiscal antes de uma nova emissão!"));
+                return;
+            }
+
+            if (isNFC)
+            {
+                var nf = new NotaFiscal();
+                var api_nf = new NotaFiscalConsumidor(nf);
+                var result = api_nf.BuildJsonDefault();
+                MessageBox.Show(api_nf.Json, result);
+                ///TODO Emitir NFCe
+            }
+            else
+            {
+                var nf = new NotaFiscal();
+                var api_nf = new NotaFiscalEletronica(nf);
+                var result = api_nf.BuildJsonDefault();
+                MessageBox.Show(api_nf.Json, result);
+                ///TODO Emitir NFe
+            }
         }
 
-        private void NewClienteContextMenu(object obj)
+        private void ShowContextMenu(object obj)
         {
-            if (obj is Menu menu)
-            {
-                menu.Visibility = Visibility.Visible;
-            }
+            if (obj is Button {ContextMenu: { }} button)
+                button.ContextMenu.IsOpen = true;
         }
 
         private void EditCliente()

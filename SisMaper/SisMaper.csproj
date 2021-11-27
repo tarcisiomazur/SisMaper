@@ -36,6 +36,8 @@
     <Resource Include="Images\Edit.png" />
     <Resource Include="Images\Delete.png" />
     <Resource Include="Images\Add.png" />
+    <Resource Include="Images\nfce.png" />
+    <Resource Include="Images\nfe.png" />
   </ItemGroup>
 
   <ItemGroup>

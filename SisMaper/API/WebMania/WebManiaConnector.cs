@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 using SisMaper.Models;
+using SisMaper.Tools;
 
 namespace SisMaper.API.WebMania
 {
@@ -7,19 +8,33 @@ namespace SisMaper.API.WebMania
     public static class WebManiaConnector
     {
         private static readonly RestClient Client;
+        private const string URL = "https://webmaniabr.com/api/1/nfe/emissao/";
+        
+        private static string ACCESS_TOKEN_SECRET;
+        private static string ACCESS_TOKEN;
+        private static string CONSUMER_SECRET;
+        private static string CONSUMER_KEY;
 
         static WebManiaConnector()
         {
-            Client = new RestClient("https://webmaniabr.com/api/1/nfe/emissao/");
+            Client = new RestClient(URL);
+        }
+
+        public static void Init(Configuracoes empresa)
+        {
+            ACCESS_TOKEN_SECRET = Encrypt.RSADecryption(empresa.ACCESS_TOKEN_SECRET);
+            ACCESS_TOKEN = Encrypt.RSADecryption(empresa.ACCESS_TOKEN);
+            CONSUMER_SECRET = Encrypt.RSADecryption(empresa.CONSUMER_SECRET);
+            CONSUMER_KEY = Encrypt.RSADecryption(empresa.CONSUMER_KEY);
         }
         
         public static RestRequest BuildRequest()
         {
             var request = new RestRequest(Method.POST);
-            request.AddHeader("x-access-token-secret", "SEU_ACCESS_TOKEN_SECRET");
-            request.AddHeader("x-access-token", "SEU_ACCESS_TOKEN");
-            request.AddHeader("x-consumer-secret", "SEU_CONSUMER_SECRET");
-            request.AddHeader("x-consumer-key", "SEU_CONSUMER_KEY");
+            request.AddHeader("x-access-token-secret", ACCESS_TOKEN_SECRET);
+            request.AddHeader("x-access-token", ACCESS_TOKEN);
+            request.AddHeader("x-consumer-secret", CONSUMER_SECRET);
+            request.AddHeader("x-consumer-key", CONSUMER_KEY);
             request.AddHeader("content-type", "application/json");
             request.AddHeader("cache-control", "no-cache");
             return request;
@@ -44,7 +59,7 @@ namespace SisMaper.API.WebMania
             }
             var request = BuildRequest();
             
-            request.AddParameter("undefined",json, ParameterType.RequestBody);
+            request.AddParameter("undefined", json, ParameterType.RequestBody);
             IRestResponse response = Client.Execute(request);
             return response;
         }

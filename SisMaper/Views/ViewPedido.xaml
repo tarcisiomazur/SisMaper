@@ -184,7 +184,7 @@
         <Button
             Margin="0,70,336,0"
             Command="{Binding AdicionarClienteContextMenu}"
-            CommandParameter="{Binding ElementName=Menu}"
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
             Focusable="False"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
@@ -198,48 +198,35 @@
                     Foreground="#FF939393"
                     HorizontalAlignment="Left" />
             </StackPanel>
+            <Button.ContextMenu>
+                <ContextMenu
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    BorderThickness="1"
+                    Background="White"
+                    Panel.ZIndex="1"
+                    BorderBrush="DarkGray">
+                    <MenuItem
+                        Header="Pessoa Física"
+                        Command="{Binding AdicionarCliente}"
+                        CommandParameter="PF">
+                        <MenuItem.Icon>
+                            <iconpacks:PackIconOcticons
+                                Kind="Person" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Header="Pessoa Jurídica"
+                        Command="{Binding AdicionarCliente}"
+                        CommandParameter="PJ">
+                        <MenuItem.Icon>
+                            <iconpacks:PackIconOcticons
+                                Kind="Organization" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Button.ContextMenu>
         </Button>
-        <Menu
-            x:Name="Menu"
-            Visibility="Hidden"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Width="140"
-            BorderThickness="1"
-            Margin="0,81,196,0"
-            Background="White"
-            Panel.ZIndex="1"
-            BorderBrush="DarkGray">
-            <i:Interaction.Triggers>
-                <i:EventTrigger
-                    EventName="MouseLeave">
-                    <i:InvokeCommandAction
-                        Command="{Binding MouseLeave}"
-                        CommandParameter="{Binding ElementName=Menu}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-
-            <MenuItem
-                Header="Pessoa Física"
-                Command="{Binding AdicionarCliente}"
-                CommandParameter="PF"
-                Width="138">
-                <MenuItem.Icon>
-                    <iconpacks:PackIconOcticons
-                        Kind="Person" />
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem
-                Header="Pessoa Jurídica"
-                Command="{Binding AdicionarCliente}"
-                CommandParameter="PJ"
-                Width="138">
-                <MenuItem.Icon>
-                    <iconpacks:PackIconOcticons
-                        Kind="Organization" />
-                </MenuItem.Icon>
-            </MenuItem>
-        </Menu>
 
         <TextBlock
             HorizontalAlignment="Right"
@@ -284,12 +271,11 @@
             <TabItem
                 Header="  Itens  "
                 mah:HeaderedControlHelper.HeaderBackground="Black">
-                <Grid
-                    IsEnabled="{Binding Pedido.Status, Mode=OneWay, Converter={StaticResource PedidoStatusIsEditable}}">
+                <Grid>
                     <ComboBox
                         Grid.Row="0"
-                        x:Name="cmbProduto"
                         VerticalAlignment="Top"
+                        IsReadOnly="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsReadOnly}}"
                         Height="32"
                         Margin="10,10,296,0"
                         FontSize="16"
@@ -301,7 +287,7 @@
                         mah:TextBoxHelper.WatermarkAlignment="Right"
                         mah:TextBoxHelper.AutoWatermark="True"
                         mah:TextBoxHelper.Watermark="Buscar Produto"
-                        Grid.IsSharedSizeScope="True">
+                        Grid.IsSharedSizeScope="True" AlternationCount="2">
                         <i:Interaction.Triggers>
                             <i:EventTrigger
                                 EventName="PreviewKeyDown">
@@ -317,6 +303,7 @@
                         TextWrapping="Wrap"
                         VerticalAlignment="Top"
                         Width="106"
+                        IsReadOnly="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsReadOnly}}"
                         mah:TextBoxHelper.Watermark="Quantidade"
                         InputScope="Number"
                         Text="{Binding StringQuantidade}"
@@ -336,6 +323,7 @@
                     </TextBox>
                     <Button
                         Style="{DynamicResource OptionsButtonStyle}"
+                        IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
                         Content="Adicionar"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
@@ -350,6 +338,7 @@
                         Style="{DynamicResource MahApps.Styles.DataGrid}"
                         HorizontalContentAlignment="Stretch"
                         ColumnWidth="*"
+                        IsReadOnly="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsReadOnly}}"
                         AutoGenerateColumns="False"
                         ItemsSource="{Binding Pedido.Itens, UpdateSourceTrigger=PropertyChanged}"
                         CanUserAddRows="False"
@@ -361,8 +350,7 @@
                             <mah:DataGridNumericUpDownColumn
                                 Width="17*"
                                 Header="Qtde"
-                                Minimum="0"
-                                Interval="0.1"
+                                Minimum="0.0001"
                                 Binding="{Binding Quantidade, UpdateSourceTrigger=LostFocus}"
                                 IsReadOnly="False" />
                             <DataGridTextColumn
@@ -391,7 +379,7 @@
                                 Interval="0.1"
                                 Culture="pt-BR"
                                 Binding="{Binding DescontoPorcentagem, UpdateSourceTrigger=LostFocus}"
-                                IsReadOnly="false" />
+                                IsReadOnly="False" />
                             <mah:DataGridNumericUpDownColumn
                                 Width="35*"
                                 Header="Total(R$)"
@@ -447,35 +435,39 @@
                             Text="Valor Total" />
                     </TextBlock>
                     <Button
-            Margin="0,10,257,0"
-            Command="{Binding OpenBuscarProduto}"
-            Focusable="False"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Width="34"
-            Height="33">
+                        Margin="0,10,257,0"
+                        Command="{Binding OpenBuscarProduto}"
+                        Focusable="False"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Width="34"
+                        Height="33">
                         <StackPanel>
                             <iconpacks:PackIconMaterial
-                    Kind="MagnifyPlus"
-                    Height="19"
-                    Width="19"
-                    Foreground="#FF939393"
-                    HorizontalAlignment="Left" />
+                                Kind="MagnifyPlus"
+                                Height="19"
+                                Width="19"
+                                Foreground="#FF939393"
+                                HorizontalAlignment="Left" />
                         </StackPanel>
                     </Button>
                 </Grid>
             </TabItem>
-            <TabItem 
+            <TabItem
+                d:Visibility="Visible"
+                Visibility="{Binding HasFatura, Converter={StaticResource BooleanToVisibilityConverter}}"
                 IsSelected="{Binding FaturaTabItemIsSelected}"
-                Header="  Fatura  ">
+                Header="  Financeiro  ">
                 <Grid>
                     <TextBlock
                         HorizontalAlignment="Left"
                         Margin="6,10,0,0"
                         TextWrapping="Wrap"
-                        VerticalAlignment="Top"><Run
+                        VerticalAlignment="Top">
+                        <Run
                             Language="pt-br"
-                            Text="Número Fatura" /></TextBlock>
+                            Text="Número Fatura" />
+                    </TextBlock>
                     <TextBox
                         IsEnabled="False"
                         Style="{DynamicResource TextBoxStyle1}"
@@ -529,9 +521,10 @@
                         <TabItem
                             Header="   Parcelas   "
                             mah:HeaderedControlHelper.HeaderBackground="Black">
-                            <Grid IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}">
+                            <Grid>
                                 <DataGrid
                                     x:Name="DataGridParcelas"
+                                    IsReadOnly="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsReadOnly}}"
                                     BorderThickness="1"
                                     Style="{DynamicResource MahApps.Styles.DataGrid}"
                                     HorizontalContentAlignment="Stretch"
@@ -579,7 +572,8 @@
                                     Content="Adicionar"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Margin="10,8,0,0" />
+                                    Margin="10,8,0,0"
+                                    IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
                                 <TextBox
                                     IsEnabled="False"
                                     x:Name="ValorTotal"
@@ -588,7 +582,7 @@
                                     Margin="0,0,10,1"
                                     TextWrapping="Wrap"
                                     Text="{Binding Pedido.ValorTotal, ConverterCulture=pt-BR, Mode=OneWay, StringFormat=R$ #\,##0.00, UpdateSourceTrigger=PropertyChanged}"
-                       
+
                                     VerticalAlignment="Bottom"
                                     Width="119"
                                     HorizontalContentAlignment="Right"
@@ -599,19 +593,21 @@
                                     Text="Valor Fatura"
                                     RenderTransformOrigin="0.529,-0.024"
                                     Height="21"
-                                    VerticalAlignment="Bottom"/>
+                                    VerticalAlignment="Bottom" />
                                 <Button
                                     Style="{DynamicResource OptionsButtonStyle}"
                                     Content="Receber"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Margin="96,8,0,0" />
+                                    Margin="96,8,0,0"
+                                    IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
                                 <Button
                                     Style="{DynamicResource OptionsButtonStyle}"
                                     Content="Remover"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Margin="172,8,0,0" />
+                                    Margin="172,8,0,0"
+                                    IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
                                 <Button
                                     Style="{DynamicResource OptionsButtonStyle}"
                                     Content="Encerrar Fatura"
@@ -619,7 +615,8 @@
                                     VerticalAlignment="Bottom"
                                     Margin="10,0,0,2"
                                     HorizontalContentAlignment="Left"
-                                    VerticalContentAlignment="Bottom" />
+                                    VerticalContentAlignment="Bottom"
+                                    IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
 
                             </Grid>
                         </TabItem>
@@ -627,9 +624,10 @@
                 </Grid>
             </TabItem>
             <TabItem
-                Visibility="{Binding HasNotaFiscal, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Header="  Nota Fiscal  ">
-                <Grid />
+                <Grid>
+                    <WebBrowser templates:WebBrowserUtility.BindableSource="{Binding DANFE}" Margin="278,0,0,0"/>
+                </Grid>
             </TabItem>
         </TabControl>
         <Button
@@ -638,20 +636,56 @@
             Command="{Binding Receber}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Margin="20,0,0,20" Width="96" />
+            Margin="20,0,0,20"
+            Width="77" />
         <Button
+            Content="Emitir Nota Fiscal"
             Style="{DynamicResource OptionsButtonStyle}"
-            Content="Imprimir"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Margin="121,0,0,20" Width="79" />
+            Margin="111,0,0,20"
+            Width="138"
+            Command="{Binding EmitirNotaFiscalContextMenu}"
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+            <Button.ContextMenu>
+                <ContextMenu
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    BorderThickness="1"
+                    Background="White"
+                    Panel.ZIndex="1"
+                    BorderBrush="DarkGray">
+                    <MenuItem
+                        Header="Nota Fiscal Eletrônica"
+                        Command="{Binding EmitirNF}"
+                        CommandParameter="NF-e">
+                        <MenuItem.Icon>
+                            <Image
+                                Height="25"
+                                Width="25"
+                                Source="/Images/nfe.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem
+                        Header="Nota Fiscal do Consumidor"
+                        Command="{Binding EmitirNF}"
+                        CommandParameter="NFC-e">
+                        <MenuItem.Icon>
+                            <Image
+                                Height="25"
+                                Width="25"
+                                Source="/Images/nfce.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding Cancelar}"
-            CommandParameter="{Binding ''}"
             Margin="0,0,84,20" />
         <Button
             Style="{DynamicResource OptionsButtonStyle}"
@@ -659,7 +693,6 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding Salvar}"
-            CommandParameter="{Binding ''}"
             Margin="0,0,20,20" />
 
 

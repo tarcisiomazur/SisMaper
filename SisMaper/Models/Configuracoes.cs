@@ -23,5 +23,16 @@ namespace SisMaper.Models
 
         [ManyToOne] public Cidade Cidade { get; set; }
 
+        [Field(FieldType = SqlDbType.VarChar, Length = 344)]
+        public string ACCESS_TOKEN_SECRET { get; set; }
+
+        [Field(FieldType = SqlDbType.VarChar, Length = 344)]
+        public string ACCESS_TOKEN { get; set; }
+
+        [Field(FieldType = SqlDbType.VarChar, Length = 344)]
+        public string CONSUMER_SECRET { get; set; }
+
+        [Field(FieldType = SqlDbType.VarChar, Length = 344)]
+        public string CONSUMER_KEY { get; set; }
     }
 }

@@ -1,10 +1,6 @@
 ﻿using Persistence;
 using SisMaper.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SisMaper.ViewModel
 {
@@ -34,7 +30,7 @@ namespace SisMaper.ViewModel
 
             foreach(Fatura f in Faturas)
             {
-                f?.Cliente.Load();
+                f?.Cliente?.Load();
             }
 
             EditarFatura = new EditarFaturaCommand();
