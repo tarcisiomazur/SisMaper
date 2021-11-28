@@ -1,97 +1,196 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
-    
-                    xmlns:tools="clr-namespace:SisMaper.Tools"
-                    >
-    <Style x:Key="FocusVisualButton">
-        <Setter Property="Control.Template">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+
+    xmlns:tools="clr-namespace:SisMaper.Tools">
+    <Style
+        x:Key="FocusVisualButton">
+        <Setter
+            Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle Margin="2" SnapsToDevicePixels="true"
-                               Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
-                               StrokeThickness="1" StrokeDashArray="1 2" />
+                    <Rectangle
+                        Margin="2"
+                        SnapsToDevicePixels="true"
+                        Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                        StrokeThickness="1"
+                        StrokeDashArray="1 2" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <tools:DecimalToRealString
         x:Key="DecimalToRealString" />
-    <tools:PedidoStatusToBoolean IsEditable="True"
+    <tools:PedidoStatusToBoolean
+        IsEditable="True"
         x:Key="PedidoStatusIsEditable" />
-    <tools:PedidoStatusToBoolean IsEditable="False"
+    <tools:PedidoStatusToBoolean
+        IsEditable="False"
         x:Key="PedidoStatusIsReadOnly" />
-    <tools:FaturaStatusToBooleanIsEditable IsEditable="True"
+    <tools:FaturaStatusToBooleanIsEditable
+        IsEditable="True"
         x:Key="FaturaStatusIsEditable" />
-    <tools:FaturaStatusToBooleanIsEditable IsEditable="False"
+    <tools:FaturaStatusToBooleanIsEditable
+        IsEditable="False"
         x:Key="FaturaStatusIsReadOnly" />
-    <tools:MyRSAConverter 
+    <tools:MyRSAConverter
         x:Key="RSAConverter" />
-    <SolidColorBrush x:Key="SisMaper.Dark.Theme" Color="#FF18343F"/>
-    <SolidColorBrush x:Key="SisMaper.Ligth.Theme" Color="Turquoise"/>
-    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6" />
-    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4" />
-    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5" />
-    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383" />
-    <Style x:Key="LoginButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource FocusVisual}" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="1" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Template">
+    <SolidColorBrush
+        x:Key="SisMaper.Dark.Theme"
+        Color="#FF18343F" />
+    <SolidColorBrush
+        x:Key="SisMaper.Ligth.Theme"
+        Color="Turquoise" />
+    <SolidColorBrush
+        x:Key="Button.Pressed.Background"
+        Color="#FFC4E5F6" />
+    <SolidColorBrush
+        x:Key="Button.Disabled.Background"
+        Color="#FFF4F4F4" />
+    <SolidColorBrush
+        x:Key="Button.Disabled.Border"
+        Color="#FFADB2B5" />
+    <SolidColorBrush
+        x:Key="Button.Disabled.Foreground"
+        Color="#FF838383" />
+
+    <Style
+        x:Key="RightGridHeaderStyle"
+        TargetType="DataGridColumnHeader"
+        BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}">
+        <Setter
+            Property="HorizontalContentAlignment"
+            Value="Right" />
+    </Style>
+    <Style
+        x:Key="LoginButtonStyle"
+        TargetType="{x:Type Button}">
+        <Setter
+            Property="FocusVisualStyle"
+            Value="{DynamicResource FocusVisual}" />
+        <Setter
+            Property="Foreground"
+            Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter
+            Property="HorizontalContentAlignment"
+            Value="Center" />
+        <Setter
+            Property="VerticalContentAlignment"
+            Value="Center" />
+        <Setter
+            Property="Padding"
+            Value="1" />
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="FontFamily"
+            Value="Segoe UI" />
+        <Setter
+            Property="FontWeight"
+            Value="Bold" />
+        <Setter
+            Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="border" CornerRadius="3,3,3,3" BorderBrush="{TemplateBinding BorderBrush}"
-                            Background="{TemplateBinding Background}" SnapsToDevicePixels="true" Visibility="Visible">
-                        <ContentPresenter x:Name="contentPresenter" Focusable="False"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                <ControlTemplate
+                    TargetType="{x:Type Button}">
+                    <Border
+                        x:Name="border"
+                        CornerRadius="3,3,3,3"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Background="{TemplateBinding Background}"
+                        SnapsToDevicePixels="true"
+                        Visibility="Visible">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Focusable="False"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsDefaulted" Value="true">
-                            <Setter Property="BorderBrush" TargetName="border"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                        <Trigger
+                            Property="IsDefaulted"
+                            Value="true">
+                            <Setter
+                                Property="BorderBrush"
+                                TargetName="border"
+                                Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="BorderThickness" TargetName="border" Value="1" />
+                        <Trigger
+                            Property="IsMouseOver"
+                            Value="true">
+                            <Setter
+                                Property="BorderThickness"
+                                TargetName="border"
+                                Value="1" />
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Setter Property="Background" TargetName="border"
-                                    Value="{StaticResource Button.Pressed.Background}" />
+                        <Trigger
+                            Property="IsPressed"
+                            Value="true">
+                            <Setter
+                                Property="Background"
+                                TargetName="border"
+                                Value="{StaticResource Button.Pressed.Background}" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Background" TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Background}" />
-                            <Setter Property="BorderBrush" TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Border}" />
-                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter"
-                                    Value="{StaticResource Button.Disabled.Foreground}" />
+                        <Trigger
+                            Property="IsEnabled"
+                            Value="false">
+                            <Setter
+                                Property="Background"
+                                TargetName="border"
+                                Value="{StaticResource Button.Disabled.Background}" />
+                            <Setter
+                                Property="BorderBrush"
+                                TargetName="border"
+                                Value="{StaticResource Button.Disabled.Border}" />
+                            <Setter
+                                Property="TextElement.Foreground"
+                                TargetName="contentPresenter"
+                                Value="{StaticResource Button.Disabled.Foreground}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="{x:Type templates:MyToolTip}" TargetType="templates:MyToolTip">
-        <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="HasDropShadow" Value="True" />
-        <Setter Property="Foreground" Value="#5095D6" />
-        <Setter Property="Template">
+    <Style
+        x:Key="{x:Type templates:MyToolTip}"
+        TargetType="templates:MyToolTip">
+        <Setter
+            Property="OverridesDefaultStyle"
+            Value="true" />
+        <Setter
+            Property="HasDropShadow"
+            Value="True" />
+        <Setter
+            Property="Foreground"
+            Value="#5095D6" />
+        <Setter
+            Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="templates:MyToolTip">
-                    <Border CornerRadius="7" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="5"
-                            BorderThickness="3,3,3,3">
+                <ControlTemplate
+                    TargetType="templates:MyToolTip">
+                    <Border
+                        CornerRadius="7"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Padding="5"
+                        BorderThickness="3,3,3,3">
                         <Border.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#CF181818" Offset="0" />
-                                <GradientStop Color="#BE1C1C1C" Offset="1" />
+                            <LinearGradientBrush
+                                EndPoint="0.5,1"
+                                StartPoint="0.5,0">
+                                <GradientStop
+                                    Color="#CF181818"
+                                    Offset="0" />
+                                <GradientStop
+                                    Color="#BE1C1C1C"
+                                    Offset="1" />
                             </LinearGradientBrush>
                         </Border.Background>
                         <!--<Border.BorderBrush>
@@ -104,18 +203,32 @@
                             </Border.BorderBrush>-->
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.1*" />
-                                <ColumnDefinition Width="0.9*" />
+                                <ColumnDefinition
+                                    Width="0.1*" />
+                                <ColumnDefinition
+                                    Width="0.9*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition
+                                    Height="Auto" />
+                                <RowDefinition
+                                    Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Image Source="{TemplateBinding Image}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
-                                   Margin="3" MaxHeight="28" MaxWidth="28" />
-                            <TextBlock FontFamily="Tahoma" Grid.Row="0" Grid.Column="1"
-                                       FontSize="{TemplateBinding FontSize}" Text="{TemplateBinding Text}"
-                                       Foreground="{TemplateBinding Foreground}" />
+                            <Image
+                                Source="{TemplateBinding Image}"
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Margin="3"
+                                MaxHeight="28"
+                                MaxWidth="28" />
+                            <TextBlock
+                                FontFamily="Tahoma"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontSize="{TemplateBinding FontSize}"
+                                Text="{TemplateBinding Text}"
+                                Foreground="{TemplateBinding Foreground}" />
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -123,191 +236,341 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Head1" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
-        <Setter Property="FontSize" Value="16" />
+    <Style
+        x:Key="Head1"
+        TargetType="{x:Type TextBlock}"
+        BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+        <Setter
+            Property="FontSize"
+            Value="16" />
     </Style>
-    <Style x:Key="Button1" TargetType="{x:Type Button}"
-               BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Base}">
-        <Setter Property="Width" Value="75" />
-        <Setter Property="Height" Value="75" />
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="Background" Value="{StaticResource MahApps.Brushes.Gray9}" />
+    <Style
+        x:Key="Button1"
+        TargetType="{x:Type Button}"
+        BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Base}">
+        <Setter
+            Property="Width"
+            Value="75" />
+        <Setter
+            Property="Height"
+            Value="75" />
+        <Setter
+            Property="Margin"
+            Value="5" />
+        <Setter
+            Property="Background"
+            Value="{StaticResource MahApps.Brushes.Gray9}" />
         <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition
-                            Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
-                            Value="False" />
+                        Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
+                        Value="False" />
                     <Condition
-                            Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
-                            Value="False" />
+                        Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
+                        Value="False" />
                 </MultiDataTrigger.Conditions>
-                <Setter Property="Foreground" Value="{DynamicResource TabItemForegroundIsSelectedBrush}" />
+                <Setter
+                    Property="Foreground"
+                    Value="{DynamicResource TabItemForegroundIsSelectedBrush}" />
             </MultiDataTrigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="Button2" TargetType="{x:Type Button}"
-               BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Base}">
-        <Setter Property="Width" Value="75" />
-        <Setter Property="Height" Value="75" />
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="Background" Value="{StaticResource MahApps.Brushes.Gray9}" />
-        
-    </Style>
-        <Style
-            x:Key="MainWindow.ToolBarStyle"
-            TargetType="{x:Type ToolBar}">
-            <Setter
-                Property="OverridesDefaultStyle"
-                Value="true" />
-            <Setter
-                Property="SnapsToDevicePixels"
-                Value="true" />
-            <Setter
-                Property="Template">
-                <Setter.Value>
-                    <ControlTemplate
-                        TargetType="{x:Type ToolBar}">
-                        <Border
-                            x:Name="Border"
-                            Background="{DynamicResource MahApps.Brushes.Transparent}"
-                            BorderBrush="{DynamicResource MahApps.Brushes.Transparent}"
-                            BorderThickness="1"
-                            CornerRadius="2">
-                            <DockPanel>
-                                <ToggleButton
-                                    ClickMode="Press"
-                                    IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    IsEnabled="{TemplateBinding HasOverflowItems}"
-                                    Style="{StaticResource MahApps.Styles.ToggleButton.ToolBarOverflow}">
-                                    <Popup
-                                        x:Name="OverflowPopup"
-                                        AllowsTransparency="true"
-                                        Focusable="false"
-                                        IsOpen="{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Placement="Bottom"
-                                        PopupAnimation="Slide"
-                                        StaysOpen="false">
-                                        <Border
-                                            x:Name="DropDownBorder"
-                                            Background="{DynamicResource MahApps.Brushes.Control.Background}"
-                                            BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
-                                            BorderThickness="1">
-                                            <ToolBarOverflowPanel
-                                                x:Name="PART_ToolBarOverflowPanel"
-                                                FocusVisualStyle="{x:Null}"
-                                                Focusable="true"
-                                                Margin="2"
-                                                WrapWidth="200" />
-                                        </Border>
-                                    </Popup>
-                                </ToggleButton>
-                                <ToolBarPanel
-                                    x:Name="PART_ToolBarPanel"
-                                    IsItemsHost="true"
-                                    Margin="0 1 2 2" />
-                            </DockPanel>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
     <Style
-            x:Key="OptionsButtonStyle"
-            TargetType="{x:Type Button}">
+        x:Key="SisMaper.ToolBar.Button"
+        TargetType="{x:Type Button}"
+        BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Base}">
         <Setter
-                Property="FocusVisualStyle"
-                Value="{DynamicResource FocusVisual}" />
+            Property="Width"
+            Value="75" />
         <Setter
-                Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            Property="Height"
+            Value="75" />
         <Setter
-                Property="HorizontalContentAlignment"
-                Value="Center" />
+            Property="Margin"
+            Value="5" />
         <Setter
-                Property="VerticalContentAlignment"
-                Value="Center" />
-        <Setter
-                Property="Padding"
-                Value="10,4" />
-        <Setter
-                Property="FontSize"
-                Value="14" />
-        <Setter
-                Property="Height"
-                Value="31" />
-        <Setter
-                Property="Width"
-                Value="auto" />
+            Property="Background"
+            Value="{StaticResource MahApps.Brushes.Gray9}" />
 
+    </Style>
+    <Style
+        x:Key="SisMaper.MainWindow.ToolBarStyle"
+        TargetType="{x:Type ToolBar}">
         <Setter
-                Property="Template">
+            Property="OverridesDefaultStyle"
+            Value="true" />
+        <Setter
+            Property="SnapsToDevicePixels"
+            Value="true" />
+        <Setter
+            Property="Template">
             <Setter.Value>
                 <ControlTemplate
-                        TargetType="{x:Type Button}">
+                    TargetType="{x:Type ToolBar}">
                     <Border
-                            x:Name="border"
-                            CornerRadius="3,3,3,3"
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}"
-                            SnapsToDevicePixels="true"
-                            Visibility="Visible"
-                            BorderBrush="#FF939393">
+                        x:Name="Border"
+                        Background="{DynamicResource MahApps.Brushes.Transparent}"
+                        BorderBrush="{DynamicResource MahApps.Brushes.Transparent}"
+                        BorderThickness="1"
+                        CornerRadius="2">
+                        <DockPanel>
+                            <ToggleButton
+                                ClickMode="Press"
+                                IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                IsEnabled="{TemplateBinding HasOverflowItems}"
+                                Style="{StaticResource MahApps.Styles.ToggleButton.ToolBarOverflow}">
+                                <Popup
+                                    x:Name="OverflowPopup"
+                                    AllowsTransparency="true"
+                                    Focusable="false"
+                                    IsOpen="{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Placement="Bottom"
+                                    PopupAnimation="Slide"
+                                    StaysOpen="false">
+                                    <Border
+                                        x:Name="DropDownBorder"
+                                        Background="{DynamicResource MahApps.Brushes.Control.Background}"
+                                        BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}"
+                                        BorderThickness="1">
+                                        <ToolBarOverflowPanel
+                                            x:Name="PART_ToolBarOverflowPanel"
+                                            FocusVisualStyle="{x:Null}"
+                                            Focusable="true"
+                                            Margin="2"
+                                            WrapWidth="200" />
+                                    </Border>
+                                </Popup>
+                            </ToggleButton>
+                            <ToolBarPanel
+                                x:Name="PART_ToolBarPanel"
+                                IsItemsHost="true"
+                                Margin="0 1 2 2" />
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style
+        x:Key="SisMaper.Button.OptionsButtonStyle"
+        TargetType="{x:Type Button}">
+        <Setter
+            Property="FocusVisualStyle"
+            Value="{DynamicResource FocusVisual}" />
+        <Setter
+            Property="Foreground"
+            Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+        <Setter
+            Property="HorizontalContentAlignment"
+            Value="Center" />
+        <Setter
+            Property="VerticalContentAlignment"
+            Value="Center" />
+        <Setter
+            Property="Padding"
+            Value="10,4" />
+        <Setter
+            Property="FontSize"
+            Value="14" />
+        <Setter
+            Property="Height"
+            Value="31" />
+        <Setter
+            Property="Width"
+            Value="auto" />
+
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type Button}">
+                    <Border
+                        x:Name="border"
+                        CornerRadius="3,3,3,3"
+                        BorderThickness="1"
+                        Background="{TemplateBinding Background}"
+                        SnapsToDevicePixels="true"
+                        Visibility="Visible"
+                        BorderBrush="#FF939393">
                         <ContentPresenter
-                                x:Name="contentPresenter"
-                                Focusable="False"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                Margin="{TemplateBinding Padding}"
-                                RecognizesAccessKey="True"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            x:Name="contentPresenter"
+                            Focusable="False"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger
-                                Property="IsDefaulted"
-                                Value="true">
+                            Property="IsDefaulted"
+                            Value="true">
                             <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                Property="BorderBrush"
+                                TargetName="border"
+                                Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                         </Trigger>
                         <Trigger
-                                Property="IsMouseOver"
-                                Value="true">
+                            Property="IsMouseOver"
+                            Value="true">
                             <Setter
-                                    Property="BorderThickness"
-                                    TargetName="border"
-                                    Value="1" />
+                                Property="BorderThickness"
+                                TargetName="border"
+                                Value="1" />
                         </Trigger>
                         <Trigger
-                                Property="IsPressed"
-                                Value="true">
+                            Property="IsPressed"
+                            Value="true">
                             <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Pressed.Background}" />
+                                Property="Background"
+                                TargetName="border"
+                                Value="{StaticResource Button.Pressed.Background}" />
                         </Trigger>
                         <Trigger
-                                Property="IsEnabled"
-                                Value="false">
+                            Property="IsEnabled"
+                            Value="false">
                             <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Background}" />
+                                Property="Background"
+                                TargetName="border"
+                                Value="{StaticResource Button.Disabled.Background}" />
                             <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Border}" />
+                                Property="BorderBrush"
+                                TargetName="border"
+                                Value="{StaticResource Button.Disabled.Border}" />
                             <Setter
-                                    Property="TextElement.Foreground"
-                                    TargetName="contentPresenter"
-                                    Value="{StaticResource Button.Disabled.Foreground}" />
+                                Property="TextElement.Foreground"
+                                TargetName="contentPresenter"
+                                Value="{StaticResource Button.Disabled.Foreground}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <Style
+        x:Key="SisMaper.MainWindow.TabItem.Menu"
+        BasedOn="{StaticResource MahApps.Styles.TabItem}"
+        TargetType="{x:Type TabItem}">
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Center" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="Padding"
+            Value="5,20,5,20" />
+        <Setter
+            Property="Width"
+            Value="110" />
+        <Setter
+            Property="Height"
+            Value="90" />
+        <Style.Triggers>
+            <Trigger
+                Property="IsSelected"
+                Value="True">
+                <Setter
+                    Property="Background"
+                    Value="{DynamicResource TabItemBackgroundIsSelectedBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style
+        x:Key="SisMaper.MainWindow.TabItem.SubMenu"
+        BasedOn="{StaticResource MahApps.Styles.TabItem}"
+        TargetType="{x:Type TabItem}">
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Center" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="Padding"
+            Value="20,0" />
+        <Setter
+            Property="Width"
+            Value="110" />
+        <Setter
+            Property="Height"
+            Value="70" />
+        <Setter
+            Property="Margin"
+            Value="5" />
+        <Style.Triggers>
+            <Trigger
+                Property="IsSelected"
+                Value="True">
+                <Setter
+                    Property="Background"
+                    Value="{DynamicResource TabItemBackgroundIsSelectedBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style
+        x:Key="SisMaper.ToolBar.Button.Header"
+        TargetType="{x:Type TextBlock}"
+        BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+        <Setter
+            Property="TextWrapping"
+            Value="NoWrap" />
+        <Setter
+            Property="TextTrimming"
+            Value="None" />
+        <Setter
+            Property="FontSize"
+            Value="16" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Center" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="Foreground"
+            Value="Black" />
+    </Style>
+
+    <Style
+        x:Key="SisMaper.MainWindow.MainMenu.Head"
+        TargetType="{x:Type TextBlock}"
+        BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+        <Setter
+            Property="TextWrapping"
+            Value="NoWrap" />
+        <Setter
+            Property="TextTrimming"
+            Value="None" />
+        <Setter
+            Property="FontSize"
+            Value="16" />
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Center" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="Foreground"
+            Value="Black" />
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition
+                        Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
+                        Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter
+                    Property="Foreground"
+                    Value="{DynamicResource TabItemForegroundIsSelectedBrush}" />
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+    <SolidColorBrush
+        x:Key="TabItemForegroundIsSelectedBrush"
+        Color="#FF606060" />
 
 </ResourceDictionary>

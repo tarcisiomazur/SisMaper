@@ -27,7 +27,7 @@
                 Height="*" />
         </Grid.RowDefinitions>
         <ToolBar
-            Style="{DynamicResource MainWindow.ToolBarStyle}"
+            Style="{DynamicResource SisMaper.MainWindow.ToolBarStyle}"
             OverridesDefaultStyle="True"
             VerticalAlignment="Center">
             <RibbonGroup
@@ -37,7 +37,7 @@
                     <Button
                         CommandParameter="{Binding}" 
                         Command="{Binding NovoPedido}"
-                        Style="{DynamicResource Button2}">
+                        Style="{StaticResource SisMaper.ToolBar.Button}">
                         <StackPanel>
                             <iconpacks:PackIconPixelartIcons
                                 Kind="AddBox"
@@ -46,11 +46,11 @@
                                 Width="20"
                                 Height="20" />
                             <TextBlock
-                                Style="{DynamicResource Head2}"
+                                Style="{DynamicResource SisMaper.ToolBar.Button.Header}"
                                 Text="Novo" />
                         </StackPanel>
                     </Button>
-                    <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding EditarPedido}">
+                    <Button Style="{StaticResource Button1}" CommandParameter="{Binding}" Command="{Binding EditarPedido}">
                         <StackPanel>
                             <iconpacks:PackIconModern
                                 Kind="EditBox"
@@ -59,14 +59,14 @@
                                 Width="20"
                                 Height="20" />
                             <TextBlock
-                                Style="{DynamicResource Head2}"
+                                Style="{StaticResource SisMaper.ToolBar.Button.Header}"
                                 Text="Editar" />
                         </StackPanel>
                     </Button>
                     <Button
                         CommandParameter="{Binding}" 
                         Command="{Binding ExcluirPedido}"
-                        Style="{DynamicResource Button2}">
+                        Style="{StaticResource SisMaper.ToolBar.Button}">
                         <StackPanel>
                             <iconpacks:PackIconMaterial
                                 Kind="DeleteForever"
@@ -75,7 +75,7 @@
                                 Width="20"
                                 Height="20" />
                             <TextBlock
-                                Style="{DynamicResource Head2}"
+                                Style="{DynamicResource SisMaper.ToolBar.Button.Header}"
                                 Text="Excluir" />
                         </StackPanel>
                     </Button>
@@ -198,7 +198,8 @@
                         Header="Fatura"
                         Binding="{Binding Fatura}"
                         IsReadOnly="True" />
-                    <DataGridTextColumn
+                    <mah:DataGridNumericUpDownColumn
+                        HeaderStyle="{StaticResource RightGridHeaderStyle}"
                         Width="15*"
                         Header="Número"
                         Binding="{Binding Id}"
@@ -214,6 +215,7 @@
                         Binding="{Binding Cliente}"
                         IsReadOnly="true" />
                     <mah:DataGridNumericUpDownColumn
+                        HeaderStyle="{StaticResource RightGridHeaderStyle}"
                         Width="40*"
                         Header="Valor Total(R$)"
                         StringFormat="{}{0:N2}"

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.ViewModel;
 
 namespace SisMaper.Views
 {
@@ -12,14 +16,8 @@ namespace SisMaper.Views
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private string _filtroRecebimento;
-
-        public string FiltroRecebimento
-        {
-            get => _filtroRecebimento;
-            set => _filtroRecebimento = value;
-        }
-
+        public static MainWindow Instance;
+        public MainViewModel ViewModel => (MainViewModel) DataContext;
 
         public void RandomPedido()
         {
@@ -38,16 +36,17 @@ namespace SisMaper.Views
             {
                 p.Itens.Add(new Item()
                 {
-                    Produto = produtos[r.Next()%produtos.Count],
-                    Quantidade = r.Next(1,10),
+                    Produto = produtos[r.Next() % produtos.Count],
+                    Quantidade = r.Next(1, 10),
                 });
             }
 
             p.Save();
         }
+
         public MainWindow()
         {
-
+            Instance = this;
             try
             {
                 /*if (!new Login().ShowDialog()!.Value)
@@ -56,24 +55,26 @@ namespace SisMaper.Views
                 }*/
                 Main.Usuario = new Usuario()
                 {
-                    Id = 1,
-                    Nome = "Admin",
-                    Login = "Admin",
+                    Id = 99,
+                    Nome = "99",
+                    Login = "99",
                     Senha = "",
                     Permissao = Usuario.Tipo_Permissao.All
                 };
-                
+                Main.Usuario.Save();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 Console.ReadLine();
             }
+
             try
             {
                 InitializeComponent();
+                SetActions();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 Console.ReadLine();
@@ -150,7 +151,14 @@ namespace SisMaper.Views
             
             */
         }
-        
+
+        private void SetActions()
+        {
+            Main.MySqlProtocol.Connected += () => Dispatcher.Invoke(() => ViewModel.Connected());
+            Main.MySqlProtocol.Disconnected += () => Dispatcher.Invoke(() => ViewModel.Disconnected());
+            Main.MySqlProtocol.Reconnecting += () => Dispatcher.Invoke(() => ViewModel.Reconnecting());
+            ViewModel.Status = Main.MySqlProtocol.IsConnected ? "Conectado" : "Desconectado";
+        }
 
         private void OpenCrudProduto(object sender, RoutedEventArgs e)
         {
@@ -160,57 +168,54 @@ namespace SisMaper.Views
         }
 
 
-
         public void Test1()
         {
             var cidade = DAO.FindWhereQuery<Cidade>("Nome LIKE 'Prude%'")[0];
             var cliente = DAO.FindWhereQuery<Cliente>("Id=7")[0];
-            
+
             var produto = new Produto()
             {
-                Categoria = new Categoria() { Descricao = "Rações" },
+                Categoria = new Categoria() {Descricao = "Rações"},
                 Fracionado = true,
                 CodigoBarras = "789321147823",
                 Descricao = "Ração Special Dog Carne 20kg",
                 PrecoCusto = 110.29m,
                 PrecoVenda = 180m,
-                Unidade = new Unidade() { Descricao = "Saco" },
+                Unidade = new Unidade() {Descricao = "Saco"},
             };
             try
             {
                 Console.WriteLine(produto.Save() ? "Produto Salvo" : "Erro");
                 Console.WriteLine("Produto: " + produto);
             }
-            catch(PersistenceException pe)
+            catch (PersistenceException pe)
             {
                 if (pe.ErrorCode == 40001)
                 {
-                    
                 }
-                
             }
 
             var item = new Item();
             item.Produto = produto;
             item.Quantidade = 3;
             item.Valor = produto.PrecoVenda;
-            
+
             var pedido = new Pedido();
             pedido.Cliente = cliente;
             pedido.Itens = new PList<Item>();
             pedido.Itens.Add(item);
             pedido.ValorTotal = pedido.Itens.Sum(item => item.Total);
             pedido.Data = DateTime.Now;
-            
+
             var parcelas = new PList<Parcela>();
             parcelas.Add(new Parcela()
             {
                 Valor = pedido.ValorTotal,
-                DataVencimento = new DateTime(2021,10,15),
+                DataVencimento = new DateTime(2021, 10, 15),
                 Status = Parcela.Status_Parcela.Pendente,
                 Indice = 1,
             });
-            
+
             pedido.Fatura = new Fatura()
             {
                 Cliente = cliente,
@@ -218,12 +223,11 @@ namespace SisMaper.Views
                 ValorTotal = pedido.ValorTotal,
                 ValorPago = 0,
             };
-            
+
             Console.WriteLine(pedido.Save() ? "Pedido Salvo" : "Erro");
             Console.WriteLine("Pedido: " + pedido);
-            
         }
-        
+
         public void Test()
         {
             #region Carrega Cidades e Estados
@@ -259,16 +263,16 @@ namespace SisMaper.Views
 
             var produto = new Produto()
             {
-                Categoria = new Categoria() { Descricao = "Rações" },
+                Categoria = new Categoria() {Descricao = "Rações"},
                 Fracionado = true,
                 CodigoBarras = "789321147823",
                 Descricao = "Ração Special Dog Carne 20kg",
                 PrecoCusto = 110.29m,
                 PrecoVenda = 180m,
-                Unidade = new Unidade() { Descricao = "Saco" },
+                Unidade = new Unidade() {Descricao = "Saco"},
             };
             Console.WriteLine(produto.Save() ? "Produto Salvo" : "Erro");
-            Console.WriteLine("Produto: " + produto); 
+            Console.WriteLine("Produto: " + produto);
 
             #endregion
 
@@ -300,7 +304,7 @@ namespace SisMaper.Views
 
             #endregion
         }
-        
+
         private void NovaFatura(object sender, RoutedEventArgs e)
         {
             var viewFatura = new ViewFatura();
@@ -310,7 +314,6 @@ namespace SisMaper.Views
 
         private void Configuações_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-
         }
 
         private void OpenConfig(object sender, RoutedEventArgs e)

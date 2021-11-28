@@ -28,7 +28,7 @@
         </Grid.RowDefinitions>
         <ToolBar
             Grid.Row="0"
-            Style="{DynamicResource MainWindow.ToolBarStyle}"
+            Style="{DynamicResource SisMaper.MainWindow.ToolBarStyle}"
             OverridesDefaultStyle="True"
             VerticalAlignment="Top">
             <RibbonGroup
@@ -36,7 +36,7 @@
                 <StackPanel
                     Orientation="Horizontal">
                     <Button
-                        Style="{DynamicResource Button1}"
+                        Style="{StaticResource SisMaper.ToolBar.Button}"
                         CommandParameter="{Binding}"
                         Command="{Binding EditarFatura}">
                         <StackPanel>
@@ -47,12 +47,12 @@
                                 Width="20"
                                 Height="20" />
                             <TextBlock
-                                Style="{DynamicResource Head1}"
+                                Style="{StaticResource SisMaper.ToolBar.Button.Header}"
                                 Text="Editar" />
                         </StackPanel>
                     </Button>
                     <Button
-                        Style="{DynamicResource Button1}"
+                        Style="{StaticResource SisMaper.ToolBar.Button}"
                         CommandParameter="{Binding}"
                         Command="{Binding DeletarFatura}">
                         <StackPanel>
@@ -63,7 +63,7 @@
                                 Width="20"
                                 Height="20" />
                             <TextBlock
-                                Style="{DynamicResource Head1}"
+                                Style="{StaticResource SisMaper.ToolBar.Button.Header}"
                                 Text="Excluir" />
                         </StackPanel>
                     </Button>

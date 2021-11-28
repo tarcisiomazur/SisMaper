@@ -30,7 +30,9 @@ namespace SisMaper.ViewModel
         public PList<Produto> Produtos { get; set; }
         public Item NovoItem { get; set; }
         public IMvxCommand VerificaQuantidade => new MvxCommand<TextChangedEventArgs>(VerificaQuantidadeEventHandler);
-        public IMvxCommand PreviewKeyDownAddItem => new MvxCommand<KeyEventArgs>(AdicionarItemEventHandler);
+
+        public IMvxCommand PreviewKeyDownAddItem => new MvxCommand<KeyEventArgs>(AdicionarItemEventHandler,
+            _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
 
         public event Action? Cancel;
         public event Action? Save;
@@ -61,8 +63,6 @@ namespace SisMaper.ViewModel
         private PersistenceContext PersistenceContext { get; set; }
 
         public string StringQuantidade { get; set; }
-
-        public bool IsDataGridEditable => false;
 
         public Uri DANFE { get; set; }
 
@@ -288,6 +288,7 @@ namespace SisMaper.ViewModel
             {
                 Cliente = Pedido.Cliente,
                 ValorTotal = Pedido.ValorTotal,
+                ValorPago = Pedido.ValorTotal,
                 Data = DateTime.Now,
                 Context = PersistenceContext,
             };

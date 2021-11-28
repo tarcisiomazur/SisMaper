@@ -13,8 +13,6 @@
     mc:Ignorable="d"
     Height="500" Width="1000">
 
-
-
     <UserControl.DataContext>
         <viewModels:ProdutosViewModel/>
     </UserControl.DataContext>
@@ -24,22 +22,22 @@
             <ToolBar DockPanel.Dock="Top" >
                 <RibbonGroup Header="Alterar Produto">
                     <StackPanel Orientation="Horizontal">
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding NovoProduto}">
+                        <Button Style="{StaticResource SisMaper.ToolBar.Button}" CommandParameter="{Binding}" Command="{Binding NovoProduto}">
                             <StackPanel>
                                 <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" />
-                                <TextBlock Style="{DynamicResource Head1}" Text="Novo" />
+                                <TextBlock Style="{StaticResource SisMaper.ToolBar.Button.Header}" Text="Novo" />
                             </StackPanel>
                         </Button>
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding Editar}">
+                        <Button Style="{StaticResource SisMaper.ToolBar.Button}" CommandParameter="{Binding}" Command="{Binding Editar}">
                             <StackPanel>
                                 <icons:PackIconModern Kind="EditBox" HorizontalAlignment="Center" />
-                                <TextBlock Style="{DynamicResource Head1}" Text="Editar" />
+                                <TextBlock Style="{StaticResource SisMaper.ToolBar.Button.Header}" Text="Editar" />
                             </StackPanel>
                         </Button>
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding Deletar}">
+                        <Button Style="{StaticResource SisMaper.ToolBar.Button}" CommandParameter="{Binding}" Command="{Binding Deletar}">
                             <StackPanel>
                                 <icons:PackIconMaterial Kind="DeleteForever" HorizontalAlignment="Center" />
-                                <TextBlock Style="{DynamicResource Head1}" Text="Excluir" />
+                                <TextBlock Style="{StaticResource SisMaper.ToolBar.Button.Header}" Text="Excluir" />
                             </StackPanel>
                         </Button>
                     </StackPanel>

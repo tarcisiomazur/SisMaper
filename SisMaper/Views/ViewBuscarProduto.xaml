@@ -144,14 +144,14 @@
             </DataGrid>
         </Border>
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Selecionar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             PreviewMouseLeftButtonDown="Selecionar"
             Margin="0,0,10,10" Height="30" Width="92" />
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"

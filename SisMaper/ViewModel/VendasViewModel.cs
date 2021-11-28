@@ -12,8 +12,8 @@ namespace SisMaper.ViewModel
     public class VendasViewModel : BaseViewModel
     {
         public ViewListarPedido? PedidoSelecionado { get; set; }
-        public DateTime StartDate { get; set; } = DateTime.Now.AddMonths(-1);
-        public DateTime EndDate { get; set; } = DateTime.Now;
+        public DateTime StartDate { get; set; } = DateTime.Today.AddMonths(-1);
+        public DateTime EndDate { get; set; } = DateTime.Today;
         public string TextoFiltro { get; set; }
         public Pedido.Pedido_Status? StatusSelecionado { get; set; }
         public List<Pedido.Pedido_Status> StatusList { get; set; }
@@ -71,7 +71,7 @@ namespace SisMaper.ViewModel
                 {
                     if (pedido.Delete())
                     {
-                        UpdatePedidos(null, EventArgs.Empty);
+                        Initialize(null, EventArgs.Empty);
                         DialogCoordinator.ShowMessageAsync(this, "Excluir Pedido", "Pedido Excluído com Sucesso!");
                         return;
                     }
@@ -86,7 +86,7 @@ namespace SisMaper.ViewModel
             }
         }
 
-        public void UpdatePedidos(object? sender, EventArgs e)
+        public void Initialize(object? sender, EventArgs e)
         {
             Pedidos = new ObservableCollection<ViewListarPedido>(View.Execute<ViewListarPedido>());
         }
@@ -102,7 +102,7 @@ namespace SisMaper.ViewModel
                      p.Cliente.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase) ||
                      p.Id.ToString().Equals(TextoFiltro)) &&
                     (StatusSelecionado == null || p.Status == StatusSelecionado) &&
-                    p.Data > StartDate && p.Data < EndDate
+                    p.Data.Date >= StartDate.Date && p.Data.Date <= EndDate.Date
                 );
             }
         }

@@ -275,11 +275,10 @@
                     <ComboBox
                         Grid.Row="0"
                         VerticalAlignment="Top"
-                        IsReadOnly="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsReadOnly}}"
+                        IsEditable="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
                         Height="32"
                         Margin="10,10,296,0"
                         FontSize="16"
-                        IsEditable="True"
                         MaxDropDownHeight="125"
                         ItemsSource="{Binding ProdutosAtivos}"
                         SelectedItem="{Binding NovoItem.Produto, Mode=TwoWay}"
@@ -322,7 +321,7 @@
                         </i:Interaction.Triggers>
                     </TextBox>
                     <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
+                        Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
                         Content="Adicionar"
                         HorizontalAlignment="Right"
@@ -348,6 +347,7 @@
                         BorderBrush="#FFD2D2D2">
                         <DataGrid.Columns>
                             <mah:DataGridNumericUpDownColumn
+                                HeaderStyle="{StaticResource RightGridHeaderStyle}"
                                 Width="17*"
                                 Header="Qtde"
                                 Minimum="0.0001"
@@ -364,6 +364,7 @@
                                 Binding="{Binding Produto.Descricao}"
                                 IsReadOnly="True" />
                             <mah:DataGridNumericUpDownColumn
+                                HeaderStyle="{StaticResource RightGridHeaderStyle}"
                                 Width="25*"
                                 Header="Valor(R$)"
                                 StringFormat="{}{0:N2}"
@@ -371,6 +372,7 @@
                                 Binding="{Binding Valor}"
                                 IsReadOnly="true" />
                             <mah:DataGridNumericUpDownColumn
+                                HeaderStyle="{StaticResource RightGridHeaderStyle}"
                                 Width="35*"
                                 Header="Desconto(%)"
                                 StringFormat="{}{0:N2}"
@@ -381,6 +383,7 @@
                                 Binding="{Binding DescontoPorcentagem, UpdateSourceTrigger=LostFocus}"
                                 IsReadOnly="False" />
                             <mah:DataGridNumericUpDownColumn
+                                HeaderStyle="{StaticResource RightGridHeaderStyle}"
                                 Width="35*"
                                 Header="Total(R$)"
                                 StringFormat="{}{0:N2}"
@@ -568,7 +571,7 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                                 <Button
-                                    Style="{DynamicResource OptionsButtonStyle}"
+                                    Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                                     Content="Adicionar"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
@@ -595,21 +598,21 @@
                                     Height="21"
                                     VerticalAlignment="Bottom" />
                                 <Button
-                                    Style="{DynamicResource OptionsButtonStyle}"
+                                    Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                                     Content="Receber"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     Margin="96,8,0,0"
                                     IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
                                 <Button
-                                    Style="{DynamicResource OptionsButtonStyle}"
+                                    Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                                     Content="Remover"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     Margin="172,8,0,0"
                                     IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
                                 <Button
-                                    Style="{DynamicResource OptionsButtonStyle}"
+                                    Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                                     Content="Encerrar Fatura"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
@@ -631,7 +634,7 @@
             </TabItem>
         </TabControl>
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Faturar"
             Command="{Binding Receber}"
             HorizontalAlignment="Left"
@@ -640,7 +643,7 @@
             Width="77" />
         <Button
             Content="Emitir Nota Fiscal"
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="111,0,0,20"
@@ -681,14 +684,14 @@
             </Button.ContextMenu>
         </Button>
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding Cancelar}"
             Margin="0,0,84,20" />
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
