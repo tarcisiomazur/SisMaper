@@ -6,6 +6,7 @@ using MySqlConnector;
 using Persistence;
 using SisMaper.API.WebMania;
 using SisMaper.Models;
+using SisMaper.Tools;
 using SisMaper.Views;
 
 namespace SisMaper
@@ -33,11 +34,26 @@ namespace SisMaper
                 Persistence.Persistence.Init(MySqlProtocol);
                 Empresa = DAO.Load<Configuracoes>(1);
                 WebManiaConnector.Init(Empresa);
+
+                //CriaUsuario()
+                //BuildCidadeEstado.Build();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        private static void CriaUsuario()
+        {
+            Usuario u = new Usuario()
+            {
+                Nome = "André",
+                Login = "admin",
+                Senha = "admin",
+                Permissao = Usuario.Tipo_Permissao.Databaser
+            };
+            u.Save();
         }
     }
 }

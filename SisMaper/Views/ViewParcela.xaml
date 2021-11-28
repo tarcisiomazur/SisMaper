@@ -8,7 +8,10 @@
         xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Dialog:DialogParticipation.Register="{Binding}"
         mc:Ignorable="d"
-        Title="Parcela" Height="750" Width="500">
+        Title="Parcela" 
+        Height="800" 
+        Width="500"
+        WindowStartupLocation="CenterScreen">
 
 
     <mah:MetroWindow.Resources>
@@ -216,7 +219,7 @@
                     Margin="30,20,0,0"
                     VerticalAlignment="Top"
                     Width="200" 
-                    Text="{Binding ValorMoeda}"/>
+                    Text="{Binding ValorMoeda, UpdateSourceTrigger=LostFocus}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
@@ -228,7 +231,7 @@
                     Margin="30,20,0,0"
                     VerticalAlignment="Top"
                     Width="200" 
-                    Text="{Binding ValorCredito}"/>
+                    Text="{Binding ValorCredito, UpdateSourceTrigger=LostFocus}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
@@ -239,7 +242,7 @@
                     Margin="30,20,0,0"
                     VerticalAlignment="Top"
                     Width="200" 
-                    Text="{Binding ValorDebito}"/>
+                    Text="{Binding ValorDebito, UpdateSourceTrigger=LostFocus}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
@@ -250,9 +253,21 @@
                     Margin="30,20,0,0"
                     VerticalAlignment="Top"
                     Width="200" 
-                    Text="{Binding ValorOutro}"/>
+                    Text="{Binding ValorOutro, UpdateSourceTrigger=LostFocus}"/>
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                <TextBlock Language="pt-br" Text="Total" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Language="pt-br"
+                    FontSize="16"
+                    HorizontalAlignment="Left"
+                    Margin="30,20,0,0"
+                    VerticalAlignment="Top"
+                    Width="200" 
+                    IsEnabled="False"
+                    Text="{Binding ValorTotal}"/>
+            </StackPanel>
+            
             <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
                 <Button 
                     Style="{DynamicResource OptionsButtonStyle}" 

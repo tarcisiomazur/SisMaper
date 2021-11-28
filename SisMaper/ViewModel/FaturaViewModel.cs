@@ -64,9 +64,10 @@ namespace SisMaper.ViewModel
 
         public NovaParcelaCommand NovaParcela { get; private set; }
 
+
         public FaturaViewModel(object? faturaSelecionada)
         {
-            ChangeCliente = ClienteChange;
+            //ChangeCliente = ClienteChange;
 
             NovaParcela = new NovaParcelaCommand();
 
@@ -84,9 +85,13 @@ namespace SisMaper.ViewModel
             Salvar = new SalvarFaturaCommand();
             AlterarFatura = new AlterarStatusFaturaCommand();
 
+
             if (Fatura is not null)
             {
                 IsFaturaAberta = (Fatura.Status == Fatura.Fatura_Status.Aberta) ? true : false;
+
+                Fatura.Parcelas.Load();
+                //Fatura.Pedidos.Load();
                 //Fatura.Cliente.Load();
 
                 //ClienteSelecionado = Fatura.Cliente;
@@ -104,7 +109,7 @@ namespace SisMaper.ViewModel
         }
 
 
-
+        /*
         private void ClienteChange()
         {
 
@@ -122,7 +127,7 @@ namespace SisMaper.ViewModel
                 }
             }
             
-        }
+        }*/
 
 
         private void SetCliente(Cliente c)

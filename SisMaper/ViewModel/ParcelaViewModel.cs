@@ -16,10 +16,66 @@ namespace SisMaper.ViewModel
         public Parcela Parcela { get; set; }
         public Fatura Fatura { get; set; }
 
-        public decimal ValorMoeda { get; set; }
-        public decimal ValorCredito { get; set; }
-        public decimal ValorDebito { get; set; }
-        public decimal ValorOutro { get; set; }
+        
+        private decimal _valorMoeda;
+
+        public decimal ValorMoeda 
+        {
+            get
+            {
+                return _valorMoeda;
+            }
+            set 
+            {
+                _valorMoeda = value;
+                SetValorTotal();
+            } 
+        }
+
+        private decimal _valorCredito;
+
+        public decimal ValorCredito
+        {
+            get
+            {
+                return _valorCredito;
+            }
+            set
+            {
+                _valorCredito = value;
+                SetValorTotal();
+            }
+        }
+
+        private decimal _valorDebito;
+
+        public decimal ValorDebito
+        {
+            get
+            {
+                return _valorDebito;
+            }
+            set
+            {
+                _valorDebito = value;
+                SetValorTotal();
+            }
+        }
+
+        private decimal _valorOutro;
+
+        public decimal ValorOutro
+        {
+            get
+            {
+                return _valorOutro;
+            }
+            set
+            {
+                _valorOutro = value;
+                SetValorTotal();
+            }
+        }
 
 
         public SalvarParcelaCommand Salvar { get; private set; }
@@ -29,6 +85,9 @@ namespace SisMaper.ViewModel
 
 
         public IDialogCoordinator DialogCoordinator { get; set; }
+
+
+        public decimal ValorTotal  { get; set; }
 
         public ParcelaViewModel(object? parcelaSelecionada, object? faturaSelecionada)
         {
@@ -76,6 +135,11 @@ namespace SisMaper.ViewModel
 
         }
 
+
+        private void SetValorTotal()
+        {
+            ValorTotal = ValorMoeda + ValorCredito + ValorDebito + ValorOutro;
+        }
 
         private void CheckValoresRecebimento()
         {
@@ -164,6 +228,10 @@ namespace SisMaper.ViewModel
             try
             {
                 CheckValorParcela();
+
+                Parcela.Fatura = Fatura;
+                Parcela.Save();
+
                 Close?.Invoke();
             }
             catch(Exception ex)
@@ -186,19 +254,13 @@ namespace SisMaper.ViewModel
                 Parcela.Fatura = Fatura;
                 Parcela.Save();
 
-                //Fatura.Save();
-
-                //Parcela.Fatura = Fatura;
-
-                //Fatura.Parcelas.Add(Parcela);
-
                 Close?.Invoke();
 
             }
             catch(Exception ex)
             {
-                //DialogCoordinator.ShowModalMessageExternal(this, "Erro ao confirmar recebimento", "Erro: " + ex.Message + ex.StackTrace);
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao confirmar recebimento", ex.ToString());
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao confirmar recebimento", "Erro: " + ex.Message);
+                //DialogCoordinator.ShowModalMessageExternal(this, "Erro ao confirmar recebimento", ex.ToString());
             }
 
             

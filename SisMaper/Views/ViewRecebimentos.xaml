@@ -13,8 +13,8 @@
     mc:Ignorable="d"
     Height="500" Width="1000">
 
-    
-    
+
+
     <UserControl.DataContext>
         <viewModels:RecebimentosViewModel/>
     </UserControl.DataContext>

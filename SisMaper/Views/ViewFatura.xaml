@@ -234,7 +234,7 @@
                         BorderBrush="#FFD2D2D2">
                         <DataGrid.Columns>
                             <mah:DataGridNumericUpDownColumn
-                                Width="8*"
+                                Width="10*"
                                 Header="Nº"
                                 Binding="{Binding Indice}"
                                 IsReadOnly="True" />
@@ -369,21 +369,18 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <ComboBox ItemsSource="{Binding Clientes}" x:Name="ClientesComboBox"
+
+        <TextBox
             Grid.Row="0"
-            IsEnabled="{Binding IsFaturaAberta}"
-            SelectedItem="{Binding ClienteSelecionado, Mode=TwoWay}"
-            DisplayMemberPath="Nome"
+            IsEnabled="False"
             Height="32"
             Margin="96,70,410,0"
             FontSize="16"
-            mah:TextBoxHelper.Watermark="Buscar Cliente"
-            IsEditable="false" 
-            MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
             Grid.IsSharedSizeScope="True"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Text="{Binding Fatura.Cliente.Nome}"/>
         
         <Button x:Name="ChangeFaturaButton"
             Style="{DynamicResource OptionsButtonStyle}"

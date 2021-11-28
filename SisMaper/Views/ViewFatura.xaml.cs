@@ -21,6 +21,10 @@ namespace SisMaper.Views
             InitializeComponent();
 
             Loaded += ViewFatura_Loaded;
+            DataContextChanged += ViewFatura_DataContextChanged;
+
+
+            /*
 
             ParcelasDataGrid.DataContext = ListParcelas;
             var d = new DateTime(2021, 06, 15);
@@ -60,12 +64,27 @@ namespace SisMaper.Views
                 Valor = 100
             });
             ValorTotal.Text = ListParcelas.Sum(p => p.Valor).ToString("N2");
+            */
+        }
+
+
+        private void ViewFatura_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            
+            //SetCliente();
+            //SetActions();
         }
 
         private void ViewFatura_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             SetActions();
+            //SetCliente();
 
+        }
+
+
+        private void SetCliente()
+        {
             if (DataContext is IFatura vm)
             {
                 vm.ChangeCliente?.Invoke();
@@ -102,7 +121,7 @@ namespace SisMaper.Views
                 {
                     new ViewParcela() { DataContext = new ParcelaViewModel(null, (DataContext as FaturaViewModel).Fatura) }.ShowDialog();
 
-                    //DataContext = new FaturaViewModel((DataContext as FaturaViewModel)?.Fatura);
+                    DataContext = new FaturaViewModel((DataContext as FaturaViewModel).Fatura);
                     SetActions();
                 };
 
@@ -132,10 +151,15 @@ namespace SisMaper.Views
 
         private void OpenViewCliente(object sender, MouseButtonEventArgs e)
         {
+
+            new CrudPessoaFisica() { DataContext = new CrudPessoaFisicaViewModel( (DataContext as FaturaViewModel).Fatura.Cliente ), isSelectedPessoaFisicaTab = isClientePessoaFisica, IsGridEnabled = false }.ShowDialog();
+
+            /*
             if (ClientesComboBox.SelectedItem is not null)
             {
                 new CrudPessoaFisica() { DataContext = new CrudPessoaFisicaViewModel(ClientesComboBox.SelectedItem), isSelectedPessoaFisicaTab = isClientePessoaFisica, IsGridEnabled = false }.ShowDialog();
             }
+            */
         }
 
     }
