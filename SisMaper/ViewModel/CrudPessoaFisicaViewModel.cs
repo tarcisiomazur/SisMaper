@@ -80,14 +80,6 @@ namespace SisMaper.ViewModel
             cliente = (Cliente)clienteSelecionado;
 
             Estados = DAO.FindWhereQuery<Estado>("Id > 0");
-
-
-            //Cliente fisica = (PessoaFisica) clienteSelecionado;
-            //Cliente juridica = (PessoaJuridica) clienteSelecionado;
-
-            
-            //Console.WriteLine("FISICA: " + (fisica is null).ToString() + "  / / / / JURIDICA: " + (juridica is null).ToString() );
-            
            
 
             if (cliente is not null)

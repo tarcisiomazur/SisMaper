@@ -1,4 +1,5 @@
-﻿<UserControl 
+﻿<templates:MyUserControl  
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     x:Class="SisMaper.Views.ViewRecebimentos"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -170,8 +171,14 @@
                 FontWeight="Regular"
                 SelectedItem="{Binding FaturaSelecionada}">
                 <DataGrid.Columns>
+                    <mah:DataGridNumericUpDownColumn
+                        Width="10*"
+                        Header="Id"
+                        Culture="pt-BR"
+                        Binding="{Binding Id}"
+                        IsReadOnly="false" />
                     <DataGridTextColumn
-                        Width="80*"
+                        Width="70*"
                         Header="Cliente"
                         Binding="{Binding Cliente.Nome}"
                         IsReadOnly="True" />
@@ -188,7 +195,7 @@
                     <mah:DataGridNumericUpDownColumn
                         Width="25*"
                         Header="Valor Total(R$)"
-                        StringFormat="{}{0:N2}"
+                  StringFormat="{}{0:N2}"
                         Culture="pt-BR"
                         Binding="{Binding ValorTotal}"
                         IsReadOnly="false" />
@@ -205,4 +212,4 @@
     </Grid>
 
 
-</UserControl>
+</templates:MyUserControl>

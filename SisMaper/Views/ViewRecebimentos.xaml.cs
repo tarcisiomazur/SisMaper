@@ -1,4 +1,5 @@
 ﻿using SisMaper.ViewModel;
+using SisMaper.Views.Templates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,16 @@ namespace SisMaper.Views
     /// <summary>
     /// Interação lógica para ViewRecebimentos.xam
     /// </summary>
-    public partial class ViewRecebimentos : UserControl
+    public partial class ViewRecebimentos : MyUserControl
     {
+        private RecebimentosViewModel viewModel => (RecebimentosViewModel) DataContext;
+
         public ViewRecebimentos()
         {
             InitializeComponent();
+
+            OnOpen += viewModel.Initialize;
+
             SetActions();
         }
 
@@ -32,9 +38,9 @@ namespace SisMaper.Views
         {
             if(DataContext is IRecebimento vm)
             {
-                vm.OpenEditarFatura += () =>
+                vm.OpenEditarFatura += (object? fat) =>
                 {
-                    new ViewFatura() { DataContext = new FaturaViewModel(FaturasDataGrid.SelectedItem) }.ShowDialog();
+                    new ViewFatura() { DataContext = new FaturaViewModel(fat) }.ShowDialog();
                     DataContext = new RecebimentosViewModel();
                     SetActions();
                 };

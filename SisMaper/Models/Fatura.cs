@@ -25,7 +25,7 @@ namespace SisMaper.Models
         [OneToMany(Cascade = Cascade.SAVE)]
         public PList<Pedido> Pedidos { get; set; }
 
-        [ManyToOne] public Cliente Cliente { get; set; }
+        [ManyToOne(Fetch = Fetch.Eager)] public Cliente Cliente { get; set; }
         
         [Field(FieldType = SqlDbType.Bit, Length = 1)]
         public Fatura_Status Status { get; set; }
