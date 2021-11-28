@@ -24,8 +24,8 @@ namespace SisMaper.ViewModel
             set
             {
                 if (value == _selectedItem) return;
-                if(value?.Content is MyUserControl open) open.OnOpen?.Invoke(this, EventArgs.Empty);
-                if(_selectedItem?.Content is MyUserControl close) close.OnClose?.Invoke(this, EventArgs.Empty);
+                if(value?.Content is MyUserControl open) open.OnOpen();
+                if(_selectedItem?.Content is MyUserControl close) close.OnClose();
                 _selectedItem = value;
             }
         }

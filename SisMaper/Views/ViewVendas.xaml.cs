@@ -1,5 +1,4 @@
-﻿using System;
-using SisMaper.ViewModel;
+﻿using SisMaper.ViewModel;
 using SisMaper.Views.Templates;
 
 namespace SisMaper.Views
@@ -11,7 +10,7 @@ namespace SisMaper.Views
         public ViewVendas()
         {
             InitializeComponent();
-            OnOpen += ViewModel.Initialize;
+            Open += ViewModel.Initialize;
             ViewModel.OpenPedido += OpenPedido;
         }
 

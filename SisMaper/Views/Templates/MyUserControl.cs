@@ -5,7 +5,17 @@ namespace SisMaper.Views.Templates
 {
     public class MyUserControl: UserControl
     {
-        public EventHandler? OnOpen;
-        public EventHandler? OnClose;
+        public event EventHandler? Open;
+        public event EventHandler? Close;
+
+        public void OnOpen()
+        {
+            Open?.Invoke(this, EventArgs.Empty);
+        }
+        
+        public void OnClose()
+        {
+            Close?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
