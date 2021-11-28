@@ -7,6 +7,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sismaper="clr-namespace:SisMaper"
+    xmlns:views="clr-namespace:SisMaper.Views"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:tools="clr-namespace:SisMaper.Tools"
     xmlns:vm="clr-namespace:SisMaper.ViewModel"
@@ -217,23 +219,34 @@
             Width="275"
             Source="/Images/Sismaper Logo.png"
             Stretch="Fill" />
-        <Rectangle
-            HorizontalAlignment="Center"
-            Height="24"
-            Margin="0,248,0,0"
-            VerticalAlignment="Bottom"
-            Width="510"
-            Fill="{DynamicResource SisMaper.Dark.Theme}" />
-        <Label
-            Content="Versão: 1.1.0"
-            HorizontalAlignment="Right"
-            Margin="0,0,13,3"
-            VerticalAlignment="Bottom"
-            Height="16"
-            Width="92"
-            Padding="0,0,0,0"
-            Foreground="White"
-            FlowDirection="RightToLeft"
-            FontSize="11" />
+
+        <StatusBar
+            DockPanel.Dock="Bottom"
+            VerticalAlignment="Bottom" Background="{DynamicResource SisMaper.Dark.Theme}">
+            <StatusBarItem
+                 HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Content="{Binding Source={x:Static sismaper:Main.Version}}"
+                        VerticalAlignment="Center"
+                        Height="16"
+                        Width="203"
+                        Padding="0,0,0,0"
+                        Foreground="White"
+                        FlowDirection="RightToLeft"
+                        FontSize="11" />
+                    <Label
+                        Content="{Binding ViewModel.Status, Source={x:Static views:MainWindow.Instance}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Center"
+                        Height="16"
+                        Width="206"
+                        Padding="0,0,0,0"
+                        Foreground="White"
+                        FlowDirection="RightToLeft"
+                        FontSize="11" />
+                </StackPanel>
+            </StatusBarItem>
+
+        </StatusBar>
     </Grid>
 </mah:MetroWindow>

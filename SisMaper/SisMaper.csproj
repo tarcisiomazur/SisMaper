@@ -7,6 +7,9 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon></ApplicationIcon>
     <Win32Resource />
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.*</AssemblyVersion>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
