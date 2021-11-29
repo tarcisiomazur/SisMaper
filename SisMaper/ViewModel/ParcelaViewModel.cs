@@ -162,7 +162,7 @@ namespace SisMaper.ViewModel
                 {
                     //Usuario = Main.Usuario
 
-                    Usuario = DAO.Load<Usuario>(1),
+                    Usuario = DAO.Load<Usuario>(13),
 
                     ValorPagamento = ValorMoeda,
                     Tipo = (char) Pagamento.TipoPagamento.Moeda,
@@ -175,7 +175,7 @@ namespace SisMaper.ViewModel
                 {
                     //Usuario = Main.Usuario
 
-                    Usuario = DAO.Load<Usuario>(1),
+                    Usuario = DAO.Load<Usuario>(13),
 
                     Tipo = (char) Pagamento.TipoPagamento.Credito,
                     ValorPagamento = ValorCredito,
@@ -188,7 +188,7 @@ namespace SisMaper.ViewModel
                 {
                     //Usuario = Main.Usuario
 
-                    Usuario = DAO.Load<Usuario>(1),
+                    Usuario = DAO.Load<Usuario>(13),
 
                     Tipo = (char) Pagamento.TipoPagamento.Debito,
                     ValorPagamento = ValorDebito
@@ -201,7 +201,7 @@ namespace SisMaper.ViewModel
                 {
                     //Usuario = Main.Usuario
 
-                    Usuario = DAO.Load<Usuario>(1),
+                    Usuario = DAO.Load<Usuario>(13),
 
                     Tipo = (char) Pagamento.TipoPagamento.Outro,
                     ValorPagamento = ValorOutro

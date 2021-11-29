@@ -180,7 +180,7 @@
                     <DataGridTextColumn
                         Width="70*"
                         Header="Cliente"
-                        Binding="{Binding Cliente.Nome}"
+                        Binding="{Binding Nome}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Width="20*"

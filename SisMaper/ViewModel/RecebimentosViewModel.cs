@@ -1,4 +1,5 @@
-﻿using Persistence;
+﻿using MahApps.Metro.Controls.Dialogs;
+using Persistence;
 using SisMaper.Models;
 using System;
 using System.Collections.ObjectModel;
@@ -27,6 +28,7 @@ namespace SisMaper.ViewModel
 
         private PersistenceContext persistenceContext;
 
+        IDialogCoordinator DialogCoordinator { get; set; }
 
 
         public RecebimentosViewModel()
@@ -39,6 +41,8 @@ namespace SisMaper.ViewModel
             }
             */
 
+            DialogCoordinator = new DialogCoordinator();
+            //GetFaturas();
             persistenceContext = new PersistenceContext();
 
             EditarFatura = new EditarFaturaCommand();
@@ -52,11 +56,25 @@ namespace SisMaper.ViewModel
 
         public void ExcluirFatura()
         {
-            //FaturaSelecionada.Delete();
+            try
+            {
+                var fat = DAO.Load<Fatura>(FaturaSelecionada.Id);
+                fat.Delete();
+                GetFaturas();
+            }
+            catch(Exception ex)
+            {
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro", ex.ToString());
+            }
         }
 
 
         public void Initialize(object? sender, EventArgs e)
+        {
+            GetFaturas();
+        }
+
+        private void GetFaturas()
         {
             Faturas = new ObservableCollection<ViewListarFatura>(View.Execute<ViewListarFatura>());
         }

@@ -26,9 +26,11 @@ namespace SisMaper.Views
 
         public ViewRecebimentos()
         {
+            
             InitializeComponent();
+            Console.WriteLine("VIEW RECEBIMENTOS ");
 
-            OnOpen += viewModel.Initialize;
+            Open += viewModel.Initialize;
 
             SetActions();
         }
@@ -40,16 +42,17 @@ namespace SisMaper.Views
             {
                 vm.OpenEditarFatura += (object? fat) =>
                 {
-                    new ViewFatura() { DataContext = new FaturaViewModel(fat) }.ShowDialog();
-                    DataContext = new RecebimentosViewModel();
-                    SetActions();
+                    var viewFatura = new ViewFatura() { DataContext = new FaturaViewModel(fat) };
+                    viewFatura.Closed += viewModel.Initialize;
+                    viewFatura.ShowDialog();
                 };
 
+                /*
                 vm.FaturaExcluida += () =>
                 {
                     DataContext = new RecebimentosViewModel();
-                    SetActions();
                 };
+                */
             }
         }
     }

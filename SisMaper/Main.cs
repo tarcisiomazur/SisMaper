@@ -30,7 +30,7 @@ namespace SisMaper
             AllocConsole();
             try
             {
-                MySqlProtocol = new MySqlProtocol(DbCfg) {ForwardEngineer = false, SkipVerification = false, MonitorIntervalTime = 1};
+                MySqlProtocol = new MySqlProtocol(DbCfg) {ForwardEngineer = false, SkipVerification = true, MonitorIntervalTime = 100};
                 Persistence.Persistence.Init(MySqlProtocol);
                 Empresa = DAO.Load<Configuracoes>(1);
                 WebManiaConnector.Init(Empresa);
