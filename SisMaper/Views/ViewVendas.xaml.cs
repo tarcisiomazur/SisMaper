@@ -11,6 +11,7 @@ namespace SisMaper.Views
         {
             InitializeComponent();
             Open += ViewModel.Initialize;
+            Close += ViewModel.Clear;
             ViewModel.OpenPedido += OpenPedido;
         }
 

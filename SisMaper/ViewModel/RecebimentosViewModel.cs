@@ -2,13 +2,14 @@
 using Persistence;
 using SisMaper.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace SisMaper.ViewModel
 {
     public class RecebimentosViewModel : BaseViewModel, IRecebimento
     {
-        public ObservableCollection<ViewListarFatura>? Faturas { get; private set; }
+        public List<ViewListarFatura>? Faturas { get; private set; }
 
         private ViewListarFatura _faturaSelecionada;
 
@@ -76,7 +77,12 @@ namespace SisMaper.ViewModel
 
         private void GetFaturas()
         {
-            Faturas = new ObservableCollection<ViewListarFatura>(View.Execute<ViewListarFatura>());
+            Faturas = View.Execute<ViewListarFatura>();
+        }
+
+        public void Clear(object? sender, EventArgs e)
+        {
+            Faturas = null;
         }
 
     }

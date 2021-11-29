@@ -25,7 +25,7 @@
             <RowDefinition
                 Height="110" />
             <RowDefinition
-                Height="auto" />
+                Height="*" />
         </Grid.RowDefinitions>
         <ToolBar
             Grid.Row="0"
@@ -152,13 +152,12 @@
             </RibbonGroup>
             <Separator />
         </ToolBar>
-        <Border
+        <DataGrid x:Name="FaturasDataGrid"
+                  
             Grid.Row="1"
             BorderThickness="3"
             Margin="5"
-            CornerRadius="5"
-            BorderBrush="#FFC4C4C4">
-            <DataGrid x:Name="FaturasDataGrid"
+            BorderBrush="#FFC4C4C4"
                 Style="{DynamicResource MahApps.Styles.DataGrid}"
                 HorizontalContentAlignment="Stretch"
                 ColumnWidth="*"
@@ -167,33 +166,37 @@
                 CanUserAddRows="False"
                 IsReadOnly="True"
                 VerticalContentAlignment="Stretch"
-                Margin="0,0,0,0"
                 FontWeight="Regular"
                 SelectedItem="{Binding FaturaSelecionada}">
                 <DataGrid.Columns>
                     <mah:DataGridNumericUpDownColumn
                         Width="10*"
+                        MinWidth="60"
                         Header="Id"
                         Culture="pt-BR"
                         Binding="{Binding Id}"
                         IsReadOnly="false" />
                     <DataGridTextColumn
                         Width="70*"
+                        MinWidth="125"
                         Header="Cliente"
                         Binding="{Binding Nome}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Width="20*"
+                        MinWidth="75"
                         Header="Status"
                         Binding="{Binding Status}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Width="25*"
+                        MinWidth="75"
                         Header="Data"
                         Binding="{Binding Data, StringFormat=\{0:dd/MM/yyyy\}}"
                         IsReadOnly="True" />
                     <mah:DataGridNumericUpDownColumn
                         Width="25*"
+                        MinWidth="125"
                         Header="Valor Total(R$)"
                   StringFormat="{}{0:N2}"
                         Culture="pt-BR"
@@ -201,6 +204,7 @@
                         IsReadOnly="false" />
                     <mah:DataGridNumericUpDownColumn
                         Width="35*"
+                        MinWidth="125"
                         Header="Valor Pago(R$)"
                         StringFormat="{}{0:N2}"
                         Culture="pt-BR"
@@ -208,7 +212,6 @@
                         IsReadOnly="false" />
                 </DataGrid.Columns>
             </DataGrid>
-        </Border>
     </Grid>
 
 

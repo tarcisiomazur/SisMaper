@@ -28,10 +28,8 @@ namespace SisMaper.Views
         {
             
             InitializeComponent();
-            Console.WriteLine("VIEW RECEBIMENTOS ");
-
             Open += viewModel.Initialize;
-
+            Close += viewModel.Clear;
             SetActions();
         }
 

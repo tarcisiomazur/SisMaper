@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace SisMaper.Views.Templates
 {
@@ -10,12 +11,14 @@ namespace SisMaper.Views.Templates
 
         public void OnOpen()
         {
-            Open?.Invoke(this, EventArgs.Empty);
+            if(Open != null)
+                Dispatcher.BeginInvoke(DispatcherPriority.Background, Open, this, EventArgs.Empty);
         }
         
         public void OnClose()
         {
-            Close?.Invoke(this, EventArgs.Empty);
+            if(Close != null)
+                Dispatcher.BeginInvoke(DispatcherPriority.Background, Close, this, EventArgs.Empty);
         }
     }
 }

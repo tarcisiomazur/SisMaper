@@ -163,13 +163,10 @@
             </RibbonGroup>
             <Separator />
         </ToolBar>
-        <Border
-            Grid.Row="1"
-            BorderThickness="3"
-            Margin="5,5,5,5"
-            CornerRadius="5"
-            BorderBrush="#FFC4C4C4">
-            <DataGrid
+        <DataGrid
+                Grid.Row="1"
+                BorderThickness="3"
+                BorderBrush="#FFC4C4C4"
                 Style="{DynamicResource MahApps.Styles.DataGrid}"
                 templates:ColumnDataGridSave.SaveSizes="True"
                 HorizontalContentAlignment="Stretch"
@@ -180,51 +177,55 @@
                 CanUserAddRows="False"
                 IsReadOnly="True"
                 VerticalContentAlignment="Stretch"
-                Margin="0,0,0,0"
-                SelectedItem="{Binding PedidoSelecionado, Mode=TwoWay}">
-                <DataGrid.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" 
+            Margin="5,5,5,5">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" 
                         Command="{Binding EditarPedido}" 
                         CommandParameter="{Binding }" />
-                </DataGrid.InputBindings>
-                <DataGrid.Columns>
-                    <DataGridTextColumn
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn
                         Width="30*"
+                        MinWidth="70"
                         Header="Status"
                         Binding="{Binding Status}"
                         IsReadOnly="True" />
-                    <DataGridTextColumn
+                <DataGridTextColumn
                         Width="30*"
+                        MinWidth="70"
                         Header="Fatura"
                         Binding="{Binding Fatura}"
                         IsReadOnly="True" />
-                    <mah:DataGridNumericUpDownColumn
+                <mah:DataGridNumericUpDownColumn
                         HeaderStyle="{StaticResource RightGridHeaderStyle}"
                         Width="15*"
+                        MinWidth="75"
                         Header="Número"
                         Binding="{Binding Id}"
                         IsReadOnly="True" />
-                    <DataGridTextColumn
+                <DataGridTextColumn
                         Width="30*"
+                        MinWidth="95"
                         Header="Data"
                         Binding="{Binding Data, StringFormat='dd/MM/yyyy'}"
                         IsReadOnly="True" />
-                    <DataGridTextColumn
+                <DataGridTextColumn
                         Width="80*"
+                        MinWidth="125"
                         Header="Cliente"
                         Binding="{Binding Cliente}"
                         IsReadOnly="true" />
-                    <mah:DataGridNumericUpDownColumn
+                <mah:DataGridNumericUpDownColumn
                         HeaderStyle="{StaticResource RightGridHeaderStyle}"
                         Width="40*"
+                        MinWidth="125"
                         Header="Valor Total(R$)"
                         StringFormat="{}{0:N2}"
                         Culture="pt-BR"
                         Binding="{Binding ValorTotal}"
                         IsReadOnly="true" />
-                </DataGrid.Columns>
-                
-            </DataGrid>
-        </Border>
+            </DataGrid.Columns>
+
+        </DataGrid>
     </Grid>
 </templates:MyUserControl>
