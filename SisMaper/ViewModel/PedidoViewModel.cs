@@ -261,25 +261,28 @@ namespace SisMaper.ViewModel
                     {
                         ValorPagamento = Pedido.ValorTotal,
                         Usuario = Main.Usuario,
+                        Tipo = (char) Pagamento.TipoPagamento.Moeda,
                         Context = PersistenceContext
                     }
                 })
             });
             Pedido.Status = Pedido.Pedido_Status.Fechado;
-            if (!Pedido.Fatura.Save())
+            if (Pedido.Fatura.Save())
             {
-                DialogCoordinator.ShowMessageAsync(this, "Salvar Fatura",
-                    "A fatura do pedido não pode ser salva!");
-                Cancel?.Invoke();
-                return;
+                Pedido.Fatura.Status = Fatura.Fatura_Status.Fechada;
+                if (Pedido.Fatura.Save())
+                {
+                    DialogCoordinator.ShowMessageAsync(this, "Receber Pedido", "O pedido foi salvo e recebido!");
+                    RaisePropertyChanged(nameof(Pedido));
+                    RaisePropertyChanged(nameof(HasFatura));
+                    SystemSounds.Beep.Play();
+                    return;
+                }
             }
 
-            Pedido.Fatura.Status = Fatura.Fatura_Status.Fechada;
-            Pedido.Fatura.Save();
-            DialogCoordinator.ShowMessageAsync(this, "Receber Pedido", "O pedido foi salvo e recebido!");
-            RaisePropertyChanged(nameof(Pedido));
-            RaisePropertyChanged(nameof(HasFatura));
-            SystemSounds.Beep.Play();
+            DialogCoordinator.ShowMessageAsync(this, "Salvar Fatura",
+                    "A fatura do pedido não pode ser salva!");
+            Cancel?.Invoke();
         }
 
         private Fatura CreateFatura()
@@ -288,7 +291,6 @@ namespace SisMaper.ViewModel
             {
                 Cliente = Pedido.Cliente,
                 ValorTotal = Pedido.ValorTotal,
-                ValorPago = Pedido.ValorTotal,
                 Data = DateTime.Now,
                 Context = PersistenceContext,
             };

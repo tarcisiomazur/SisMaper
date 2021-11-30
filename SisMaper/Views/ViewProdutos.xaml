@@ -1,4 +1,4 @@
-﻿<UserControl 
+﻿<UserControl
     x:Class="SisMaper.Views.ViewProdutos"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,139 +6,195 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    x:Name="userControl" 
+    x:Name="userControl"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     Dialog:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d"
-    Height="500" Width="1000">
+    Height="500"
+    Width="1000">
 
     <UserControl.DataContext>
-        <viewModels:ProdutosViewModel/>
+        <viewModels:ProdutosViewModel />
     </UserControl.DataContext>
 
-    <Grid Background="#FFF6F6F6" >
+    <Grid
+        Background="#FFF6F6F6">
         <DockPanel>
-            <ToolBar DockPanel.Dock="Top" >
-                <RibbonGroup Header="Alterar Produto">
-                    <StackPanel Orientation="Horizontal">
-                        <Button Style="{StaticResource SisMaper.ToolBar.Button}" CommandParameter="{Binding}" Command="{Binding NovoProduto}">
+            <ToolBar
+                DockPanel.Dock="Top">
+                <RibbonGroup
+                    Header="Alterar Produto">
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <Button
+                            Style="{StaticResource SisMaper.ToolBar.Button}"
+                            CommandParameter="{Binding}"
+                            Command="{Binding NovoProduto}">
                             <StackPanel>
-                                <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" />
-                                <TextBlock Style="{StaticResource SisMaper.ToolBar.Button.Header}" Text="Novo" />
+                                <icons:PackIconPixelartIcons
+                                    Kind="AddBox"
+                                    HorizontalAlignment="Center" />
+                                <TextBlock
+                                    Style="{StaticResource SisMaper.ToolBar.Button.Header}"
+                                    Text="Novo" />
                             </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource SisMaper.ToolBar.Button}" CommandParameter="{Binding}" Command="{Binding Editar}">
+                        <Button
+                            Style="{StaticResource SisMaper.ToolBar.Button}"
+                            CommandParameter="{Binding}"
+                            Command="{Binding Editar}">
                             <StackPanel>
-                                <icons:PackIconModern Kind="EditBox" HorizontalAlignment="Center" />
-                                <TextBlock Style="{StaticResource SisMaper.ToolBar.Button.Header}" Text="Editar" />
+                                <icons:PackIconModern
+                                    Kind="EditBox"
+                                    HorizontalAlignment="Center" />
+                                <TextBlock
+                                    Style="{StaticResource SisMaper.ToolBar.Button.Header}"
+                                    Text="Editar" />
                             </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource SisMaper.ToolBar.Button}" CommandParameter="{Binding}" Command="{Binding Deletar}">
+                        <Button
+                            Style="{StaticResource SisMaper.ToolBar.Button}"
+                            CommandParameter="{Binding}"
+                            Command="{Binding Deletar}">
                             <StackPanel>
-                                <icons:PackIconMaterial Kind="DeleteForever" HorizontalAlignment="Center" />
-                                <TextBlock Style="{StaticResource SisMaper.ToolBar.Button.Header}" Text="Excluir" />
+                                <icons:PackIconMaterial
+                                    Kind="DeleteForever"
+                                    HorizontalAlignment="Center" />
+                                <TextBlock
+                                    Style="{StaticResource SisMaper.ToolBar.Button.Header}"
+                                    Text="Excluir" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
                 </RibbonGroup>
                 <Separator />
-                <RibbonGroup Header="Filtrar" Width="332">
-                    <Grid Width="468">
-                        <TextBox x:Name="FilterTextBox" Margin="7,46,161,0"
-                                 mah:TextBoxHelper.Watermark="Buscar produto... (Ctrl + F)"
-                                 Background="{DynamicResource MahApps.Brushes.Gray9}"
-                                 BorderThickness="0"
-                                 Style="{DynamicResource TextBox.Search}"
-                                 Text="{Binding FilterText, Delay=300, ElementName=userControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="35" Width="300" VerticalAlignment="Top">
+                <RibbonGroup
+                    Header="Filtrar"
+                    Width="332">
+                    <Grid
+                        Width="468">
+                        <TextBox
+                            x:Name="FilterTextBox"
+                            Margin="7,46,161,0"
+                            mah:TextBoxHelper.Watermark="Buscar produto... (Ctrl + F)"
+                            Background="{DynamicResource MahApps.Brushes.Gray9}"
+                            BorderThickness="0"
+                            Style="{DynamicResource TextBox.Search}"
+                            Text="{Binding TextoFiltro, Delay=300, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Height="35"
+                            Width="300"
+                            VerticalAlignment="Top">
                             <TextBox.ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold"
-                                               Foreground="{DynamicResource MahApps.Brushes.Accent}"
-                                               Text="Filtro Avançado:" />
                                     <TextBlock>
-                                        <Run Text="Use these chars to match all substrings: &#x9;" />
-                                        <Run Text=" " />
-                                        <Run Text=" " />
-                                        <Run Text=" " />
-                                        <Run FontFamily="Courier New" Text="'&amp;' '+' ',' ';'" />
-                                    </TextBlock>
-                                    <TextBlock>
-                                        <Run Text="Use this chars to match any substring: &#x9;" />
-                                        <Run Text=" " />
-                                        <Run Text=" " />
-                                        <Run Text=" " />
-                                        <Run FontFamily="Courier New" Text="'|'" />
+                                        <Run
+                                            Text="Busque pela Descrição, Categoria ou Id" />
                                     </TextBlock>
                                 </StackPanel>
                             </TextBox.ToolTip>
                         </TextBox>
-                        <CheckBox Margin="234,12,163,0" IsChecked="{x:Null}" Content="Inativos" VerticalAlignment="Top" IsThreeState="True"/>
-                        <ComboBox x:Name="FiltrarCategorias" Margin="10,9,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="198" mah:TextBoxHelper.Watermark="Categoria" />
+                        <CheckBox
+                            Margin="234,12,163,0"
+                            IsChecked="{Binding Inativos, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Content="Inativos"
+                            VerticalAlignment="Top"
+                            IsThreeState="True" />
+                        <ComboBox
+                            x:Name="FiltrarCategorias"
+                            Margin="10,9,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Width="198"
+                            IsEditable="True"
+                            mah:TextBoxHelper.ClearTextButton="True"
+                            ItemsSource="{Binding Categorias}"
+                            SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
+                            mah:TextBoxHelper.Watermark="Categoria" />
 
                     </Grid>
                 </RibbonGroup>
-                <Separator/>
-                
-                <StackPanel >
+                <Separator />
+
+                <StackPanel>
                     <Button
-                        Height="30" Width="120" Margin="5, 10" Content="Categorias" Background="LightGray" CommandParameter="{Binding}" Command="{Binding AbrirCategorias}">
-                    </Button>
-                    
+                        Height="30"
+                        Width="120"
+                        Margin="5, 10"
+                        Content="Categorias"
+                        Background="LightGray"
+                        CommandParameter="{Binding}"
+                        Command="{Binding AbrirCategorias}" />
+
                     <Button
-                        Height="30" Width="120" Margin="5, 10"  Content="Unidades" Background="LightGray" CommandParameter="{Binding}" Command="{Binding AbrirUnidades}">
-                    </Button>
-                    
-                    
+                        Height="30"
+                        Width="120"
+                        Margin="5, 10"
+                        Content="Unidades"
+                        Background="LightGray"
+                        CommandParameter="{Binding}"
+                        Command="{Binding AbrirUnidades}" />
+
+
                 </StackPanel>
 
 
-
             </ToolBar>
-            <Border BorderThickness="3" Margin="5" CornerRadius="5" BorderBrush="#FFC4C4C4">
-                <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch" x:Name="ProdutosDataGrid"
-                          ColumnWidth="*" ItemsSource="{Binding ProdutosList}" AutoGenerateColumns="False"
-                          CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
-                          PreviewMouseLeftButtonDown="Produtos_MouseDown" MouseDoubleClick="Produtos_MouseDoubleClick" SelectionMode="Single"
-                          SelectedItem="{Binding ProdutoSelecionado, Mode=TwoWay}">
+            <Border
+                BorderThickness="3"
+                Margin="5"
+                CornerRadius="5"
+                BorderBrush="#FFC4C4C4">
+                <DataGrid
+                    Style="{DynamicResource MahApps.Styles.DataGrid}"
+                    HorizontalContentAlignment="Stretch"
+                    x:Name="ProdutosDataGrid"
+                    ColumnWidth="*"
+                    ItemsSource="{Binding ProdutosFiltrados}"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    IsReadOnly="True"
+                    Margin="0,10,0,24"
+                    PreviewMouseLeftButtonDown="Produtos_MouseDown"
+                    MouseDoubleClick="Produtos_MouseDoubleClick"
+                    SelectionMode="Single"
+                    SelectedItem="{Binding ProdutoSelecionado, Mode=TwoWay}">
                     <DataGrid.Columns>
                         <DataGridTextColumn
-                                Width="40*"
-                                Header="Código de Barras"
-                                Binding="{Binding CodigoBarras}"
-                                IsReadOnly="True" />
+                            Width="40*"
+                            Header="Código de Barras"
+                            Binding="{Binding CodigoBarras}"
+                            IsReadOnly="True" />
                         <DataGridTextColumn
-                                Width="80*"
-                                Header="Descrição"
-                                Binding="{Binding Descricao}"
-                                IsReadOnly="True" />
+                            Width="80*"
+                            Header="Descrição"
+                            Binding="{Binding Descricao}"
+                            IsReadOnly="True" />
                         <DataGridTextColumn
-                                Width="30*"
-                                Header="NCM"
-                                Binding="{Binding NCM.Id}"
-                                IsReadOnly="True" />
+                            Width="30*"
+                            Header="NCM"
+                            Binding="{Binding NCM}"
+                            IsReadOnly="True" />
                         <DataGridTextColumn
-                                Width="30*"
-                                Header="Categoria"
-                                Binding="{Binding Categoria.Descricao}"
-                                IsReadOnly="True" />
+                            Width="30*"
+                            Header="Categoria"
+                            Binding="{Binding Categoria}"
+                            IsReadOnly="True" />
                         <mah:DataGridNumericUpDownColumn
-                                Width="25*"
-                                Header="Preço de Custo(R$)"
-                                StringFormat="{}{0:N2}"
-                                Culture="pt-BR"
-                                Binding="{Binding PrecoCusto}"
-                                IsReadOnly="true" />
+                            Width="25*"
+                            Header="Preço de Custo(R$)"
+                            StringFormat="{}{0:N2}"
+                            Culture="pt-BR"
+                            Binding="{Binding PrecoCusto}"
+                            IsReadOnly="true" />
                         <mah:DataGridNumericUpDownColumn
-                                Width="25*"
-                                Header="Preço de Venda(R$)"
-                                StringFormat="{}{0:N2}"
-                                Culture="pt-BR"
-                                Binding="{Binding PrecoVenda}"
-                                IsReadOnly="true" />
+                            Width="25*"
+                            Header="Preço de Venda(R$)"
+                            StringFormat="{}{0:N2}"
+                            Culture="pt-BR"
+                            Binding="{Binding PrecoVenda}"
+                            IsReadOnly="true" />
                     </DataGrid.Columns>
-
 
 
                 </DataGrid>

@@ -60,6 +60,8 @@ namespace SisMaper.ViewModel
         public string TextoUnidade { get; set; }
         public Produto Produto { get; set; }
 
+        public double Valor1 { get; set; }
+
         public ObservableCollection<NCM> NCMs { get; private set; }
         public ObservableCollection<Categoria> Categorias { get; private set; }
         public ObservableCollection<Unidade> Unidades { get; private set; }
@@ -86,8 +88,8 @@ namespace SisMaper.ViewModel
             Salvar = new SalvarCommand();
             Adicionar = new AdicionarLoteCommand();
             Remover = new RemoverLoteCommand();
-
-            Produto = (Produto)produtoSelecionado;
+            ViewListarProdutos view = (ViewListarProdutos) produtoSelecionado;
+            Produto = DAO.Load<Produto>(view.Id);
 
             ListaNCM = DAO.FindWhereQuery<NCM>("Id > 0");
             PList<Categoria> listaCategorias = DAO.FindWhereQuery<Categoria>("Id > 0");

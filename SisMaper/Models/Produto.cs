@@ -42,7 +42,11 @@ namespace SisMaper.Models
 
         [OneToMany] public PList<Lote> Lotes { get; set; }
 
-        public string Porcentagem => $"{(double)PrecoVenda/(double)PrecoCusto:P}";
+        public double Porcentagem
+        {
+            get => ((double)PrecoVenda/(double)PrecoCusto-1)* 100;
+            set => PrecoVenda = PrecoCusto * (decimal) (1 + value/100);
+        }
 
 
     }

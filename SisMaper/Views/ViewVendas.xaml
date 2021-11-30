@@ -172,6 +172,7 @@
                 HorizontalContentAlignment="Stretch"
                 ColumnWidth="*"
                 x:Name="DataGridPedidos"
+                SelectedItem="{Binding PedidoSelecionado, Mode=OneWayToSource}"
                 ItemsSource="{Binding PedidosFiltrados}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
