@@ -3,16 +3,9 @@ using Persistence;
 
 namespace SisMaper.Models
 {
-    //[Table(Name = "Produto", VersionControl = true)]
     [Table(Name = "Produto", VersionControl = true)]
     public class Produto : DAO
     {
-        public enum Produto_Status
-        {
-            Ativo,
-            Inativo
-        }
-        
         [Field(FieldType = SqlDbType.VarChar, Length = 256)]
         public string CodigoBarras { get; set; }
 
@@ -47,7 +40,6 @@ namespace SisMaper.Models
             get => ((double)PrecoVenda/(double)PrecoCusto-1)* 100;
             set => PrecoVenda = PrecoCusto * (decimal) (1 + value/100);
         }
-
 
     }
 

@@ -54,7 +54,11 @@
                         Text="Filtro Avançado:" />
                     <TextBlock>
                         <Run
-                            Text="Busque pela Descrição, Categoria ou Id" />
+                            Text="Insira a descrição do produto" />
+                    </TextBlock>
+                    <TextBlock>
+                        <Run
+                            Text="ou o Código de Barras" />
                     </TextBlock>
                 </StackPanel>
             </TextBox.ToolTip>

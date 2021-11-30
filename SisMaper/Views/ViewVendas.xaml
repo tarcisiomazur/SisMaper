@@ -109,7 +109,7 @@
                                 </TextBlock>
                                 <TextBlock>
                                     <Run
-                                        Text="Ou digite o número do pedido" />
+                                        Text="ou digite o número do pedido" />
                                 </TextBlock>
                             </StackPanel>
                         </TextBox.ToolTip>

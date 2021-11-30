@@ -78,13 +78,13 @@
                 Width="489">
                 <Grid>
                     <TextBox
-                        x:Name="FilterRecebimento"
+                        x:Name="FilterTextBox"
                         Margin="7,46,3,0"
                         mah:TextBoxHelper.Watermark="Buscar fatura... (Ctrl + F)"
                         Background="{DynamicResource MahApps.Brushes.Gray9}"
                         BorderThickness="0"
                         Style="{DynamicResource TextBox.Search}"
-                        Text="{Binding FiltroRecebimento, Delay=300, ElementName=userControl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding TextoFiltro, Delay=300, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Height="35"
                         VerticalAlignment="Top">
                         <TextBox.ToolTip>
@@ -99,7 +99,7 @@
                                 </TextBlock>
                                 <TextBlock>
                                     <Run
-                                        Text="Ou digite o número do pedido" />
+                                        Text="Ou digite o número da Fatura" />
                                 </TextBlock>
                             </StackPanel>
                         </TextBox.ToolTip>
@@ -111,26 +111,28 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Width="136"
+                        ItemsSource="{Binding StatusList}"
+                        SelectedItem="{Binding StatusSelecionado}"
+                        mah:TextBoxHelper.ClearTextButton="True"
                         mah:TextBoxHelper.Watermark="Status"
                         Height="39" />
                     <DatePicker
                         FontSize="14"
                         HorizontalAlignment="Left"
                         Margin="210,4,0,0"
-
                         VerticalAlignment="Top"
                         Width="121"
+                        SelectedDate="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         mah:TextBoxHelper.Watermark="De"
                         mah:TextBoxHelper.UseFloatingWatermark="True"
                         VerticalContentAlignment="Center"
-                        SelectedDate="2021-09-17"
                         Height="39" />
                     <DatePicker
                         FontSize="14"
                         HorizontalAlignment="Left"
                         Margin="337,4,0,0"
+                        SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         VerticalAlignment="Top"
-                        SelectedDate="2021-09-18"
                         Height="39"
                         mah:TextBoxHelper.UseFloatingWatermark="True"
                         Width="121"
@@ -161,7 +163,7 @@
                 Style="{DynamicResource MahApps.Styles.DataGrid}"
                 HorizontalContentAlignment="Stretch"
                 ColumnWidth="*"
-                ItemsSource="{Binding Faturas}"
+                ItemsSource="{Binding FaturasFiltradas}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 IsReadOnly="True"
@@ -171,8 +173,8 @@
                 <DataGrid.Columns>
                     <mah:DataGridNumericUpDownColumn
                         Width="10*"
-                        MinWidth="60"
-                        Header="Id"
+                        MinWidth="75"
+                        Header="Número"
                         Culture="pt-BR"
                         Binding="{Binding Id}"
                         IsReadOnly="false" />
