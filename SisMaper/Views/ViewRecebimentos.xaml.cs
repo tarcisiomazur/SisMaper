@@ -42,7 +42,7 @@ namespace SisMaper.Views
             {
                 vm.OpenEditarFatura += (object? fat) =>
                 {
-                    var viewFatura = new ViewFatura() { DataContext = new FaturaViewModel(fat) };
+                    ViewFatura viewFatura = new ViewFatura() { DataContext = new FaturaViewModel(fat) };
                     viewFatura.Closed += viewModel.Initialize;
                     viewFatura.ShowDialog();
                 };

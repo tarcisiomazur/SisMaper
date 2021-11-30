@@ -9,7 +9,7 @@
     xmlns:viewmodel="clr-namespace:SisMaper.ViewModel"
     x:Class="SisMaper.Views.ViewFatura"
     mc:Ignorable="d"
-    Title="Fatura - 00001"
+    Title="Fatura"
     TitleCharacterCasing="Normal"
     Height="599"
     Width="812"
@@ -384,7 +384,6 @@
         
         <Button x:Name="ChangeFaturaButton"
             Style="{DynamicResource OptionsButtonStyle}"
-            Content="Encerrar Fatura"
             CommandParameter="{Binding}"
             Command="{Binding AlterarFatura}"
             HorizontalAlignment="Left"

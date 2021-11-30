@@ -35,10 +35,23 @@ namespace SisMaper.Views
 
         private void ViewParcelaLoaded(object sender, RoutedEventArgs e)
         {
+            DataVencimentoDatePicker.DisplayDateStart = DateTime.Today;
+
             if(DataContext is ICloseWindow vm)
             {
                 vm.Close = () => Close();
             }
+
         }
+
+        /*
+        private void MoedaTextBox(object sender, RoutedEventArgs e)
+        {
+            if(tx.Text.Length == 0)
+            {
+                tx.Text = "0";
+            }
+        }
+        */
     }
 }

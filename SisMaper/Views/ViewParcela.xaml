@@ -11,6 +11,7 @@
         Title="Parcela" 
         Height="800" 
         Width="500"
+
         WindowStartupLocation="CenterScreen">
 
 
@@ -180,7 +181,7 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                 <TextBlock Language="pt-br" Text="Data de Vencimento" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <DatePicker  BorderThickness="2"
+                <DatePicker  BorderThickness="2" x:Name="DataVencimentoDatePicker"
                     Height="32"
                     FontSize="16"
                     HorizontalAlignment="Left"
@@ -188,7 +189,7 @@
                     VerticalAlignment="Top"
                     Width="200" 
                     Focusable="False"
-                    SelectedDate="{Binding Parcela.DataVencimento}"/>
+                    SelectedDate="{Binding Parcela.DataVencimento, Mode=TwoWay}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
@@ -228,15 +229,30 @@
 
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                <TextBlock Language="pt-br" Text="Moeda" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Language="pt-br"
-                    Height="32"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0"
-                    VerticalAlignment="Top"
-                    Width="200" 
-                    Text="{Binding ValorMoeda, UpdateSourceTrigger=LostFocus}"/>
+                <TextBlock Language="pt-br" Text="Moeda" FontSize="22" Margin="20, 20, 0, 0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                    <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2,2,0,2" Language="pt-br"
+                        Height="32" x:Name="MoedaRS" IsReadOnly="True"
+                        FontSize="16"
+                        HorizontalAlignment="Left"
+                        Margin="0,20,0,0"
+                        VerticalAlignment="Top"
+                        Width="30" 
+                        Text="R$">
+                    </TextBox>
+
+                    <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="0,2,2,2" Language="pt-br"
+                        Height="32" x:Name="tx" 
+                        FontSize="16"
+                        HorizontalAlignment="Left"
+                        Margin="0,20,0,0"
+                        VerticalAlignment="Top"
+                        Width="200" 
+                        Text="{Binding ValorMoeda, UpdateSourceTrigger=LostFocus}"
+                              >
+                    </TextBox>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
@@ -282,7 +298,7 @@
                     VerticalAlignment="Top"
                     Width="200" 
                     IsEnabled="False"
-                    Text="{Binding ValorTotal}"/>
+                    Text="{Binding ValorTotal, Mode=OneWay}"/>
             </StackPanel>
             
             <StackPanel Orientation="Horizontal" Margin="0,40,0,0">

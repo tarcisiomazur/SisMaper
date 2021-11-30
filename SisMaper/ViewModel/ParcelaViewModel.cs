@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
+using MySql.Data.MySqlClient;
 using Persistence;
 using SisMaper.Models;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SisMaper.ViewModel
 {
@@ -77,6 +79,28 @@ namespace SisMaper.ViewModel
             }
         }
 
+        /*
+        private DateTime _dataVencimento = DateTime.Today;
+
+        public DateTime DataVencimento
+        {
+            get { return _dataVencimento; }
+            set
+            {
+                if (_dataVencimento.Date < DateTime.Today)
+                {
+                    //DialogCoordinator.ShowModalMessageExternal(this, "Data", "Data de vencimento não pode ser passada");
+                    MessageBox.Show("DATA de VENCIMENTO");
+                }
+                else
+                {
+                    Parcela.DataVencimento = value;
+                    SetField(ref _dataVencimento, value);
+                }
+            }
+        }
+        */
+
 
         public SalvarParcelaCommand Salvar { get; private set; }
         public ConfirmarRecebimentoCommand Confirmar { get; private set; }
@@ -87,7 +111,10 @@ namespace SisMaper.ViewModel
         public IDialogCoordinator DialogCoordinator { get; set; }
 
 
-        public decimal ValorTotal  { get; set; }
+        public decimal ValorTotal  { get; private set; }
+
+
+        private PList<Pagamento> pagamentos;
 
         public ParcelaViewModel(object? parcelaSelecionada, object? faturaSelecionada)
         {
@@ -119,9 +146,8 @@ namespace SisMaper.ViewModel
                 {
                     Indice = Fatura.Parcelas.Count + 1,
                     DataVencimento = DateTime.Today.AddMonths(1),
-                    Status = Parcela.Status_Parcela.Pendente
+                    Status = Parcela.Status_Parcela.Pendente,
                 };
-
             }
 
             else
@@ -132,13 +158,18 @@ namespace SisMaper.ViewModel
                 }
             }
 
+            //DataVencimento = Parcela.DataVencimento;
+            //DataVencimento = DateTime.Today;
+
+            //Console.WriteLine(Main.Usuario.Id);
+
 
         }
 
 
         private void SetValorTotal()
         {
-            ValorTotal = ValorMoeda + ValorCredito + ValorDebito + ValorOutro;
+            //ValorTotal = ValorMoeda + ValorCredito + ValorDebito + ValorOutro;
         }
 
         private void CheckValoresRecebimento()
@@ -154,16 +185,14 @@ namespace SisMaper.ViewModel
             }
 
 
-            Parcela.Pagamentos = new PList<Pagamento>();
+            //Parcela.Pagamentos = new PList<Pagamento>();
+            //pagamentos = new PList<Pagamento>();
 
             if(ValorMoeda > 0)
             {
                 Parcela.Pagamentos.Add(new Pagamento()
                 {
-                    //Usuario = Main.Usuario
-
-                    Usuario = DAO.Load<Usuario>(13),
-
+                    Usuario = Main.Usuario,
                     ValorPagamento = ValorMoeda,
                     Tipo = (char) Pagamento.TipoPagamento.Moeda,
                 });
@@ -173,10 +202,7 @@ namespace SisMaper.ViewModel
             {
                 Parcela.Pagamentos.Add(new Pagamento()
                 {
-                    //Usuario = Main.Usuario
-
-                    Usuario = DAO.Load<Usuario>(13),
-
+                    Usuario = Main.Usuario,
                     Tipo = (char) Pagamento.TipoPagamento.Credito,
                     ValorPagamento = ValorCredito,
                 });
@@ -186,10 +212,7 @@ namespace SisMaper.ViewModel
             {
                 Parcela.Pagamentos.Add(new Pagamento()
                 {
-                    //Usuario = Main.Usuario
-
-                    Usuario = DAO.Load<Usuario>(13),
-
+                    Usuario = Main.Usuario,
                     Tipo = (char) Pagamento.TipoPagamento.Debito,
                     ValorPagamento = ValorDebito
                 });
@@ -199,10 +222,7 @@ namespace SisMaper.ViewModel
             {
                 Parcela.Pagamentos.Add(new Pagamento()
                 {
-                    //Usuario = Main.Usuario
-
-                    Usuario = DAO.Load<Usuario>(13),
-
+                    Usuario = Main.Usuario,
                     Tipo = (char) Pagamento.TipoPagamento.Outro,
                     ValorPagamento = ValorOutro
                 });
@@ -234,9 +254,20 @@ namespace SisMaper.ViewModel
 
                 Close?.Invoke();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar parcela", "Erro: " + ex.Message + "      " + ex.InnerException);
+                if (ex.InnerException?.InnerException is MySqlException e)
+                {
+                    if(e.Number == 40004)
+                    {
+                        DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar parcela", "ERRO: " + e.Message);
+                    }
+                }
+
+                else
+                {
+                    DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar parcela", "Erro: " + ex.Message);
+                }
             }
             
         }
@@ -260,7 +291,6 @@ namespace SisMaper.ViewModel
             catch(Exception ex)
             {
                 DialogCoordinator.ShowModalMessageExternal(this, "Erro ao confirmar recebimento", "Erro: " + ex.Message);
-                //DialogCoordinator.ShowModalMessageExternal(this, "Erro ao confirmar recebimento", ex.ToString());
             }
 
             

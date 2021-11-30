@@ -20,8 +20,9 @@ namespace SisMaper.Views
         {
             InitializeComponent();
 
+
             Loaded += ViewFatura_Loaded;
-            DataContextChanged += ViewFatura_DataContextChanged;
+
 
 
             /*
@@ -68,15 +69,17 @@ namespace SisMaper.Views
         }
 
 
-        private void ViewFatura_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
-        {
-            
-            //SetCliente();
-            //SetActions();
-        }
 
         private void ViewFatura_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            if (ParcelasDataGrid.IsEnabled)
+            {
+                ChangeFaturaButton.Content = "Encerrar Fatura";
+            }
+            else
+            {
+                ChangeFaturaButton.Content = "Reabrir Fatura";
+            }
             SetActions();
             //SetCliente();
 
