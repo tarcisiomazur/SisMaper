@@ -503,7 +503,7 @@
                           ColumnWidth="*" ItemsSource="{Binding PessoaJuridicaList}" AutoGenerateColumns="False"
                           CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
                           SelectionMode="Single"
-                          SelectedItem="{Binding ClienteSelecionado, Mode=TwoWay}">
+                          SelectedItem="{Binding ClienteSelecionado, Mode=OneWayToSource}">
 
                             <DataGrid.Columns>
                                 <DataGridTextColumn

@@ -54,45 +54,11 @@
                         Text="Filtro Avançado:" />
                     <TextBlock>
                         <Run
-                            Text="Use these chars to match all substrings: &#x9;" />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            FontFamily="Courier New"
-                            Text="'&amp;' '+' ',' ';'" />
+                            Text="Insira a descrição do produto" />
                     </TextBlock>
                     <TextBlock>
                         <Run
-                            Text="Use this chars to match any substring: &#x9;" />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            Text=" " />
-                        <Run
-                            FontFamily="Courier New"
-                            Text="'|'" />
+                            Text="ou o Código de Barras" />
                     </TextBlock>
                 </StackPanel>
             </TextBox.ToolTip>

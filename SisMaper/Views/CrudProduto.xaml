@@ -5,8 +5,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:sysglob="clr-namespace:System.Globalization;assembly=mscorlib"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SisMaper.Views"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:m="clr-namespace:SisMaper.ViewModel"
@@ -286,13 +288,14 @@
             Margin="34,293,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Preço de Custo"/><LineBreak/><Run Language="pt-br"/></TextBlock>
-        <TextBox
+        <templates:CurrencyTextBox
             Style="{DynamicResource TextBoxStyle1}"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Right"
             Margin="158,292,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produto.PrecoCusto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            IsNegative="False"
+            Number="{Binding Produto.PrecoCusto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="165" />
         <TextBlock
@@ -306,22 +309,25 @@
             HorizontalContentAlignment="Right"
             Margin="158,336,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produto.Porcentagem, Mode=OneWay}"
+            Text="{Binding Produto.Porcentagem, ConverterCulture={x:Static sysglob:CultureInfo.CurrentCulture}, StringFormat={}{0:#0.000}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
-            Width="165" 
-            IsEnabled="false"/>
+            Width="165" Padding="20,4,20,4" />
+        <TextBlock 
+            Text="%"
+            Margin="305,341,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="34,378,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top" Height="32" Width="122"><Run Text="Preço de "/><Run Language="pt-br" Text="Venda"/><LineBreak/><Run/></TextBlock>
-        <TextBox
+        <templates:CurrencyTextBox
             Style="{DynamicResource TextBoxStyle1}"
             HorizontalAlignment="Left"
             Margin="158,378,0,0"
             HorizontalContentAlignment="Right"
             TextWrapping="Wrap"
-            Text="{Binding Produto.PrecoVenda, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            MinimumValue="{x:Static system:Decimal.Zero}"
+            Number="{Binding Produto.PrecoVenda, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="165" />
         <TextBlock

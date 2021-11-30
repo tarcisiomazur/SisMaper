@@ -1,29 +1,25 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.Models;
-using SisMaper.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace SisMaper.ViewModel
 {
     public class ProdutosViewModel : BaseViewModel, IProdutos
     {
-
-        private Produto? _produtoSelecionado;
-
-        public Produto ProdutoSelecionado
-        {
-            get { return _produtoSelecionado; }
-            set { SetField(ref _produtoSelecionado, value); }
-        }
-
-        public PList<Produto> ProdutosList { get; private set; }
+        public ViewListarProdutos ProdutoSelecionado { get; set; }
+        public List<ViewListarProdutos> Produtos { get; set; }
+        public IEnumerable<ViewListarProdutos> ProdutosFiltrados { get; set; }
+        
+        public Categoria? CategoriaSelecionada { get; set; }
+        public PList<Categoria> Categorias { get; set; }
+        public string? TextoFiltro { get; set; }
+        public bool? Inativos { get; set; } = false;
+        
         public NovoProdutoCommand NovoProduto { get; private set; }
         public EditarProdutoCommand Editar { get; private set; }
         public ExcluirProdutoCommand Deletar { get; private set; }
@@ -41,20 +37,31 @@ namespace SisMaper.ViewModel
 
         public ProdutosViewModel()
         {
-
-            ProdutosList = DAO.FindWhereQuery<Produto>("Id > 0");
-
+            Categorias = DAO.FindWhereQuery<Categoria>("ID > 0");
             NovoProduto = new NovoProdutoCommand();
             Editar = new EditarProdutoCommand();
             Deletar = new ExcluirProdutoCommand();
             AbrirCategorias = new OpenCategoriaCommand();
             AbrirUnidades = new OpenUnidadeCommand();
-
-
+            
             DialogCoordinator = new DialogCoordinator();
+            PropertyChanged += UpdateFilter;
+            Produtos = View.Execute<ViewListarProdutos>();
 
-            _produtoSelecionado = ProdutoSelecionado = null;
+        }
 
+        private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
+        {
+            if (Produtos != null && e.PropertyName is nameof(CategoriaSelecionada) or nameof(Produtos) or nameof(TextoFiltro) or nameof(Inativos))
+            {
+                ProdutosFiltrados = Produtos.Where(p =>
+                    (string.IsNullOrEmpty(TextoFiltro) ||
+                     !string.IsNullOrEmpty(p.Descricao) && p.Descricao.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase) ||
+                     !string.IsNullOrEmpty(p.CodigoBarras) && p.CodigoBarras.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase)) &&
+                    (CategoriaSelecionada == null || p.Categoria == CategoriaSelecionada.Descricao) &&
+                    (Inativos is null || Inativos == p.Inativo)
+                );
+            }
         }
 
 
@@ -82,8 +89,11 @@ namespace SisMaper.ViewModel
                         lotesParaDeletar.DeleteAll();
                     }
 
-                    ProdutoSelecionado.Delete();
-                    ProdutoExcluido?.Invoke();
+                    var p = DAO.Load<Produto>(ProdutoSelecionado.Id);
+                    if (p?.Delete() ?? false)
+                    {
+                        ProdutoExcluido?.Invoke();
+                    }
                 }
 
             }

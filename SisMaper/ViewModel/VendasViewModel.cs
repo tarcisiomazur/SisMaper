@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using MahApps.Metro.Controls.Dialogs;
@@ -12,14 +11,14 @@ namespace SisMaper.ViewModel
     public class VendasViewModel : BaseViewModel
     {
         public ViewListarPedido? PedidoSelecionado { get; set; }
-        public DateTime StartDate { get; set; } = DateTime.Today.AddMonths(-1);
-        public DateTime EndDate { get; set; } = DateTime.Today;
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public string TextoFiltro { get; set; }
         public Pedido.Pedido_Status? StatusSelecionado { get; set; }
         public List<Pedido.Pedido_Status> StatusList { get; set; }
         public event Action<long?>? OpenPedido;
         public IEnumerable<ViewListarPedido> PedidosFiltrados { get; set; }
-        public ObservableCollection<ViewListarPedido>? Pedidos { get; set; }
+        public List<ViewListarPedido> Pedidos { get; set; }
         public SimpleCommand NovoPedido => new(NewVenda);
         public SimpleCommand EditarPedido => new(_ => OpenVenda(), _ => PedidoSelecionado is not null);
         public SimpleCommand ExcluirPedido => new(_ => DeleteVenda(), _ => PedidoSelecionado is not null);
@@ -88,7 +87,9 @@ namespace SisMaper.ViewModel
 
         public void Initialize(object? sender, EventArgs e)
         {
-            Pedidos = new ObservableCollection<ViewListarPedido>(View.Execute<ViewListarPedido>());
+            Pedidos = View.Execute<ViewListarPedido>();
+            StartDate = DateTime.Today.AddMonths(-1);
+            EndDate = DateTime.Today;
         }
 
 
@@ -105,6 +106,11 @@ namespace SisMaper.ViewModel
                     p.Data.Date >= StartDate.Date && p.Data.Date <= EndDate.Date
                 );
             }
+        }
+
+        public void Clear(object? sender, EventArgs e)
+        {
+            Pedidos = null;
         }
     }
 }

@@ -2,22 +2,22 @@
 using Persistence;
 using SisMaper.Models;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace SisMaper.ViewModel
 {
     public class RecebimentosViewModel : BaseViewModel, IRecebimento
     {
-        public ObservableCollection<ViewListarFatura>? Faturas { get; private set; }
-
-        private ViewListarFatura _faturaSelecionada;
-
-        public ViewListarFatura FaturaSelecionada
-        {
-            get { return _faturaSelecionada; }
-            set { SetField(ref _faturaSelecionada, value); }
-        }
-
+        public List<ViewListarFatura>? Faturas { get; set; }
+        public IEnumerable<ViewListarFatura>? FaturasFiltradas { get; set; }
+        public ViewListarFatura? FaturaSelecionada { get; set; }
+        public string TextoFiltro { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public Fatura.Fatura_Status? StatusSelecionado { get; set; }
+        public List<Fatura.Fatura_Status> StatusList { get; set; }
 
         public EditarFaturaCommand EditarFatura { get; private set; }
         public ExcluirFaturaCommand DeletarFatura { get; private set; }
@@ -44,11 +44,32 @@ namespace SisMaper.ViewModel
             DialogCoordinator = new DialogCoordinator();
             //GetFaturas();
             persistenceContext = new PersistenceContext();
+            StatusList = new List<Fatura.Fatura_Status>()
+            {
+                Fatura.Fatura_Status.Aberta,
+                Fatura.Fatura_Status.Fechada
+            };
 
             EditarFatura = new EditarFaturaCommand();
             DeletarFatura = new ExcluirFaturaCommand();
+            PropertyChanged += UpdateFilter;
         }
 
+        private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
+        {
+            if (Faturas != null && e.PropertyName is nameof(StatusSelecionado) or nameof(Faturas) or nameof(TextoFiltro)
+            or nameof(StartDate) or nameof(EndDate))
+            {
+                FaturasFiltradas = Faturas.Where(p =>
+                    (string.IsNullOrEmpty(TextoFiltro) || !string.IsNullOrEmpty(p.Nome) &&
+                     p.Nome.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase) ||
+                     p.Id.ToString().Equals(TextoFiltro)) &&
+                    (StatusSelecionado == null || p.Status == StatusSelecionado) &&
+                    (StartDate == null || p.Data.Date >= StartDate) && 
+                    (EndDate == null || p.Data.Date <= EndDate)
+                );
+            }
+        }
 
         public void OpenCrudEditarFatura() => OpenEditarFatura?.Invoke(DAO.Load<Fatura>(FaturaSelecionada.Id));
         //public void OpenCrudEditarFatura() => Console.WriteLine(FaturaSelecionada.Id);
@@ -76,7 +97,12 @@ namespace SisMaper.ViewModel
 
         private void GetFaturas()
         {
-            Faturas = new ObservableCollection<ViewListarFatura>(View.Execute<ViewListarFatura>());
+            Faturas = View.Execute<ViewListarFatura>();
+        }
+
+        public void Clear(object? sender, EventArgs e)
+        {
+            Faturas = null;
         }
 
     }
