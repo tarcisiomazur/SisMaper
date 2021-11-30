@@ -12,7 +12,7 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.VarChar, Length = 256)]
         public string RazaoSocial { get; set; }
 
-        [Field(FieldType = SqlDbType.VarChar, Length = 9)]
+        [Field(FieldType = SqlDbType.VarChar, Length = 10)]
         public string InscricaoEstadual { get; set; }
         
         public string MaskedCNPJ => long.TryParse(CNPJ, out var c) ? c.ToString(@"00\.000\.000/000\-00") : "";

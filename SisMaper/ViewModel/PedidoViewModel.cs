@@ -21,7 +21,7 @@ namespace SisMaper.ViewModel
     public class PedidoViewModel : BaseViewModel
     {
         public Pedido? Pedido { get; set; }
-        public NotaFiscal? NotaFiscalEmitida { get; set; }
+        public NotaFiscal? NotaFiscalSelecionada { get; set; }
         public bool HasFatura => Pedido?.Fatura is not null;
         public bool HasNotaFiscal => Pedido?.NotasFiscais?.Count > 0;
         public bool FaturaTabItemIsSelected { get; set; }
@@ -37,6 +37,8 @@ namespace SisMaper.ViewModel
 
         public event Action? Cancel;
         public event Action? Save;
+        public event Action? PrintWebBrowser;
+
         public SimpleCommand Adicionar => new(AddItem);
 
         public SimpleCommand EditarCliente => new(EditCliente,
@@ -53,6 +55,8 @@ namespace SisMaper.ViewModel
 
         public SimpleCommand Salvar => new(SavePedido, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
         public SimpleCommand Cancelar => new(CancelPedido, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
+        public SimpleCommand AtualizarSituacao => new(AtualizarSituacaoNF, _ => NotaFiscalSelecionada is not null);
+        public SimpleCommand Imprimir => new(ImprimirNF, _ => NotaFiscalSelecionada is not null);
 
         public SimpleCommand Receber => new(ReceberPedido,
             _ => Pedido?.Status == Pedido.Pedido_Status.Aberto && Pedido?.Itens.Count > 0);
@@ -82,12 +86,11 @@ namespace SisMaper.ViewModel
             ProdutosAtivos = Produtos.Where(p => p.Inativo == false);
             Pedido = PersistenceContext.Get<Pedido>(pedidoId);
             if (pedidoId == null) Pedido.Usuario = Main.Usuario;
-            NotaFiscalEmitida = Pedido.NotasFiscais.FirstOrDefault(nf => nf.Situacao.BeEmitted());
-            if (NotaFiscalEmitida != null)
+            NotaFiscalSelecionada = Pedido.NotasFiscais.FirstOrDefault(nf => nf.Situacao.BeEmitted());
+            if (NotaFiscalSelecionada != null)
             {
-                DANFE = new Uri(NotaFiscalEmitida.URL_DANFE);
+                DANFE = new Uri(NotaFiscalSelecionada.URL_DANFE);
             }
-            
 
             DialogCoordinator = new DialogCoordinator();
             NovoItem = new Item() {Pedido = Pedido, Context = PersistenceContext};
@@ -137,6 +140,28 @@ namespace SisMaper.ViewModel
                     Cancel?.Invoke();
                 }
             }
+        }
+
+        private void ImprimirNF()
+        {
+            PrintWebBrowser?.Invoke();
+        }
+
+        private void AtualizarSituacaoNF()
+        {
+            var key = NotaFiscalSelecionada.Chave;
+            if (key is not {Length: 44})
+            {
+                key = NotaFiscalSelecionada.UUID;
+                if (key is not {Length: 36})
+                {
+                    return;
+                }
+            }
+
+            var result = WebManiaConnector.Consultar(key);
+            NFConverter.Merge(result, NotaFiscalSelecionada);
+            NotaFiscalSelecionada.Save();
         }
 
         private void CancelPedido()
@@ -288,7 +313,7 @@ namespace SisMaper.ViewModel
             }
 
             DialogCoordinator.ShowMessageAsync(this, "Salvar Fatura",
-                    "A fatura do pedido não pode ser salva!");
+                "A fatura do pedido não pode ser salva!");
             Cancel?.Invoke();
         }
 
@@ -331,39 +356,71 @@ namespace SisMaper.ViewModel
         private void NewNF(object obj)
         {
             var isNFC = obj.Equals("NFC-e");
-            DANFE = new Uri(@"E:/Downloads/202109180159288929420211018.pdf");
             if (Pedido.NotasFiscais.FirstOrDefault(n => n.Situacao.BeEmitted()) is { } _nf)
             {
                 DialogCoordinator.ShowMessageAsync(this, "Emitir Nota Fiscal",
-                    $"O pedido possui uma Nota Fiscal {_nf.Serie}-{_nf.Chave} " +
+                    $"O pedido possui uma Nota Fiscal" +
                     (_nf.Situacao.IsAprovado()
-                        ? $"Aprovada"
+                        ? $" nº{_nf.Serie}-{_nf.Numero} com chave {_nf.Chave}. Aprovada em {_nf.DataEmissao}."
                         : $" com a situação {_nf.Situacao}. Caso deseje reemitir, atualize a Nota Fiscal antes de uma nova emissão!"));
                 return;
             }
 
+            var nf = new NotaFiscal();
+            nf.Pedido = Pedido;
+            if (!nf.Save())
+            {
+                DialogCoordinator.ShowMessageAsync(this, "Erro",
+                    "Ocorreu um ao gerar a numeração da próxima emitir Nota Fiscal");
+                return;
+            }
+
+            INotaFiscal apiNf;
             if (isNFC)
-            {
-                var nf = new NotaFiscal();
-                var api_nf = new NotaFiscalConsumidor(nf);
-                var result = api_nf.BuildJsonDefault();
-                MessageBox.Show(api_nf.Json, result);
-                ///TODO Emitir NFCe
-            }
+                apiNf = new NotaFiscalConsumidor(nf);
             else
+                apiNf = new NotaFiscalEletronica(nf);
+
+            var result = apiNf.BuildJsonDefault();
+            if (result != "OK")
             {
-                var nf = new NotaFiscal();
-                var api_nf = new NotaFiscalEletronica(nf);
-                var result = api_nf.BuildJsonDefault();
-                MessageBox.Show(api_nf.Json, result);
-                ///TODO Emitir NFe
+                DialogCoordinator.ShowMessageAsync(this, "Erro ao validar a Nota Fiscal",
+                    $"Erro ao validar a nota fiscal: {result}");
+                return;
             }
+
+            if (apiNf.Emit())
+            {
+                DialogCoordinator.ShowMessageAsync(this, "Erro ao emitir Nota Fiscal",
+                    $"Erro ao enviar a Nota Fiscal para emissão");
+                return;
+            }
+
+            NFConverter.Merge(apiNf.NF_Result, nf);
+            if (nf.Save())
+            {
+                DialogCoordinator.ShowMessageAsync(this, "Emissão de Nota Fiscal",
+                    $"Nota Fiscal enviada para emissão. Situação :{nf.Situacao}");
+                return;
+            }
+
+            DialogCoordinator.ShowMessageAsync(this, "Erro ao emitir Nota Fiscal",
+                $"Um erro ocorreu ao salvar a nota fiscal emitida. Situação :{nf.Situacao}");
         }
+
 
         private void ShowContextMenu(object obj)
         {
-            if (obj is Button {ContextMenu: { }} button)
+            if (obj is Button
+            {
+                ContextMenu:
+                {
+                }
+            } button)
+            {
+                button.ContextMenu.DataContext = button.DataContext;
                 button.ContextMenu.IsOpen = true;
+            }
         }
 
         private void EditCliente()

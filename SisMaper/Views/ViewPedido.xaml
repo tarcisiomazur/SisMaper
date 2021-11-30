@@ -286,7 +286,8 @@
                         mah:TextBoxHelper.WatermarkAlignment="Right"
                         mah:TextBoxHelper.AutoWatermark="True"
                         mah:TextBoxHelper.Watermark="Buscar Produto"
-                        Grid.IsSharedSizeScope="True" AlternationCount="2">
+                        Grid.IsSharedSizeScope="True"
+                        AlternationCount="2">
                         <i:Interaction.Triggers>
                             <i:EventTrigger
                                 EventName="PreviewKeyDown">
@@ -628,9 +629,98 @@
             </TabItem>
             <TabItem
                 Header="  Nota Fiscal  ">
+
                 <Grid>
-                    <WebBrowser Margin="278,0,0,0" x:Name="WebBrowser" templates:WebBrowserUtility.BindableSource="{Binding DANFE}"></WebBrowser>
-                    <Button Content="Imprimir" HorizontalAlignment="Left" Margin="22,28,0,0" VerticalAlignment="Top" PreviewMouseLeftButtonDown="Imprimir"/>
+                    <DataGrid
+                        x:Name="DataGridNotasFiscais"
+                        templates:ColumnDataGridSave.SaveSizes="True"
+                        BorderThickness="1"
+                        Style="{DynamicResource MahApps.Styles.DataGrid}"
+                        HorizontalContentAlignment="Stretch"
+                        ColumnWidth="*"
+                        IsReadOnly="true"
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding Pedido.NotasFiscais, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding NotaFiscalSelecionada, Mode=TwoWay}"
+                        CanUserAddRows="False"
+                        Height="auto"
+                        Width="auto"
+                        Margin="10,62,469,47"
+                        BorderBrush="#FFD2D2D2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="100*"
+                                Header="Chave"
+                                Binding="{Binding Chave}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Width="100*"
+                                Header="Situação"
+                                Binding="{Binding Situacao}"
+                                IsReadOnly="True" />
+                            <mah:DataGridNumericUpDownColumn
+                                HeaderStyle="{StaticResource RightGridHeaderStyle}"
+                                Width="25*"
+                                Header="Data Emissão"
+                                StringFormat="{}{0:N2}"
+                                Culture="pt-BR"
+                                Binding="{Binding DataEmissao}"
+                                IsReadOnly="true" />
+                            <mah:DataGridNumericUpDownColumn
+                                HeaderStyle="{StaticResource RightGridHeaderStyle}"
+                                Width="35*"
+                                Header="Desconto(%)"
+                                StringFormat="{}{0:N2}"
+                                Minimum="0"
+                                Maximum="100"
+                                Interval="0.1"
+                                Culture="pt-BR"
+                                Binding="{Binding DescontoPorcentagem, UpdateSourceTrigger=LostFocus}"
+                                IsReadOnly="False" />
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem
+                                    Header="Remover"
+                                    Click="Context_Delete">
+                                    <MenuItem.Icon>
+                                        <Image
+                                            Width="12"
+                                            Height="12"
+                                            Source="/Images/Delete.png" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem
+                                    Header="Editar"
+                                    Click="Context_Delete">
+                                    <MenuItem.Icon>
+                                        <Image
+                                            Width="12"
+                                            Height="12"
+                                            Source="/Images/Edit.png" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                    <WebBrowser
+                        Margin="316,0,0,0"
+                        x:Name="WebBrowser"
+                        templates:WebBrowserUtility.BindableSource="{Binding DANFE}" />
+                    <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+                        Content="Imprimir"
+                        HorizontalAlignment="Left"
+                        Margin="67,18,0,0"
+                        VerticalAlignment="Top"
+                        Command="{Binding Imprimir}" />
+                    <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+                        Content="Atualizar Situação"
+                        HorizontalAlignment="Left"
+                        Margin="165,18,0,0"
+                        VerticalAlignment="Top"
+                        Command="{Binding AtualizarSituacao}"/>
                 </Grid>
             </TabItem>
         </TabControl>

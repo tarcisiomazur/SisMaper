@@ -53,20 +53,34 @@ namespace SisMaper.API.WebMania
             return request;
         }
         
-        public static IRestResponse? Emitir(string json, bool IsNfc)
+        public static NF_Result? Emitir(string json)
         {
             var request = BuildRequest(URL_EMISSAO,Method.POST);
             request.AddParameter("undefined", json, ParameterType.RequestBody);
+            var timer = new Stopwatch();
+            timer.Start();
             IRestResponse response = Client.Execute(request);
-            return response;
+            timer.Stop();
+            LogRequest(request,response,timer.ElapsedMilliseconds);
+            try
+            {
+                return JsonSerializer.Deserialize<NF_Result>(response.Content);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return null;
         }
         
         public static NF_Result? Consultar(string chave)
         {
             var request = BuildRequest(URL_CONSULTA, Method.GET);
             request.AddParameter(chave.Length == 44 ? "chave" : "uuid", chave, ParameterType.QueryString);
-
+            var timer = new Stopwatch();
+            timer.Start();
             IRestResponse response = Client.Execute(request);
+            timer.Stop();
             LogRequest(request,response,0);
             try
             {

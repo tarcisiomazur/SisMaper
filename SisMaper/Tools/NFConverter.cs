@@ -7,7 +7,7 @@ namespace SisMaper.Tools
 {
     public class NFConverter
     {
-        public static void Merge(NF_Result result, ref NotaFiscal notaFiscal)
+        public static void Merge(NF_Result result, NotaFiscal notaFiscal)
         {
             notaFiscal.UUID = result.uuid;
             notaFiscal.Chave = result.chave;

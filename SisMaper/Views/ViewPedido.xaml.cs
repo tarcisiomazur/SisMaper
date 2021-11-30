@@ -19,7 +19,7 @@ namespace SisMaper.Views
         private TextBox TbBuscarProduto;
 
         public PedidoViewModel ViewModel => (PedidoViewModel) DataContext;
-        
+
         public ViewPedido(long? pedidoId)
         {
             InitializeComponent();
@@ -37,6 +37,7 @@ namespace SisMaper.Views
         {
             ViewModel.Save += Close;
             ViewModel.Cancel += Close;
+            ViewModel.PrintWebBrowser += PrintWebBrowser;
         }
 
 
@@ -44,20 +45,7 @@ namespace SisMaper.Views
         {
         }
 
-        private void EmitirNF(object sender, RoutedEventArgs e)
-        {
-            var nf = new NotaFiscalEletronica(new NotaFiscal()
-            {
-                Pedido = ViewModel.Pedido,
-                Id = 99,
-            });
-            var result = nf.BuildJsonDefault();
-            Console.WriteLine(nf.Json);
-            MessageBox.Show(nf.Json, result);
-            
-        }
-
-        private void Imprimir(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void PrintWebBrowser()
         {
         }
         

@@ -10,11 +10,8 @@ using SisMaper.Tools;
 
 namespace SisMaper.API.WebMania
 {
-    public class NotaFiscalConsumidor
+    public class NotaFiscalConsumidor : INotaFiscal
     {
-        public string Json { get; set; }
-        
-        public NotaFiscal NotaFiscal { get; set; }
 
         public NotaFiscalConsumidor(NotaFiscal notaFiscal)
         {
@@ -26,7 +23,7 @@ namespace SisMaper.API.WebMania
             return true;
         }
 
-        public string BuildJsonDefault()
+        public override string BuildJsonDefault()
         {
             NF_NotaFiscal NF_NotaFiscal;
 
@@ -107,20 +104,9 @@ namespace SisMaper.API.WebMania
             foreach (var item in pedido.Itens)
             {
                 if (item.Produto == null) return "Produto Inválido";
-                if (item.Produto.NCM == null) return "Produto sem NCM";
+                if (item.Produto.NCM == null) return $@"Produto {item.Produto.Descricao} sem NCM";
 
-                NF_NotaFiscal.Produtos.Add(new NF_Produtos()
-                {
-                    Nome = item.Produto.Descricao,
-                    Quantidade = item.Quantidade.ToString(CultureInfo.InvariantCulture),
-                    Unidade = item.Produto.Unidade?.Descricao ?? "",
-                    ID = item.Produto.Id.ToString(),
-                    NCM = item.Produto.NCM.ToString(),
-                    Codigo = item.Produto.CodigoBarras,
-                    Origem = NF_Produtos.EnumOrigem.Nacional0,
-                    Subtotal = item.Valor.ToString(CultureInfo.InvariantCulture),
-                    Total = (item.Valor * (decimal) item.Quantidade).ToString(CultureInfo.InvariantCulture)
-                });
+                NF_NotaFiscal.Produtos.Add(new NF_Produtos(item));
             }
 
             #endregion
@@ -132,16 +118,11 @@ namespace SisMaper.API.WebMania
             return "OK";
         }
 
-        public bool Emit()
+        public override bool Emit()
         {
-            var response = WebManiaConnector.Emitir(Json, true);
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                return false;
-            }
-
-            Console.WriteLine(response.Content);
-            return true;
+            if (string.IsNullOrEmpty(Json)) return false;
+            NF_Result = WebManiaConnector.Emitir(Json);
+            return NF_Result == null;
         }
     }
 }

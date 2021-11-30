@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace SisMaper.API.WebMania.Models
 {
@@ -27,8 +28,19 @@ namespace SisMaper.API.WebMania.Models
         [JsonPropertyName("origem")] public EnumOrigem Origem { get; set; } = EnumOrigem.Nacional0;
         [JsonPropertyName("subtotal")] public string Subtotal { get; set; } = "";
         [JsonPropertyName("total")] public string Total { get; set; } = "";
-        
-        
+
+        public NF_Produtos(SisMaper.Models.Item item)
+        {
+            Nome = item.Produto.Descricao;
+            Quantidade = item.Quantidade.ToString(CultureInfo.InvariantCulture);
+            Unidade = item.Produto.Unidade?.Descricao ?? "";
+            ID = item.Produto.Id.ToString();
+            NCM = item.Produto.NCM.Id.ToString(@"####\.##\.##");
+            Codigo = item.Produto.CodigoBarras;
+            Origem = EnumOrigem.Nacional0;
+            Subtotal = item.Valor.ToString(CultureInfo.InvariantCulture);
+            Total = (item.Valor * (decimal) item.Quantidade).ToString(CultureInfo.InvariantCulture);
+        }
         
     }
 }
