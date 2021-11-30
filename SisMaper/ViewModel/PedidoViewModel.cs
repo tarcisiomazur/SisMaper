@@ -21,6 +21,7 @@ namespace SisMaper.ViewModel
     public class PedidoViewModel : BaseViewModel
     {
         public Pedido? Pedido { get; set; }
+        public NotaFiscal? NotaFiscalEmitida { get; set; }
         public bool HasFatura => Pedido?.Fatura is not null;
         public bool HasNotaFiscal => Pedido?.NotasFiscais?.Count > 0;
         public bool FaturaTabItemIsSelected { get; set; }
@@ -81,6 +82,12 @@ namespace SisMaper.ViewModel
             ProdutosAtivos = Produtos.Where(p => p.Inativo == false);
             Pedido = PersistenceContext.Get<Pedido>(pedidoId);
             if (pedidoId == null) Pedido.Usuario = Main.Usuario;
+            NotaFiscalEmitida = Pedido.NotasFiscais.FirstOrDefault(nf => nf.Situacao.BeEmitted());
+            if (NotaFiscalEmitida != null)
+            {
+                DANFE = new Uri(NotaFiscalEmitida.URL_DANFE);
+            }
+            
 
             DialogCoordinator = new DialogCoordinator();
             NovoItem = new Item() {Pedido = Pedido, Context = PersistenceContext};
@@ -324,7 +331,6 @@ namespace SisMaper.ViewModel
         private void NewNF(object obj)
         {
             var isNFC = obj.Equals("NFC-e");
-            Pedido.NotasFiscais.Load();
             DANFE = new Uri(@"E:/Downloads/202109180159288929420211018.pdf");
             if (Pedido.NotasFiscais.FirstOrDefault(n => n.Situacao.BeEmitted()) is { } _nf)
             {

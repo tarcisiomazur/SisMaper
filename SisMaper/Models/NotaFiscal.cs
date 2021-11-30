@@ -9,6 +9,7 @@ namespace SisMaper.Models
     {
         public enum EnumSituacao
         {
+            Null,
             Aprovado,
             Reprovado,
             Cancelado,
@@ -17,10 +18,10 @@ namespace SisMaper.Models
             Contingencia,
         }
         
-        [PrimaryKey(FieldType = SqlDbType.VarChar, Length = 36)]
+        [UniqueIndex(FieldType = SqlDbType.VarChar, Length = 36)]
         public string UUID { get; set; }
         
-        [UniqueIndex(FieldType = SqlDbType.VarChar, Length = 32)]
+        [UniqueIndex(FieldType = SqlDbType.VarChar, Length = 44)]
         public string Chave { get; set; }
 
         [Field(FieldType = SqlDbType.DateTime)]
@@ -28,6 +29,12 @@ namespace SisMaper.Models
 
         [Field(FieldType = SqlDbType.Xml)]
         public byte[] XML { get; set; }
+        
+        [Field(FieldType = SqlDbType.VarChar, Length = 256)]
+        public string URL_XML { get; set; }
+        
+        [Field(FieldType = SqlDbType.VarChar, Length = 256)]
+        public string URL_DANFE { get; set; }
 
         [Field(FieldType = SqlDbType.Int)]
         public int Serie { get; set; }

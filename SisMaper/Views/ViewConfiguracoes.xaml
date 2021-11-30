@@ -9,6 +9,7 @@
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:tools="clr-namespace:SisMaper.Tools"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     Dialog:DialogParticipation.Register="{Binding}"
@@ -18,28 +19,46 @@
     MinWidth="708"
     MaxHeight="450"
     MaxWidth="708"
+    ResizeMode="NoResize"
     SaveWindowPosition="True"
     DataContext="{Binding ElementName=this}">
     <Grid Margin="1,0,-1,0">
         <TextBlock
             HorizontalAlignment="Left"
-            Margin="28,99,0,0"
+            Margin="28,96,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="23"
             Width="92" FontSize="14"><Run Language="pt-br" Text="Razão Social"/></TextBlock>
+        <TextBox
+            Style="{StaticResource MahApps.Styles.TextBox}"
+            HorizontalAlignment="Left"
+            Margin="125,91,0,0"
+            Text="{Binding Empresa.Razao_Social, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            VerticalAlignment="Top"
+            Width="196" Height="30" UndoLimit="99" FontSize="14" />
+
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="28,138,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"
+            Height="23"
+            Width="92" FontSize="14"><Run Language="pt-br" Text="CNPJ"/></TextBlock>
 
         <xctk:MaskedTextBox
             Style="{StaticResource MahApps.Styles.TextBox}"
             Mask="00\.000\.000/0000-00"
             HorizontalAlignment="Left"
-            Margin="125,96,0,0"
-            Text="{Binding Empresa.CNPJ, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+            Margin="125,135,0,0"
+            IncludeLiteralsInValue="False"
+            ValueDataType="{x:Type system:String}"
+            Value="{Binding Empresa.CNPJ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="196" Height="30" UndoLimit="99" FontSize="14" />
         <TextBlock
             HorizontalAlignment="Left"
-            Margin="28,140,0,0"
+            Margin="28,179,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="22"
@@ -47,13 +66,13 @@
         <PasswordBox
             x:Name="ConsumerKey"
             HorizontalAlignment="Left"
-            Margin="125,136,0,0"
+            Margin="125,175,0,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
             Width="196" Height="30" />
         <TextBlock
             HorizontalAlignment="Left"
-            Margin="28,182,0,0"
+            Margin="28,221,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="24"
@@ -62,46 +81,38 @@
             x:Name="Token"
             Style="{StaticResource MahApps.Styles.PasswordBox}"
             HorizontalAlignment="Left"
-            Margin="125,178,0,0"
+            Margin="125,217,0,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
             Width="196" Height="30" />
         <TextBlock
-            HorizontalAlignment="Left"
-            Margin="354,140,0,0"
+            HorizontalAlignment="Right"
+            Margin="0,178,234,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="24"
-            Width="111" FontSize="14"><Run Text="Consumer Secret"/><LineBreak/><Run/></TextBlock>
+            Width="112" FontSize="14"><Run Text="Consumer Secret"/><LineBreak/><Run/></TextBlock>
         <PasswordBox
             x:Name="ConsumerSecret"
-            HorizontalAlignment="Left"
-            Margin="481,136,0,0"
+            HorizontalAlignment="Right"
+            Margin="0,175,31,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
             Width="196" Height="30" />
         <TextBlock
-            HorizontalAlignment="Left"
-            Margin="354,182,0,0"
+            HorizontalAlignment="Right"
+            Margin="0,220,234,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="24"
             Width="126" Text="Access Token Secret" FontSize="14"/>
         <PasswordBox
             x:Name="TokenSecret"
-            HorizontalAlignment="Left"
-            Margin="481,178,0,0"
+            HorizontalAlignment="Right"
+            Margin="0,217,31,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
             Width="196" Height="30" />
-
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Salvar"
-            PreviewMouseLeftButtonDown="Salvar"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Margin="0,0,31,25" Width="75" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Atualizar NCMs"
@@ -116,6 +127,20 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Margin="0,10,173,0" Width="123" />
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Salvar"
+            PreviewMouseLeftButtonDown="Salvar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,120,25" Width="61" />
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Cancelar"
+            PreviewMouseLeftButtonDown="Cancelar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,31,25" Width="75"/>
 
     </Grid>
 </mah:MetroWindow>

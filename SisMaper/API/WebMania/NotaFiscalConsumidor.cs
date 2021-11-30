@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using SisMaper.API.WebMania.Models;
 using SisMaper.Models;
@@ -128,6 +130,18 @@ namespace SisMaper.API.WebMania
             op.IgnoreNullValues = true;
             Json = JsonSerializer.Serialize(NF_NotaFiscal, new JsonSerializerOptions(op));
             return "OK";
+        }
+
+        public bool Emit()
+        {
+            var response = WebManiaConnector.Emitir(Json, true);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return false;
+            }
+
+            Console.WriteLine(response.Content);
+            return true;
         }
     }
 }

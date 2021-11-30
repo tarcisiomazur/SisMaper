@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Navigation;
 using MahApps.Metro.Controls;
 using SisMaper.API.WebMania;
 using SisMaper.Models;
@@ -20,8 +23,14 @@ namespace SisMaper.Views
         public ViewPedido(long? pedidoId)
         {
             InitializeComponent();
+            WebBrowser.Navigated += OnNavigate;
             ViewModel.Initialize(pedidoId);
             SetActions();
+        }
+
+        private void OnNavigate(object sender, NavigationEventArgs e)
+        {
+            var content = e.Content;
         }
 
         private void SetActions()
@@ -33,7 +42,6 @@ namespace SisMaper.Views
 
         private void Context_Delete(object sender, RoutedEventArgs e)
         {
-            
         }
 
         private void EmitirNF(object sender, RoutedEventArgs e)
@@ -48,5 +56,10 @@ namespace SisMaper.Views
             MessageBox.Show(nf.Json, result);
             
         }
+
+        private void Imprimir(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+        }
+        
     }
 }

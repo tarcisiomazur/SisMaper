@@ -629,7 +629,8 @@
             <TabItem
                 Header="  Nota Fiscal  ">
                 <Grid>
-                    <WebBrowser templates:WebBrowserUtility.BindableSource="{Binding DANFE}" Margin="278,0,0,0"/>
+                    <WebBrowser Margin="278,0,0,0" x:Name="WebBrowser" templates:WebBrowserUtility.BindableSource="{Binding DANFE}"></WebBrowser>
+                    <Button Content="Imprimir" HorizontalAlignment="Left" Margin="22,28,0,0" VerticalAlignment="Top" PreviewMouseLeftButtonDown="Imprimir"/>
                 </Grid>
             </TabItem>
         </TabControl>
