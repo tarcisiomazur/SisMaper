@@ -22,9 +22,6 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
         public decimal Valor { get; set; }
 
-        [Field(FieldType = SqlDbType.Int)]
-        public int CFOP { get; set; }
-
         [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
         public decimal Desconto
         {
