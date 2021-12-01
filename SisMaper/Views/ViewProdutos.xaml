@@ -6,7 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
     x:Name="userControl"
+    
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     Dialog:DialogParticipation.Register="{Binding}"
@@ -23,7 +25,7 @@
         <DockPanel>
             <ToolBar
                 DockPanel.Dock="Top">
-                <RibbonGroup
+                <Fluent:RibbonGroupBox
                     Header="Alterar Produto">
                     <StackPanel
                         Orientation="Horizontal">
@@ -67,9 +69,9 @@
                             </StackPanel>
                         </Button>
                     </StackPanel>
-                </RibbonGroup>
+                </Fluent:RibbonGroupBox>
                 <Separator />
-                <RibbonGroup
+                <Fluent:RibbonGroupBox
                     Header="Filtrar"
                     Width="332">
                     <Grid
@@ -121,7 +123,7 @@
                             mah:TextBoxHelper.Watermark="Categoria" />
 
                     </Grid>
-                </RibbonGroup>
+                </Fluent:RibbonGroupBox>
                 <Separator />
 
                 <StackPanel>

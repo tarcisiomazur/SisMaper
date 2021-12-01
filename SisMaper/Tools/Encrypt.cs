@@ -84,7 +84,7 @@ namespace SisMaper.Tools
             try
             {
                 SystemSounds.Exclamation.Play();
-                _RSA.ImportFromPem(pem);
+                _RSA.ImportCspBlob(Convert.FromBase64String(pem));
                 MessageBox.Show("A chave PEM foi importada com sucesso! A aplicação será encerrada!", "Importar PEM");
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location.Replace(".dll", ".exe"));
                 Application.Current.Shutdown();

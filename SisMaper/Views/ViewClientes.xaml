@@ -7,8 +7,10 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Name="userControl" 
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:views="clr-namespace:SisMaper.Views"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
+    xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
     xmlns:converter="clr-namespace:MahApps.Metro.IconPacks.Converter;assembly=MahApps.Metro.IconPacks.Core"
@@ -396,33 +398,28 @@
     <Grid Background="#FFF6F6F6" >
         <DockPanel>
             <ToolBar DockPanel.Dock="Top" >
-                <RibbonGroup Header="Alterar Produto">
-                    <StackPanel Orientation="Horizontal">
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding NovoCliente}">
-                            <StackPanel>
-                                <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" />
-                                <TextBlock Style="{DynamicResource Head1}" Text="Novo" />
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding EditarCliente}">
-                            <StackPanel>
-                                <icons:PackIconModern Kind="EditBox" HorizontalAlignment="Center" />
-                                <TextBlock Style="{DynamicResource Head1}" Text="Editar" />
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding ExcluirCliente}">
-                            <StackPanel>
-                                <icons:PackIconMaterial Kind="DeleteForever" HorizontalAlignment="Center" />
-                                <TextBlock Style="{DynamicResource Head1}" Text="Excluir" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </RibbonGroup>
-                <Separator />
-
-
-
-
+                    <Fluent:RibbonGroupBox>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding NovoCliente}">
+                                <StackPanel>
+                                    <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" />
+                                    <TextBlock Style="{DynamicResource Head1}" Text="Novo" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding EditarCliente}">
+                                <StackPanel>
+                                    <icons:PackIconModern Kind="EditBox" HorizontalAlignment="Center" />
+                                    <TextBlock Style="{DynamicResource Head1}" Text="Editar" />
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding ExcluirCliente}">
+                                <StackPanel>
+                                    <icons:PackIconMaterial Kind="DeleteForever" HorizontalAlignment="Center" />
+                                    <TextBlock Style="{DynamicResource Head1}" Text="Excluir" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Fluent:RibbonGroupBox>
 
             </ToolBar>
 
@@ -430,15 +427,13 @@
 
                 <TabControl Margin="0" Background="#FFF6F6F6">
                 <TabItem Style="{DynamicResource Tab2}" Width="150 " x:Name="PessoaFisicaTabItem" GotFocus="PessoaFisicaTabItem_GotFocus" >
-                    <TabItem.HeaderTemplate>
-                            <ItemContainerTemplate>
+                    <TabItem.Header>
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <icons:PackIconOcticons Style="{DynamicResource MenuPackIconOcticons}" Kind="Person" />
                                     <TextBlock Style="{DynamicResource Head1}"
                                                Text="Pessoa Fisica" />
                                 </StackPanel>
-                            </ItemContainerTemplate>
-                        </TabItem.HeaderTemplate>
+                        </TabItem.Header>
                         
                     <Border BorderThickness="3" Margin="5" CornerRadius="5" BorderBrush="#FFC4C4C4">
                         <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch" x:Name="PessoaFisicaDataGrid"
@@ -488,15 +483,13 @@
 
                 </TabItem>
                 <TabItem Style="{DynamicResource Tab2}" Width="150" x:Name="PessoaJuridicaTabItem" GotFocus="PessoaJuridicaTabItem_GotFocus">
-                        <TabItem.HeaderTemplate>
-                            <ItemContainerTemplate>
+                        <TabItem.Header>
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                                     <icons:PackIconOcticons Style="{DynamicResource MenuPackIconOcticons}" Kind="Organization" />
                                     <TextBlock Style="{DynamicResource Head1}"
                                                Text="Pessoa Juridica" />
                                 </StackPanel>
-                            </ItemContainerTemplate>
-                        </TabItem.HeaderTemplate>
+                        </TabItem.Header>
 
                     <Border BorderThickness="3" Margin="5" CornerRadius="5" BorderBrush="#FFC4C4C4">
                         <DataGrid Style="{DynamicResource MahApps.Styles.DataGrid}" HorizontalContentAlignment="Stretch" x:Name="PessoaJuridicaDataGrid"

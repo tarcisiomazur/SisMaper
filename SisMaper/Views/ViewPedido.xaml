@@ -14,6 +14,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:cfsharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     x:Class="SisMaper.Views.ViewPedido"
     x:Name="this"
@@ -703,10 +704,10 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
-                    <WebBrowser
+                    <cfsharp:ChromiumWebBrowser
                         Margin="316,0,0,0"
                         x:Name="WebBrowser"
-                        templates:WebBrowserUtility.BindableSource="{Binding DANFE}" />
+                        Address="https://google.com.br" />
                     <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Imprimir"

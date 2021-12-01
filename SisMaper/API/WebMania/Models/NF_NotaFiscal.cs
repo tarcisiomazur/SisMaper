@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SisMaper.API.WebMania.Models
 {
@@ -30,23 +30,23 @@ namespace SisMaper.API.WebMania.Models
         };
 
 
-        [JsonPropertyName("ID")] public string ID { get; set; } = "";
+        [JsonProperty("ID")] public string ID { get; set; } = "";
 
-        [JsonPropertyName("operacao")] public EnumOperacao Operacao { get; set; } = EnumOperacao.Saida;
+        [JsonProperty("operacao")] public EnumOperacao Operacao { get; set; } = EnumOperacao.Saida;
 
-        [JsonPropertyName("natureza_operacao")] public string Natureza { get; set; } = "";
+        [JsonProperty("natureza_operacao")] public string Natureza { get; set; } = "";
 
-        [JsonPropertyName("modelo")] public EnumModelo Modelo { get; set; } = EnumModelo.NFCe;
+        [JsonProperty("modelo")] public EnumModelo Modelo { get; set; } = EnumModelo.NFCe;
 
-        [JsonPropertyName("finalidade")] public EnumFinalidade Finalidade { get; set; } = EnumFinalidade.Normal;
+        [JsonProperty("finalidade")] public EnumFinalidade Finalidade { get; set; } = EnumFinalidade.Normal;
 
-        [JsonPropertyName("ambiente")] public EnumAmbiente Ambiente { get; set; } = EnumAmbiente.Homologacao;
+        [JsonProperty("ambiente")] public EnumAmbiente Ambiente { get; set; } = EnumAmbiente.Homologacao;
 
-        [JsonPropertyName("cliente")] public NF_Cliente Cliente { get; set; }
+        [JsonProperty("cliente")] public NF_Cliente Cliente { get; set; }
 
-        [JsonPropertyName("produtos")] public List<NF_Produtos> Produtos { get; set; }
+        [JsonProperty("produtos")] public List<NF_Produtos> Produtos { get; set; }
 
-        [JsonPropertyName("pedido")] public NF_Pedido Pedido { get; set; }
+        [JsonProperty("pedido")] public NF_Pedido Pedido { get; set; }
 
         public NF_NotaFiscal()
         {

@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SisMaper.API.WebMania.Models
 {
@@ -31,13 +31,13 @@ namespace SisMaper.API.WebMania.Models
             Sem = 9,
         }
 
-        [JsonPropertyName("presenca")] public EnumPresenca Presenca { get; set; } = EnumPresenca.Presencial;
+        [JsonProperty("presenca")] public EnumPresenca Presenca { get; set; } = EnumPresenca.Presencial;
 
-        [JsonPropertyName("modalidade_frete")]
+        [JsonProperty("modalidade_frete")]
         public EnumFrete Modalidade_frete { get; set; } = EnumFrete.ProprioDestinatario;
 
-        [JsonPropertyName("frete")] public string frete { get; set; } = "";
+        [JsonProperty("frete")] public string frete { get; set; } = "";
         
-        [JsonPropertyName("desconto")] public string desconto { get; set; } = "";
+        [JsonProperty("desconto")] public string desconto { get; set; } = "";
     }
 }

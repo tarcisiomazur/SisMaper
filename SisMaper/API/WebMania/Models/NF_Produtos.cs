@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SisMaper.API.WebMania.Models
 {
@@ -18,16 +18,18 @@ namespace SisMaper.API.WebMania.Models
             Nacional8,
         }
         
-        [JsonPropertyName("ID")] public string ID { get; set; } = "";
-        [JsonPropertyName("codigo")] public string Codigo { get; set; } = "";
-        [JsonPropertyName("nome")] public string Nome { get; set; } = "";
-        [JsonPropertyName("ncm")] public string NCM { get; set; } = "";
-        [JsonPropertyName("cest")] public string CEST { get; set; } = "";
-        [JsonPropertyName("quantidade")] public string Quantidade { get; set; } = "";
-        [JsonPropertyName("unidade")] public string Unidade { get; set; } = "";
-        [JsonPropertyName("origem")] public EnumOrigem Origem { get; set; } = EnumOrigem.Nacional0;
-        [JsonPropertyName("subtotal")] public string Subtotal { get; set; } = "";
-        [JsonPropertyName("total")] public string Total { get; set; } = "";
+        [JsonProperty("ID")] public string ID { get; set; }
+        [JsonProperty("codigo")] public string Codigo { get; set; }
+        [JsonProperty("nome")] public string Nome { get; set; }
+        [JsonProperty("ncm")] public string NCM { get; set; }
+        [JsonProperty("cest")] public string CEST { get; set; }
+        [JsonProperty("quantidade")] public string Quantidade { get; set; }
+        [JsonProperty("unidade")] public string Unidade { get; set; }
+        [JsonProperty("origem")] public EnumOrigem Origem { get; set; } = EnumOrigem.Nacional0;
+        [JsonProperty("subtotal")] public string Subtotal { get; set; }
+        [JsonProperty("total")] public string Total { get; set; }
+        [JsonProperty("informacoes_adicionais")] public string Informacoes { get; set; }
+        
 
         public NF_Produtos(SisMaper.Models.Item item)
         {
@@ -40,6 +42,7 @@ namespace SisMaper.API.WebMania.Models
             Origem = EnumOrigem.Nacional0;
             Subtotal = item.Valor.ToString(CultureInfo.InvariantCulture);
             Total = (item.Valor * (decimal) item.Quantidade).ToString(CultureInfo.InvariantCulture);
+            Informacoes = item.Lote?.Informacoes;
         }
         
     }

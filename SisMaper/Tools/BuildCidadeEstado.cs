@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text.Json;
+using Newtonsoft.Json;
 using Persistence;
 using SisMaper.Models;
 
@@ -31,7 +31,8 @@ namespace SisMaper.Tools
             using (WebClient wc = new WebClient())
             {
                 var json = wc.DownloadString(URL);
-                var j = JsonSerializer.Deserialize<Raw>(json);
+                var reader = new JsonTextReader(new StringReader(json));
+                var j = new JsonSerializer().Deserialize<Raw>(reader);
                 foreach (var jEstado in j.estados)
                 {
                     var e = new Estado {Nome = jEstado.nome, Cidades = new PList<Cidade>()};

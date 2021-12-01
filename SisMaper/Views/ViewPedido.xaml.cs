@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using CefSharp;
 using MahApps.Metro.Controls;
 using SisMaper.API.WebMania;
 using SisMaper.Models;
@@ -23,7 +24,6 @@ namespace SisMaper.Views
         public ViewPedido(long? pedidoId)
         {
             InitializeComponent();
-            WebBrowser.Navigated += OnNavigate;
             ViewModel.Initialize(pedidoId);
             SetActions();
         }
@@ -47,6 +47,7 @@ namespace SisMaper.Views
 
         private void PrintWebBrowser()
         {
+            WebBrowser.Print();
         }
         
     }

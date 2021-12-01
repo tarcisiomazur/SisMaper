@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
 {

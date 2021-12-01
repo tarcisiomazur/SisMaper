@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Documents;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
 {

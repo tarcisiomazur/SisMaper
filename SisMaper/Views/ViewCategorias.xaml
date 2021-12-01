@@ -7,7 +7,6 @@
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:m="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:models="clr-namespace:SisMaper.Models"

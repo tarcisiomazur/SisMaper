@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text.Json;
 using RestSharp;
+using RestSharp.Serialization.Json;
 using SisMaper.API.WebMania.Models;
 using SisMaper.Models;
 using SisMaper.Tools;
@@ -13,7 +13,7 @@ namespace SisMaper.API.WebMania
     public static class WebManiaConnector
     {
         private static RestClient Client;
-        public static JsonSerializerOptions Options;
+        public static JsonSerializer Serializer;
         private const string URL_EMISSAO = "https://webmaniabr.com/api/1/nfe/emissao/";
         private const string URL_CONSULTA = "https://webmaniabr.com/api/1/nfe/consulta/";
         private const string URL_SEFAZ = "https://webmaniabr.com/api/1/nfe/sefaz/";
@@ -26,11 +26,7 @@ namespace SisMaper.API.WebMania
         static WebManiaConnector()
         {
             Client = new RestClient();
-            Options = new JsonSerializerOptions()
-            {
-                WriteIndented = true,
-                IgnoreNullValues = true
-            };
+            Serializer = new JsonSerializer();
         }
 
         public static void Init(Configuracoes empresa)
@@ -64,7 +60,7 @@ namespace SisMaper.API.WebMania
             LogRequest(request,response,timer.ElapsedMilliseconds);
             try
             {
-                return JsonSerializer.Deserialize<NF_Result>(response.Content);
+                return Serializer.Deserialize<NF_Result>(response);
             }
             catch(Exception ex)
             {
@@ -84,7 +80,7 @@ namespace SisMaper.API.WebMania
             LogRequest(request,response,0);
             try
             {
-                return JsonSerializer.Deserialize<NF_Result>(response.Content);
+                return Serializer.Deserialize<NF_Result>(response);
             }
             catch(Exception ex)
             {
@@ -119,8 +115,8 @@ namespace SisMaper.API.WebMania
 
             Trace.Write(string.Format("Request completed in {0} ms, Request: {1}, Response: {2}",
                 durationMs, 
-                JsonSerializer.Serialize(requestToLog,Options),
-                JsonSerializer.Serialize(responseToLog,Options)));
+                Serializer.Serialize(requestToLog),
+                Serializer.Serialize(responseToLog)));
         }
     }
 }

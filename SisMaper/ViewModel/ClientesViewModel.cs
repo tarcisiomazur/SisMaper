@@ -40,7 +40,7 @@ namespace SisMaper.ViewModel
         {
             PessoaFisicaList = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
             PessoaJuridicaList = DAO.FindWhereQuery<PessoaJuridica>("Cliente_Id > 0");
-
+            
             DialogCoordinator = new DialogCoordinator();
 
             NovoCliente = new NovoClienteCommand();

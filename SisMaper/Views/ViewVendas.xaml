@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
@@ -30,7 +31,7 @@
             Style="{DynamicResource SisMaper.MainWindow.ToolBarStyle}"
             OverridesDefaultStyle="True"
             VerticalAlignment="Center">
-            <RibbonGroup
+            <Fluent:RibbonGroupBox
                 Header="Alterar Pedido">
                 <StackPanel
                     Orientation="Horizontal">
@@ -79,11 +80,10 @@
                                 Text="Excluir" />
                         </StackPanel>
                     </Button>
-                    
+
                 </StackPanel>
-            </RibbonGroup>
-            <Separator />
-            <RibbonGroup
+            </Fluent:RibbonGroupBox>
+            <Fluent:RibbonGroupBox
                 Header="Filtrar"
                 Width="489">
                 <Grid>
@@ -160,10 +160,9 @@
                             Text="Data" />
                     </TextBlock>
                 </Grid>
-            </RibbonGroup>
-            <Separator />
-        </ToolBar>
-        <DataGrid
+            </Fluent:RibbonGroupBox>
+            </ToolBar>
+            <DataGrid
                 Grid.Row="1"
                 BorderThickness="3"
                 BorderBrush="#FFC4C4C4"

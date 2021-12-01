@@ -15,9 +15,8 @@ namespace SisMaper.Tools
             notaFiscal.URL_DANFE = result.danfe_simples;
             try
             {
-                var value = result.log.GetProperty("aProt");
-                var value1 = value[0].GetProperty("dhRecbto");
-                notaFiscal.DataEmissao = DateTime.Parse(value1.GetString());
+                var value1 = result.log.aProt[0].dhRecbto;
+                notaFiscal.DataEmissao = DateTime.Parse(value1);
             }
             catch
             {

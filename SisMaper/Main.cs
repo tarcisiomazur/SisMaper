@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using MySqlConnector;
 using Persistence;
-using SisMaper.API.WebMania;
 using SisMaper.Models;
 using SisMaper.Tools;
 
@@ -33,7 +32,6 @@ namespace SisMaper
                 //BuildCidadeEstado.Build();
 
                 Empresa = DAO.Load<Configuracoes>(1);
-                WebManiaConnector.Init(Empresa);
 
                 //CriaUsuario()
                 

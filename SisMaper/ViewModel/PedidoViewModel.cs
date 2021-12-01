@@ -60,8 +60,8 @@ namespace SisMaper.ViewModel
 
         public SimpleCommand Receber => new(ReceberPedido,
             _ => Pedido?.Status == Pedido.Pedido_Status.Aberto && Pedido?.Itens.Count > 0);
-
-        public SimpleCommand OpenBuscarProduto => new(AbrirBuscarProduto);
+        public SimpleCommand OpenBuscarProduto =>
+            new(AbrirBuscarProduto, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
 
         private IDialogCoordinator DialogCoordinator;
 
@@ -80,8 +80,8 @@ namespace SisMaper.ViewModel
         {
             Naturezas = PersistenceContext.Get<Natureza>("ID>0");
             Clientes = new PList<Cliente>();
-            Clientes.AddRange(PersistenceContext.Get<PessoaFisica>("Cliente_ID>0"));
-            Clientes.AddRange(PersistenceContext.Get<PessoaJuridica>("Cliente_ID>0"));
+            //Clientes.AddRange(PersistenceContext.Get<PessoaFisica>("Cliente_ID>0"));
+            //Clientes.AddRange(PersistenceContext.Get<PessoaJuridica>("Cliente_ID>0"));
             Produtos = PersistenceContext.Get<Produto>("ID>0");
             ProdutosAtivos = Produtos.Where(p => p.Inativo == false);
             Pedido = PersistenceContext.Get<Pedido>(pedidoId);

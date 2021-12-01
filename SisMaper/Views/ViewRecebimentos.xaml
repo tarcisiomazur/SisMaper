@@ -6,8 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Name="userControl" 
+    
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     Dialog:DialogParticipation.Register="{Binding}"
@@ -32,7 +34,7 @@
             Style="{DynamicResource SisMaper.MainWindow.ToolBarStyle}"
             OverridesDefaultStyle="True"
             VerticalAlignment="Top">
-            <RibbonGroup
+            <Fluent:RibbonGroupBox
                 Header="Alterar Fatura">
                 <StackPanel
                     Orientation="Horizontal">
@@ -69,11 +71,8 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
-            </RibbonGroup>
-            
-            <Separator />
-            
-            <RibbonGroup
+            </Fluent:RibbonGroupBox>
+            <Fluent:RibbonGroupBox
                 Header="Filtrar"
                 Width="489">
                 <Grid>
@@ -151,11 +150,9 @@
                             Text="Data" />
                     </TextBlock>
                 </Grid>
-            </RibbonGroup>
-            <Separator />
+            </Fluent:RibbonGroupBox>
         </ToolBar>
         <DataGrid x:Name="FaturasDataGrid"
-                  
             Grid.Row="1"
             BorderThickness="3"
             Margin="5"

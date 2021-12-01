@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.Json;
+using Newtonsoft.Json;
 using SisMaper.API.WebMania.Models;
 using SisMaper.Models;
 using SisMaper.Tools;
@@ -109,10 +109,7 @@ namespace SisMaper.API.WebMania
 
             #endregion
 
-            var op = new JsonSerializerOptions();
-            op.WriteIndented = true;
-            op.IgnoreNullValues = true;
-            Json = JsonSerializer.Serialize(NF_NotaFiscal, new JsonSerializerOptions(op));
+            Json = JsonConvert.SerializeObject(NF_NotaFiscal, Formatting.Indented);
             return "OK";
         }
 

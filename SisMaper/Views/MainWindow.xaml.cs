@@ -7,6 +7,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
@@ -49,19 +50,10 @@ namespace SisMaper.Views
             Instance = this;
             try
             {
-                /*if (!new Login().ShowDialog()!.Value)
+                if (!new Login().ShowDialog().IsTrue())
                 {
                     Close();
-                }*/
-                Main.Usuario = new Usuario()
-                {
-                    Id = 99,
-                    Nome = "99",
-                    Login = "99",
-                    Senha = "",
-                    Permissao = Usuario.Tipo_Permissao.All
-                };
-                Main.Usuario.Save();
+                }
             }
             catch (Exception ex)
             {

@@ -5,6 +5,7 @@ using System.Linq;
 using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
 {
