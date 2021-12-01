@@ -371,7 +371,6 @@
     <Compile Include="Tools\InterfaceExtension.cs" />
     <Compile Include="Tools\NFConverter.cs" />
     <Compile Include="Tools\PFePFValidator.cs" />
-    <Compile Include="Tools\ShowCreateTable.cs" />
     <Compile Include="ViewModel\BaseCommand.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BuscarProdutoViewModel.cs" />
