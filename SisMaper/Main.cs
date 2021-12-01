@@ -4,7 +4,6 @@ using System.Windows;
 using MySqlConnector;
 using Persistence;
 using SisMaper.Models;
-using SisMaper.Tools;
 
 namespace SisMaper
 {
