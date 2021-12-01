@@ -128,6 +128,11 @@ namespace SisMaper.Views
                     SetActions();
                 };
 
+                vm2.OpenClienteView = (bool isPessoaFisica) =>
+                {
+                    new CrudPessoaFisica() { DataContext = new CrudPessoaFisicaViewModel((DataContext as FaturaViewModel).Fatura.Cliente), isSelectedPessoaFisicaTab = isPessoaFisica, IsGridEnabled = false }.ShowDialog();
+                };
+                
             }
         }
 

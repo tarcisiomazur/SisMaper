@@ -301,9 +301,9 @@
                         VerticalAlignment="Bottom"
                         Width="160" />
 
-                    <Button Width="36" Height="36" Margin="10,0,0,0" VerticalAlignment="Bottom" Focusable="False" CommandParameter="{Binding}" Command="{Binding Modificar}">
+                    <Button Width="36" Height="36" Margin="10,0,0,0" VerticalAlignment="Bottom" Focusable="false" CommandParameter="{Binding}" Command="{Binding Modificar}" Background="White" >
                         <StackPanel>
-                            <iconpacks:PackIconMaterial Kind="Plus" Foreground="Green" Width="20" Height="20"/>
+                            <iconpacks:PackIconMaterial Kind="Plus" Foreground="Green" Width="22" Height="22"/>
                         </StackPanel>
                         
                     </Button>

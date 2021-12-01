@@ -322,15 +322,15 @@
                         Margin="10,62,10,34"
                         BorderBrush="#FFD2D2D2">
                         <DataGrid.Columns>
-                            <mah:DataGridNumericUpDownColumn
+                            <DataGridTextColumn
                                 Width="50*"
                                 Header="Cliente"
-                                Binding="{Binding Cliente}"
+                                Binding="{Binding Cliente.Nome}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Width="20*"
                                 Header="Data"
-                                Binding="{Binding Data}"
+                                Binding="{Binding Data, StringFormat={}{0:dd/MM/yyyy}}"
                                 IsReadOnly="True" />
                             <mah:DataGridNumericUpDownColumn
                                 Width="25*"
@@ -372,7 +372,7 @@
 
         <TextBox
             Grid.Row="0"
-            IsEnabled="False"
+            IsReadOnly="True"
             Height="32"
             Margin="96,70,410,0"
             FontSize="16"
@@ -390,14 +390,11 @@
             VerticalAlignment="Bottom"
             Margin="20,0,0,20" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" />
 
-        <iconpacks:PackIconMaterial  MouseLeftButtonDown="OpenViewCliente"
-            Kind="AccountDetails"
-            Margin="0,75,375,0"
-            Height="24"
-            Width="23"
-            Foreground="Black"
-            HorizontalAlignment="Right">
-        </iconpacks:PackIconMaterial>
+        <Button Margin="0,70,365,0" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Top" Background="white" Focusable="false" CommandParameter="{Binding}" Command="{Binding VerCliente}" >
+            <StackPanel>
+                <iconpacks:PackIconMaterial Kind="AccountDetails" Width="22" Height="22"/>
+            </StackPanel>
+        </Button>
 
     </Grid>
 </mah:MetroWindow>

@@ -18,7 +18,7 @@ namespace SisMaper.ViewModel
         {
             get { return _estadoSelecionado; }
             set
-            {
+            {    
                 SetField(ref _estadoSelecionado, value);
                 SetCidades(value);
             }

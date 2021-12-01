@@ -65,8 +65,16 @@ namespace SisMaper.ViewModel
         public NovaParcelaCommand NovaParcela { get; private set; }
 
 
+        private bool isPessoaFisica;
+
+        public Action<bool> OpenClienteView { get; set; }
+
+        public VerClienteCommand VerCliente { get; private set; }
+
         public FaturaViewModel(object? faturaSelecionada)
         {
+            VerCliente = new VerClienteCommand();
+
             //ChangeCliente = ClienteChange;
 
             NovaParcela = new NovaParcelaCommand();
@@ -91,7 +99,31 @@ namespace SisMaper.ViewModel
                 IsFaturaAberta = (Fatura.Status == Fatura.Fatura_Status.Aberta) ? true : false;
 
                 Fatura.Parcelas.Load();
-                //Fatura.Pedidos.Load();
+                Fatura.Pedidos.Load();
+
+                foreach(Pedido p in Fatura.Pedidos)
+                {
+                    p.Cliente?.Load();
+                }
+
+
+                PessoaFisica? c1 = DAO.Load<PessoaFisica>(Fatura.Cliente.Id);
+
+                if(c1 is not null)
+                {
+                    isPessoaFisica = true;
+                }
+                else
+                {
+                    PessoaJuridica? c2 = DAO.Load<PessoaJuridica>(Fatura.Cliente.Id);
+
+                    if(c2 is not null)
+                    {
+                        isPessoaFisica = false;
+                    }
+                }
+
+
                 //Fatura.Cliente.Load();
 
                 //ClienteSelecionado = Fatura.Cliente;
@@ -101,11 +133,6 @@ namespace SisMaper.ViewModel
 
             }
 
-            else
-            {
-                Fatura = new Fatura();
-                IsFaturaAberta = true;
-            }
         }
 
 
@@ -205,6 +232,8 @@ namespace SisMaper.ViewModel
 
 
         }
+
+        public void OpenCliente() => OpenClienteView?.Invoke(isPessoaFisica);
     }
 
 
@@ -257,6 +286,15 @@ namespace SisMaper.ViewModel
     }
 
 
+    public class VerClienteCommand : BaseCommand
+    {
+        public override void Execute(object parameter)
+        {
+            FaturaViewModel vm = (FaturaViewModel) parameter;
+            vm.OpenCliente();
+        }
+    }
+
 
 
 
@@ -269,5 +307,7 @@ namespace SisMaper.ViewModel
         public Action OpenEditarParcela { get; set; }
 
         public Action ChangeCliente { get; set; }
+
+        public Action<bool> OpenClienteView { get; set; }
     }
 }
