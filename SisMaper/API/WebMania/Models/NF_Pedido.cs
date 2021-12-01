@@ -36,8 +36,8 @@ namespace SisMaper.API.WebMania.Models
         [JsonProperty("modalidade_frete")]
         public EnumFrete Modalidade_frete { get; set; } = EnumFrete.ProprioDestinatario;
 
-        [JsonProperty("frete")] public string frete { get; set; } = "";
+        [JsonProperty("frete")] public string frete { get; set; } 
         
-        [JsonProperty("desconto")] public string desconto { get; set; } = "";
+        [JsonProperty("desconto")] public string desconto { get; set; } 
     }
 }

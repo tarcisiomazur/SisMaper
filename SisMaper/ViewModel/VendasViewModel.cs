@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.Models;

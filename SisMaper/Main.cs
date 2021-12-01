@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using MySqlConnector;
 using Persistence;
+using SisMaper.API.WebMania;
 using SisMaper.Models;
 
 namespace SisMaper
@@ -28,9 +29,8 @@ namespace SisMaper
                 MySqlProtocol = new MySqlProtocol(DbCfg) {ForwardEngineer = false, SkipVerification = true, MonitorIntervalTime = 100};
                 Persistence.Persistence.Init(MySqlProtocol);
 
-                //BuildCidadeEstado.Build();
-
                 Empresa = DAO.Load<Configuracoes>(1);
+                WebManiaConnector.Init(Empresa);
 
                 //CriaUsuario()
                 

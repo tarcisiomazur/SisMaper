@@ -7,7 +7,7 @@ namespace SisMaper.API.WebMania.Models
 
         [JsonProperty("cpf")] public string CPF { get; set; }
 
-        [JsonProperty("nome_completo")] public string NomeCompleto { get; set; } = "";
+        [JsonProperty("nome_completo")] public string NomeCompleto { get; set; }
 
         [JsonProperty("cnpj")] public string CNPJ { get; set; }
 
@@ -15,17 +15,17 @@ namespace SisMaper.API.WebMania.Models
 
         [JsonProperty("ie")] public string InscricaoEstadual { get; set; }
 
-        [JsonProperty("endereco")] public string Endereco { get; set; } = "";
+        [JsonProperty("endereco")] public string Endereco { get; set; }
 
-        [JsonProperty("numero")] public string Numero { get; set; } = "";
+        [JsonProperty("numero")] public string Numero { get; set; }
 
-        [JsonProperty("bairro")] public string Bairro { get; set; } = "";
+        [JsonProperty("bairro")] public string Bairro { get; set; } 
 
-        [JsonProperty("cidade")] public string Cidade { get; set; } = "";
+        [JsonProperty("cidade")] public string Cidade { get; set; } 
 
-        [JsonProperty("cep")] public string CEP { get; set; } = "";
+        [JsonProperty("cep")] public string CEP { get; set; } 
 
-        [JsonProperty("uf")] public string UF { get; set; } = "";
+        [JsonProperty("uf")] public string UF { get; set; } 
 
         public NF_Cliente()
         {

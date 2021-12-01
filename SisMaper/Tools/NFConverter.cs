@@ -12,7 +12,7 @@ namespace SisMaper.Tools
             notaFiscal.UUID = result.uuid;
             notaFiscal.Chave = result.chave;
             notaFiscal.URL_XML = result.xml;
-            notaFiscal.URL_DANFE = result.danfe_simples;
+            notaFiscal.URL_DANFE = result.danfe;
             try
             {
                 var value1 = result.log.aProt[0].dhRecbto;
@@ -42,10 +42,17 @@ namespace SisMaper.Tools
             }
             using (var client = new WebClient())
             {
-                var file = client.DownloadData(notaFiscal.URL_XML);
-                if (file != null)
+                try
                 {
-                    notaFiscal.XML = file;
+                    var file = client.DownloadData(notaFiscal.URL_XML);
+                    if (file != null)
+                    {
+                        notaFiscal.XML = file;
+                    }
+                }
+                catch
+                {
+                    //
                 }
             }
             

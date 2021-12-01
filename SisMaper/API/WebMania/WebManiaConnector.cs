@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Serialization.Json;
 using SisMaper.API.WebMania.Models;
 using SisMaper.Models;
 using SisMaper.Tools;
@@ -14,6 +15,7 @@ namespace SisMaper.API.WebMania
     {
         private static RestClient Client;
         public static JsonSerializer Serializer;
+        public static JsonSerializerSettings Settings { get; set; }
         private const string URL_EMISSAO = "https://webmaniabr.com/api/1/nfe/emissao/";
         private const string URL_CONSULTA = "https://webmaniabr.com/api/1/nfe/consulta/";
         private const string URL_SEFAZ = "https://webmaniabr.com/api/1/nfe/sefaz/";
@@ -26,7 +28,10 @@ namespace SisMaper.API.WebMania
         static WebManiaConnector()
         {
             Client = new RestClient();
-            Serializer = new JsonSerializer();
+            Settings = new JsonSerializerSettings();
+            Settings.NullValueHandling = NullValueHandling.Ignore;
+            Settings.Formatting = Formatting.Indented;
+            Serializer = JsonSerializer.Create(Settings);
         }
 
         public static void Init(Configuracoes empresa)
@@ -60,7 +65,7 @@ namespace SisMaper.API.WebMania
             LogRequest(request,response,timer.ElapsedMilliseconds);
             try
             {
-                return Serializer.Deserialize<NF_Result>(response);
+                return Serializer.Deserialize<NF_Result>(new JsonTextReader(new StringReader(response.Content)));
             }
             catch(Exception ex)
             {
@@ -80,7 +85,7 @@ namespace SisMaper.API.WebMania
             LogRequest(request,response,0);
             try
             {
-                return Serializer.Deserialize<NF_Result>(response);
+                return Serializer.Deserialize<NF_Result>(new JsonTextReader(new StringReader(response.Content)));
             }
             catch(Exception ex)
             {
@@ -115,8 +120,8 @@ namespace SisMaper.API.WebMania
 
             Trace.Write(string.Format("Request completed in {0} ms, Request: {1}, Response: {2}",
                 durationMs, 
-                Serializer.Serialize(requestToLog),
-                Serializer.Serialize(responseToLog)));
+                JsonConvert.SerializeObject(requestToLog),
+                JsonConvert.SerializeObject(responseToLog)));
         }
     }
 }

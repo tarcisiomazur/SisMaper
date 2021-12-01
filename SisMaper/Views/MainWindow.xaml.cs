@@ -20,40 +20,18 @@ namespace SisMaper.Views
         public static MainWindow Instance;
         public MainViewModel ViewModel => (MainViewModel) DataContext;
 
-        public void RandomPedido()
-        {
-            var p = new Pedido()
-            {
-                Cliente = DAO.FindWhereQuery<Cliente>("Id>0")[0],
-                Itens = new PList<Item>(),
-                Data = DateTime.Now
-            };
-            var produtos = PList<Produto>.FindWhereQuery("Id>0");
-            Random r = new Random(DateTime.Now.Millisecond);
-
-            var x = r.Next() % 10 + 5;
-            Console.WriteLine(x);
-            for (int i = 0; i < x; i++)
-            {
-                p.Itens.Add(new Item()
-                {
-                    Produto = produtos[r.Next() % produtos.Count],
-                    Quantidade = r.Next(1, 10),
-                });
-            }
-
-            p.Save();
-        }
-
         public MainWindow()
         {
             Instance = this;
             try
             {
-                if (!new Login().ShowDialog().IsTrue())
+                var login = new Login();
+                if (!login.ShowDialog().IsTrue())
                 {
                     Close();
                 }
+
+                Main.Usuario = login.ViewModel.Usuario;
             }
             catch (Exception ex)
             {

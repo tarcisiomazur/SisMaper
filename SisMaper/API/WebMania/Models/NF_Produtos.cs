@@ -29,9 +29,12 @@ namespace SisMaper.API.WebMania.Models
         [JsonProperty("subtotal")] public string Subtotal { get; set; }
         [JsonProperty("total")] public string Total { get; set; }
         [JsonProperty("informacoes_adicionais")] public string Informacoes { get; set; }
+
+        [JsonProperty("classe_imposto")] public string ClasseImposto { get; set; }
+        
         
 
-        public NF_Produtos(SisMaper.Models.Item item)
+        public NF_Produtos(SisMaper.Models.Item item, SisMaper.Models.Natureza natureza)
         {
             Nome = item.Produto.Descricao;
             Quantidade = item.Quantidade.ToString(CultureInfo.InvariantCulture);
@@ -43,6 +46,7 @@ namespace SisMaper.API.WebMania.Models
             Subtotal = item.Valor.ToString(CultureInfo.InvariantCulture);
             Total = (item.Valor * (decimal) item.Quantidade).ToString(CultureInfo.InvariantCulture);
             Informacoes = item.Lote?.Informacoes;
+            ClasseImposto = natureza.Classe_de_Imposto;
         }
         
     }

@@ -6,7 +6,7 @@ using Nullable = Persistence.Nullable;
 
 namespace SisMaper.Models
 {
-    [Table(Name = "Item", VersionControl = true)]
+    [Table(Name = "Item")]
     public class Item : DAO
     {
         [ManyToOne(Nullable = Nullable.NotNull, Fetch = Fetch.Eager)]

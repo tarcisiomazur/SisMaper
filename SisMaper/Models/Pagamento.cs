@@ -4,7 +4,7 @@ using Persistence;
 
 namespace SisMaper.Models
 {
-    [Table(Name = "Pagamento", VersionControl = true)]
+    [Table(Name = "Pagamento")]
     public class Pagamento : DAO
     {
         [Flags]
@@ -31,8 +31,8 @@ namespace SisMaper.Models
 
         /*
         public const string TIPO_MOEDA = "Moeda";
-        public const string TIPO_CREDITO = "Crédito";
-        public const string TIPO_DEBITO = "Débito";
+        public const string TIPO_CREDITO = "Crï¿½dito";
+        public const string TIPO_DEBITO = "Dï¿½bito";
         public const string TIPO_OUTRO = "Outro";
 
         public string? TipoPagamentoString

@@ -37,7 +37,6 @@ namespace SisMaper.API.WebMania
                 Operacao = NF_NotaFiscal.EnumOperacao.Saida,
                 Finalidade = NF_NotaFiscal.EnumFinalidade.Normal,
                 Pedido = new NF_Pedido(),
-                Cliente = new NF_Cliente(),
                 Produtos = new List<NF_Produtos>()
             };
 
@@ -50,7 +49,7 @@ namespace SisMaper.API.WebMania
             if (pedido == null) return "Pedido Nulo";
             if (pedido.Itens == null || pedido.Itens.Count == 0) return "Pedido sem Itens";
 
-            NF_NotaFiscal.Natureza = pedido.Natureza?.Descricao ?? "";
+            NF_NotaFiscal.Natureza = pedido.Natureza?.Descricao ?? "Venda Normal";
             NF_NotaFiscal.Pedido.desconto =
                 pedido.Itens.Sum(item => item.Desconto).ToString(CultureInfo.InvariantCulture);
             NF_NotaFiscal.Pedido.frete = "0.00";
@@ -64,6 +63,7 @@ namespace SisMaper.API.WebMania
             var cliente = pedido.Cliente;
             if (cliente != null)
             {
+                var NF_Cliente = new NF_Cliente();
                 if (string.IsNullOrEmpty(pedido.Cliente.Nome)) return "Nome do Cliente Inválido";
                 if (cliente is PessoaFisica pessoaFisica)
                 {
@@ -72,10 +72,11 @@ namespace SisMaper.API.WebMania
                     if (string.IsNullOrEmpty(pessoaFisica.CPF)) return "Cliente não possui CPF";
                     if (!pessoaFisica.CPF.IsCpf()) return "CPF incorreto";
 
-                    NF_NotaFiscal.Cliente.NomeCompleto = pessoaFisica.Nome;
-                    NF_NotaFiscal.Cliente.Cidade = pessoaFisica.Cidade.Nome;
-                    NF_NotaFiscal.Cliente.Endereco = pessoaFisica.Endereco;
-                    NF_NotaFiscal.Cliente.CPF = pessoaFisica.MaskedCPF;
+                    NF_Cliente.NomeCompleto = pessoaFisica.Nome;
+                    NF_Cliente.Cidade = pessoaFisica.Cidade.Nome;
+                    NF_Cliente.Endereco = pessoaFisica.Endereco;
+                    NF_Cliente.CPF = pessoaFisica.MaskedCPF;
+                    NF_NotaFiscal.Cliente = NF_Cliente;
                 }
                 else if (cliente is PessoaJuridica pessoaJuridica)
                 {
@@ -85,12 +86,13 @@ namespace SisMaper.API.WebMania
                     if (string.IsNullOrEmpty(pessoaJuridica.CNPJ)) return "Cliente não possui CNPJ";
                     if (!pessoaJuridica.CNPJ.IsCpf()) return "CPF incorreto";
 
-                    NF_NotaFiscal.Cliente.NomeCompleto = pessoaJuridica.Nome;
-                    NF_NotaFiscal.Cliente.Cidade = pessoaJuridica.Cidade.Nome;
-                    NF_NotaFiscal.Cliente.Endereco = pessoaJuridica.Endereco;
-                    NF_NotaFiscal.Cliente.CNPJ = pessoaJuridica.MaskedCNPJ;
-                    NF_NotaFiscal.Cliente.RazaoSocial = pessoaJuridica.RazaoSocial;
-                    NF_NotaFiscal.Cliente.InscricaoEstadual = pessoaJuridica.InscricaoEstadual;
+                    NF_Cliente.NomeCompleto = pessoaJuridica.Nome;
+                    NF_Cliente.Cidade = pessoaJuridica.Cidade.Nome;
+                    NF_Cliente.Endereco = pessoaJuridica.Endereco;
+                    NF_Cliente.CNPJ = pessoaJuridica.MaskedCNPJ;
+                    NF_Cliente.RazaoSocial = pessoaJuridica.RazaoSocial;
+                    NF_Cliente.InscricaoEstadual = pessoaJuridica.InscricaoEstadual;
+                    NF_NotaFiscal.Cliente = NF_Cliente;
                 }
             }
 
@@ -104,12 +106,12 @@ namespace SisMaper.API.WebMania
                 if (item.Produto == null) return "Produto Inválido";
                 if (item.Produto.NCM == null) return "Produto sem NCM";
 
-                NF_NotaFiscal.Produtos.Add(new NF_Produtos(item));
+                NF_NotaFiscal.Produtos.Add(new NF_Produtos(item, pedido.Natureza));
             }
 
             #endregion
 
-            Json = JsonConvert.SerializeObject(NF_NotaFiscal, Formatting.Indented);
+            Json = JsonConvert.SerializeObject(NF_NotaFiscal, WebManiaConnector.Settings);
             return "OK";
         }
 

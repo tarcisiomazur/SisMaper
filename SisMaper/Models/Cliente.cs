@@ -3,7 +3,7 @@ using Persistence;
 
 namespace SisMaper.Models
 {
-    [Table(Name = "Cliente", VersionControl = true)]
+    [Table(Name = "Cliente")]
     public class Cliente : DAO
     {
         [Field(FieldType = SqlDbType.VarChar, Length = 128)]

@@ -5,7 +5,7 @@ using Persistence;
 namespace SisMaper.Models
 {
 
-    [Table(Name = "Pedido", VersionControl = true)]
+    [Table(Name = "Pedido")]
     public class Pedido : DAO
     {
         public enum Pedido_Status

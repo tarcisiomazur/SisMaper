@@ -6,7 +6,7 @@ using Nullable = Persistence.Nullable;
 namespace SisMaper.Models
 {
 
-    [Table(Name = "Parcela", VersionControl = true)]
+    [Table(Name = "Parcela")]
     public class Parcela: DAO
     {
         [Flags]

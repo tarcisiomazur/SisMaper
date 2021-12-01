@@ -11,7 +11,7 @@ namespace SisMaper.Models
         
         public override string ToString()
         {
-            return Id.ToString(@"####\.##\.##") + " - " + Descricao;
+            return Descricao;
         }
         
     }

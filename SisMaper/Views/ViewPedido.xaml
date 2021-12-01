@@ -254,11 +254,9 @@
             SelectedItem="{Binding Pedido.Natureza, Mode=TwoWay}"
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             DisplayMemberPath="Descricao"
-            IsEditable="True"
             mah:TextBoxHelper.Watermark="Buscar Natureza"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
-            mah:TextBoxHelper.ClearTextButton="True"
             HorizontalAlignment="Right"
             Width="211" />
         <TabControl
@@ -268,6 +266,7 @@
             mah:TabControlHelper.UnderlineSelectedBrush="Black"
             mah:TabControlHelper.Underlined="SelectedTabItem"
             Background="WhiteSmoke"
+            SelectedIndex="{Binding TabSelecionada, Mode=TwoWay}"
             mah:HeaderedControlHelper.HeaderFontSize="18">
             <TabItem
                 Header="  Itens  "
@@ -630,7 +629,6 @@
             </TabItem>
             <TabItem
                 Header="  Nota Fiscal  ">
-
                 <Grid>
                     <DataGrid
                         x:Name="DataGridNotasFiscais"
@@ -641,85 +639,74 @@
                         ColumnWidth="*"
                         IsReadOnly="true"
                         AutoGenerateColumns="False"
-                        ItemsSource="{Binding Pedido.NotasFiscais, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding NotasFiscaisView, UpdateSourceTrigger=PropertyChanged}"
                         SelectedItem="{Binding NotaFiscalSelecionada, Mode=TwoWay}"
                         CanUserAddRows="False"
-                        Height="auto"
-                        Width="auto"
-                        Margin="10,62,469,47"
-                        BorderBrush="#FFD2D2D2">
+                        Width="336"
+                        Margin="10,62,420,47"
+                        BorderBrush="#FFD2D2D2" HorizontalAlignment="Left">
                         <DataGrid.Columns>
                             <DataGridTextColumn
-                                Width="100*"
-                                Header="Chave"
-                                Binding="{Binding Chave}"
-                                IsReadOnly="True" />
-                            <DataGridTextColumn
-                                Width="100*"
+                                Width="80*"
+                                MinWidth="80"
                                 Header="Situação"
                                 Binding="{Binding Situacao}"
-                                IsReadOnly="True" />
-                            <mah:DataGridNumericUpDownColumn
-                                HeaderStyle="{StaticResource RightGridHeaderStyle}"
-                                Width="25*"
+                                IsReadOnly="True"/>
+                            <DataGridTextColumn
+                                Width="60*"
+                                MinWidth="110"
                                 Header="Data Emissão"
-                                StringFormat="{}{0:N2}"
-                                Culture="pt-BR"
-                                Binding="{Binding DataEmissao}"
+                                Binding="{Binding DataEmissao, StringFormat='dd/MM/yyyy'}"
                                 IsReadOnly="true" />
-                            <mah:DataGridNumericUpDownColumn
+                            <DataGridTextColumn
                                 HeaderStyle="{StaticResource RightGridHeaderStyle}"
-                                Width="35*"
-                                Header="Desconto(%)"
-                                StringFormat="{}{0:N2}"
-                                Minimum="0"
-                                Maximum="100"
-                                Interval="0.1"
-                                Culture="pt-BR"
-                                Binding="{Binding DescontoPorcentagem, UpdateSourceTrigger=LostFocus}"
-                                IsReadOnly="False" />
+                                Width="80*"
+                                MinWidth="80"
+                                Header="Número"
+                                IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="{}{0} - {1:0000}">
+                                        <Binding Path="Serie" />
+                                        <Binding Path="Numero"/>
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem
-                                    Header="Remover"
-                                    Click="Context_Delete">
-                                    <MenuItem.Icon>
-                                        <Image
-                                            Width="12"
-                                            Height="12"
-                                            Source="/Images/Delete.png" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem
-                                    Header="Editar"
-                                    Click="Context_Delete">
-                                    <MenuItem.Icon>
-                                        <Image
-                                            Width="12"
-                                            Height="12"
-                                            Source="/Images/Edit.png" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
+                        <DataGrid.GroupStyle>
+                            <GroupStyle ContainerStyle="{StaticResource MahApps.Styles.GroupItem.DataGrid}">
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}">
+                                                    <Binding Mode="OneWay" Path="Name" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </DataGrid.GroupStyle>
                     </DataGrid>
                     <cfsharp:ChromiumWebBrowser
-                        Margin="316,0,0,0"
+                        Margin="365,0,0,0"
                         x:Name="WebBrowser"
-                        Address="https://google.com.br" />
+                        FrameLoadEnd="SetZoom"
+                        Address="{Binding NotaFiscalSelecionada.URL_DANFE, Mode=OneWay}" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Grid.IsSharedSizeScope="True" >
+
+                    </cfsharp:ChromiumWebBrowser>
                     <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Imprimir"
                         HorizontalAlignment="Left"
-                        Margin="67,18,0,0"
+                        Margin="10,18,0,0"
                         VerticalAlignment="Top"
                         Command="{Binding Imprimir}" />
                     <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Atualizar Situação"
                         HorizontalAlignment="Left"
-                        Margin="165,18,0,0"
+                        Margin="214,18,0,0"
                         VerticalAlignment="Top"
                         Command="{Binding AtualizarSituacao}"/>
                 </Grid>

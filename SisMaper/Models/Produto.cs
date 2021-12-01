@@ -3,10 +3,10 @@ using Persistence;
 
 namespace SisMaper.Models
 {
-    [Table(Name = "Produto", VersionControl = true)]
+    [Table(Name = "Produto")]
     public class Produto : DAO
     {
-        [Field(FieldType = SqlDbType.VarChar, Length = 256)]
+        [Field(FieldType = SqlDbType.VarChar, Length = 13)]
         public string CodigoBarras { get; set; }
 
         [Field(FieldType = SqlDbType.VarChar, Length = 256 )]

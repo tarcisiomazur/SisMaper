@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using CefSharp;
+using CefSharp.Wpf;
 using MahApps.Metro.Controls;
 using SisMaper.API.WebMania;
 using SisMaper.Models;
@@ -49,6 +50,13 @@ namespace SisMaper.Views
         {
             WebBrowser.Print();
         }
-        
+
+        private void SetZoom(object sender, EventArgs e)
+        {
+            if (sender is ChromiumWebBrowser browser)
+            {
+                browser.SetZoomLevel(2);
+            }
+        }
     }
 }

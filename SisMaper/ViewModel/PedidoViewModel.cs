@@ -7,6 +7,7 @@ using System.Media;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using MvvmCross.Core.ViewModels;
@@ -22,6 +23,7 @@ namespace SisMaper.ViewModel
     {
         public Pedido? Pedido { get; set; }
         public NotaFiscal? NotaFiscalSelecionada { get; set; }
+        public ICollectionView NotasFiscaisView { get; set; }
         public bool HasFatura => Pedido?.Fatura is not null;
         public bool HasNotaFiscal => Pedido?.NotasFiscais?.Count > 0;
         public bool FaturaTabItemIsSelected { get; set; }
@@ -69,7 +71,7 @@ namespace SisMaper.ViewModel
 
         public string StringQuantidade { get; set; }
 
-        public Uri DANFE { get; set; }
+        public int TabSelecionada { get; set; }
 
         public PedidoViewModel()
         {
@@ -80,18 +82,29 @@ namespace SisMaper.ViewModel
         {
             Naturezas = PersistenceContext.Get<Natureza>("ID>0");
             Clientes = new PList<Cliente>();
-            //Clientes.AddRange(PersistenceContext.Get<PessoaFisica>("Cliente_ID>0"));
-            //Clientes.AddRange(PersistenceContext.Get<PessoaJuridica>("Cliente_ID>0"));
+            Clientes.AddRange(PersistenceContext.Get<PessoaFisica>("Cliente_ID>0"));
+            Clientes.AddRange(PersistenceContext.Get<PessoaJuridica>("Cliente_ID>0"));
             Produtos = PersistenceContext.Get<Produto>("ID>0");
             ProdutosAtivos = Produtos.Where(p => p.Inativo == false);
-            Pedido = PersistenceContext.Get<Pedido>(pedidoId);
-            if (pedidoId == null) Pedido.Usuario = Main.Usuario;
-            NotaFiscalSelecionada = Pedido.NotasFiscais.FirstOrDefault(nf => nf.Situacao.BeEmitted());
-            if (NotaFiscalSelecionada != null)
+            
+            if (pedidoId == null)
             {
-                DANFE = new Uri(NotaFiscalSelecionada.URL_DANFE);
+                Pedido = new Pedido
+                {
+                    Context = PersistenceContext,
+                    Usuario = Main.Usuario,
+                    Natureza = Naturezas.FirstOrDefault(),
+                };
             }
+            else
+            {
+                Pedido = PersistenceContext.Get<Pedido>(pedidoId);
+            }
+            NotaFiscalSelecionada = Pedido.NotasFiscais.FirstOrDefault(nf => nf.Situacao.BeEmitted());
 
+            NotasFiscaisView = CollectionViewSource.GetDefaultView(Pedido.NotasFiscais);
+            NotasFiscaisView.GroupDescriptions.Add(new PropertyGroupDescription("Chave"));
+            
             DialogCoordinator = new DialogCoordinator();
             NovoItem = new Item() {Pedido = Pedido, Context = PersistenceContext};
             Pedido.Itens.ListChanged += UpdatePedido;
@@ -397,10 +410,13 @@ namespace SisMaper.ViewModel
             }
 
             NFConverter.Merge(apiNf.NF_Result, nf);
+            Pedido.NotasFiscais.Add(nf);
+            NotaFiscalSelecionada = nf;
             if (nf.Save())
             {
                 DialogCoordinator.ShowMessageAsync(this, "Emissão de Nota Fiscal",
                     $"Nota Fiscal enviada para emissão. Situação :{nf.Situacao}");
+                TabSelecionada = 2;
                 return;
             }
 

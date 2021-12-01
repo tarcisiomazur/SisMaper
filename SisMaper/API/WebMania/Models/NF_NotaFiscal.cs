@@ -7,14 +7,14 @@ namespace SisMaper.API.WebMania.Models
     {
         public enum EnumOperacao
         {
-            Saida,
-            Entrada
+            Saida = 1,
+            Entrada = 0
         };
 
         public enum EnumModelo
         {
-            NFe,
-            NFCe
+            NFe = 1,
+            NFCe = 2
         };
 
         public enum EnumFinalidade
@@ -25,16 +25,16 @@ namespace SisMaper.API.WebMania.Models
 
         public enum EnumAmbiente
         {
-            Producao,
-            Homologacao
+            Producao = 1,
+            Homologacao = 2
         };
 
 
-        [JsonProperty("ID")] public string ID { get; set; } = "";
+        [JsonProperty("ID")] public string ID { get; set; } 
 
         [JsonProperty("operacao")] public EnumOperacao Operacao { get; set; } = EnumOperacao.Saida;
 
-        [JsonProperty("natureza_operacao")] public string Natureza { get; set; } = "";
+        [JsonProperty("natureza_operacao")] public string Natureza { get; set; } 
 
         [JsonProperty("modelo")] public EnumModelo Modelo { get; set; } = EnumModelo.NFCe;
 
@@ -42,7 +42,7 @@ namespace SisMaper.API.WebMania.Models
 
         [JsonProperty("ambiente")] public EnumAmbiente Ambiente { get; set; } = EnumAmbiente.Homologacao;
 
-        [JsonProperty("cliente")] public NF_Cliente Cliente { get; set; }
+        [JsonProperty("cliente", NullValueHandling = NullValueHandling.Include)] public object Cliente { get; set; }
 
         [JsonProperty("produtos")] public List<NF_Produtos> Produtos { get; set; }
 
