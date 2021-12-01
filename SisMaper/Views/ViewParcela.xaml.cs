@@ -35,7 +35,7 @@ namespace SisMaper.Views
 
         private void ViewParcelaLoaded(object sender, RoutedEventArgs e)
         {
-            DataVencimentoDatePicker.DisplayDateStart = DateTime.Today;
+            //DataVencimentoDatePicker.DisplayDateStart = DateTime.Today;
 
             if(DataContext is ICloseWindow vm)
             {

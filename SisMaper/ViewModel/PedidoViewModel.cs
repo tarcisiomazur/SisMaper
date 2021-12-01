@@ -293,7 +293,7 @@ namespace SisMaper.ViewModel
                     {
                         ValorPagamento = Pedido.ValorTotal,
                         Usuario = Main.Usuario,
-                        Tipo = (char) Pagamento.TipoPagamento.Moeda,
+                        Tipo = Pagamento.TipoPagamento.Moeda,
                         Context = PersistenceContext
                     }
                 })

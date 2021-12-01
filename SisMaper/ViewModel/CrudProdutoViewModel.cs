@@ -89,7 +89,15 @@ namespace SisMaper.ViewModel
             Adicionar = new AdicionarLoteCommand();
             Remover = new RemoverLoteCommand();
             ViewListarProdutos view = (ViewListarProdutos) produtoSelecionado;
-            Produto = DAO.Load<Produto>(view.Id);
+
+            if (view is not null)
+            {
+                Produto = DAO.Load<Produto>(view.Id);
+            }
+            else
+            {
+                Produto = null;
+            }
 
             ListaNCM = DAO.FindWhereQuery<NCM>("Id > 0");
             PList<Categoria> listaCategorias = DAO.FindWhereQuery<Categoria>("Id > 0");
