@@ -483,6 +483,11 @@
     <Content Include="Database.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Library\BidirectionalDict.dll" />
+    <Content Include="Library\MySql.Data.dll" />
+    <Content Include="Library\MySqlConnector.dll" />
+    <Content Include="Library\Persistence.dll" />
+    <Content Include="Library\PriorityQueue.dll" />
     <Resource Include="Images\Add.png" />
     <Resource Include="Images\Delete.png" />
     <Resource Include="Images\Edit.png" />
