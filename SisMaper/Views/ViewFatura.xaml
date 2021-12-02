@@ -278,7 +278,8 @@
                         HorizontalAlignment="Right"
                         Margin="0,0,10,1"
                         TextWrapping="Wrap"
-                        Text="R$ 0,00"
+                        Text="{Binding Fatura.ValorTotal, StringFormat=R$ #\,##0.00}"
+                        
                         VerticalAlignment="Bottom"
                         Width="119"
                         HorizontalContentAlignment="Right"
@@ -358,7 +359,7 @@
                         HorizontalAlignment="Right"
                         Margin="0,0,10,1"
                         TextWrapping="Wrap"
-                        Text="R$ 0,00"
+                        Text="{Binding Fatura.ValorTotal, StringFormat=R$ #\,##0.00}"
                         VerticalAlignment="Bottom"
                         Width="119"
                         HorizontalContentAlignment="Right"

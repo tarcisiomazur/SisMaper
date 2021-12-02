@@ -110,7 +110,8 @@ namespace SisMaper.ViewModel
                     p.Cliente?.Load();
                 }
 
-
+                if (Fatura.Cliente == null) return;
+                
                 PessoaFisica? c1 = DAO.Load<PessoaFisica>(Fatura.Cliente.Id);
 
                 if(c1 is not null)

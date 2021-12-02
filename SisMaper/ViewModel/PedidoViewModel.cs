@@ -60,7 +60,8 @@ namespace SisMaper.ViewModel
         public SimpleCommand Cancelar => new(CancelPedido, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
         public SimpleCommand AtualizarSituacao => new(AtualizarSituacaoNF, _ => NotaFiscalSelecionada is not null);
         public SimpleCommand Imprimir => new(ImprimirNF, _ => NotaFiscalSelecionada is not null);
-
+        public SimpleCommand AbrirFatura => new(AbrirFaturaPedido);
+        
         public SimpleCommand Receber => new(ReceberPedido,
             _ => Pedido?.Status == Pedido.Pedido_Status.Aberto && Pedido?.Itens.Count > 0);
 
@@ -158,6 +159,13 @@ namespace SisMaper.ViewModel
             }
         }
 
+        private void AbrirFaturaPedido()
+        {
+            var viewFatura = new ViewFatura { DataContext = new FaturaViewModel(Pedido.Fatura) };
+            Save?.Invoke();
+            viewFatura.ShowDialog();
+        }
+        
         private void ImprimirNF()
         {
             PrintWebBrowser?.Invoke();
@@ -285,9 +293,7 @@ namespace SisMaper.ViewModel
             else
             {
                 SystemSounds.Beep.Play();
-                ViewFatura viewFatura = new ViewFatura { DataContext = new FaturaViewModel(Pedido.Fatura) };
-                Save?.Invoke();
-                viewFatura.ShowDialog();
+                AbrirFaturaPedido();
             }
         }
 

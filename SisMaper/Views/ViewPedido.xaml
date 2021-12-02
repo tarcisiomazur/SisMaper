@@ -499,7 +499,7 @@
                         RenderTransformOrigin="0.197,0.486" />
                     <TextBlock
                         HorizontalAlignment="Right"
-                        Margin="0,11,192,0"
+                        Margin="0,11,234,0"
                         Text="Data Faturamento"
                         TextWrapping="Wrap"
                         VerticalAlignment="Top"
@@ -507,12 +507,12 @@
                     <TextBox
                         FontSize="15"
                         HorizontalAlignment="Right"
-                        Margin="0,7,10,0"
+                        Margin="0,8,80,0"
                         IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}"
                         Text="{Binding Pedido.Fatura.Data, Mode=TwoWay, StringFormat='dd/MM/yyyy'}"
                         VerticalAlignment="Top"
                         Height="30"
-                        Width="173" />
+                        Width="136" />
                     <TabControl
                         Margin="0,42,0,0"
                         mah:TabControlHelper.UnderlineBrush="Black"
@@ -613,6 +613,22 @@
                             </Grid>
                         </TabItem>
                     </TabControl>
+                    <Button
+            Command="{Binding AbrirFatura}"
+            Focusable="False"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Height="32"
+            Width="32" Margin="0,8,12,0">
+                        <StackPanel>
+                            <iconpacks:PackIconMaterial
+                    Kind="OpenInNew"
+                    Height="18"
+                    Width="18"
+                    Foreground="#FF939393"
+                    />
+                        </StackPanel>
+                    </Button>
                 </Grid>
             </TabItem>
             <TabItem
