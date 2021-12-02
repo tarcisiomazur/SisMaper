@@ -20,6 +20,13 @@
     Width="1489"
     SaveWindowPosition="True"
     >
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands ShowLastSeparator="False">
+            <Button Click="Logout"
+                    Content="Encerrar Sessão"
+                    ToolTip="Clique para Desconectar este Usuário" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
     <mah:MetroWindow.DataContext>
         <vm:MainViewModel/>
     </mah:MetroWindow.DataContext>
@@ -573,6 +580,8 @@
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
             Margin="0,0,0,22" SelectedIndex="0">
             <TabItem
+                Visibility="{Binding PVendas, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}"
+               
                 x:Name="Vendas"
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF1B4441">
@@ -595,6 +604,8 @@
                             VerticalAlignment="Stretch"/>
             </TabItem>
             <TabItem
+                Visibility="{Binding PRecebimento, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                
                 x:Name="Recebimento"
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF117200">
@@ -620,6 +631,8 @@
                             x:Name="RecebimentosView" />
             </TabItem>
             <TabItem
+                Visibility="{Binding PCadastro, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+               
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF843700">
                 <TabItem.Header>
@@ -704,6 +717,7 @@
                 </TabControl>
             </TabItem>
             <TabItem
+                Visibility="Collapsed"
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#CC25A0FF">
                 <TabItem.Header>
@@ -720,6 +734,7 @@
                 </TabItem.Header>
             </TabItem>
             <TabItem
+                Visibility="{Binding PAdmin, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                 x:Name="Configuações"
                 PreviewMouseLeftButtonDown="OpenConfig"
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}">
@@ -746,6 +761,18 @@
                  HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
                     <Label
+                        Content="Usuário: "
+                        VerticalAlignment="Center"
+                        Padding="0,0,0,0"
+                        Foreground="White"
+                        FontSize="11" />
+                    <Label
+                        Content="{Binding Nome, Source={x:Static sismaper:Main.Usuario}}"
+                        VerticalAlignment="Center"
+                        Padding="0,0,30,0"
+                        Foreground="White"
+                        FontSize="11" />
+                    <Label
                         Content="{Binding Source={x:Static sismaper:Main.Version}}"
                         VerticalAlignment="Center"
                         Padding="0,0,0,0"
@@ -753,7 +780,7 @@
                         FlowDirection="RightToLeft"
                         FontSize="11" />
                     <Label
-                        Content="{Binding Status, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Content="{Binding Status,Source = {x:Static sismaper:Main.Instance}}"
                         VerticalAlignment="Center"
                         Padding="0,0,20,0"
                         Foreground="White"

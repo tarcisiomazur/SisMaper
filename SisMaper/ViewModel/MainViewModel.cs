@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using SisMaper.Models;
 using SisMaper.Views;
 using SisMaper.Views.Templates;
 
@@ -9,13 +10,26 @@ namespace SisMaper.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public string Status { get; set; } = "Desconectado";
-        
+        public bool PAdmin { get; set; }
+        public bool PVendas { get; set; }
+        public bool PRecebimento { get; set; }
+        public bool PCadastro { get; set; }
+        public bool PDB { get; set; }
+
         public MainViewModel()
         {
-            
         }
 
+        public void Initialize()
+        {
+            var permissoes = Main.Usuario.Permissao;
+            PCadastro = permissoes.HasFlag(Usuario.Tipo_Permissao.Cadastros);
+            PRecebimento = permissoes.HasFlag(Usuario.Tipo_Permissao.Recebimento);
+            PVendas = permissoes.HasFlag(Usuario.Tipo_Permissao.Venda);
+            PAdmin = permissoes.HasFlag(Usuario.Tipo_Permissao.Gerenciamento);
+            PDB = permissoes.HasFlag(Usuario.Tipo_Permissao.Databaser);
+        }
+        
         private TabItem? _selectedItem;
         
         public TabItem? SelectedItem
@@ -31,19 +45,19 @@ namespace SisMaper.ViewModel
         }
         public void Connected()
         {
-            Status = "Conectado";
+            Main.Instance.Status = "Conectado";
             Close = true;
         }
         public void Disconnected()
         {
-            Status = "Desconectado";
+            Main.Instance.Status = "Desconectado";
         }
         
         public bool Close;
 
         public async void Reconnecting()
         {
-            Status = "Reconectando";
+            Main.Instance.Status = "Reconectando";
             Close = false;
             var s = new MetroDialogSettings()
             {

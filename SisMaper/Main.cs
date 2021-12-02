@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using MySqlConnector;
@@ -9,9 +10,11 @@ using SisMaper.Tools;
 
 namespace SisMaper
 {
-    public static class Main
+    public class Main: INotifyPropertyChanged
     {
+        public static Main Instance { get; set; }
         public static string Version => "Version: " + Application.ResourceAssembly.GetName().Version;
+        public string Status { get; set; } = "Desconectado";
         public static Usuario Usuario { get; set; } = new ();
         public static Configuracoes? Empresa { get; set; }
 
@@ -21,13 +24,18 @@ namespace SisMaper
 
         [DllImport(@"kernel32.dll")]
         static extern bool AllocConsole();
+
+        static Main()
+        {
+            Instance = new Main();
+        }
         
         public static void Init()
         {
             AllocConsole();
             try
             {
-                MySqlProtocol = new MySqlProtocol(DbCfg) {ForwardEngineer = false, SkipVerification = true, MonitorIntervalTime = 100};
+                MySqlProtocol = new MySqlProtocol(DbCfg) {ForwardEngineer = false, SkipVerification = true};
                 Persistence.Persistence.Init(MySqlProtocol);
 
                 //BuildCidadeEstado.Build();
@@ -56,5 +64,7 @@ namespace SisMaper
             };
             u.Save();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

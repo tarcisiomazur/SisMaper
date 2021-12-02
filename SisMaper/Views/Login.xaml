@@ -233,13 +233,12 @@
                         Width="203"
                         Padding="0,0,0,0"
                         Foreground="White"
-                        FlowDirection="RightToLeft"
-                        FontSize="11" />
+                        FontSize="11" HorizontalContentAlignment="Right" />
                     <Label
-                        Content="{Binding ViewModel.Status, Source={x:Static views:MainWindow.Instance}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Content="{Binding Status, Source={x:Static sismaper:Main.Instance}, Mode=OneWay}"
                         VerticalAlignment="Center"
                         Height="16"
-                        Width="206"
+                        Width="97"
                         Padding="0,0,0,0"
                         Foreground="White"
                         FlowDirection="RightToLeft"

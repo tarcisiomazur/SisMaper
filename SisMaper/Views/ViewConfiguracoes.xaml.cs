@@ -66,9 +66,10 @@ namespace SisMaper.Views
             Encrypt.ImportKey();
         }
 
-        private void ValueRangeTextBox_OnQueryTextFromValue(object? sender, QueryTextFromValueEventArgs e)
+        private void AlterarNaturezas(object sender, MouseButtonEventArgs e)
         {
-            Console.WriteLine(e);
+            new ViewNaturezas().ShowDialog();
         }
+        
     }
 }
