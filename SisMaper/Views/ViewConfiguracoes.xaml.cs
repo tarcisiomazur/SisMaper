@@ -15,9 +15,9 @@ namespace SisMaper.Views
         public IDialogCoordinator DialogCoordinator { get; set; }
         public ViewConfiguracoes(Configuracoes empresa)
         {
-            ViewModel.Empresa = empresa;
             InitializeComponent();
             DialogCoordinator = new DialogCoordinator();
+            ViewModel.Empresa = empresa;
             Initialize();
             Closed += ReloadEmpresa;
         }
@@ -38,7 +38,7 @@ namespace SisMaper.Views
             }
             catch
             {
-                //DialogCoordinator.ShowModalMessageExternal(DataContext, "Erro de Desencriptação" ,"Erro ao desencriptar os Dados");
+                DialogCoordinator.ShowModalMessageExternal(DataContext, "Erro de Desencriptação" ,"Erro ao desencriptar os Dados");
             }
         }
 
