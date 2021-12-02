@@ -21,6 +21,8 @@ namespace SisMaper.ViewModel
 {
     public class PedidoViewModel : BaseViewModel
     {
+        public double De { get; set; } = 28;
+
         public Pedido? Pedido { get; set; }
         public NotaFiscal? NotaFiscalSelecionada { get; set; }
         public ICollectionView NotasFiscaisView { get; set; }

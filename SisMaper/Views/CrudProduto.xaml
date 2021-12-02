@@ -237,7 +237,8 @@
             TextWrapping="Wrap"
             Text="{Binding Produto.CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             VerticalAlignment="Top"
-            Width="216" />
+            Width="216" 
+            MaxLength="13" PreviewKeyDown="CodigoDeBarrasTextBoxKeyDown" PreviewTextInput="TextBox_TextInput" />
 
         <ComboBox ItemsSource="{Binding Unidades}"
             SelectedItem="{Binding UnidadeSelecionada, Mode=TwoWay}"
@@ -261,13 +262,14 @@
             VerticalAlignment="Top"><Run Language="pt-br" Text="Unidade"/></TextBlock>
 
         <ComboBox ItemsSource="{Binding ListaNCM}"
-            SelectedItem="{Binding NCMSelecionado}"
+            SelectedItem="{Binding NCMSelecionado, Mode=TwoWay}"
+            Text="{Binding NCMSelecionado.Descricao}"
             Grid.Row="0"
             Height="32"
             Margin="158,248,427,0"
             FontSize="16"
             mah:TextBoxHelper.Watermark="NCM"
-            IsEditable="True"
+            IsEditable="true"
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"

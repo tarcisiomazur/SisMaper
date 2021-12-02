@@ -372,7 +372,7 @@
                                 Culture="pt-BR"
                                 Binding="{Binding Valor}"
                                 IsReadOnly="true" />
-                            <mah:DataGridNumericUpDownColumn
+                            <mah:DataGridNumericUpDownColumn x:Name="DescontoData" 
                                 HeaderStyle="{StaticResource RightGridHeaderStyle}"
                                 Width="35*"
                                 Header="Desconto(%)"
@@ -458,7 +458,6 @@
                 </Grid>
             </TabItem>
             <TabItem
-                d:Visibility="Visible"
                 Visibility="{Binding HasFatura, Converter={StaticResource BooleanToVisibilityConverter}}"
                 IsSelected="{Binding FaturaTabItemIsSelected}"
                 Header="  Financeiro  ">

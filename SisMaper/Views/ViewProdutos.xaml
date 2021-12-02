@@ -183,7 +183,7 @@
                         <DataGridTextColumn
                             Width="30*"
                             Header="NCM"
-                            Binding="{Binding NCM}"
+                            Binding="{Binding NCM_String}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Width="30*"

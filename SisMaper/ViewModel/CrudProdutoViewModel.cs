@@ -21,9 +21,9 @@ namespace SisMaper.ViewModel
     public class CrudProdutoViewModel : BaseViewModel, ICloseWindow
     {
 
-        private NCM _ncmSelecionado;
+        private NCM? _ncmSelecionado;
 
-        public NCM NCMSelecionado
+        public NCM? NCMSelecionado
         {
             get { return _ncmSelecionado; }
             set { SetField(ref _ncmSelecionado, value); }
@@ -132,6 +132,7 @@ namespace SisMaper.ViewModel
 
                 CategoriaSelecionada = Produto.Categoria;
                 UnidadeSelecionada = Produto.Unidade;
+                NCMSelecionado = Produto.NCM;
 
                 if (!Equals(CategoriaSelecionada, null))
                 {
@@ -270,6 +271,24 @@ namespace SisMaper.ViewModel
 
         }
 
+        private void CheckCodigoBarras()
+        {
+            if(Produto.CodigoBarras is not null)
+            {
+                if(Produto.CodigoBarras.Length == 0)
+                {
+                    Produto.CodigoBarras = null;
+                    return;
+                }
+
+                if(Produto.CodigoBarras.Length < 13)
+                {
+                    throw new InvalidOperationException("Código de Barras incompleto");
+                }
+            }
+        }
+        
+
         public void ExcluirLote()
         {
             try
@@ -285,6 +304,7 @@ namespace SisMaper.ViewModel
 
         public void SalvarProduto()
         {
+            
             CheckCategoria();
             CheckUnidade();
 
@@ -305,9 +325,11 @@ namespace SisMaper.ViewModel
 
             Produto.Categoria = CategoriaSelecionada;
             Produto.Unidade = UnidadeSelecionada;
+            Produto.NCM = NCMSelecionado;
 
             try
             {
+                CheckCodigoBarras();
                 Produto.Save();
 
                 foreach (Lote l in listaLotesPraAdicionar)
