@@ -9,7 +9,7 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.VarChar, Length = 256)]
         public string Nome { get; set; }
 
-        [ManyToOne(Nullable = Nullable.NotNull)]
+        [ManyToOne(Nullable = Nullable.NotNull, Fetch = Fetch.Eager)]
         public Estado Estado { get; set; }
 
         public override string ToString()

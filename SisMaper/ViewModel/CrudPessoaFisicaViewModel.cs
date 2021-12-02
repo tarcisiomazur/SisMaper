@@ -80,7 +80,7 @@ namespace SisMaper.ViewModel
             cliente = (Cliente)clienteSelecionado;
 
             Estados = DAO.FindWhereQuery<Estado>("Id > 0");
-           
+            Estados.Do(e=>e.Cidades.Load());
 
             if (cliente is not null)
             {

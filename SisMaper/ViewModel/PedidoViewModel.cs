@@ -399,7 +399,14 @@ namespace SisMaper.ViewModel
                 apiNf = new NotaFiscalConsumidor(nf);
             else
                 apiNf = new NotaFiscalEletronica(nf);
-
+            
+            if (Pedido.Cliente != null){
+                if (PersistenceContext.Get<PessoaFisica>(Pedido.Cliente.Id) is var pf and not null)
+                    Pedido.Cliente = pf;
+                else if (PersistenceContext.Get<PessoaJuridica>(Pedido.Cliente.Id) is var pj and not null)
+                    Pedido.Cliente = pj;
+            }
+            
             var result = apiNf.BuildJsonDefault();
             if (result != "OK")
             {

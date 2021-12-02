@@ -10,8 +10,9 @@ namespace SisMaper.Models
         [Field(FieldType = SqlDbType.VarChar, Length = 45)]
         public string Nome { get; set; }
         
-        [OneToMany(Fetch = Fetch.Eager, Cascade = Cascade.SAVE)]
+        [OneToMany]
         public PList<Cidade> Cidades { get; set; }
+        
         [Field(FieldType = SqlDbType.VarChar, Length = 2)]
         public string UF { get; set; }
 
