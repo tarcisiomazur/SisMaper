@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using CefSharp;
 using CefSharp.Wpf;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using SisMaper.API.WebMania;
 using SisMaper.Models;
 using SisMaper.ViewModel;

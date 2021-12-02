@@ -460,6 +460,7 @@
             <TabItem
                 Visibility="{Binding HasFatura, Converter={StaticResource BooleanToVisibilityConverter}}"
                 IsSelected="{Binding FaturaTabItemIsSelected}"
+                d:Visibility="Visible"
                 Header="  Financeiro  ">
                 <Grid>
                     <TextBlock
@@ -503,16 +504,15 @@
                         TextWrapping="Wrap"
                         VerticalAlignment="Top"
                         Width="130" />
-                    <DatePicker
+                    <TextBox
                         FontSize="15"
                         HorizontalAlignment="Right"
-                        Margin="0,7,8,0"
-                        DisplayDateEnd="{x:Static sys:DateTime.Now}"
+                        Margin="0,7,10,0"
                         IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}"
-                        SelectedDate="{Binding Pedido.Fatura.Data, Mode=TwoWay}"
+                        Text="{Binding Pedido.Fatura.Data, Mode=TwoWay, StringFormat='dd/MM/yyyy'}"
                         VerticalAlignment="Top"
                         Height="30"
-                        Width="175" />
+                        Width="173" />
                     <TabControl
                         Margin="0,42,0,0"
                         mah:TabControlHelper.UnderlineBrush="Black"
@@ -537,7 +537,7 @@
                                     Height="auto"
                                     Width="auto"
                                     ItemsSource="{Binding Pedido.Fatura.Parcelas}"
-                                    Margin="10,46,10,34"
+                                    Margin="10,10,10,34"
                                     BorderBrush="#FFD2D2D2"
                                     templates:ColumnDataGridSave.SaveSizes="True">
                                     <DataGrid.Columns>
@@ -570,13 +570,6 @@
                                             IsReadOnly="false" />
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Button
-                                    Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-                                    Content="Adicionar"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Margin="10,8,0,0"
-                                    IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
                                 <TextBox
                                     IsEnabled="False"
                                     x:Name="ValorTotal"
@@ -584,7 +577,7 @@
                                     HorizontalAlignment="Right"
                                     Margin="0,0,10,1"
                                     TextWrapping="Wrap"
-                                    Text="{Binding Pedido.ValorTotal, ConverterCulture=pt-BR, Mode=OneWay, StringFormat=R$ #\,##0.00, UpdateSourceTrigger=PropertyChanged}"
+                                    Text="{Binding Pedido.Fatura.ValorTotal, ConverterCulture=pt-BR, Mode=OneWay, StringFormat=R$ #\,##0.00, UpdateSourceTrigger=PropertyChanged}"
 
                                     VerticalAlignment="Bottom"
                                     Width="119"
@@ -593,33 +586,29 @@
                                 <TextBlock
                                     HorizontalAlignment="Right"
                                     Margin="0,0,139,7"
-                                    Text="Valor Fatura"
+                                    Text="Valor Total"
                                     RenderTransformOrigin="0.529,-0.024"
                                     Height="21"
                                     VerticalAlignment="Bottom" />
-                                <Button
-                                    Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-                                    Content="Receber"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Margin="96,8,0,0"
-                                    IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
-                                <Button
-                                    Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-                                    Content="Remover"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Margin="172,8,0,0"
-                                    IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
-                                <Button
-                                    Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-                                    Content="Encerrar Fatura"
-                                    HorizontalAlignment="Left"
+                                <TextBox
+                                    IsEnabled="False"
+                                    Style="{DynamicResource TextBoxStyle1}"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,0,238,1"
+                                    TextWrapping="Wrap"
+                                    Text="{Binding Pedido.Fatura.ValorPago, ConverterCulture=pt-BR, Mode=OneWay, StringFormat=R$ #\,##0.00, UpdateSourceTrigger=PropertyChanged}"
+
                                     VerticalAlignment="Bottom"
-                                    Margin="10,0,0,2"
-                                    HorizontalContentAlignment="Left"
-                                    VerticalContentAlignment="Bottom"
-                                    IsEnabled="{Binding Pedido.Fatura.Status, Converter={StaticResource FaturaStatusIsEditable}}" />
+                                    Width="120"
+                                    HorizontalContentAlignment="Right"
+                                    VerticalContentAlignment="Bottom" />
+                                <TextBlock
+                                    HorizontalAlignment="Right"
+                                    Margin="0,0,368,7"
+                                    Text="Valor Pago"
+                                    RenderTransformOrigin="0.529,-0.024"
+                                    Height="21"
+                                    VerticalAlignment="Bottom" />
 
                             </Grid>
                         </TabItem>

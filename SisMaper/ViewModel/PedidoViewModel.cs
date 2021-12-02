@@ -7,7 +7,6 @@ using System.Media;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -23,8 +22,6 @@ namespace SisMaper.ViewModel
 {
     public class PedidoViewModel : BaseViewModel
     {
-        public double De { get; set; } = 28;
-
         public Pedido? Pedido { get; set; }
         public NotaFiscal? NotaFiscalSelecionada { get; set; }
         public ICollectionView NotasFiscaisView { get; set; }
@@ -137,7 +134,7 @@ namespace SisMaper.ViewModel
         {
             if (Pedido.Itens.Count == 0)
             {
-                DialogCoordinator.ShowMessageAsync(this, "Salvar Pedido", "O pedido deve conter um ou mais itens!");
+                DialogCoordinator.ShowModalMessageExternal(this, "Salvar Pedido", "O pedido deve conter um ou mais itens!");
                 return;
             }
 
@@ -145,7 +142,7 @@ namespace SisMaper.ViewModel
             {
                 if (!Pedido.Save())
                 {
-                    DialogCoordinator.ShowMessageAsync(this, "Salvar Pedido", "O pedido não pode ser salvo!");
+                    DialogCoordinator.ShowModalMessageExternal(this, "Salvar Pedido", "O pedido não pode ser salvo!");
                 }
 
                 Save?.Invoke();
@@ -154,7 +151,7 @@ namespace SisMaper.ViewModel
             {
                 if (ex.ErrorCode == SQLException.ErrorCodeVersion)
                 {
-                    DialogCoordinator.ShowMessageAsync(this, "Salvar Pedido",
+                    DialogCoordinator.ShowModalMessageExternal(this, "Salvar Pedido",
                         "O pedido não pode ser salvo pois está desatualizado!");
                     Cancel?.Invoke();
                 }
@@ -204,7 +201,7 @@ namespace SisMaper.ViewModel
                 if (NovoItem.Quantidade == 0) NovoItem.Quantidade = 1;
                 if (!NovoItem.Produto.Fracionado && !NovoItem.Quantidade.IsNatural())
                 {
-                    DialogCoordinator.ShowMessageAsync(this, "Adicionar Item",
+                    DialogCoordinator.ShowModalMessageExternal(this, "Adicionar Item",
                         "O item não aceita quantidade fracionada!");
                     return;
                 }
@@ -248,7 +245,7 @@ namespace SisMaper.ViewModel
                 pgmto.Selecionado == ViewMetodoPagamento.OptionPagamento.Null) return;
             if (!Pedido.Save())
             {
-                DialogCoordinator.ShowMessageAsync(this, "Salvar Pedido", "O pedido não pode ser fechado!");
+                DialogCoordinator.ShowModalMessageExternal(this, "Salvar Pedido", "O pedido não pode ser fechado!");
                 Cancel?.Invoke();
                 return;
             }
@@ -272,9 +269,8 @@ namespace SisMaper.ViewModel
         {
             if (Pedido?.Cliente == null)
             {
-                DialogCoordinator.ShowMessageAsync(this, "Salvar Fatura",
-                    "O cliente não pode ser nulo!");
-                Cancel?.Invoke();
+                DialogCoordinator.ShowModalMessageExternal(this, "Salvar Fatura",
+                    "O cliente não pode estar em branco!");
                 return;
             }
 
@@ -282,16 +278,16 @@ namespace SisMaper.ViewModel
             Pedido.Status = Pedido.Pedido_Status.Fechado;
             if (!Pedido.Fatura.Save())
             {
-                DialogCoordinator.ShowMessageAsync(this, "Salvar Fatura",
+                DialogCoordinator.ShowModalMessageExternal(this, "Salvar Fatura",
                     "A fatura do pedido não pode ser salva!");
                 Cancel?.Invoke();
             }
             else
             {
-                RaisePropertyChanged(nameof(Pedido));
-                RaisePropertyChanged(nameof(HasFatura));
                 SystemSounds.Beep.Play();
-                FaturaTabItemIsSelected = true;
+                ViewFatura viewFatura = new ViewFatura { DataContext = new FaturaViewModel(Pedido.Fatura) };
+                Save?.Invoke();
+                viewFatura.ShowDialog();
             }
         }
 
@@ -312,7 +308,7 @@ namespace SisMaper.ViewModel
                     {
                         ValorPagamento = Pedido.ValorTotal,
                         Usuario = Main.Usuario,
-                        Tipo = Pagamento.TipoPagamento.Moeda,
+                        TipoPagamento = Pagamento.EnumTipoPagamento.Moeda,
                         Context = PersistenceContext
                     }
                 })
@@ -323,7 +319,7 @@ namespace SisMaper.ViewModel
                 Pedido.Fatura.Status = Fatura.Fatura_Status.Fechada;
                 if (Pedido.Fatura.Save())
                 {
-                    DialogCoordinator.ShowMessageAsync(this, "Receber Pedido", "O pedido foi salvo e recebido!");
+                    DialogCoordinator.ShowModalMessageExternal(this, "Receber Pedido", "O pedido foi salvo e recebido!");
                     RaisePropertyChanged(nameof(Pedido));
                     RaisePropertyChanged(nameof(HasFatura));
                     SystemSounds.Beep.Play();
@@ -331,7 +327,7 @@ namespace SisMaper.ViewModel
                 }
             }
 
-            DialogCoordinator.ShowMessageAsync(this, "Salvar Fatura",
+            DialogCoordinator.ShowModalMessageExternal(this, "Salvar Fatura",
                 "A fatura do pedido não pode ser salva!");
             Cancel?.Invoke();
         }
@@ -377,7 +373,7 @@ namespace SisMaper.ViewModel
             var isNFC = obj.Equals("NFC-e");
             if (Pedido.NotasFiscais.FirstOrDefault(n => n.Situacao.BeEmitted()) is { } _nf)
             {
-                DialogCoordinator.ShowMessageAsync(this, "Emitir Nota Fiscal",
+                DialogCoordinator.ShowModalMessageExternal(this, "Emitir Nota Fiscal",
                     $"O pedido possui uma Nota Fiscal" +
                     (_nf.Situacao.IsAprovado()
                         ? $" nº{_nf.Serie}-{_nf.Numero} com chave {_nf.Chave}. Aprovada em {_nf.DataEmissao}."
@@ -389,7 +385,7 @@ namespace SisMaper.ViewModel
             nf.Pedido = Pedido;
             if (!nf.Save())
             {
-                DialogCoordinator.ShowMessageAsync(this, "Erro",
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro",
                     "Ocorreu um ao gerar a numeração da próxima emitir Nota Fiscal");
                 return;
             }
@@ -400,7 +396,7 @@ namespace SisMaper.ViewModel
             else
                 apiNf = new NotaFiscalEletronica(nf);
             
-            if (Pedido.Cliente != null){
+            if (Pedido.Cliente is { } and not PessoaFisica and not PessoaJuridica){
                 if (PersistenceContext.Get<PessoaFisica>(Pedido.Cliente.Id) is var pf and not null)
                     Pedido.Cliente = pf;
                 else if (PersistenceContext.Get<PessoaJuridica>(Pedido.Cliente.Id) is var pj and not null)
@@ -410,8 +406,9 @@ namespace SisMaper.ViewModel
             var result = apiNf.BuildJsonDefault();
             if (result != "OK")
             {
-                DialogCoordinator.ShowMessageAsync(this, "Erro ao validar a Nota Fiscal",
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao validar a Nota Fiscal",
                     $"Erro ao validar a nota fiscal: {result}");
+                nf.Delete();
                 return;
             }
 
@@ -421,14 +418,13 @@ namespace SisMaper.ViewModel
 
         private async Task EmitindoNotaFiscal(INotaFiscal apiNf, NotaFiscal nf)
         {
-            var task = apiNf.Emit();
             var s = new MetroDialogSettings()
             {
                 NegativeButtonText = "Fechar"
             };
             var progressAsync = await DialogCoordinator.ShowProgressAsync(this,$"Emitindo Nota Fiscal",
                 "Aguarde. A Nota Fiscal está em processo de emissão.", settings:s);
-            
+            var task = Task.Factory.StartNew(apiNf.Emit);
             progressAsync.SetIndeterminate();
             
             var t = new Timer(10000){AutoReset = false};
@@ -457,14 +453,14 @@ namespace SisMaper.ViewModel
             await task;
             if (!task.Result)
             {
-                DialogCoordinator.ShowMessageAsync(this, "Erro ao emitir Nota Fiscal",
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao emitir Nota Fiscal",
                     $"Erro ao enviar a Nota Fiscal para emissão");
                 nf.Delete();
                 return;
             }
             if (apiNf.NF_Result is {Error: { }})
             {
-                    DialogCoordinator.ShowMessageAsync(this, "Erro ao emitir Nota Fiscal",
+                    DialogCoordinator.ShowModalMessageExternal(this, "Erro ao emitir Nota Fiscal",
                         $"Erro ao processar a Nota Fiscal: {apiNf.NF_Result.Error}");
                 nf.Delete();
                 return;
@@ -475,15 +471,15 @@ namespace SisMaper.ViewModel
             NotaFiscalSelecionada = nf;
             if (nf.Save())
             {
-                DialogCoordinator.ShowMessageAsync(this, "Emissão de Nota Fiscal",
+                DialogCoordinator.ShowModalMessageExternal(this, "Emissão de Nota Fiscal",
                     $"Nota Fiscal enviada para emissão. Situação :{nf.Situacao}");
                 RaisePropertyChanged(nameof(HasNotaFiscal));
                 TabSelecionada = 2;
                 return;
             }
 
-            DialogCoordinator.ShowMessageAsync(this, "Erro ao emitir Nota Fiscal",
-                $"Um erro ocorreu ao salvar a nota fiscal emitida. Situação :{nf.Situacao}");
+            DialogCoordinator.ShowModalMessageExternal(this, "Erro ao emitir Nota Fiscal",
+                $"Um erro ocorreu ao salvar a nota fiscal emitida. Situação: {nf.Situacao}");
         }
 
 
@@ -517,7 +513,7 @@ namespace SisMaper.ViewModel
             }
             else
             {
-                DialogCoordinator.ShowMessageAsync(this, "Editar Cliente", "Não foi possível editar este cliente");
+                DialogCoordinator.ShowModalMessageExternal(this, "Editar Cliente", "Não foi possível editar este cliente");
             }
         }
 

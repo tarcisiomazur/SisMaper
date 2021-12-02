@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using SisMaper.API.WebMania.Models;
 using SisMaper.Models;
 using SisMaper.Tools;
@@ -11,7 +12,6 @@ namespace SisMaper.API.WebMania
         public NotaFiscal NotaFiscal { get; set; }
         public NF_Result? NF_Result { get; set; }
         public abstract string BuildJsonDefault();
-        public abstract Task<bool> Emit();
 
         public string? BuildCliente(Cliente cliente, NF_NotaFiscal NF_NotaFiscal)
         {
@@ -22,7 +22,7 @@ namespace SisMaper.API.WebMania
             if (string.IsNullOrEmpty(cliente.Numero)) return "Numero do Endereço Inválido";
             if (string.IsNullOrEmpty(cliente.CEP)) return "CEP do Endereço Inválido";
             if (!int.TryParse(cliente.CEP, out var CEP)) return "CEP do Endereço Inválido";
-
+            cliente.Cidade.Estado.Load();
             var NF_Cliente = new NF_Cliente();
             NF_Cliente.NomeCompleto = cliente.Nome;
             NF_Cliente.Cidade = cliente.Cidade.Nome;
@@ -50,6 +50,13 @@ namespace SisMaper.API.WebMania
             }
 
             return null;
+        }
+        
+        public bool Emit()
+        {
+            if (string.IsNullOrEmpty(Json)) return false;
+            NF_Result = WebManiaConnector.Emitir(Json);
+            return NF_Result != null;
         }
     }
 }

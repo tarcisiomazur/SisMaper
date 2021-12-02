@@ -127,6 +127,13 @@ namespace SisMaper.Views
                     DataContext = new FaturaViewModel((DataContext as FaturaViewModel).Fatura);
                     SetActions();
                 };
+                vm2.OpenEditarParcela = () =>
+                {
+                    new ViewParcela() { DataContext = new ParcelaViewModel((DataContext as FaturaViewModel).ParcelaSelecionada, (DataContext as FaturaViewModel).Fatura) }.ShowDialog();
+
+                    DataContext = new FaturaViewModel((DataContext as FaturaViewModel).Fatura);
+                    SetActions();
+                };
 
                 vm2.OpenClienteView = (bool isPessoaFisica) =>
                 {

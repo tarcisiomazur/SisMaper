@@ -295,13 +295,17 @@
                         Content="Receber"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Margin="96,10,0,0" />
+                        Margin="96,10,0,0" 
+                        CommandParameter="{Binding}"
+                        Command="{Binding EditarParcela}"/>
                     <Button
                         Style="{DynamicResource OptionsButtonStyle}"
                         Content="Remover"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Margin="172,10,0,0" />
+                        Margin="172,10,0,0" 
+                        CommandParameter="{Binding}"
+                        Command="{Binding ExcluirParcela}"/>
 
                 </Grid>
             </TabItem>

@@ -63,6 +63,8 @@ namespace SisMaper.ViewModel
         public Action ChangeCliente { get; set; }
 
         public NovaParcelaCommand NovaParcela { get; private set; }
+        public EditarParcelaCommand EditarParcela { get; private set; }
+        public ExcluirParcelaCommand ExcluirParcela { get; private set; }
 
 
         private bool isPessoaFisica;
@@ -78,6 +80,8 @@ namespace SisMaper.ViewModel
             //ChangeCliente = ClienteChange;
 
             NovaParcela = new NovaParcelaCommand();
+            EditarParcela = new EditarParcelaCommand();
+            ExcluirParcela = new ExcluirParcelaCommand();
 
             //Clientes = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
 
@@ -285,6 +289,19 @@ namespace SisMaper.ViewModel
         }
     }
 
+    public class ExcluirParcelaCommand : BaseCommand
+    {
+        public override bool CanExecute(object parameter)
+        {
+            FaturaViewModel vm = (FaturaViewModel)parameter;
+            return vm.ParcelaSelecionada is not null;
+        }
+        public override void Execute(object parameter)
+        {
+            FaturaViewModel vm = (FaturaViewModel)parameter;
+            //vm.OpenCrudEditarParcela();
+        }
+    }
 
     public class VerClienteCommand : BaseCommand
     {

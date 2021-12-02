@@ -95,22 +95,22 @@ namespace SisMaper.ViewModel
 
         public PList<Pagamento> Pagamentos { get; private set; }
 
-        public List<Pagamento.TipoPagamento> TiposPagamento { get; private set; }
+        public List<Pagamento.EnumTipoPagamento> TiposPagamento { get; private set; }
 
-        private Pagamento.TipoPagamento _tipoSelecionado;
-        public Pagamento.TipoPagamento TipoSelecionado
+        private Pagamento.EnumTipoPagamento _enumTipoSelecionado;
+        public Pagamento.EnumTipoPagamento EnumTipoSelecionado
         {
-            get { return _tipoSelecionado; }
+            get { return _enumTipoSelecionado; }
             set
             {
                 foreach(Pagamento p in Pagamentos)
                 {
-                    if(p.Tipo == value)
+                    if(p.TipoPagamento == value)
                     {
                         Valor = p.ValorPagamento;
                     }
                 }
-                SetField(ref _tipoSelecionado, value);
+                SetField(ref _enumTipoSelecionado, value);
 
                 if (PagamentoSelecionado is not null)
                     ChangePagamentoSelecionado(value);
@@ -202,13 +202,13 @@ namespace SisMaper.ViewModel
         }
 
 
-        private void ChangePagamentoSelecionado(Pagamento.TipoPagamento value)
+        private void ChangePagamentoSelecionado(Pagamento.EnumTipoPagamento value)
         {
-            if(PagamentoSelecionado.Tipo != value)
+            if(PagamentoSelecionado.TipoPagamento != value)
             {
                 foreach(Pagamento p in Pagamentos)
                 {
-                    if(p.Tipo == value)
+                    if(p.TipoPagamento == value)
                     {
                         PagamentoSelecionado = p;
                     }
@@ -217,9 +217,9 @@ namespace SisMaper.ViewModel
         }
         private void ChangeTipoSelecionado(Pagamento value)
         {
-            if(TipoSelecionado != value.Tipo)
+            if(EnumTipoSelecionado != value.TipoPagamento)
             {
-                TipoSelecionado = value.Tipo;
+                EnumTipoSelecionado = value.TipoPagamento;
             }
         }
 
@@ -227,11 +227,11 @@ namespace SisMaper.ViewModel
         private void FillPagamentos()
         {
 
-            TiposPagamento = new List<Pagamento.TipoPagamento>();
-            TiposPagamento.Add(Pagamento.TipoPagamento.Moeda);
-            TiposPagamento.Add(Pagamento.TipoPagamento.Credito);
-            TiposPagamento.Add(Pagamento.TipoPagamento.Debito);
-            TiposPagamento.Add(Pagamento.TipoPagamento.Outro);
+            TiposPagamento = new List<Pagamento.EnumTipoPagamento>();
+            TiposPagamento.Add(Pagamento.EnumTipoPagamento.Moeda);
+            TiposPagamento.Add(Pagamento.EnumTipoPagamento.Credito);
+            TiposPagamento.Add(Pagamento.EnumTipoPagamento.Debito);
+            TiposPagamento.Add(Pagamento.EnumTipoPagamento.Outro);
 
 
 
@@ -240,28 +240,28 @@ namespace SisMaper.ViewModel
             Pagamento p_moeda = new Pagamento()
             {
                 Usuario = Main.Usuario,
-                Tipo = Pagamento.TipoPagamento.Moeda,
+                TipoPagamento = Pagamento.EnumTipoPagamento.Moeda,
                 ValorPagamento = 0
             };
 
             Pagamento p_credito = new Pagamento()
             {
                 Usuario = Main.Usuario,
-                Tipo = Pagamento.TipoPagamento.Credito,
+                TipoPagamento = Pagamento.EnumTipoPagamento.Credito,
                 ValorPagamento = 0
             };
 
             Pagamento p_debito = new Pagamento()
             {
                 Usuario = Main.Usuario,
-                Tipo = Pagamento.TipoPagamento.Debito,
+                TipoPagamento = Pagamento.EnumTipoPagamento.Debito,
                 ValorPagamento = 0
             };
 
             Pagamento p_outro = new Pagamento()
             {
                 Usuario = Main.Usuario,
-                Tipo = Pagamento.TipoPagamento.Outro,
+                TipoPagamento = Pagamento.EnumTipoPagamento.Outro,
                 ValorPagamento = 0
             };
 
@@ -270,7 +270,7 @@ namespace SisMaper.ViewModel
             Pagamentos.Add(p_debito);
             Pagamentos.Add(p_outro);
 
-            TipoSelecionado = TiposPagamento.First();
+            EnumTipoSelecionado = TiposPagamento.First();
             PagamentoSelecionado = Pagamentos.First();
 
         }
@@ -286,21 +286,21 @@ namespace SisMaper.ViewModel
 
         public void ChangePagamento()
         {
-            switch(TipoSelecionado)
+            switch(EnumTipoSelecionado)
             {
-                case Pagamento.TipoPagamento.Moeda:
+                case Pagamento.EnumTipoPagamento.Moeda:
                     Pagamentos[0].ValorPagamento = Valor;
                     break;
 
-                case Pagamento.TipoPagamento.Credito:
+                case Pagamento.EnumTipoPagamento.Credito:
                     Pagamentos[1].ValorPagamento = Valor;
                     break;
 
-                case Pagamento.TipoPagamento.Debito:
+                case Pagamento.EnumTipoPagamento.Debito:
                     Pagamentos[2].ValorPagamento = Valor;
                     break;
 
-                case Pagamento.TipoPagamento.Outro:
+                case Pagamento.EnumTipoPagamento.Outro:
                     Pagamentos[3].ValorPagamento = Valor;
                     break;
 
@@ -360,7 +360,7 @@ namespace SisMaper.ViewModel
                 {
                     Usuario = Main.Usuario,
                     ValorPagamento = ValorMoeda,
-                    Tipo = Pagamento.TipoPagamento.Moeda,
+                    TipoPagamento = Pagamento.EnumTipoPagamento.Moeda,
                 });
             }
 
@@ -369,7 +369,7 @@ namespace SisMaper.ViewModel
                 Parcela.Pagamentos.Add(new Pagamento()
                 {
                     Usuario = Main.Usuario,
-                    Tipo = Pagamento.TipoPagamento.Credito,
+                    TipoPagamento = Pagamento.EnumTipoPagamento.Credito,
                     ValorPagamento = ValorCredito,
                 });
             }
@@ -379,7 +379,7 @@ namespace SisMaper.ViewModel
                 Parcela.Pagamentos.Add(new Pagamento()
                 {
                     Usuario = Main.Usuario,
-                    Tipo = Pagamento.TipoPagamento.Debito,
+                    TipoPagamento = Pagamento.EnumTipoPagamento.Debito,
                     ValorPagamento = ValorDebito
                 });
             }
@@ -389,7 +389,7 @@ namespace SisMaper.ViewModel
                 Parcela.Pagamentos.Add(new Pagamento()
                 {
                     Usuario = Main.Usuario,
-                    Tipo = Pagamento.TipoPagamento.Outro,
+                    TipoPagamento = Pagamento.EnumTipoPagamento.Outro,
                     ValorPagamento = ValorOutro
                 });
             }

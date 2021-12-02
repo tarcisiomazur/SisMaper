@@ -85,12 +85,6 @@ namespace SisMaper.API.WebMania
             Json = JsonConvert.SerializeObject(NF_NotaFiscal, WebManiaConnector.Settings);
             return "OK";
         }
-
-        public override async Task<bool> Emit()
-        {
-            if (string.IsNullOrEmpty(Json)) return false;
-            NF_Result = WebManiaConnector.Emitir(Json);
-            return NF_Result != null;
-        }
+        
     }
 }

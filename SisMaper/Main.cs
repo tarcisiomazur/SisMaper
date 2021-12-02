@@ -37,11 +37,6 @@ namespace SisMaper
             {
                 MySqlProtocol = new MySqlProtocol(DbCfg) {ForwardEngineer = false, SkipVerification = true};
                 Persistence.Persistence.Init(MySqlProtocol);
-
-                //CriaUsuario();
-
-                //BuildNCM.Run();
-
                 Empresa = DAO.Load<Configuracoes>(1);
                 WebManiaConnector.Init(Empresa);
 
@@ -51,17 +46,6 @@ namespace SisMaper
             {
                 Console.WriteLine(ex);
             }
-        }
-
-        private static void CriaUsuario()
-        {
-            Usuario u = new Usuario()
-            {
-                Login = "admin",
-                Senha = Encrypt.ToSha512("admin"),
-                Permissao = Usuario.Tipo_Permissao.Databaser
-            };
-            u.Save();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
