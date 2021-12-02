@@ -1,4 +1,5 @@
-﻿using SisMaper.API.WebMania.Models;
+﻿using System.Threading.Tasks;
+using SisMaper.API.WebMania.Models;
 using SisMaper.Models;
 
 namespace SisMaper.API.WebMania
@@ -9,6 +10,6 @@ namespace SisMaper.API.WebMania
         public NotaFiscal NotaFiscal { get; set; }
         public NF_Result? NF_Result { get; set; }
         public abstract string BuildJsonDefault();
-        public abstract bool Emit();
+        public abstract Task<bool> Emit();
     }
 }

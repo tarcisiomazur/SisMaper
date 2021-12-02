@@ -12,7 +12,8 @@ namespace SisMaper.Models
         
         [OneToMany(Fetch = Fetch.Eager, Cascade = Cascade.SAVE)]
         public PList<Cidade> Cidades { get; set; }
-
+        [Field(FieldType = SqlDbType.VarChar, Length = 2)]
+        public string UF { get; set; }
 
         public override string ToString()
         {

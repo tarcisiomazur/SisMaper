@@ -627,6 +627,7 @@
                 </Grid>
             </TabItem>
             <TabItem
+                Visibility="{Binding HasNotaFiscal, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Header="  Nota Fiscal  ">
                 <Grid>
                     <DataGrid

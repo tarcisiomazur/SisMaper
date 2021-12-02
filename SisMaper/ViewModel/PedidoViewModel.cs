@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Media;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -64,6 +66,7 @@ namespace SisMaper.ViewModel
 
         public SimpleCommand Receber => new(ReceberPedido,
             _ => Pedido?.Status == Pedido.Pedido_Status.Aberto && Pedido?.Itens.Count > 0);
+
         public SimpleCommand OpenBuscarProduto =>
             new(AbrirBuscarProduto, _ => Pedido?.Status == Pedido.Pedido_Status.Aberto);
 
@@ -88,7 +91,7 @@ namespace SisMaper.ViewModel
             Clientes.AddRange(PersistenceContext.Get<PessoaJuridica>("Cliente_ID>0"));
             Produtos = PersistenceContext.Get<Produto>("ID>0");
             ProdutosAtivos = Produtos.Where(p => p.Inativo == false);
-            
+
             if (pedidoId == null)
             {
                 Pedido = new Pedido
@@ -102,11 +105,12 @@ namespace SisMaper.ViewModel
             {
                 Pedido = PersistenceContext.Get<Pedido>(pedidoId);
             }
+
             NotaFiscalSelecionada = Pedido.NotasFiscais.FirstOrDefault(nf => nf.Situacao.BeEmitted());
 
             NotasFiscaisView = CollectionViewSource.GetDefaultView(Pedido.NotasFiscais);
             NotasFiscaisView.GroupDescriptions.Add(new PropertyGroupDescription("Chave"));
-            
+
             DialogCoordinator = new DialogCoordinator();
             NovoItem = new Item() {Pedido = Pedido, Context = PersistenceContext};
             Pedido.Itens.ListChanged += UpdatePedido;
@@ -404,10 +408,58 @@ namespace SisMaper.ViewModel
                 return;
             }
 
-            if (apiNf.Emit())
+            EmitindoNotaFiscal(apiNf, nf);
+
+        }
+
+        private async Task EmitindoNotaFiscal(INotaFiscal apiNf, NotaFiscal nf)
+        {
+            var task = apiNf.Emit();
+            var s = new MetroDialogSettings()
+            {
+                NegativeButtonText = "Fechar"
+            };
+            var progressAsync = await DialogCoordinator.ShowProgressAsync(this,$"Emitindo Nota Fiscal",
+                "Aguarde. A Nota Fiscal está em processo de emissão.", settings:s);
+            
+            progressAsync.SetIndeterminate();
+            
+            var t = new Timer(10000){AutoReset = false};
+            t.Start();
+            while (true)
+            {
+                if (t is {Enabled: false})
+                {
+                    progressAsync.SetCancelable(true);
+                    progressAsync.SetMessage("A emissão está demorando mais do que o normal. Verifique a sua Conexão com a Internet");
+                    t = null;
+                }
+                if (task.IsCompleted)
+                {
+                    await progressAsync.CloseAsync();
+                    break;
+                }
+                if (progressAsync.IsCanceled)
+                {
+                    break;
+                }
+
+                await Task.Delay(100);
+            }
+
+            await task;
+            if (task.Result)
             {
                 DialogCoordinator.ShowMessageAsync(this, "Erro ao emitir Nota Fiscal",
                     $"Erro ao enviar a Nota Fiscal para emissão");
+                nf.Delete();
+                return;
+            }
+            if (apiNf.NF_Result is {Error: { }})
+            {
+                    DialogCoordinator.ShowMessageAsync(this, "Erro ao emitir Nota Fiscal",
+                        $"Erro ao processar a Nota Fiscal: {apiNf.NF_Result.Error}");
+                nf.Delete();
                 return;
             }
 
@@ -418,6 +470,7 @@ namespace SisMaper.ViewModel
             {
                 DialogCoordinator.ShowMessageAsync(this, "Emissão de Nota Fiscal",
                     $"Nota Fiscal enviada para emissão. Situação :{nf.Situacao}");
+                RaisePropertyChanged(nameof(HasNotaFiscal));
                 TabSelecionada = 2;
                 return;
             }

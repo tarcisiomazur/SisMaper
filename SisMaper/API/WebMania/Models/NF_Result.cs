@@ -4,6 +4,7 @@ namespace SisMaper.API.WebMania.Models
 {
     public class NF_Result
     {
+        public string Error { get; set; }
         [JsonProperty("uuid")] public string uuid { get; set; }         
         [JsonProperty("status")] public string status { get; set; }         
         [JsonProperty("motivo")] public string motivo { get; set; }         

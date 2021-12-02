@@ -35,11 +35,10 @@ namespace SisMaper.Tools
                 var j = new JsonSerializer().Deserialize<Raw>(reader);
                 foreach (var jEstado in j.estados)
                 {
-                    var e = new Estado {Nome = jEstado.nome, Cidades = new PList<Cidade>()};
+                    var e = new Estado {Nome = jEstado.nome, UF = jEstado.sigla, Cidades = new PList<Cidade>()};
                     e.Save();
                     foreach (var c in jEstado.cidades.Select(jCidade => new Cidade {Nome = jCidade, Estado = e}))
                     {
-                        
                         c.Save();
                         c.Estado = e;
                         e.Cidades.Add(c);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SisMaper.API.WebMania.Models;
 using SisMaper.Models;
@@ -115,7 +116,7 @@ namespace SisMaper.API.WebMania
             return "OK";
         }
 
-        public override bool Emit()
+        public override async Task<bool> Emit()
         {
             if (Json != null)
             {
