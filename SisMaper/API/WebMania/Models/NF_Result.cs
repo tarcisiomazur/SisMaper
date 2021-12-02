@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SisMaper.API.WebMania.Models
 {
@@ -20,15 +21,30 @@ namespace SisMaper.API.WebMania.Models
         [JsonProperty("log")] public Log log { get; set; }         
     }
 
-    public struct Log
+    public class Log
     {
         [JsonProperty("aProt")]
-        public AProt[] aProt { get; set; }
-    }
+        public JArray aProt { get; set; }
 
-    public struct AProt
-    {
-        [JsonProperty("dhRecbto")]
-        public string dhRecbto { get; set; }
+        public string dhRecbto
+        {
+            get
+            {
+                try
+                {
+                    if (aProt.Count > 0)
+                    {
+                        return aProt[0]["dhRecbto"]?.ToString();
+                    }
+                }
+                catch
+                {
+                    //
+                } 
+                return "";
+            }   
+        }
     }
+    
 }
+

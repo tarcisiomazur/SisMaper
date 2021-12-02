@@ -365,7 +365,6 @@
     <Compile Include="Models\ViewListarFatura.cs" />
     <Compile Include="Models\ViewListarPedido.cs" />
     <Compile Include="Models\ViewListarProdutos.cs" />
-    <Compile Include="Tools\BuildCidadeEstado.cs" />
     <Compile Include="Tools\BuildNCM.cs" />
     <Compile Include="Tools\Encrypt.cs" />
     <Compile Include="Tools\InterfaceExtension.cs" />
@@ -390,7 +389,7 @@
     <Compile Include="ViewModel\RecebimentosViewModel.cs" />
     <Compile Include="ViewModel\UnidadeViewModel.cs" />
     <Compile Include="ViewModel\VendasViewModel.cs" />
-    <Compile Include="Views\CrudPessoaFisica.xaml.cs" />
+    <Compile Include="Views\CrudCliente.xaml.cs" />
     <Compile Include="Views\CrudProduto.xaml.cs" />
     <Compile Include="Views\Login.xaml.cs" />
     <Compile Include="Views\MainWindow.xaml.cs" />
@@ -434,7 +433,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="M&amp;P\AuthLogin.cs" />
-    <Page Include="Views\CrudPessoaFisica.xaml" />
+    <Page Include="Views\CrudCliente.xaml" />
     <Page Include="Views\CrudProduto.xaml" />
     <Page Include="Views\Login.xaml" />
     <Page Include="Views\MainWindow.xaml" />

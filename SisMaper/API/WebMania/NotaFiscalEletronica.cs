@@ -61,42 +61,12 @@ namespace SisMaper.API.WebMania
 
             #region Cliente
 
-            var cliente = pedido.Cliente;
-            if (cliente != null)
+            if (pedido.Cliente == null)
             {
-                var NF_Cliente = new NF_Cliente();
-                if (string.IsNullOrEmpty(pedido.Cliente.Nome)) return "Nome do Cliente Inválido";
-                if (cliente is PessoaFisica pessoaFisica)
-                {
-                    if (pessoaFisica.Cidade == null) return "Cliente não possui cidade";
-                    if (string.IsNullOrEmpty(pessoaFisica.Endereco)) return "Cliente não possui endereço";
-                    if (string.IsNullOrEmpty(pessoaFisica.CPF)) return "Cliente não possui CPF";
-                    if (!pessoaFisica.CPF.IsCpf()) return "CPF incorreto";
-
-                    NF_Cliente.NomeCompleto = pessoaFisica.Nome;
-                    NF_Cliente.Cidade = pessoaFisica.Cidade.Nome;
-                    NF_Cliente.Endereco = pessoaFisica.Endereco;
-                    NF_Cliente.CPF = pessoaFisica.MaskedCPF;
-                    NF_NotaFiscal.Cliente = NF_Cliente;
-                }
-                else if (cliente is PessoaJuridica pessoaJuridica)
-                {
-                    if (pessoaJuridica.Cidade == null) return "Cliente não possui cidade";
-                    if (string.IsNullOrEmpty(pessoaJuridica.Endereco)) return "Cliente não possui endereço";
-                    if (string.IsNullOrEmpty(pessoaJuridica.RazaoSocial)) return "Cliente não possui razão social";
-                    if (string.IsNullOrEmpty(pessoaJuridica.CNPJ)) return "Cliente não possui CNPJ";
-                    if (!pessoaJuridica.CNPJ.IsCpf()) return "CPF incorreto";
-
-                    NF_Cliente.NomeCompleto = pessoaJuridica.Nome;
-                    NF_Cliente.Cidade = pessoaJuridica.Cidade.Nome;
-                    NF_Cliente.Endereco = pessoaJuridica.Endereco;
-                    NF_Cliente.CNPJ = pessoaJuridica.MaskedCNPJ;
-                    NF_Cliente.RazaoSocial = pessoaJuridica.RazaoSocial;
-                    NF_Cliente.InscricaoEstadual = pessoaJuridica.InscricaoEstadual;
-                    NF_NotaFiscal.Cliente = NF_Cliente;
-                }
+                return "Cliente deve ser Identificado";
             }
-
+            if (BuildCliente(pedido.Cliente, NF_NotaFiscal) is { } error)
+                return error;
             #endregion
 
 
@@ -118,13 +88,9 @@ namespace SisMaper.API.WebMania
 
         public override async Task<bool> Emit()
         {
-            if (Json != null)
-            {
-                WebManiaConnector.Emitir(Json);
-                return true;
-            }
-
-            return true;
+            if (string.IsNullOrEmpty(Json)) return false;
+            NF_Result = WebManiaConnector.Emitir(Json);
+            return NF_Result != null;
         }
     }
 }

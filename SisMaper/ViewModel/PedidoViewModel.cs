@@ -448,7 +448,7 @@ namespace SisMaper.ViewModel
             }
 
             await task;
-            if (task.Result)
+            if (!task.Result)
             {
                 DialogCoordinator.ShowMessageAsync(this, "Erro ao emitir Nota Fiscal",
                     $"Erro ao enviar a Nota Fiscal para emissão");

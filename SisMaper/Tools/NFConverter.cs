@@ -15,7 +15,7 @@ namespace SisMaper.Tools
             notaFiscal.URL_DANFE = result.danfe;
             try
             {
-                var value1 = result.log.aProt[0].dhRecbto;
+                var value1 = result.log.dhRecbto;
                 notaFiscal.DataEmissao = DateTime.Parse(value1);
             }
             catch

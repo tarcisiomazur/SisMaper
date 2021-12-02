@@ -38,7 +38,6 @@ namespace SisMaper
                 MySqlProtocol = new MySqlProtocol(DbCfg) {ForwardEngineer = false, SkipVerification = true};
                 Persistence.Persistence.Init(MySqlProtocol);
 
-                //BuildCidadeEstado.Build();
                 //CriaUsuario();
 
                 //BuildNCM.Run();
