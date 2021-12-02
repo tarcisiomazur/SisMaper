@@ -376,6 +376,7 @@
     <Compile Include="ViewModel\BuscarProdutoViewModel.cs" />
     <Compile Include="ViewModel\CategoriaViewModel.cs" />
     <Compile Include="ViewModel\ClientesViewModel.cs" />
+    <Compile Include="ViewModel\ConfiguracoesViewModel.cs" />
     <Compile Include="ViewModel\CrudClienteViewModel.cs" />
     <Compile Include="ViewModel\CrudProdutoViewModel.cs" />
     <Compile Include="ViewModel\EscolherLoteViewModel.cs" />

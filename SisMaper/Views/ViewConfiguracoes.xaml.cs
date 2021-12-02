@@ -4,34 +4,42 @@ using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using SisMaper.Models;
 using SisMaper.Tools;
+using SisMaper.ViewModel;
 using Xceed.Wpf.Toolkit.Core;
 
 namespace SisMaper.Views
 {
     public partial class ViewConfiguracoes : INotifyPropertyChanged
     {
-        public Configuracoes Empresa { get; set; }
+        public ConfiguracoesViewModel ViewModel => (ConfiguracoesViewModel) DataContext;
         public IDialogCoordinator DialogCoordinator { get; set; }
         public ViewConfiguracoes(Configuracoes empresa)
         {
-            Empresa = empresa;
+            ViewModel.Empresa = empresa;
             InitializeComponent();
+            DialogCoordinator = new DialogCoordinator();
             Initialize();
             Closed += ReloadEmpresa;
-            DialogCoordinator = new DialogCoordinator();
         }
 
         private void ReloadEmpresa(object? sender, EventArgs e)
         {
-            Empresa.Load();
+            ViewModel.Empresa.Load();
         }
 
         private void Initialize()
         {
-            ConsumerKey.Password = Encrypt.RSADecryption(Empresa.CONSUMER_KEY);
-            ConsumerSecret.Password = Encrypt.RSADecryption(Empresa.CONSUMER_SECRET);
-            Token.Password = Encrypt.RSADecryption(Empresa.ACCESS_TOKEN);
-            TokenSecret.Password = Encrypt.RSADecryption(Empresa.ACCESS_TOKEN_SECRET);
+            try
+            {
+                ConsumerKey.Password = Encrypt.RSADecryption(ViewModel.Empresa.CONSUMER_KEY);
+                ConsumerSecret.Password = Encrypt.RSADecryption(ViewModel.Empresa.CONSUMER_SECRET);
+                Token.Password = Encrypt.RSADecryption(ViewModel.Empresa.ACCESS_TOKEN);
+                TokenSecret.Password = Encrypt.RSADecryption(ViewModel.Empresa.ACCESS_TOKEN_SECRET);
+            }
+            catch
+            {
+                //DialogCoordinator.ShowModalMessageExternal(DataContext, "Erro de Desencriptação" ,"Erro ao desencriptar os Dados");
+            }
         }
 
 
@@ -39,16 +47,24 @@ namespace SisMaper.Views
 
         private void Salvar(object sender, MouseButtonEventArgs e)
         {
-            if (!Empresa.CNPJ.IsCnpj())
+            if (!ViewModel.Empresa.CNPJ.IsCnpj())
             {
-                DialogCoordinator.ShowMessageAsync(DataContext, "Erro ao Salvar Empresa" ,"CNPJ Inválido");
+                DialogCoordinator.ShowModalMessageExternal(DataContext, "Erro ao Salvar Empresa" ,"CNPJ Inválido");
                 return;
             }
-            Empresa.CONSUMER_KEY = Encrypt.RSAEncryption(ConsumerKey.Password);
-            Empresa.CONSUMER_SECRET = Encrypt.RSAEncryption(ConsumerSecret.Password);
-            Empresa.ACCESS_TOKEN = Encrypt.RSAEncryption(Token.Password);
-            Empresa.ACCESS_TOKEN_SECRET = Encrypt.RSAEncryption(TokenSecret.Password);
-            Empresa.Save();
+
+            try
+            {
+                ViewModel.Empresa.CONSUMER_KEY = Encrypt.RSAEncryption(ConsumerKey.Password);
+                ViewModel.Empresa.CONSUMER_SECRET = Encrypt.RSAEncryption(ConsumerSecret.Password);
+                ViewModel.Empresa.ACCESS_TOKEN = Encrypt.RSAEncryption(Token.Password);
+                ViewModel.Empresa.ACCESS_TOKEN_SECRET = Encrypt.RSAEncryption(TokenSecret.Password);
+                ViewModel.Empresa.Save();
+            }
+            catch
+            {
+                DialogCoordinator.ShowModalMessageExternal(DataContext, "Erro de Encriptação" ,"Erro ao Encriptar os Dados");
+            }
             Close();
         }
         private void Cancelar(object sender, MouseButtonEventArgs e)

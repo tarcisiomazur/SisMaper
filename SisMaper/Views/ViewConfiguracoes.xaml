@@ -9,10 +9,11 @@
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:tools="clr-namespace:SisMaper.Tools"
+    xmlns:m="clr-namespace:SisMaper.ViewModel"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-    Dialog:DialogParticipation.Register="{Binding}"
+    Dialog:DialogParticipation.Register="{Binding }"
     mc:Ignorable="d"
     Title="{Binding Empresa.Razao_Social, StringFormat='Configurações - {0}'}"
     MinHeight="450"
@@ -20,8 +21,10 @@
     MaxHeight="450"
     MaxWidth="708"
     ResizeMode="NoResize"
-    SaveWindowPosition="True"
-    DataContext="{Binding ElementName=this}">
+    SaveWindowPosition="True">
+    <mah:MetroWindow.DataContext>
+        <m:ConfiguracoesViewModel/>
+    </mah:MetroWindow.DataContext>
     <Grid Margin="1,0,-1,0">
         <TextBlock
             HorizontalAlignment="Left"
