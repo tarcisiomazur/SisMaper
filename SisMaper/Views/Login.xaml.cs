@@ -27,12 +27,12 @@ namespace SisMaper.Views
 
         private void SetActions()
         {
-            ViewModel.OnLogin += () =>
+            ViewModel.Login += () =>
             {
                 DialogResult = true;
                 Close();
             };
-            ViewModel.OnCancel += Close;
+            ViewModel.Cancel += Close;
         }
 
         private void ArrastarTela(object sender, MouseButtonEventArgs e)

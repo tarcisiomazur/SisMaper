@@ -163,7 +163,7 @@
             Margin="322,189,0,0"
             Height="33"
             Width="109"
-            Command="{Binding Login}"
+            Command="{Binding OnLogin}"
             Foreground="{DynamicResource SisMaper.Dark.Theme}"
             Background="{DynamicResource SisMaper.Ligth.Theme}"
             BorderBrush="{DynamicResource SisMaper.Dark.Theme}" >
@@ -179,7 +179,7 @@
             Style="{DynamicResource LoginButtonStyle}"
             x:Name="btn_cancelar"
             Content="Sair"
-            Command="{Binding Cancel}"
+            Command="{Binding OnCancel}"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Margin="440,189,0,0"
