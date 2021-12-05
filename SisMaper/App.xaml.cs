@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using ControlzEx.Theming;
+
 namespace SisMaper
 {
     /// <summary>
@@ -7,11 +9,15 @@ namespace SisMaper
     /// 
     public partial class App : Application
     {
-        
+
         public App()
         {
             SisMaper.Main.Init();
+            Startup += (_, _) =>
+            {
+                ThemeManager.Current.ChangeTheme(this, "Light.Teal");
+            };
         }
-        
+
     }
 }

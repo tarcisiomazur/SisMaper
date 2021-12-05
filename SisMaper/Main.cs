@@ -1,12 +1,19 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
+using CefSharp;
+using CefSharp.BrowserSubprocess;
+using CefSharp.Wpf;
 using MySqlConnector;
 using Persistence;
+using PropertyChanged;
 using SisMaper.API.WebMania;
 using SisMaper.Models;
-using SisMaper.Tools;
 
 namespace SisMaper
 {
@@ -39,8 +46,8 @@ namespace SisMaper
                 Persistence.Persistence.Init(MySqlProtocol);
                 Empresa = DAO.Load<Configuracoes>(1);
                 WebManiaConnector.Init(Empresa);
+                InitChromium();
 
-                
             }
             catch (Exception ex)
             {
@@ -48,6 +55,26 @@ namespace SisMaper
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private static void InitChromium()
+        {
+            Cef.EnableHighDPISupport();
+            var exitCode = SelfHost.Main(Array.Empty<string>());
+            if (exitCode >= 0)
+            {
+                return;
+            }
+
+            var settings = new CefSettings()
+            {
+                CachePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WebCache\\Cache"),
+                BrowserSubprocessPath = Process.GetCurrentProcess().MainModule.FileName
+            };
+            settings.CefCommandLineArgs.Add("enable-media-stream");
+            settings.CefCommandLineArgs.Add("use-fake-ui-for-media-stream");
+            settings.CefCommandLineArgs.Add("enable-usermedia-screen-capturing");
+            Cef.Initialize(settings, false);
+        }
+        
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

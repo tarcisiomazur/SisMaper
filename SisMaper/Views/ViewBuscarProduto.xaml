@@ -46,6 +46,7 @@
             Text="{Binding TextoFiltro, Delay=300, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Height="35"
             VerticalAlignment="Top">
+            
             <TextBox.ToolTip>
                 <StackPanel>
                     <TextBlock

@@ -99,19 +99,9 @@ namespace SisMaper.Tools
 
     public static class InterfaceExtension
     {
-        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(
-            this IEnumerable<TSource> source,
-            Func<TSource, TKey> keySelector,
-            Func<TSource, TElement> elementSelector)
+        public static bool IsOpen(this Pedido pedido)
         {
-            Dictionary<TKey, TElement> dictionary = new Dictionary<TKey, TElement>();
-            foreach (TSource source1 in source)
-                dictionary.Add(keySelector(source1), elementSelector(source1));
-            return dictionary;
-        }
-        public static bool Contains(this string str, string value, StringComparison comparer)
-        {
-            return str.IndexOf(value, comparer) >= 0;
+            return pedido.Status == Pedido.Pedido_Status.Aberto;
         }
         
         public static bool BeEmitted(this NotaFiscal.EnumSituacao situacao)

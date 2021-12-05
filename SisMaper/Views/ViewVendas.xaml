@@ -10,10 +10,12 @@
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     Height="450"
     Width="800"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:mi="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     Dialog:DialogParticipation.Register="{Binding}">
     <UserControl.DataContext>
         <viewModel:VendasViewModel />
@@ -227,5 +229,12 @@
             </DataGrid.Columns>
 
         </DataGrid>
+        <i:Interaction.Triggers>
+            <i:KeyTrigger Key="F" Modifiers="Control">
+                <mi:MyCallMethodAction
+                    MethodName="Focus"
+                    TargetObject="{Binding ElementName=FilterTextBox}" />
+            </i:KeyTrigger>
+        </i:Interaction.Triggers>
     </Grid>
 </templates:MyUserControl>

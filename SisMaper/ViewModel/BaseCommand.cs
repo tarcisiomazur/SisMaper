@@ -3,11 +3,56 @@ using System.Windows.Input;
 
 namespace SisMaper.ViewModel
 {
+    public class FullCmd<T> : ICommand
+    {        
+        public FullCmd(Action<T> execute = null, Predicate<T> canExecute = null)
+        {
+            CanExecuteDelegate = canExecute;
+            ExecuteDelegate = execute;
+        }
+        
+        public FullCmd(Action<T> execute, Func<bool> canExecute)
+        {
+            CanExecuteDelegate = _ => canExecute();
+            ExecuteDelegate = execute;
+        }
+
+        public Predicate<T>? CanExecuteDelegate { get; set; }
+        public Action<T>? ExecuteDelegate { get; set; }
+
+        public bool CanExecute(object? parameter)
+        {
+            return CanExecuteDelegate == null || parameter is not T tParameter || CanExecuteDelegate(tParameter);
+        }
+
+        public void Execute(object? parameter)
+        {
+            if (parameter is T tParameter) ExecuteDelegate?.Invoke(tParameter);
+        }
+
+        public event EventHandler? CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
+    }
+
     public class SimpleCommand : BaseCommand
     {
         public SimpleCommand(Action<object> execute = null, Predicate<object> canExecute = null)
         {
             CanExecuteDelegate = canExecute;
+            ExecuteDelegate = execute;
+        }
+        
+        public SimpleCommand(Action? execute, Func<bool> canExecute)
+        {
+            CanExecuteDelegate = _ => canExecute();
+            ExecuteDelegate = _ => execute?.Invoke();
+        }
+        public SimpleCommand(Action<object> execute, Func<bool> canExecute)
+        {
+            CanExecuteDelegate = _ => canExecute();
             ExecuteDelegate = execute;
         }
 

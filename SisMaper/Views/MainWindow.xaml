@@ -43,19 +43,6 @@
         </DataTemplate>
     </mah:MetroWindow.TitleTemplate>
     <mah:MetroWindow.Resources>
-
-
-        <SolidColorBrush
-            x:Key="TabItemBackgroundIsSelectedBrush"
-            Color="#FFC0C0C0" />
-        <Style
-            TargetType="{x:Type ToolTip}"
-            BasedOn="{StaticResource MahApps.Styles.ToolTip}">
-            <Setter
-                Property="OpacityMask"
-                Value="#80000000" />
-        </Style>
-
         <ControlTemplate
             x:Key="MahApps.Templates.PackIconMaterial"
             TargetType="{x:Type iconPacks:PackIconMaterial}">

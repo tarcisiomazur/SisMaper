@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -40,11 +41,11 @@ namespace SisMaper.Tools
                 }
             }
 
-            Console.WriteLine(newNCMs.Max(ncm => ncm.Descricao.Length));
+            Console.WriteLine(Enumerable.Max(newNCMs));
             
             
-            var oldDict = oldNCMs.ToDictionary(ncm => ncm.Id, ncm => ncm.Descricao);
-            var newDict = newNCMs.ToDictionary(ncm => ncm.Id, ncm => ncm.Descricao);
+            var oldDict = CollectionExtension.ToDictionary(oldNCMs, ncm => ncm.Id, ncm => ncm.Descricao);
+            var newDict = CollectionExtension.ToDictionary(newNCMs, ncm => ncm.Id, ncm => ncm.Descricao);
 
             oldNCMs.Where(pair => !newDict.ContainsKey(pair.Id)).All(ncm => ncm.Delete());
             newNCMs.RemoveAll(pair => oldDict.TryGetValue(pair.Id, out var des) && des == pair.Descricao);

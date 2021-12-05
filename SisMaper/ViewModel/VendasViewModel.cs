@@ -22,8 +22,8 @@ namespace SisMaper.ViewModel
         public IEnumerable<ViewListarPedido> PedidosFiltrados { get; set; }
         public List<ViewListarPedido> Pedidos { get; set; }
         public SimpleCommand NovoPedido => new(NewVenda);
-        public SimpleCommand EditarPedido => new(_ => OpenVenda(), _ => PedidoSelecionado is not null);
-        public SimpleCommand ExcluirPedido => new(_ => DeleteVenda(), _ => PedidoSelecionado is not null);
+        public SimpleCommand EditarPedido => new(OpenVenda, _ => PedidoSelecionado is not null);
+        public SimpleCommand ExcluirPedido => new(DeleteVenda, _ => PedidoSelecionado is not null);
 
         private IDialogCoordinator DialogCoordinator;
 

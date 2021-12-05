@@ -1,63 +1,37 @@
 ﻿using System;
-using System.Web;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Navigation;
 using CefSharp;
 using CefSharp.Wpf;
 using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using SisMaper.API.WebMania;
-using SisMaper.Models;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
 {
     /// <summary>
-    /// Lógica interna para Window1.xaml
+    /// Lógica interna para ViewPedido.xaml
     /// </summary>
     public partial class ViewPedido : MetroWindow
     {
-        private TextBox TbBuscarProduto;
-
         public PedidoViewModel ViewModel => (PedidoViewModel) DataContext;
 
         public ViewPedido(long? pedidoId)
         {
+            DataContext = new PedidoViewModel(pedidoId);
             InitializeComponent();
-            ViewModel.Initialize(pedidoId);
             SetActions();
-        }
-
-        private void OnNavigate(object sender, NavigationEventArgs e)
-        {
-            var content = e.Content;
         }
 
         private void SetActions()
         {
             ViewModel.Save += Close;
             ViewModel.Cancel += Close;
-            ViewModel.PrintWebBrowser += PrintWebBrowser;
         }
-
-
-        private void Context_Delete(object sender, RoutedEventArgs e)
+        
+        private void SetZoom(object? sender, FrameLoadEndEventArgs frameLoadEndEventArgs)
         {
+            if(sender is ChromiumWebBrowser webBrowser)
+                webBrowser.SetZoomLevel(2);
         }
-
-        private void PrintWebBrowser()
-        {
-            WebBrowser.Print();
-        }
-
-        private void SetZoom(object sender, EventArgs e)
-        {
-            if (sender is ChromiumWebBrowser browser)
-            {
-                browser.SetZoomLevel(2);
-            }
-        }
+        
     }
 }

@@ -6,11 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     x:Name="userControl"
     
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:myInteractions="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     Dialog:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d"
     Height="500"
@@ -211,6 +214,15 @@
             </Border>
 
         </DockPanel>
+        <i:Interaction.Triggers>
+            <i:KeyTrigger
+                Modifiers="Control"
+                Key="F">
+                <myInteractions:MyCallMethodAction
+                    MethodName="Focus"
+                    TargetObject="{Binding ElementName=FilterTextBox}" />
+            </i:KeyTrigger>
+        </i:Interaction.Triggers>
     </Grid>
 
 

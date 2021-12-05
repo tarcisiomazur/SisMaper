@@ -120,8 +120,8 @@ namespace SisMaper.API.WebMania
 
             Trace.Write(string.Format("Request completed in {0} ms, Request: {1}, Response: {2}",
                 durationMs, 
-                JsonConvert.SerializeObject(requestToLog),
-                JsonConvert.SerializeObject(responseToLog)));
+                JsonConvert.SerializeObject(requestToLog, Formatting.Indented),
+                JsonConvert.SerializeObject(responseToLog, Formatting.Indented)));
         }
     }
 }

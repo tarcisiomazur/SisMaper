@@ -3,12 +3,12 @@
     x:Name="ViewLogin"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sismaper="clr-namespace:SisMaper"
-    xmlns:views="clr-namespace:SisMaper.Views"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:prism="http://prismlibrary.com/"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:tools="clr-namespace:SisMaper.Tools"
     xmlns:vm="clr-namespace:SisMaper.ViewModel"
@@ -118,7 +118,6 @@
         Background="White"
         Margin="0,0,0,0">
         <Label
-            x:Name="lb_usuario"
             Content="Usuário"
             HorizontalAlignment="Left"
             Margin="322,30,0,0"
@@ -126,7 +125,6 @@
             FontSize="16" />
         <TextBox
             Style="{DynamicResource TextBoxLogin}"
-            x:Name="tb_usuario"
             HorizontalAlignment="Left"
             Margin="322,61,0,0"
             Text="{Binding  Usuario.Login, UpdateSourceTrigger=PropertyChanged}"
@@ -135,7 +133,6 @@
             Width="164"
             Height="32" />
         <Label
-            x:Name="lb_senha"
             Content="Senha"
             HorizontalAlignment="Left"
             Margin="322,96,0,0"
@@ -152,11 +149,17 @@
             FontSize="16"
             templates:FocusExtension.IsFocused="{Binding PasswordFocus, NotifyOnSourceUpdated=True, Mode=TwoWay}"
             ContentPadding="4,4,28,4"
-            MaxLength="30" />
+            MaxLength="30">
+            <i:Interaction.Triggers>
+                <i:KeyTrigger
+                    Key="Enter">
+                    <i:InvokeCommandAction Command="{Binding OnLogin}"/>
+                </i:KeyTrigger>
+            </i:Interaction.Triggers>
+        </templates:MyPasswordBox>
 
         <Button
             Style="{DynamicResource LoginButtonStyle}"
-            x:Name="btn_login"
             Content="Login"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
@@ -167,17 +170,9 @@
             Foreground="{DynamicResource SisMaper.Dark.Theme}"
             Background="{DynamicResource SisMaper.Ligth.Theme}"
             BorderBrush="{DynamicResource SisMaper.Dark.Theme}" >
-            <!---
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseLeftButtonDown">
-                    <i:InvokeCommandAction Command="{Binding Login}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            -->
         </Button>
         <Button
             Style="{DynamicResource LoginButtonStyle}"
-            x:Name="btn_cancelar"
             Content="Sair"
             Command="{Binding OnCancel}"
             HorizontalAlignment="Left"

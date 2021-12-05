@@ -40,7 +40,7 @@ namespace SisMaper.API.WebMania.Models
             Quantidade = item.Quantidade.ToString(CultureInfo.InvariantCulture);
             Unidade = item.Produto.Unidade?.Descricao ?? "";
             ID = item.Produto.Id.ToString();
-            NCM = item.Produto.NCM.Id.ToString(@"####\.##\.##");
+            NCM = item.Produto.NCM.Id.ToString(@"0000\.00\.00");
             Codigo = item.Produto.CodigoBarras;
             Origem = EnumOrigem.Nacional0;
             Subtotal = item.Valor.ToString(CultureInfo.InvariantCulture);

@@ -12,7 +12,6 @@ namespace SisMaper.API.WebMania
 {
     public class NotaFiscalConsumidor : INotaFiscal
     {
-
         public NotaFiscalConsumidor(NotaFiscal notaFiscal)
         {
             NotaFiscal = notaFiscal;
@@ -50,6 +49,8 @@ namespace SisMaper.API.WebMania
 
             if (pedido == null) return "Pedido Nulo";
             if (pedido.Itens == null || pedido.Itens.Count == 0) return "Pedido sem Itens";
+            if (pedido.Natureza == null || string.IsNullOrEmpty(pedido.Natureza.Descricao) ||
+                string.IsNullOrEmpty(pedido.Natureza.Classe_de_Imposto)) return "Natureza Inválida";
 
             NF_NotaFiscal.Natureza = pedido.Natureza?.Descricao ?? "Venda Normal";
             NF_NotaFiscal.Pedido.desconto =
@@ -84,6 +85,5 @@ namespace SisMaper.API.WebMania
             Json = JsonConvert.SerializeObject(NF_NotaFiscal, WebManiaConnector.Settings);
             return "OK";
         }
-        
     }
 }

@@ -3,11 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:wi="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    xmlns:tools="clr-namespace:SisMaper.Tools"
-    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:models="clr-namespace:SisMaper.Models"
@@ -16,41 +13,20 @@
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:cfsharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:myInteractions="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     x:Class="SisMaper.Views.ViewPedido"
     x:Name="this"
     mc:Ignorable="d"
-    Dialog:DialogParticipation.Register="{Binding}"
+    Dialog:DialogParticipation.Register="{Binding }"
     Title="{Binding Pedido.Id, StringFormat=Pedido - {0}}"
     TitleCharacterCasing="Normal"
     Height="599"
     Width="812"
     MinHeight="400"
     MinWidth="812"
-    SaveWindowPosition="True">
-    <mah:MetroWindow.DataContext>
-        <viewModels:PedidoViewModel />
-    </mah:MetroWindow.DataContext>
+    SaveWindowPosition="True"
+    d:DataContext="{d:DesignInstance viewModels:PedidoViewModel}">
     <mah:MetroWindow.Resources>
-        <DataTemplate
-            x:Key="AutoCompleteBoxItemTemplate"
-            DataType="models:Produto">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition
-                        Width="*" />
-                    <ColumnDefinition
-                        Width="60" />
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Column="0"
-                    Content="{Binding Descricao}" />
-                <Label
-                    Grid.Column="1"
-                    HorizontalAlignment="Right"
-                    Content="{Binding PrecoVenda, Converter={StaticResource DecimalToRealString}}"
-                    Foreground="DarkGray" />
-            </Grid>
-        </DataTemplate>
         <Style
             TargetType="{x:Type TextBlock}">
             <Setter
@@ -62,16 +38,6 @@
             <Setter
                 Property="FontSize"
                 Value="16" />
-        </Style>
-        <Style
-            x:Key="AutoCompleteBoxTemplate"
-            TargetType="{x:Type toolkit:AutoCompleteBox}">
-            <Setter
-                Property="FontSize"
-                Value="16" />
-            <Setter
-                Property="Height"
-                Value="32" />
         </Style>
         <Style
             x:Key="TextBoxStyle1"
@@ -167,7 +133,7 @@
             VerticalAlignment="Top" />
         <Button
             Margin="0,70,373,0"
-            Command="{Binding EditarCliente}"
+            Command="{Binding EditarClienteCmd}"
             Focusable="False"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
@@ -184,7 +150,7 @@
         </Button>
         <Button
             Margin="0,70,336,0"
-            Command="{Binding AdicionarClienteContextMenu}"
+            Command="{Binding AdicionarClienteContextMenuCmd}"
             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
             Focusable="False"
             HorizontalAlignment="Right"
@@ -209,7 +175,7 @@
                     BorderBrush="DarkGray">
                     <MenuItem
                         Header="Pessoa Física"
-                        Command="{Binding AdicionarCliente}"
+                        Command="{Binding AdicionarClienteCmd}"
                         CommandParameter="PF">
                         <MenuItem.Icon>
                             <iconpacks:PackIconOcticons
@@ -218,7 +184,7 @@
                     </MenuItem>
                     <MenuItem
                         Header="Pessoa Jurídica"
-                        Command="{Binding AdicionarCliente}"
+                        Command="{Binding AdicionarClienteCmd}"
                         CommandParameter="PJ">
                         <MenuItem.Icon>
                             <iconpacks:PackIconOcticons
@@ -266,7 +232,6 @@
             mah:TabControlHelper.UnderlineSelectedBrush="Black"
             mah:TabControlHelper.Underlined="SelectedTabItem"
             Background="WhiteSmoke"
-            SelectedIndex="{Binding TabSelecionada, Mode=TwoWay}"
             mah:HeaderedControlHelper.HeaderFontSize="18">
             <TabItem
                 Header="  Itens  "
@@ -275,26 +240,48 @@
                     <ComboBox
                         Grid.Row="0"
                         VerticalAlignment="Top"
-                        IsEditable="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
+                        IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
+                        IsEditable="True"
                         Height="32"
                         Margin="10,10,296,0"
                         FontSize="16"
                         MaxDropDownHeight="125"
                         ItemsSource="{Binding ProdutosAtivos}"
                         SelectedItem="{Binding NovoItem.Produto, Mode=TwoWay}"
-                        DisplayMemberPath="Descricao"
                         mah:TextBoxHelper.WatermarkAlignment="Right"
                         mah:TextBoxHelper.AutoWatermark="True"
                         mah:TextBoxHelper.Watermark="Buscar Produto"
                         Grid.IsSharedSizeScope="True"
+                        TextSearch.TextPath="Descricao"
                         AlternationCount="2">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger
-                                EventName="PreviewKeyDown">
-                                <prism:InvokeCommandAction
-                                    Command="{Binding PreviewKeyDownAddItem}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
+
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MahApps.Styles.ComboBoxItem}">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate
+                                DataType="models:Produto">
+                                <Grid
+                                    Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}, Path=ActualWidth}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition
+                                            Width="*" />
+                                        <ColumnDefinition
+                                            Width="70" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                        Grid.Column="0"
+                                        Content="{Binding Descricao}"/>
+                                    <Label
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Content="{Binding PrecoVenda, Converter={StaticResource DecimalToRealString}}"
+                                        Foreground="DarkGray" />
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                     <TextBox
                         Style="{DynamicResource TextBoxStyle1}"
@@ -306,18 +293,18 @@
                         IsReadOnly="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsReadOnly}}"
                         mah:TextBoxHelper.Watermark="Quantidade"
                         InputScope="Number"
-                        Text="{Binding StringQuantidade}"
+                        Text="{Binding QuantidadeItem, UpdateSourceTrigger=PropertyChanged}"
                         RenderTransformOrigin="0.379,0.595">
                         <i:Interaction.Triggers>
                             <i:EventTrigger
                                 EventName="TextChanged">
                                 <prism:InvokeCommandAction
-                                    Command="{Binding VerificaQuantidade}" />
+                                    Command="{Binding VerificaQuantidadeCmd}" />
                             </i:EventTrigger>
                             <i:EventTrigger
                                 EventName="PreviewKeyDown">
                                 <prism:InvokeCommandAction
-                                    Command="{Binding PreviewKeyDownAddItem}" />
+                                    Command="{Binding PreviewKeyDownAddItemCmd}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
@@ -328,7 +315,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Focusable="True"
-                        Command="{Binding Adicionar}"
+                        Command="{Binding AdicionarCmd}"
                         CommandParameter="{Binding ''}"
                         Margin="0,10,10,0" />
                     <DataGrid
@@ -372,7 +359,8 @@
                                 Culture="pt-BR"
                                 Binding="{Binding Valor}"
                                 IsReadOnly="true" />
-                            <mah:DataGridNumericUpDownColumn x:Name="DescontoData" 
+                            <mah:DataGridNumericUpDownColumn
+                                x:Name="DescontoData"
                                 HeaderStyle="{StaticResource RightGridHeaderStyle}"
                                 Width="35*"
                                 Header="Desconto(%)"
@@ -395,8 +383,7 @@
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem
-                                    Header="Remover"
-                                    Click="Context_Delete">
+                                    Header="Remover">
                                     <MenuItem.Icon>
                                         <Image
                                             Width="12"
@@ -405,8 +392,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <MenuItem
-                                    Header="Editar"
-                                    Click="Context_Delete">
+                                    Header="Editar">
                                     <MenuItem.Icon>
                                         <Image
                                             Width="12"
@@ -440,7 +426,7 @@
                     </TextBlock>
                     <Button
                         Margin="0,10,257,0"
-                        Command="{Binding OpenBuscarProduto}"
+                        Command="{Binding OpenBuscarProdutoCmd}"
                         Focusable="False"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
@@ -460,7 +446,6 @@
             <TabItem
                 Visibility="{Binding HasFatura, Converter={StaticResource BooleanToVisibilityConverter}}"
                 IsSelected="{Binding FaturaTabItemIsSelected}"
-                d:Visibility="Visible"
                 Header="  Financeiro  ">
                 <Grid>
                     <TextBlock
@@ -614,25 +599,26 @@
                         </TabItem>
                     </TabControl>
                     <Button
-            Command="{Binding AbrirFatura}"
-            Focusable="False"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Height="32"
-            Width="32" Margin="0,8,12,0">
+                        Command="{Binding AbrirFaturaCmd}"
+                        Focusable="False"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Height="32"
+                        Width="32"
+                        Margin="0,8,12,0">
                         <StackPanel>
                             <iconpacks:PackIconMaterial
-                    Kind="OpenInNew"
-                    Height="18"
-                    Width="18"
-                    Foreground="#FF939393"
-                    />
+                                Kind="OpenInNew"
+                                Height="18"
+                                Width="18"
+                                Foreground="#FF939393" />
                         </StackPanel>
                     </Button>
                 </Grid>
             </TabItem>
             <TabItem
                 Visibility="{Binding HasNotaFiscal, Converter={StaticResource BooleanToVisibilityConverter}}"
+                IsSelected="{Binding NotaFiscalTabItemIsSelected}"
                 Header="  Nota Fiscal  ">
                 <Grid>
                     <DataGrid
@@ -649,14 +635,15 @@
                         CanUserAddRows="False"
                         Width="336"
                         Margin="10,62,420,47"
-                        BorderBrush="#FFD2D2D2" HorizontalAlignment="Left">
+                        BorderBrush="#FFD2D2D2"
+                        HorizontalAlignment="Left">
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Width="80*"
                                 MinWidth="80"
                                 Header="Situação"
                                 Binding="{Binding Situacao}"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True" />
                             <DataGridTextColumn
                                 Width="60*"
                                 MinWidth="110"
@@ -670,24 +657,24 @@
                                 Header="Número"
                                 IsReadOnly="True">
                                 <DataGridTextColumn.Binding>
-                                    <MultiBinding StringFormat="{}{0} - {1:0000}">
-                                        <Binding Path="Serie" />
-                                        <Binding Path="Numero"/>
+                                    <MultiBinding
+                                        StringFormat="{}{0} - {1:0000}">
+                                        <Binding
+                                            Path="Serie" />
+                                        <Binding
+                                            Path="Numero" />
                                     </MultiBinding>
                                 </DataGridTextColumn.Binding>
                             </DataGridTextColumn>
                         </DataGrid.Columns>
                         <DataGrid.GroupStyle>
-                            <GroupStyle ContainerStyle="{StaticResource MahApps.Styles.GroupItem.DataGrid}">
+                            <GroupStyle
+                                ContainerStyle="{StaticResource MahApps.Styles.GroupItem.DataGrid}">
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock VerticalAlignment="Center">
-                                            <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}{0}">
-                                                    <Binding Mode="OneWay" Path="Name" />
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            Text="{Binding Name}" />
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
                             </GroupStyle>
@@ -696,31 +683,31 @@
                     <cfsharp:ChromiumWebBrowser
                         Margin="365,0,0,0"
                         x:Name="WebBrowser"
+                        Address="{Binding NotaFiscalSelecionada.URL_DANFE, Mode=OneWay}"
+                        HorizontalAlignment="Stretch"
                         FrameLoadEnd="SetZoom"
-                        Address="{Binding NotaFiscalSelecionada.URL_DANFE, Mode=OneWay}" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Grid.IsSharedSizeScope="True" >
-
-                    </cfsharp:ChromiumWebBrowser>
+                        Grid.IsSharedSizeScope="True" />
                     <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+                        Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Imprimir"
                         HorizontalAlignment="Left"
                         Margin="10,18,0,0"
                         VerticalAlignment="Top"
-                        Command="{Binding Imprimir}" />
+                        Command="{Binding PrintCommand, ElementName=WebBrowser}" />
                     <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+                        Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Atualizar Situação"
                         HorizontalAlignment="Left"
                         Margin="214,18,0,0"
                         VerticalAlignment="Top"
-                        Command="{Binding AtualizarSituacao}"/>
+                        Command="{Binding AtualizarSituacaoCmd}" />
                 </Grid>
             </TabItem>
         </TabControl>
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Faturar"
-            Command="{Binding Receber}"
+            Command="{Binding ReceberCmd}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="20,0,0,20"
@@ -732,7 +719,7 @@
             VerticalAlignment="Bottom"
             Margin="111,0,0,20"
             Width="138"
-            Command="{Binding EmitirNotaFiscalContextMenu}"
+            Command="{Binding EmitirNotaFiscalContextMenuCmd}"
             CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
             <Button.ContextMenu>
                 <ContextMenu
@@ -744,7 +731,7 @@
                     BorderBrush="DarkGray">
                     <MenuItem
                         Header="Nota Fiscal Eletrônica"
-                        Command="{Binding EmitirNF}"
+                        Command="{Binding EmitirNotaFiscalCmd}"
                         CommandParameter="NF-e">
                         <MenuItem.Icon>
                             <Image
@@ -755,7 +742,7 @@
                     </MenuItem>
                     <MenuItem
                         Header="Nota Fiscal do Consumidor"
-                        Command="{Binding EmitirNF}"
+                        Command="{Binding EmitirNotaFiscalCmd}"
                         CommandParameter="NFC-e">
                         <MenuItem.Icon>
                             <Image
@@ -772,14 +759,14 @@
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Command="{Binding Cancelar}"
+            Command="{Binding CancelarCmd}"
             Margin="0,0,84,20" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Command="{Binding Salvar}"
+            Command="{Binding SalvarCmd}"
             Margin="0,0,20,20" />
 
 

@@ -25,7 +25,7 @@ namespace SisMaper.Views
         {
             Instance = this;
 
-            MakeLogin();
+            if(!MakeLogin()) Close(); 
 
             try
             {
@@ -57,21 +57,22 @@ namespace SisMaper.Views
             TabCtrl.SelectedIndex = -1;
         }
 
-        private void MakeLogin()
+        private bool MakeLogin()
         {
             try
             {
                 var login = new Login();
                 if (!login.ShowDialog().IsTrue())
                 {
-                    Close();
+                    return false;
                 }
 
                 Main.Usuario = login.ViewModel.Usuario;
+                return true;
             }
             catch (Exception ex)
             {
-                Close();
+                return false;
             }
         }
 
@@ -92,9 +93,15 @@ namespace SisMaper.Views
         private void Logout(object sender, RoutedEventArgs e)
         {
             Hide();
-            MakeLogin();
-            Initialize();
-            Show();
+            if (MakeLogin())
+            {
+                Initialize();
+                Show();
+            }
+            else
+            {
+                Close();
+            }
         }
     }
 }
