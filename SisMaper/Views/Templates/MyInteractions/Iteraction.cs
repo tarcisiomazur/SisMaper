@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
 using System.Windows;
 using Microsoft.Xaml.Behaviors;
 using TriggerBase = Microsoft.Xaml.Behaviors.TriggerBase;

@@ -1,6 +1,6 @@
 ﻿<mah:MetroWindow
     x:Class="SisMaper.Views.Login"
-    x:Name="ViewLogin"
+    x:Name="This"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sismaper="clr-namespace:SisMaper"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:prism="http://prismlibrary.com/"
+    xmlns:myInteractions="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:tools="clr-namespace:SisMaper.Tools"
     xmlns:vm="clr-namespace:SisMaper.ViewModel"
@@ -23,7 +23,7 @@
     ShowMaxRestoreButton="False">
 
     <mah:MetroWindow.DataContext>
-        <vm:LoginViewModel/>
+        <vm:LoginViewModel />
     </mah:MetroWindow.DataContext>
 
     <mah:MetroWindow.Resources>
@@ -114,7 +114,6 @@
 
     </mah:MetroWindow.Resources>
     <Grid
-        MouseLeftButtonDown="ArrastarTela"
         Background="White"
         Margin="0,0,0,0">
         <Label
@@ -139,7 +138,6 @@
             VerticalAlignment="Top"
             FontSize="16" />
         <templates:MyPasswordBox
-            x:Name="pb_senha"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Password="{Binding Usuario.Senha, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToSha512}, Mode=OneWayToSource}"
@@ -147,13 +145,15 @@
             Width="164"
             Height="32"
             FontSize="16"
+            IsShow="{Binding IsChecked, ElementName=ToggleSenha, Mode=TwoWay}"
             templates:FocusExtension.IsFocused="{Binding PasswordFocus, NotifyOnSourceUpdated=True, Mode=TwoWay}"
             ContentPadding="4,4,28,4"
             MaxLength="30">
             <i:Interaction.Triggers>
                 <i:KeyTrigger
                     Key="Enter">
-                    <i:InvokeCommandAction Command="{Binding OnLogin}"/>
+                    <i:InvokeCommandAction
+                        Command="{Binding OnLogin}" />
                 </i:KeyTrigger>
             </i:Interaction.Triggers>
         </templates:MyPasswordBox>
@@ -169,8 +169,7 @@
             Command="{Binding OnLogin}"
             Foreground="{DynamicResource SisMaper.Dark.Theme}"
             Background="{DynamicResource SisMaper.Ligth.Theme}"
-            BorderBrush="{DynamicResource SisMaper.Dark.Theme}" >
-        </Button>
+            BorderBrush="{DynamicResource SisMaper.Dark.Theme}" />
         <Button
             Style="{DynamicResource LoginButtonStyle}"
             Content="Sair"
@@ -191,6 +190,7 @@
             Width="1"
             Margin="298,0,0,0" />
         <templates:ToggleImage
+            x:Name="ToggleSenha"
             Style="{DynamicResource ToggleButtonImage}"
             HorizontalAlignment="Left"
             Margin="459,133,0,0"
@@ -198,8 +198,6 @@
             Height="19"
             Width="27"
             Padding="0,0,0,0"
-            Checked="ShowPassword"
-            Unchecked="HidePassword"
             CheckImage="/Images/Hide.png"
             UncheckImage="/Images/Show.png"
             Image="/Images/Show.png"
@@ -217,10 +215,12 @@
 
         <StatusBar
             DockPanel.Dock="Bottom"
-            VerticalAlignment="Bottom" Background="{DynamicResource SisMaper.Dark.Theme}">
+            VerticalAlignment="Bottom"
+            Background="{DynamicResource SisMaper.Dark.Theme}">
             <StatusBarItem
-                 HorizontalAlignment="Right">
-                <StackPanel Orientation="Horizontal">
+                HorizontalAlignment="Right">
+                <StackPanel
+                    Orientation="Horizontal">
                     <Label
                         Content="{Binding Source={x:Static sismaper:Main.Version}}"
                         VerticalAlignment="Center"
@@ -228,7 +228,8 @@
                         Width="203"
                         Padding="0,0,0,0"
                         Foreground="White"
-                        FontSize="11" HorizontalContentAlignment="Right" />
+                        FontSize="11"
+                        HorizontalContentAlignment="Right" />
                     <Label
                         Content="{Binding Status, Source={x:Static sismaper:Main.Instance}, Mode=OneWay}"
                         VerticalAlignment="Center"
@@ -240,7 +241,14 @@
                         FontSize="11" />
                 </StackPanel>
             </StatusBarItem>
-
         </StatusBar>
+        <i:Interaction.Triggers>
+            <i:EventTrigger
+                EventName="MouseLeftButtonDown">
+                <myInteractions:MyCallMethodAction
+                    MethodName="DragMove"
+                    TargetObject="{Binding ElementName=This}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
     </Grid>
 </mah:MetroWindow>

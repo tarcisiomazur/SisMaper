@@ -1,27 +1,35 @@
-﻿using SisMaper.ViewModel;
+﻿using System.Windows;
+using SisMaper.Tools;
+using SisMaper.ViewModel;
 using SisMaper.Views.Templates;
 
 namespace SisMaper.Views
 {
     public partial class ViewVendas : MyUserControl
     {
-        private VendasViewModel ViewModel => (VendasViewModel) DataContext;
-
         public ViewVendas()
         {
             InitializeComponent();
-            Open += ViewModel.Initialize;
-            Close += ViewModel.Clear;
-            ViewModel.OpenPedido += OpenPedido;
+            DataContextChanged += SetActions;
         }
 
-        private void OpenPedido(long? pedidoId)
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var viewPedido = new ViewPedido(pedidoId);
-            viewPedido.Closed += ViewModel.Initialize;
-            viewPedido.ShowDialog();
+            if (e.IsChanged(out VendasViewModel viewModel))
+            {
+                Show += viewModel.Initialize;
+                Hide += viewModel.Clear;
+                viewModel.OpenPedido += OpenPedido;
+                viewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+                viewModel.ShowProgress += Helper.MahAppsDefaultProgress;
+            }
         }
 
-
+        private void OpenPedido(PedidoViewModel viewModel)
+        {
+            var viewPedido = new ViewPedido {DataContext = viewModel};
+            viewPedido.ShowDialog();
+            OnShow();
+        }
     }
 }

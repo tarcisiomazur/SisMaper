@@ -38,9 +38,9 @@ namespace SisMaper.ViewModel
             set
             {
                 if (value == _selectedItem) return;
-                if(_selectedItem?.Content is MyUserControl close) close.OnClose();
+                if(_selectedItem?.Content is MyUserControl hide) hide.OnHide();
                 _selectedItem = value;
-                if(value?.Content is MyUserControl open) open.OnOpen();
+                if(value?.Content is MyUserControl show) show.OnShow();
             }
         }
         public void Connected()

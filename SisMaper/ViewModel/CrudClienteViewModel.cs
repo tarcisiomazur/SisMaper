@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace SisMaper.ViewModel
 {
-    public class CrudPessoaFisicaViewModel : BaseViewModel, IClienteSave
+    public class CrudClienteViewModel : BaseViewModel, IClienteSave
     {
         private Estado _estadoSelecionado;
 
@@ -74,7 +74,7 @@ namespace SisMaper.ViewModel
         public Action ClientePessoaFisica { get; set; }
         public Action ClientePessoaJuridica { get; set; }
 
-        public CrudPessoaFisicaViewModel(object clienteSelecionado)
+        public CrudClienteViewModel(object clienteSelecionado)
         {
 
             cliente = (Cliente)clienteSelecionado;
@@ -477,7 +477,7 @@ namespace SisMaper.ViewModel
     {
         public override void Execute(object parameter)
         {
-            CrudPessoaFisicaViewModel vm = (CrudPessoaFisicaViewModel)parameter;
+            CrudClienteViewModel vm = (CrudClienteViewModel)parameter;
 
             vm.SalvarPessoaFisica();
         }
@@ -487,7 +487,7 @@ namespace SisMaper.ViewModel
     {
         public override void Execute(object parameter)
         {
-            CrudPessoaFisicaViewModel vm = (CrudPessoaFisicaViewModel)parameter;
+            CrudClienteViewModel vm = (CrudClienteViewModel)parameter;
 
             vm.SalvarPessoaJuridica();
         }

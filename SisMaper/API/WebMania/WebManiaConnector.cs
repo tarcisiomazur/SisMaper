@@ -112,7 +112,7 @@ namespace SisMaper.API.WebMania
             var responseToLog = new
             {
                 statusCode = response.StatusCode,
-                content = response.Content,
+                content = JsonConvert.DeserializeObject(response.Content),
                 headers = response.Headers,
                 responseUri = response.ResponseUri,
                 errorMessage = response.ErrorMessage,

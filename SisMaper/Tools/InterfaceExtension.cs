@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using SisMaper.Models;
+using SisMaper.ViewModel;
 
 namespace SisMaper.Tools
 {
@@ -99,6 +101,21 @@ namespace SisMaper.Tools
 
     public static class InterfaceExtension
     {
+        public static bool IsChanged<T>(this DependencyPropertyChangedEventArgs e, out T obj)
+        {
+            if (e.NewValue != e.OldValue && e.NewValue is T value)
+            {
+                obj = value;
+                return true;
+            }
+
+            obj = default!;
+            return false;
+        }
+        public static bool IsContainedIn(this string str, string? value)
+        {
+            return value != null && (value.Length == 0 || value.Contains(str, StringComparison.InvariantCultureIgnoreCase));
+        }
         public static bool IsOpen(this Pedido pedido)
         {
             return pedido.Status == Pedido.Pedido_Status.Aberto;

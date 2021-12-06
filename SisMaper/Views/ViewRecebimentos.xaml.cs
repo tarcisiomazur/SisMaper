@@ -28,8 +28,8 @@ namespace SisMaper.Views
         {
             
             InitializeComponent();
-            Open += viewModel.Initialize;
-            Close += viewModel.Clear;
+            Show += viewModel.Initialize;
+            Hide += viewModel.Clear;
             SetActions();
         }
 

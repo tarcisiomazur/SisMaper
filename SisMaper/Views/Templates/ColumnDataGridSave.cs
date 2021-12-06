@@ -56,8 +56,8 @@ namespace SisMaper.Views.Templates
             {
                 var uc = GetMyUserControl(dg);
                 if (uc is null) return;
-                uc.Open += ReadWidths(dg, uc.ToString());
-                uc.Close += SaveWidths(dg, uc.ToString());
+                uc.Show += ReadWidths(dg, uc.ToString());
+                uc.Hide += SaveWidths(dg, uc.ToString());
             }
             else
             {

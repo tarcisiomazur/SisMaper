@@ -1,30 +1,26 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
 using MahApps.Metro.Controls;
-using Persistence;
-using SisMaper.Models;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
 {
     public partial class ViewBuscarProduto : MetroWindow
     {
-        public BuscarProdutoViewModel ViewModel => (BuscarProdutoViewModel) DataContext;
         
-        public ViewBuscarProduto(PList<Produto> produtos)
+        public ViewBuscarProduto()
         {
             InitializeComponent();
-            ViewModel.Initialize(produtos);
+            DataContextChanged += SetActions;
         }
 
-        private void Selecionar(object sender, MouseButtonEventArgs e)
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            DialogResult = true;
-            Close();
-        }
-        private void Cancelar(object sender, MouseButtonEventArgs e)
-        {
-            DialogResult = false;
-            Close();
+            if (e.IsChanged(out BuscarProdutoViewModel viewModel))
+            {
+                viewModel.Cancel += Close;
+                viewModel.Select += Close;
+            }
         }
     }
 }

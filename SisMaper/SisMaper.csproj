@@ -28,7 +28,6 @@
     <PackageReference Include="Fluent.Ribbon" Version="9.0.0-rc0278" />
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.9.0" />
-    <PackageReference Include="MvvmCross.Binding" Version="5.7.0" />
     <PackageReference Include="MySql.Data" Version="8.0.27" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
@@ -70,10 +69,6 @@
     <Reference Include="PriorityQueue">
       <HintPath>Library\PriorityQueue.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Views\Templates\MyInteractions\InvokeCommandAction.cs" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(TargetFramework)' == 'net5.0-windows' AND '$(PublishSingleFile)' == 'true'">

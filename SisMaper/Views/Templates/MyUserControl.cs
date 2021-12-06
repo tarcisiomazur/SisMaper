@@ -6,19 +6,19 @@ namespace SisMaper.Views.Templates
 {
     public class MyUserControl: UserControl
     {
-        public event EventHandler? Open;
-        public event EventHandler? Close;
+        public event EventHandler? Show;
+        public event EventHandler? Hide;
 
-        public void OnOpen()
+        public void OnShow()
         {
-            if(Open != null)
-                Dispatcher.BeginInvoke(DispatcherPriority.Background, Open, this, EventArgs.Empty);
+            if(Show != null)
+                Dispatcher.BeginInvoke(DispatcherPriority.Background, Show, this, EventArgs.Empty);
         }
         
-        public void OnClose()
+        public void OnHide()
         {
-            if(Close != null)
-                Dispatcher.BeginInvoke(DispatcherPriority.Background, Close, this, EventArgs.Empty);
+            if(Hide != null)
+                Dispatcher.BeginInvoke(DispatcherPriority.Background, Hide, this, EventArgs.Empty);
         }
     }
 }

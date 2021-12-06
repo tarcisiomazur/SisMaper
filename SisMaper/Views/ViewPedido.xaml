@@ -254,10 +254,20 @@
                         Grid.IsSharedSizeScope="True"
                         TextSearch.TextPath="Descricao"
                         AlternationCount="2">
-
+                        <myInteractions:Interaction.MyTriggers>
+                            <i:KeyTrigger
+                                Key="Enter">
+                                <i:InvokeCommandAction
+                                    Command="{Binding AddItemCmd}" />
+                            </i:KeyTrigger>
+                        </myInteractions:Interaction.MyTriggers>
                         <ComboBox.ItemContainerStyle>
-                            <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MahApps.Styles.ComboBoxItem}">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Style
+                                TargetType="ComboBoxItem"
+                                BasedOn="{StaticResource MahApps.Styles.ComboBoxItem}">
+                                <Setter
+                                    Property="HorizontalContentAlignment"
+                                    Value="Stretch" />
                             </Style>
                         </ComboBox.ItemContainerStyle>
                         <ComboBox.ItemTemplate>
@@ -273,7 +283,7 @@
                                     </Grid.ColumnDefinitions>
                                     <Label
                                         Grid.Column="0"
-                                        Content="{Binding Descricao}"/>
+                                        Content="{Binding Descricao}" />
                                     <Label
                                         Grid.Column="1"
                                         HorizontalAlignment="Right"
@@ -301,11 +311,11 @@
                                 <prism:InvokeCommandAction
                                     Command="{Binding VerificaQuantidadeCmd}" />
                             </i:EventTrigger>
-                            <i:EventTrigger
-                                EventName="PreviewKeyDown">
-                                <prism:InvokeCommandAction
-                                    Command="{Binding PreviewKeyDownAddItemCmd}" />
-                            </i:EventTrigger>
+                            <i:KeyTrigger
+                                Key="Enter">
+                                <i:InvokeCommandAction
+                                    Command="{Binding AddItemCmd}" />
+                            </i:KeyTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
                     <Button
@@ -315,7 +325,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Focusable="True"
-                        Command="{Binding AdicionarCmd}"
+                        Command="{Binding AddItemCmd}"
                         CommandParameter="{Binding ''}"
                         Margin="0,10,10,0" />
                     <DataGrid

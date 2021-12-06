@@ -47,14 +47,14 @@ namespace SisMaper.Views
             {
                 vm.OpenNovoCliente += () =>
                 {
-                    new CrudPessoaFisica() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected) ? true : false, DataContext = new CrudPessoaFisicaViewModel(null) }.ShowDialog();
+                    new CrudPessoaFisica() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected) ? true : false, DataContext = new CrudClienteViewModel(null) }.ShowDialog();
                     DataContext = new ClientesViewModel();
                     SetActions();
                 };
 
                 vm.OpenEditarCliente += () =>
                 {
-                    new CrudPessoaFisica() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected)? true : false, DataContext = new CrudPessoaFisicaViewModel( (PessoaFisicaTabItem.IsSelected)? PessoaFisicaDataGrid.SelectedItem : PessoaJuridicaDataGrid.SelectedItem ) }.ShowDialog();
+                    new CrudPessoaFisica() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected)? true : false, DataContext = new CrudClienteViewModel( (PessoaFisicaTabItem.IsSelected)? PessoaFisicaDataGrid.SelectedItem : PessoaJuridicaDataGrid.SelectedItem ) }.ShowDialog();
                     DataContext = new ClientesViewModel();
                     SetActions();
                 };

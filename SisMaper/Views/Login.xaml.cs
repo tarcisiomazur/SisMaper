@@ -34,20 +34,5 @@ namespace SisMaper.Views
             };
             ViewModel.Cancel += Close;
         }
-
-        private void ArrastarTela(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
-
-        private void ShowPassword(object sender, RoutedEventArgs routedEventArgs)
-        {
-            pb_senha.IsShow = true;
-        }
-
-        private void HidePassword(object sender, RoutedEventArgs routedEventArgs)
-        {
-            pb_senha.IsShow = false;
-        }
     }
 }

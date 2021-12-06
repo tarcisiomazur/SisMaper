@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows;
 using CefSharp;
 using CefSharp.Wpf;
-using MahApps.Metro.Controls;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
@@ -10,28 +9,47 @@ namespace SisMaper.Views
     /// <summary>
     /// Lógica interna para ViewPedido.xaml
     /// </summary>
-    public partial class ViewPedido : MetroWindow
+    public partial class ViewPedido
     {
-        public PedidoViewModel ViewModel => (PedidoViewModel) DataContext;
-
-        public ViewPedido(long? pedidoId)
+        public ViewPedido()
         {
-            DataContext = new PedidoViewModel(pedidoId);
             InitializeComponent();
-            SetActions();
+            DataContextChanged += SetActions;
         }
 
-        private void SetActions()
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ViewModel.Save += Close;
-            ViewModel.Cancel += Close;
+            if (e.IsChanged(out PedidoViewModel viewModel))
+            {
+                viewModel.Save += Close;
+                viewModel.Cancel += Close;
+                viewModel.OpenFatura += OpenFatura;
+                viewModel.OpenBuscarProduto += OpenBuscarProduto;
+                viewModel.OpenCrudCliente += OpenCrudCliente;
+                viewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+                viewModel.ShowProgress += Helper.MahAppsDefaultProgress;
+            }
         }
-        
+
+        private void OpenCrudCliente(CrudClienteViewModel viewModel)
+        {
+            new CrudPessoaFisica {DataContext = viewModel}.ShowDialog();
+        }
+
+        private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)
+        {
+            new ViewBuscarProduto {DataContext = viewModel}.ShowDialog();
+        }
+
+        private void OpenFatura(FaturaViewModel viewModel)
+        {
+            new ViewFatura {DataContext = viewModel}.ShowDialog();
+        }
+
         private void SetZoom(object? sender, FrameLoadEndEventArgs frameLoadEndEventArgs)
         {
-            if(sender is ChromiumWebBrowser webBrowser)
+            if (sender is ChromiumWebBrowser webBrowser)
                 webBrowser.SetZoomLevel(2);
         }
-        
     }
 }

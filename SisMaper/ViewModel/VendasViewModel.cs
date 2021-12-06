@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Data;
 using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.Models;
@@ -12,20 +11,37 @@ namespace SisMaper.ViewModel
 {
     public class VendasViewModel : BaseViewModel
     {
+        #region Properties
+
+        public List<ViewListarPedido>? Pedidos { get; set; }
+        public List<Pedido.Pedido_Status> StatusList { get; set; }
+
+        #endregion
+
+        #region UIProperties
+
         public ViewListarPedido? PedidoSelecionado { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string TextoFiltro { get; set; }
+        public string TextoFiltro { get; set; } = "";
         public Pedido.Pedido_Status? StatusSelecionado { get; set; }
-        public List<Pedido.Pedido_Status> StatusList { get; set; }
-        public event Action<long?>? OpenPedido;
-        public IEnumerable<ViewListarPedido> PedidosFiltrados { get; set; }
-        public List<ViewListarPedido> Pedidos { get; set; }
+        public IEnumerable<ViewListarPedido>? PedidosFiltrados { get; set; }
+
+        #endregion
+
+        #region ICommands
+
         public SimpleCommand NovoPedido => new(NewVenda);
         public SimpleCommand EditarPedido => new(OpenVenda, _ => PedidoSelecionado is not null);
         public SimpleCommand ExcluirPedido => new(DeleteVenda, _ => PedidoSelecionado is not null);
 
-        private IDialogCoordinator DialogCoordinator;
+        #endregion
+
+        #region Actions
+
+        public event Action<PedidoViewModel>? OpenPedido;
+
+        #endregion
 
         public VendasViewModel()
         {
@@ -36,18 +52,18 @@ namespace SisMaper.ViewModel
                 Pedido.Pedido_Status.Cancelado,
             };
             PropertyChanged += UpdateFilter;
-            DialogCoordinator = new DialogCoordinator();
         }
 
         private void NewVenda()
         {
-            OpenPedido?.Invoke(null);
+            OpenPedido?.Invoke(new PedidoViewModel(null));
         }
 
         private void OpenVenda()
         {
             if (PedidoSelecionado == null) return;
-            OpenPedido?.Invoke(PedidoSelecionado.Id);
+            var vm = new PedidoViewModel(PedidoSelecionado.Id);
+            OpenPedido?.Invoke(vm);
         }
 
         private void DeleteVenda()
@@ -59,13 +75,12 @@ namespace SisMaper.ViewModel
             if (pedido.Status == Pedido.Pedido_Status.Fechado &&
                 !Main.Usuario.Permissao.HasFlag(Usuario.Tipo_Permissao.Gerenciamento))
             {
-                DialogCoordinator.ShowMessageAsync(this, "Excluir Pedido",
-                    "Você não possui permissão para excluir um pedido fechado");
+                OnShowMessage("Excluir Pedido", "Você não possui permissão para excluir um pedido fechado");
                 return;
             }
 
-            var result = DialogCoordinator.ShowModalMessageExternal(this, "Excluir Pedido",
-                "Deseja Excluir o pedido selecionado?", MessageDialogStyle.AffirmativeAndNegative);
+            var result = OnShowMessage("Excluir Pedido", "Deseja Excluir o pedido selecionado?",
+                MessageDialogStyle.AffirmativeAndNegative);
             if (result == MessageDialogResult.Affirmative)
             {
                 try
@@ -73,7 +88,7 @@ namespace SisMaper.ViewModel
                     if (pedido.Delete())
                     {
                         Initialize(null, EventArgs.Empty);
-                        DialogCoordinator.ShowMessageAsync(this, "Excluir Pedido", "Pedido Excluído com Sucesso!");
+                        OnShowMessage("Excluir Pedido", "Pedido Excluído com Sucesso!");
                         return;
                     }
                 }
@@ -82,7 +97,7 @@ namespace SisMaper.ViewModel
                     //
                 }
 
-                DialogCoordinator.ShowMessageAsync(this, "Excluir Pedido",
+                OnShowMessage("Excluir Pedido",
                     "Pedido não excluído, verifique se o pedido ainda existe ou possui dependências como notas fiscais ou faturas");
             }
         }
@@ -92,6 +107,7 @@ namespace SisMaper.ViewModel
             Pedidos = View.Execute<ViewListarPedido>();
             StartDate = DateTime.Today.AddMonths(-1);
             EndDate = DateTime.Today;
+            TextoFiltro = "";
         }
 
 
@@ -100,10 +116,8 @@ namespace SisMaper.ViewModel
             if (Pedidos != null && e.PropertyName is nameof(Pedidos) or nameof(TextoFiltro) or
                 nameof(StartDate) or nameof(EndDate) or nameof(StatusSelecionado))
             {
-                PedidosFiltrados = Pedidos!.Where(p =>
-                    (string.IsNullOrEmpty(TextoFiltro) || !string.IsNullOrEmpty(p.Cliente) &&
-                     p.Cliente.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase) ||
-                     p.Id.ToString().Equals(TextoFiltro)) &&
+                PedidosFiltrados = Pedidos.Where(p =>
+                    (TextoFiltro.IsContainedIn(p.Cliente) || TextoFiltro.IsContainedIn(p.Id.ToString())) &&
                     (StatusSelecionado == null || p.Status == StatusSelecionado) &&
                     p.Data.Date >= StartDate.Date && p.Data.Date <= EndDate.Date
                 );

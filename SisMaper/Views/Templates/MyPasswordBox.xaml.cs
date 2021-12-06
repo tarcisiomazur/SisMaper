@@ -12,12 +12,26 @@ namespace SisMaper.Views.Templates
 
         public PasswordBox PasswordBox => _passwordBox;
 
+        public static readonly DependencyProperty IsShowProperty =
+            DependencyProperty.RegisterAttached("IsShow",
+                typeof(bool),
+                typeof(MyPasswordBox), new FrameworkPropertyMetadata(false, IsShowPropertyChanged));
+        
+        private static void IsShowPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var passwordBox = (MyPasswordBox) d;
+            if (e.OldValue != e.NewValue && e.NewValue is bool b)
+            {
+                passwordBox.ChangeShow(b);
+            }
+        }
+        
         private bool _isShow;
 
         public bool IsShow
         {
             get => _isShow;
-            set => ChangeShow(value);
+            set => SetValue(IsShowProperty, value);
         }
 
         private void ChangeShow(bool value)

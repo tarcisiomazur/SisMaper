@@ -6,12 +6,8 @@ using System.Linq;
 using System.Media;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
-using CefSharp;
-using CefSharp.Wpf;
 using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.API.WebMania;
@@ -51,15 +47,14 @@ namespace SisMaper.ViewModel
         #region ICommands
 
         public FullCmd<TextChangedEventArgs> VerificaQuantidadeCmd => new(VerificaQuantidadeEventHandler);
-        public FullCmd<KeyEventArgs> PreviewKeyDownAddItemCmd => new(AdicionarItemEventHandler, IsPedidoAberto());
-        public SimpleCommand AdicionarCmd => new(AddItem);
+        public SimpleCommand AddItemCmd => new(AddItem, IsPedidoAberto());
         public SimpleCommand EditarClienteCmd => new(EditCliente, IsPedidoAberto());
         public SimpleCommand AdicionarClienteCmd => new(NewCliente);
         public SimpleCommand AdicionarClienteContextMenuCmd => new(ShowContextMenu, IsPedidoAberto());
         public SimpleCommand EmitirNotaFiscalContextMenuCmd => new(ShowContextMenu, IsPedidoAberto(false));
         public FullCmd<string> EmitirNotaFiscalCmd => new(NewNF);
         public SimpleCommand SalvarCmd => new(SavePedido, IsPedidoAberto());
-        public SimpleCommand CancelarCmd => new(CancelPedido, IsPedidoAberto());
+        public SimpleCommand CancelarCmd => new(Cancel, IsPedidoAberto());
         public SimpleCommand AtualizarSituacaoCmd => new(AtualizarSituacaoNF, _ => NotaFiscalSelecionada is not null);
         public SimpleCommand AbrirFaturaCmd => new(AbrirFaturaPedido);
         public SimpleCommand ReceberCmd => new(ReceberPedido, _ => Pedido.IsOpen() && Pedido.Itens.Count > 0);
@@ -71,9 +66,12 @@ namespace SisMaper.ViewModel
 
         public event Action? Cancel;
         public event Action? Save;
+        public event Action<FaturaViewModel>? OpenFatura;
+        public event Action<BuscarProdutoViewModel>? OpenBuscarProduto;
+        public event Action<CrudClienteViewModel>? OpenCrudCliente;
 
         #endregion
-        
+
         public PedidoViewModel(long? pedidoId)
         {
             PersistenceContext = new PersistenceContext();
@@ -109,19 +107,13 @@ namespace SisMaper.ViewModel
             }
         }
 
-        private void AdicionarItemEventHandler(KeyEventArgs obj)
-        {
-            if (obj.Key == Key.Enter)
-                AddItem();
-        }
-
         private void SumPedido() => Pedido.ValorTotal = Pedido.Itens.Sum(i => i.Total);
 
         private void SavePedido()
         {
             if (Pedido.Itens.Count == 0)
             {
-                ShowMessage("Salvar Pedido", "O pedido deve conter um ou mais itens!");
+                OnShowMessage("Salvar Pedido", "O pedido deve conter um ou mais itens!");
                 return;
             }
 
@@ -129,7 +121,7 @@ namespace SisMaper.ViewModel
             {
                 if (!Pedido.Save())
                 {
-                    ShowMessage("Salvar Pedido", "O pedido não pode ser salvo!");
+                    OnShowMessage("Salvar Pedido", "O pedido não pode ser salvo!");
                 }
 
                 Save?.Invoke();
@@ -138,7 +130,7 @@ namespace SisMaper.ViewModel
             {
                 if (ex.ErrorCode == SQLException.ErrorCodeVersion)
                 {
-                    ShowMessage("Salvar Pedido", "O pedido não pode ser salvo pois está desatualizado!");
+                    OnShowMessage("Salvar Pedido", "O pedido não pode ser salvo pois está desatualizado!");
                     Cancel?.Invoke();
                 }
             }
@@ -146,9 +138,8 @@ namespace SisMaper.ViewModel
 
         private void AbrirFaturaPedido()
         {
-            var viewFatura = new ViewFatura {DataContext = new FaturaViewModel(Pedido.Fatura)};
             Save?.Invoke();
-            viewFatura.ShowDialog();
+            OpenFatura?.Invoke(new FaturaViewModel(Pedido.Fatura));
         }
 
         private void AtualizarSituacaoNF()
@@ -168,18 +159,13 @@ namespace SisMaper.ViewModel
             NotaFiscalSelecionada.Save();
         }
 
-        private void CancelPedido()
-        {
-            Cancel?.Invoke();
-        }
-
         private void AbrirBuscarProduto()
         {
-            var view = new ViewBuscarProduto(Produtos);
-            if (view.ShowDialog().IsTrue() && view.ViewModel.ProdutoSelecionado != null)
-            {
-                NovoItem.Produto = view.ViewModel.ProdutoSelecionado;
-            }
+            var vm = new BuscarProdutoViewModel(Produtos);
+            OpenBuscarProduto?.Invoke(vm);
+            NovoItem.Produto = vm.ProdutoSelecionado;
+            if (NovoItem.Produto != null && NovoItem.Quantidade > 0)
+                AddItem();
         }
 
         private void AddItem()
@@ -189,7 +175,7 @@ namespace SisMaper.ViewModel
                 if (NovoItem.Quantidade == 0) NovoItem.Quantidade = 1;
                 if (!NovoItem.Produto.Fracionado && !NovoItem.Quantidade.IsNatural())
                 {
-                    ShowMessage("Adicionar Item", "O item não aceita quantidade fracionada!");
+                    OnShowMessage("Adicionar Item", "O item não aceita quantidade fracionada!");
                     return;
                 }
 
@@ -232,7 +218,7 @@ namespace SisMaper.ViewModel
                 pgmto.Selecionado == ViewMetodoPagamento.OptionPagamento.Null) return;
             if (!Pedido.Save())
             {
-                ShowMessage("Salvar Pedido", "O pedido não pode ser fechado!");
+                OnShowMessage("Salvar Pedido", "O pedido não pode ser fechado!");
                 Cancel?.Invoke();
                 return;
             }
@@ -256,7 +242,7 @@ namespace SisMaper.ViewModel
         {
             if (Pedido.Cliente == null)
             {
-                ShowMessage("Salvar Fatura",
+                OnShowMessage("Salvar Fatura",
                     "O cliente não pode estar em branco!");
                 return;
             }
@@ -265,7 +251,7 @@ namespace SisMaper.ViewModel
             Pedido.Status = Pedido.Pedido_Status.Fechado;
             if (!Pedido.Fatura.Save())
             {
-                ShowMessage("Salvar Fatura", "A fatura do pedido não pode ser salva!");
+                OnShowMessage("Salvar Fatura", "A fatura do pedido não pode ser salva!");
                 Cancel?.Invoke();
             }
             else
@@ -303,7 +289,7 @@ namespace SisMaper.ViewModel
                 Pedido.Fatura.Status = Fatura.Fatura_Status.Fechada;
                 if (Pedido.Fatura.Save())
                 {
-                    ShowMessage("Receber Pedido", "O pedido foi salvo e recebido!");
+                    OnShowMessage("Receber Pedido", "O pedido foi salvo e recebido!");
                     RaisePropertyChanged(nameof(Pedido));
                     RaisePropertyChanged(nameof(HasFatura));
                     SystemSounds.Beep.Play();
@@ -311,7 +297,7 @@ namespace SisMaper.ViewModel
                 }
             }
 
-            ShowMessage("Salvar Fatura", "A fatura do pedido não pode ser salva!");
+            OnShowMessage("Salvar Fatura", "A fatura do pedido não pode ser salva!");
             Cancel?.Invoke();
         }
 
@@ -338,16 +324,12 @@ namespace SisMaper.ViewModel
         private void NewCliente(object obj)
         {
             var isPf = obj.Equals("PF");
-            var dc = new CrudPessoaFisicaViewModel(null);
-            var crud = new CrudPessoaFisica()
+            Cliente cliente = isPf ? new PessoaFisica() : new PessoaJuridica();
+            var vm = new CrudClienteViewModel(cliente);
+            OpenCrudCliente?.Invoke(vm);
+            if (cliente is {Id: > 0})
             {
-                isSelectedPessoaFisicaTab = isPf,
-                DataContext = dc
-            }.ShowDialog();
-            if (crud.IsTrue())
-            {
-                var newClient = (Cliente) (isPf ? dc.PessoaFisica : dc.PessoaJuridica);
-                Pedido.Cliente = PersistenceContext.Get<Cliente>(newClient.Id);
+                Pedido.Cliente = PersistenceContext.Get<Cliente>(cliente.Id);
             }
         }
 
@@ -356,7 +338,7 @@ namespace SisMaper.ViewModel
             var isNFC = obj.Equals("NFC-e");
             if (Pedido.NotasFiscais.FirstOrDefault(n => n.Situacao.BeEmitted()) is { } _nf)
             {
-                ShowMessage("Emitir Nota Fiscal",
+                OnShowMessage("Emitir Nota Fiscal",
                     $"O pedido possui uma Nota Fiscal" +
                     (_nf.Situacao.IsAprovado()
                         ? $" nº{_nf.Serie}-{_nf.Numero} com chave {_nf.Chave}. Aprovada em {_nf.DataEmissao}."
@@ -368,7 +350,7 @@ namespace SisMaper.ViewModel
             nf.Pedido = Pedido;
             if (!nf.Save())
             {
-                ShowMessage("Erro", "Ocorreu um ao gerar a numeração da próxima emitir Nota Fiscal");
+                OnShowMessage("Erro", "Ocorreu um ao gerar a numeração da próxima emitir Nota Fiscal");
                 return;
             }
 
@@ -389,7 +371,7 @@ namespace SisMaper.ViewModel
             var result = apiNf.BuildJsonDefault();
             if (result != "OK")
             {
-                ShowMessage("Erro ao validar a Nota Fiscal", $"Erro ao validar a nota fiscal: {result}");
+                OnShowMessage("Erro ao validar a Nota Fiscal", $"Erro ao validar a nota fiscal: {result}");
                 nf.Delete();
                 return;
             }
@@ -399,25 +381,26 @@ namespace SisMaper.ViewModel
 
         private async Task EmitindoNotaFiscal(INotaFiscal apiNf, NotaFiscal nf)
         {
-            var pdc = await ShowProgressAsync();
-            pdc.SetTitle("Emitindo Nota Fiscal");
-            pdc.SetMessage("Aguarde. A Nota Fiscal está em processo de emissão.");
-            pdc.SetIndeterminate();
+            var pdc = OnShowProgressAsync(new MetroDialogSettings {NegativeButtonText = "Fechar"});
+            pdc?.SetTitle("Emitindo Nota Fiscal");
+            pdc?.SetMessage("Aguarde. A Nota Fiscal está em processo de emissão.");
+            pdc?.SetIndeterminate();
             var task = Task.Factory.StartNew(apiNf.Emit);
-            pdc.SetCancelableDelayed(true, 3000);
-            pdc.SetMessageDelayed("A emissão está demorando mais do que o normal. Verifique a sua Conexão com a Internet", 3000);
-            await task.ContinueWith(_ => pdc.TryCloseAsync());
+            pdc?.SetCancelableDelayed(true, 3000);
+            pdc?.SetMessageDelayed(
+                "A emissão está demorando mais do que o normal. Verifique a sua Conexão com a Internet", 3000);
+            await task.ContinueWith(_ => pdc?.TryCloseAsync());
 
             if (!task.Result)
             {
-                ShowMessage("Erro ao emitir Nota Fiscal", "Erro ao enviar a Nota Fiscal para emissão");
+                OnShowMessage("Erro ao emitir Nota Fiscal", "Erro ao enviar a Nota Fiscal para emissão");
                 nf.Delete();
                 return;
             }
 
             if (apiNf.NF_Result is {Error: { }})
             {
-                ShowMessage("Erro ao emitir Nota Fiscal",
+                OnShowMessage("Erro ao emitir Nota Fiscal",
                     $"Erro ao processar a Nota Fiscal: {apiNf.NF_Result.Error}");
                 nf.Delete();
                 return;
@@ -428,26 +411,21 @@ namespace SisMaper.ViewModel
             NotaFiscalSelecionada = nf;
             if (nf.Save())
             {
-                ShowMessage("Emissão de Nota Fiscal",
+                OnShowMessage("Emissão de Nota Fiscal",
                     $"Nota Fiscal enviada para emissão. Situação :{nf.Situacao}");
                 RaisePropertyChanged(nameof(HasNotaFiscal));
                 NotaFiscalTabItemIsSelected = true;
                 return;
             }
 
-            ShowMessage("Erro ao emitir Nota Fiscal",
+            OnShowMessage("Erro ao emitir Nota Fiscal",
                 $"Um erro ocorreu ao salvar a nota fiscal emitida. Situação: {nf.Situacao}");
         }
 
 
         private void ShowContextMenu(object obj)
         {
-            if (obj is Button
-            {
-                ContextMenu:
-                {
-                }
-            } button)
+            if (obj is Button {ContextMenu: { }} button)
             {
                 button.ContextMenu.DataContext = button.DataContext;
                 button.ContextMenu.IsOpen = true;
@@ -456,28 +434,28 @@ namespace SisMaper.ViewModel
 
         private void EditCliente()
         {
+            if (Pedido.Cliente is null) return;
             if (DAO.Load<PessoaFisica>(Pedido.Cliente.Id) is var pf and not null)
             {
-                new CrudPessoaFisica()
-                    {isSelectedPessoaFisicaTab = true, DataContext = new CrudPessoaFisicaViewModel(pf)}.ShowDialog();
+                OpenCrudCliente?.Invoke(new CrudClienteViewModel(pf));
                 Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaFisica>(pf.Id);
             }
             else if (DAO.Load<PessoaJuridica>(Pedido.Cliente.Id) is var pj and not null)
             {
-                new CrudPessoaFisica()
-                    {isSelectedPessoaFisicaTab = false, DataContext = new CrudPessoaFisicaViewModel(pj)}.ShowDialog();
+                OpenCrudCliente?.Invoke(new CrudClienteViewModel(pj));
                 Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaJuridica>(pj.Id);
             }
             else
             {
-                ShowMessage("Editar Cliente", "Não foi possível editar este cliente");
+                OnShowMessage("Editar Cliente", "Não foi possível editar este cliente");
             }
         }
 
         private void VerificaQuantidadeEventHandler(TextChangedEventArgs e)
         {
+            var quantidade = NovoItem.Quantidade;
             if (!Regex.IsMatch(QuantidadeItem, @"^(\d*,?\d*)?$") || !string.IsNullOrEmpty(QuantidadeItem) &&
-                !double.TryParse(QuantidadeItem, out var quantidade) &&
+                !double.TryParse(QuantidadeItem, out quantidade) &&
                 quantidade is >= 0 and <= 10e10)
             {
                 SystemSounds.Beep.Play();
@@ -486,22 +464,8 @@ namespace SisMaper.ViewModel
             }
             else
             {
-                NovoItem.Quantidade = 0;
+                NovoItem.Quantidade = quantidade;
             }
-        }
-
-        private void ShowMessage(string title, string message)
-        {
-            DialogCoordinator.Instance.ShowModalMessageExternal(this, title, message);
-        }
-        public async Task<ProgressDialogController> ShowProgressAsync()
-        {
-            var settings = new MetroDialogSettings()
-            {
-                NegativeButtonText = "Fechar"
-            };
-            var pdc = await DialogCoordinator.Instance.ShowProgressAsync(this, null, null, false, settings);
-            return pdc;
         }
     }
 }

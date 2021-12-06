@@ -10,23 +10,43 @@ namespace SisMaper.ViewModel
 {
     public class BuscarProdutoViewModel : BaseViewModel
     {
+        #region Properties
+
         public PList<Produto> Produtos { get; set; }
-        public IEnumerable<Produto> ProdutosFiltrados { get; set; }
-        public Produto? ProdutoSelecionado { get; set; }
-        public Categoria? CategoriaSelecionada { get; set; }
         public PList<Categoria> Categorias { get; set; }
-        public string? TextoFiltro { get; set; }
+        public PersistenceContext PersistenceContext { get; set; }
+        public Produto? ProdutoSelecionado { get; set; }
+
+        #endregion
+
+        #region UIProperties
+
+        public IEnumerable<Produto> ProdutosFiltrados { get; set; }
+        public Produto? Selecionado { get; set; }
+        public Categoria? CategoriaSelecionada { get; set; }
+        public string TextoFiltro { get; set; } = "";
         public bool? Inativos { get; set; } = false;
 
-        public PersistenceContext PersistenceContext { get; set; }
+        #endregion
 
-        public BuscarProdutoViewModel()
+
+        #region ICommands
+
+        public SimpleCommand CancelarCmd => new(_ => Cancel?.Invoke());
+        public SimpleCommand SelecionarCmd => new(Selecionar, _ => Selecionado is not null);
+
+        #endregion
+
+        #region Actions
+
+        public event Action? Cancel;
+        public event Action? Select;
+
+        #endregion
+
+        public BuscarProdutoViewModel(PList<Produto> produtos)
         {
             PropertyChanged += UpdateFilter;
-        }
-
-        public void Initialize(PList<Produto> produtos)
-        {
             Produtos = produtos;
             PersistenceContext = Produtos.Context;
             Categorias = PersistenceContext.Get<Categoria>("ID>0");
@@ -34,16 +54,21 @@ namespace SisMaper.ViewModel
 
         private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is nameof(CategoriaSelecionada) or nameof(Produtos) or nameof(TextoFiltro) or nameof(Inativos))
+            if (e.PropertyName is nameof(CategoriaSelecionada) or nameof(Produtos) or nameof(TextoFiltro) or nameof(
+                Inativos))
             {
                 ProdutosFiltrados = Produtos.Where(p =>
-                    (string.IsNullOrEmpty(TextoFiltro) ||
-                     !string.IsNullOrEmpty(p.Descricao) && p.Descricao.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase) ||
-                     !string.IsNullOrEmpty(p.CodigoBarras) && p.CodigoBarras.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase)) &&
-                    (CategoriaSelecionada == null || p.Categoria == CategoriaSelecionada) &&
-                    (Inativos is null || Inativos == p.Inativo)
+                    (TextoFiltro.IsContainedIn(p.Descricao) || TextoFiltro.IsContainedIn(p.CodigoBarras) ||
+                     TextoFiltro.IsContainedIn(p.Id.ToString())) && (Inativos is null || Inativos == p.Inativo) &&
+                    (CategoriaSelecionada == null || p.Categoria == CategoriaSelecionada)
                 );
             }
+        }
+
+        private void Selecionar()
+        {
+            ProdutoSelecionado = Selecionado;
+            Select?.Invoke();
         }
     }
 }

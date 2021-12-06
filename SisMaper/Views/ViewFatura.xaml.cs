@@ -137,7 +137,7 @@ namespace SisMaper.Views
 
                 vm2.OpenClienteView = (bool isPessoaFisica) =>
                 {
-                    new CrudPessoaFisica() { DataContext = new CrudPessoaFisicaViewModel((DataContext as FaturaViewModel).Fatura.Cliente), isSelectedPessoaFisicaTab = isPessoaFisica, IsGridEnabled = false }.ShowDialog();
+                    new CrudPessoaFisica() { DataContext = new CrudClienteViewModel((DataContext as FaturaViewModel).Fatura.Cliente), isSelectedPessoaFisicaTab = isPessoaFisica, IsGridEnabled = false }.ShowDialog();
                 };
                 
             }
@@ -167,7 +167,7 @@ namespace SisMaper.Views
         private void OpenViewCliente(object sender, MouseButtonEventArgs e)
         {
 
-            new CrudPessoaFisica() { DataContext = new CrudPessoaFisicaViewModel( (DataContext as FaturaViewModel).Fatura.Cliente ), isSelectedPessoaFisicaTab = isClientePessoaFisica, IsGridEnabled = false }.ShowDialog();
+            new CrudPessoaFisica() { DataContext = new CrudClienteViewModel( (DataContext as FaturaViewModel).Fatura.Cliente ), isSelectedPessoaFisicaTab = isClientePessoaFisica, IsGridEnabled = false }.ShowDialog();
 
             /*
             if (ClientesComboBox.SelectedItem is not null)

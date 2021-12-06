@@ -18,8 +18,10 @@
     TitleForeground="{DynamicResource SisMaper.Dark.Theme}"
     Height="728"
     Width="1489"
-    SaveWindowPosition="True"
-    >
+    SaveWindowPosition="True">
+    <mah:MetroWindow.DataContext>
+        <vm:MainViewModel/>
+    </mah:MetroWindow.DataContext>
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands ShowLastSeparator="False">
             <Button Click="Logout"
@@ -27,9 +29,6 @@
                     ToolTip="Clique para Desconectar este Usuário" />
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
-    <mah:MetroWindow.DataContext>
-        <vm:MainViewModel/>
-    </mah:MetroWindow.DataContext>
     <mah:MetroWindow.TitleTemplate>
         <DataTemplate>
             <TextBlock
@@ -43,6 +42,7 @@
         </DataTemplate>
     </mah:MetroWindow.TitleTemplate>
     <mah:MetroWindow.Resources>
+        <vm:VendasViewModel x:Key="VendasViewModel"/>
         <ControlTemplate
             x:Key="MahApps.Templates.PackIconMaterial"
             TargetType="{x:Type iconPacks:PackIconMaterial}">
@@ -584,11 +584,13 @@
                                 Text="Vendas" />
                         </StackPanel>
                 </TabItem.Header>
-                <local:ViewVendas 
-                            Width="auto"
+                <local:ViewVendas
+                    Width="auto"
+                    DataContext="{DynamicResource VendasViewModel}"
                             Height="auto"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"/>
+                            VerticalAlignment="Stretch">
+                </local:ViewVendas>
             </TabItem>
             <TabItem
                 Visibility="{Binding PRecebimento, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
