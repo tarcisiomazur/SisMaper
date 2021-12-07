@@ -33,17 +33,17 @@ namespace SisMaper.Views
 
         private void OpenCrudCliente(CrudClienteViewModel viewModel)
         {
-            new CrudPessoaFisica {DataContext = viewModel}.ShowDialog();
+            new CrudPessoaFisica {DataContext = viewModel, Owner = this}.ShowDialog();
         }
 
         private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)
         {
-            new ViewBuscarProduto {DataContext = viewModel}.ShowDialog();
+            new ViewBuscarProduto {DataContext = viewModel, Owner = this}.ShowDialog();
         }
 
         private void OpenFatura(FaturaViewModel viewModel)
         {
-            new ViewFatura {DataContext = viewModel}.ShowDialog();
+            new ViewFatura {DataContext = viewModel, Owner = this}.ShowDialog();
         }
 
         private void SetZoom(object? sender, FrameLoadEndEventArgs frameLoadEndEventArgs)

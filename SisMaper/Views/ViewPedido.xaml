@@ -25,6 +25,7 @@
     MinHeight="400"
     MinWidth="812"
     SaveWindowPosition="True"
+    ShowInTaskbar="False"
     d:DataContext="{d:DesignInstance viewModels:PedidoViewModel}">
     <mah:MetroWindow.Resources>
         <Style

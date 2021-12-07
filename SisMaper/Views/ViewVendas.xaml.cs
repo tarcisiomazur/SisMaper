@@ -1,16 +1,15 @@
 ﻿using System.Windows;
 using SisMaper.Tools;
 using SisMaper.ViewModel;
-using SisMaper.Views.Templates;
 
 namespace SisMaper.Views
 {
-    public partial class ViewVendas : MyUserControl
+    public partial class ViewVendas
     {
         public ViewVendas()
         {
-            InitializeComponent();
             DataContextChanged += SetActions;
+            InitializeComponent();
         }
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
@@ -23,11 +22,16 @@ namespace SisMaper.Views
                 viewModel.ShowMessage += Helper.MahAppsDefaultMessage;
                 viewModel.ShowProgress += Helper.MahAppsDefaultProgress;
             }
+            if (e.OldValue is VendasViewModel oldVm)
+            {
+                Show -= oldVm.Initialize;
+                Hide -= oldVm.Clear;
+            }
         }
 
         private void OpenPedido(PedidoViewModel viewModel)
         {
-            var viewPedido = new ViewPedido {DataContext = viewModel};
+            var viewPedido = new ViewPedido {DataContext = viewModel, Owner = Window.GetWindow(this)};
             viewPedido.ShowDialog();
             OnShow();
         }

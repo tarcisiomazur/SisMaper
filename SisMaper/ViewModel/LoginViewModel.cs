@@ -1,22 +1,39 @@
 ﻿using System;
-using System.Windows;
-using SisMaper.Models;
 using Microsoft.Win32;
 using SisMaper.M_P;
+using SisMaper.Models;
 
 namespace SisMaper.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {
+        #region Properties
+
         readonly RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SisMaper");
-        public SimpleCommand OnLogin => new (ConfirmLogin);
-        public SimpleCommand OnCancel => new (()=> Cancel?.Invoke());
         public Usuario Usuario { get; set; }
+
+        #endregion
+
+        #region UIProperties
+
+        public bool PasswordFocus { get; set; }
+        public bool UsuarioFocus { get; set; }
+
+        #endregion
+
+        #region ICommands
+
+        public SimpleCommand OnLogin => new(ConfirmLogin);
+        public SimpleCommand OnCancel => new(() => Cancel?.Invoke());
+
+        #endregion
+
+        #region Actions
 
         public event Action? Login;
         public event Action? Cancel;
-        public bool PasswordFocus { get; set; }
-        public bool UsuarioFocus { get; set; }
+
+        #endregion
 
         public LoginViewModel()
         {
@@ -26,26 +43,24 @@ namespace SisMaper.ViewModel
             {
                 Usuario.Login = usernamestr;
             }
-
         }
 
-        public void ConfirmLogin()
+        private void ConfirmLogin()
         {
             var user = AuthLogin.Login(Usuario);
-            
-            if (user is {Permissao:>0})
+
+            if (user is {Permissao: >0})
             {
-                Usuario = user;
+                Main.Usuario = user;
                 key.SetValue("LastUsername", Usuario.Login);
                 Login?.Invoke();
             }
             else
             {
-                MessageBox.Show("Usuário ou senha incorreto", "Tentativa de Acesso", MessageBoxButton.OK);
+                OnShowMessage("Usuário ou senha incorreto", "Tentativa de Acesso");
             }
 
             Console.WriteLine("Login Confirmado. Login: " + Usuario.Login + ". Senha: " + Usuario.Senha);
         }
-        
     }
 }

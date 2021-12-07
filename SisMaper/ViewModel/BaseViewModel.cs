@@ -10,6 +10,7 @@ namespace SisMaper.ViewModel
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         public event ShowMessageEventHandler? ShowMessage;
+        public event ShowInputEventHandler? ShowInput;
         public event ShowProgressEventHandler? ShowProgress;
 
         protected void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
@@ -39,6 +40,13 @@ namespace SisMaper.ViewModel
             var eventArgs = new ShowProgressEventArgs(settings);
             ShowProgress?.Invoke(this, eventArgs);
             return eventArgs.DialogController;
+        }
+
+        protected string? OnInput(string title, string message, MetroDialogSettings settings = null)
+        {
+            var eventArgs = new ShowInputEventArgs(title, message, settings);
+            ShowInput?.Invoke(this, eventArgs);
+            return eventArgs.Result;
         }
     }
 }

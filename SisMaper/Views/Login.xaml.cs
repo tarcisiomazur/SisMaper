@@ -1,13 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading;
-using System.Timers;
-using System.Windows;
-using System.Windows.Input;
-using MahApps.Metro.Controls;
-using Microsoft.Win32;
-using SisMaper.M_P;
-using SisMaper.Models;
+﻿using System.Windows;
 using SisMaper.Tools;
 using SisMaper.ViewModel;
 
@@ -16,23 +7,25 @@ namespace SisMaper.Views
     /// <summary>
     /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class Login : MetroWindow
+    public partial class Login
     {
-        public LoginViewModel ViewModel => (LoginViewModel) DataContext;
         public Login()
         {
+            DataContextChanged += SetActions;
             InitializeComponent();
-            SetActions();
         }
 
-        private void SetActions()
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ViewModel.Login += () =>
+            if (e.IsChanged(out LoginViewModel viewModel))
             {
-                DialogResult = true;
-                Close();
-            };
-            ViewModel.Cancel += Close;
+                viewModel.Login += () =>
+                {
+                    (Application.Current.MainWindow = new MainWindow()).Show();
+                    Close();
+                };
+                viewModel.Cancel += Close;
+            }
         }
     }
 }

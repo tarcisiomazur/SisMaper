@@ -1,14 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using Persistence;
-using SisMaper.Models;
-using SisMaper.Tools;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
@@ -16,71 +7,44 @@ namespace SisMaper.Views
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow
     {
         public static MainWindow Instance;
-        public MainViewModel ViewModel => (MainViewModel) DataContext;
 
         public MainWindow()
         {
             Instance = this;
-
-            if(!MakeLogin()) Close(); 
-
-            try
-            {
-                InitializeComponent();
-                Initialize();
-                SetActions();
-            }
-            catch (Exception ex)
-            {
-                Close();
-            }
-            
+            DataContextChanged += SetActions;
+            InitializeComponent();
+            Initialize();
         }
 
         private void Initialize()
         {
-            ViewModel.Initialize();
-            if(TabCtrl.SelectedItem is TabItem{Visibility: Visibility.Collapsed})
+            foreach (TabItem tabItem in TabCtrl.Items)
             {
-                foreach (TabItem tabItem in TabCtrl.Items)
-                {
-                    if (tabItem.Visibility == Visibility.Visible)
-                    {
-                        TabCtrl.SelectedItem = tabItem;
-                        return;
-                    }
-                }
-            }
-            TabCtrl.SelectedIndex = -1;
-        }
-
-        private bool MakeLogin()
-        {
-            try
-            {
-                var login = new Login();
-                if (!login.ShowDialog().IsTrue())
-                {
-                    return false;
-                }
-
-                Main.Usuario = login.ViewModel.Usuario;
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
+                if (tabItem.Visibility != Visibility.Visible) continue;
+                TabCtrl.SelectedItem = tabItem;
+                return;
             }
         }
 
-        private void SetActions()
+        private static void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Main.MySqlProtocol.Connected += () => Dispatcher.Invoke(() => ViewModel.Connected());
-            Main.MySqlProtocol.Disconnected += () => Dispatcher.Invoke(() => ViewModel.Disconnected());
-            Main.MySqlProtocol.Reconnecting += () => Dispatcher.Invoke(() => ViewModel.Reconnecting());
+            if (e.NewValue is MainViewModel newVm)
+            {
+                Main.MySqlProtocol.Connected += newVm.Connected;
+                Main.MySqlProtocol.Disconnected += newVm.Disconnected;
+                Main.MySqlProtocol.Reconnecting += newVm.Reconnecting;
+            }
+
+            if (e.OldValue is MainViewModel oldVm)
+            {
+                Main.MySqlProtocol.Connected -= oldVm.Connected;
+                Main.MySqlProtocol.Disconnected -= oldVm.Disconnected;
+                Main.MySqlProtocol.Reconnecting -= oldVm.Reconnecting;
+            }
+
             Main.Instance.Status = Main.MySqlProtocol.IsConnected ? "Conectado" : "Desconectado";
         }
 
@@ -92,16 +56,8 @@ namespace SisMaper.Views
 
         private void Logout(object sender, RoutedEventArgs e)
         {
-            Hide();
-            if (MakeLogin())
-            {
-                Initialize();
-                Show();
-            }
-            else
-            {
-                Close();
-            }
+            (Application.Current.MainWindow = new Login()).Show();
+            Close();
         }
     }
 }

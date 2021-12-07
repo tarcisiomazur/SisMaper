@@ -1,5 +1,5 @@
 ﻿<mah:MetroWindow
-    x:Name="userControl"
+    x:Name="This"
     x:Class="SisMaper.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -42,7 +42,6 @@
         </DataTemplate>
     </mah:MetroWindow.TitleTemplate>
     <mah:MetroWindow.Resources>
-        <vm:VendasViewModel x:Key="VendasViewModel"/>
         <ControlTemplate
             x:Key="MahApps.Templates.PackIconMaterial"
             TargetType="{x:Type iconPacks:PackIconMaterial}">
@@ -564,8 +563,9 @@
         <TabControl
             Style="{DynamicResource MainWindow.TabControl.Menu}"
             x:Name="TabCtrl"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-            Margin="0,0,0,22" SelectedIndex="0">
+            Margin="0,0,0,22"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+            <TabItem Visibility="Collapsed"/>
             <TabItem
                 Visibility="{Binding PVendas, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}"
                
@@ -586,7 +586,6 @@
                 </TabItem.Header>
                 <local:ViewVendas
                     Width="auto"
-                    DataContext="{DynamicResource VendasViewModel}"
                             Height="auto"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">
@@ -594,7 +593,6 @@
             </TabItem>
             <TabItem
                 Visibility="{Binding PRecebimento, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                
                 x:Name="Recebimento"
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF117200">

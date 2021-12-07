@@ -1,11 +1,10 @@
 ﻿using System.Windows;
-using MahApps.Metro.Controls;
 using SisMaper.Tools;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
 {
-    public partial class ViewBuscarProduto : MetroWindow
+    public partial class ViewBuscarProduto
     {
         
         public ViewBuscarProduto()
