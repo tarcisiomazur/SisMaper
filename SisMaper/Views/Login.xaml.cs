@@ -25,6 +25,7 @@ namespace SisMaper.Views
                     Close();
                 };
                 viewModel.Cancel += Close;
+                viewModel.ShowMessage += Helper.SystemDefaultMessage;
             }
         }
     }

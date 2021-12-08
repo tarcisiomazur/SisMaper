@@ -22,6 +22,7 @@ namespace SisMaper.Views
                 viewModel.ShowMessage += Helper.MahAppsDefaultMessage;
                 viewModel.ShowProgress += Helper.MahAppsDefaultProgress;
             }
+
             if (e.OldValue is VendasViewModel oldVm)
             {
                 Show -= oldVm.Initialize;
@@ -31,8 +32,7 @@ namespace SisMaper.Views
 
         private void OpenPedido(PedidoViewModel viewModel)
         {
-            var viewPedido = new ViewPedido {DataContext = viewModel, Owner = Window.GetWindow(this)};
-            viewPedido.ShowDialog();
+            new ViewPedido {DataContext = viewModel, Owner = Window}.ShowDialog();
             OnShow();
         }
     }

@@ -9,15 +9,10 @@ namespace SisMaper
     /// 
     public partial class App : Application
     {
-
         public App()
         {
             SisMaper.Main.Init();
-            Startup += (_, _) =>
-            {
-                ThemeManager.Current.ChangeTheme(this, "Light.Teal");
-            };
+            Startup += (_, _) => { ThemeManager.Current.ChangeTheme(this, "Light.Teal"); };
         }
-
     }
 }

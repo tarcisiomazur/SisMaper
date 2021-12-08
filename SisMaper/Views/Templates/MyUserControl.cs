@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -6,6 +7,7 @@ namespace SisMaper.Views.Templates
 {
     public class MyUserControl: UserControl
     {
+        public Window? Window => Window.GetWindow(this);
         public event EventHandler? Show;
         public event EventHandler? Hide;
 

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
@@ -29,10 +30,12 @@ namespace SisMaper.Views
             }
         }
 
-        private static void SetActions(object sender, DependencyPropertyChangedEventArgs e)
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is MainViewModel newVm)
             {
+                newVm.ShowProgress += Helper.MahAppsDefaultProgress;
+                newVm.ShowMessage += Helper.MahAppsDefaultMessage;
                 Main.MySqlProtocol.Connected += newVm.Connected;
                 Main.MySqlProtocol.Disconnected += newVm.Disconnected;
                 Main.MySqlProtocol.Reconnecting += newVm.Reconnecting;

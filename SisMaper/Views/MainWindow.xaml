@@ -12,6 +12,8 @@
     xmlns:sismaper="clr-namespace:SisMaper"
     xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
     xmlns:converter="clr-namespace:MahApps.Metro.IconPacks.Converter;assembly=MahApps.Metro.IconPacks.Core"
+    xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    dialog:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d"
     TitleCharacterCasing="Normal"
     Title="SisMaper"
