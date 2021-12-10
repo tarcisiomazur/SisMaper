@@ -79,7 +79,7 @@ namespace SisMaper.ViewModel
 
             cliente = (Cliente)clienteSelecionado;
 
-            Estados = DAO.FindWhereQuery<Estado>("Id > 0");
+            Estados = DAO.All<Estado>();
 
             if (cliente is not null)
             {
@@ -112,8 +112,8 @@ namespace SisMaper.ViewModel
 
 
 
-                PList<PessoaFisica> pessoasFisicas = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
-                PList<PessoaJuridica> pessoasJuridicas = DAO.FindWhereQuery<PessoaJuridica>("Cliente_Id > 0");
+                PList<PessoaFisica> pessoasFisicas = DAO.All<PessoaFisica>();
+                PList<PessoaJuridica> pessoasJuridicas = DAO.All<PessoaJuridica>();
 
                 int countPf = pessoasFisicas.Count;
                 int countPj = pessoasJuridicas.Count;
@@ -202,7 +202,7 @@ namespace SisMaper.ViewModel
         {
             if (c is PessoaFisica pf)
             {
-                PList<PessoaFisica> pessoas = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
+                PList<PessoaFisica> pessoas = DAO.All<PessoaFisica>();
                 foreach (PessoaFisica p in pessoas)
                 {
                     if (p.CPF == pf.CPF && p.Id != pf.Id)
@@ -214,7 +214,7 @@ namespace SisMaper.ViewModel
 
             else if (c is PessoaJuridica pj)
             {
-                PList<PessoaJuridica> pessoas = DAO.FindWhereQuery<PessoaJuridica>("Cliente_Id > 0");
+                PList<PessoaJuridica> pessoas = DAO.All<PessoaJuridica>();
                 foreach (PessoaJuridica p in pessoas)
                 {
                     if (p.CNPJ == pj.CNPJ && p.Id != pj.Id)
@@ -241,7 +241,7 @@ namespace SisMaper.ViewModel
             if (cliente is null)
             {
 
-                PList<Cliente> clientes = DAO.FindWhereQuery<Cliente>("Id > 0");
+                PList<Cliente> clientes = DAO.All<Cliente>();
 
                 if (clientes.Count == 0)
                 {

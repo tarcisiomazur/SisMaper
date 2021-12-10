@@ -5,6 +5,7 @@ using System.Linq;
 using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.Models.Views;
 using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
@@ -13,27 +14,27 @@ namespace SisMaper.ViewModel
     {
         #region Properties
 
-        public List<ViewListarPedido>? Pedidos { get; set; }
+        public List<ListarPedido>? Pedidos { get; set; }
         public List<Pedido.Pedido_Status> StatusList { get; set; }
 
         #endregion
 
         #region UIProperties
 
-        public ViewListarPedido? PedidoSelecionado { get; set; }
+        public ListarPedido? PedidoSelecionado { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string TextoFiltro { get; set; } = "";
         public Pedido.Pedido_Status? StatusSelecionado { get; set; }
-        public IEnumerable<ViewListarPedido>? PedidosFiltrados { get; set; }
+        public IEnumerable<ListarPedido>? PedidosFiltrados { get; set; }
 
         #endregion
 
         #region ICommands
 
-        public SimpleCommand NovoPedido => new(NewVenda);
-        public SimpleCommand EditarPedido => new(OpenVenda, _ => PedidoSelecionado is not null);
-        public SimpleCommand ExcluirPedido => new(DeleteVenda, _ => PedidoSelecionado is not null);
+        public SimpleCommand NovoPedidoCmd => new(NovoPedido);
+        public SimpleCommand EditarPedidoCmd => new(EditarPedido, _ => PedidoSelecionado is not null);
+        public SimpleCommand ExcluirPedidoCmd => new(ExcluirPedido, _ => PedidoSelecionado is not null);
 
         #endregion
 
@@ -54,19 +55,19 @@ namespace SisMaper.ViewModel
             PropertyChanged += UpdateFilter;
         }
 
-        private void NewVenda()
+        private void NovoPedido()
         {
             OpenPedido?.Invoke(new PedidoViewModel(null));
         }
 
-        private void OpenVenda()
+        private void EditarPedido()
         {
             if (PedidoSelecionado == null) return;
             var vm = new PedidoViewModel(PedidoSelecionado.Id);
             OpenPedido?.Invoke(vm);
         }
 
-        private void DeleteVenda()
+        private void ExcluirPedido()
         {
             if (PedidoSelecionado == null) return;
             var pedido = DAO.Load<Pedido>(PedidoSelecionado.Id);
@@ -104,7 +105,7 @@ namespace SisMaper.ViewModel
 
         public void Initialize(object? sender, EventArgs e)
         {
-            Pedidos = View.Execute<ViewListarPedido>();
+            Pedidos = View.Execute<ListarPedido>();
             StartDate = DateTime.Today.AddMonths(-1);
             EndDate = DateTime.Today;
             TextoFiltro = "";

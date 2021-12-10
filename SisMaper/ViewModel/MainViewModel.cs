@@ -11,7 +11,6 @@ namespace SisMaper.ViewModel
     {
         #region Properties
 
-        private bool Close { get; set; }
         private TabItem? _selectedItem;
 
         #endregion
@@ -47,48 +46,6 @@ namespace SisMaper.ViewModel
             PAdmin = permissoes.HasFlag(Usuario.Tipo_Permissao.Gerenciamento);
             PDB = permissoes.HasFlag(Usuario.Tipo_Permissao.Databaser);
         }
-
-        public void Connected()
-        {
-            Main.Instance.Status = "Conectado";
-            Close = true;
-        }
-
-        public void Disconnected()
-        {
-            Main.Instance.Status = "Desconectado";
-        }
-
-        public async void Reconnecting()
-        {
-            Main.Instance.Status = "Reconectando";
-            Close = false;
-            var s = new MetroDialogSettings()
-            {
-                NegativeButtonText = "Sair"
-            };
-            var progressAsync = OnShowProgressAsync(s);
-            if (progressAsync is null) return;
-            progressAsync.SetTitle("Conexão com o Banco de Dados Perdida");
-            progressAsync.SetMessage("Reconectando com o Servidor...");
-            progressAsync.SetIndeterminate();
-            await Task.Delay(5000);
-            progressAsync.SetCancelable(true);
-            while (true)
-            {
-                if (Close)
-                {
-                    await progressAsync.CloseAsync();
-                    return;
-                }
-
-                if (progressAsync.IsCanceled)
-                {
-                    Environment.Exit(0);
-                }
-
-                await Task.Delay(100);
-            }
-        }
+        
     }
 }

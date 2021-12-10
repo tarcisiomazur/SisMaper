@@ -34,7 +34,7 @@ namespace SisMaper.ViewModel
 
         public CategoriaViewModel()
         {
-            PList<Categoria> lista = DAO.FindWhereQuery<Categoria>("Id > 0");
+            PList<Categoria> lista = DAO.All<Categoria>();
 
             Categorias = new ObservableCollection<Categoria>();
             DialogCoordinator = new DialogCoordinator();

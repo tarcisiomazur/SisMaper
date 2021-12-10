@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using MahApps.Metro.Controls.Dialogs;
 using SisMaper.Tools.Events;
 
@@ -35,10 +36,11 @@ namespace SisMaper.ViewModel
             return eventArgs.Result;
         }
 
-        protected ProgressDialogController? OnShowProgressAsync(MetroDialogSettings settings = null)
+        protected async Task<ProgressDialogController?> OnShowProgressAsync(MetroDialogSettings settings = null)
         {
             var eventArgs = new ShowProgressEventArgs(settings);
-            ShowProgress?.Invoke(this, eventArgs);
+            if (ShowProgress?.Invoke(this, eventArgs) is { } task)
+                await task;
             return eventArgs.DialogController;
         }
 

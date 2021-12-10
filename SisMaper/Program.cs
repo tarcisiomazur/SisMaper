@@ -11,10 +11,9 @@ namespace SisMaper
 {
     public static class Program
     {
-
         [DllImport(@"kernel32.dll")]
         static extern bool AllocConsole();
-        
+
         [STAThread]
         public static void Main(string[] args)
         {
@@ -25,7 +24,7 @@ namespace SisMaper
             app.InitializeComponent();
             app.Run();
         }
-        
+
         private static void InitChromium(string[] args)
         {
             Cef.EnableHighDPISupport();

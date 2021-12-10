@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using SisMaper.Tools.Events;
 
@@ -15,13 +16,11 @@ namespace SisMaper.Tools
             e.Result = DialogCoordinator.Instance.ShowModalMessageExternal(sender, e.Title, e.Message, e.Style, e.Settings);
         }
 
-        public static void MahAppsDefaultProgress(object? sender, ShowProgressEventArgs e)
+        public static async Task MahAppsDefaultProgress(object? sender, ShowProgressEventArgs e)
         {
-            var result = DialogCoordinator.Instance.ShowProgressAsync(sender, "", "", false, e.Settings);
-            result.Wait();
-            e.DialogController = result.Result;
+            e.DialogController = await DialogCoordinator.Instance.ShowProgressAsync(sender, "", "", false, e.Settings);
         }
-        
+
         public static void MahAppsDefaultInput(object? sender, ShowInputEventArgs e)
         {
             e.Result = DialogCoordinator.Instance.ShowModalInputExternal(sender, e.Title, e.Message, e.Settings);

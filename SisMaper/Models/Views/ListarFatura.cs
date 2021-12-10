@@ -1,10 +1,10 @@
 ﻿using System;
 using Persistence;
 
-namespace SisMaper.Models
+namespace SisMaper.Models.Views
 {
     [View(ViewName = "ListarFaturas")]
-    public class ViewListarFatura
+    public class ListarFatura
     {
         public long Id { get; set; }
         public string Nome { get; set; }

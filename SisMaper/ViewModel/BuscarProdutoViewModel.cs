@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Persistence;
-using SisMaper.Models;
+using SisMaper.Models.Views;
 using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
@@ -12,18 +11,17 @@ namespace SisMaper.ViewModel
     {
         #region Properties
 
-        public PList<Produto> Produtos { get; set; }
-        public PList<Categoria> Categorias { get; set; }
-        public PersistenceContext PersistenceContext { get; set; }
-        public Produto? ProdutoSelecionado { get; set; }
+        public List<ListarProdutos> Produtos { get; set; }
+        public SortedSet<string> Categorias { get; set; }
+        public ListarProdutos? ProdutoSelecionado { get; set; }
 
         #endregion
 
         #region UIProperties
 
-        public IEnumerable<Produto> ProdutosFiltrados { get; set; }
-        public Produto? Selecionado { get; set; }
-        public Categoria? CategoriaSelecionada { get; set; }
+        public IEnumerable<ListarProdutos> ProdutosFiltrados { get; set; }
+        public ListarProdutos? Selecionado { get; set; }
+        public string? CategoriaSelecionada { get; set; }
         public string TextoFiltro { get; set; } = "";
         public bool? Inativos { get; set; } = false;
 
@@ -44,12 +42,11 @@ namespace SisMaper.ViewModel
 
         #endregion
 
-        public BuscarProdutoViewModel(PList<Produto> produtos)
+        public BuscarProdutoViewModel(List<ListarProdutos> produtos)
         {
             PropertyChanged += UpdateFilter;
             Produtos = produtos;
-            PersistenceContext = Produtos.Context;
-            Categorias = PersistenceContext.Get<Categoria>("ID>0");
+            Categorias = new SortedSet<string>(produtos.Select(p => p.Categoria));
         }
 
         private void UpdateFilter(object? sender, PropertyChangedEventArgs e)

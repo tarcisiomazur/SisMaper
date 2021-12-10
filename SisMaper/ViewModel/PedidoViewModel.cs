@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Media;
@@ -12,6 +11,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.API.WebMania;
 using SisMaper.Models;
+using SisMaper.Models.Views;
 using SisMaper.Tools;
 using SisMaper.Views;
 
@@ -22,9 +22,9 @@ namespace SisMaper.ViewModel
         #region Properties
 
         public Pedido Pedido { get; set; }
-        public PList<Cliente> Clientes { get; set; }
+        public List<ListarClientes> Clientes { get; set; }
         public PList<Natureza> Naturezas { get; set; }
-        public PList<Produto> Produtos { get; set; }
+        private List<ListarProdutos> Produtos { get; set; }
         public Item NovoItem { get; set; }
         private PersistenceContext PersistenceContext { get; set; }
 
@@ -32,9 +32,20 @@ namespace SisMaper.ViewModel
 
         #region UIProperties
 
-        public IEnumerable<Produto> ProdutosAtivos { get; set; }
+        public IEnumerable<ListarProdutos> ProdutosAtivos { get; set; }
         public ICollectionView NotasFiscaisView { get; set; }
         public NotaFiscal? NotaFiscalSelecionada { get; set; }
+
+        public ListarClientes? ClienteSelecionado
+        {
+            set => SetCliente(value);
+        }
+
+        public ListarProdutos? ProdutoSelecionado
+        {
+            set => SetProduto(value);
+        }
+
         public bool HasFatura => Pedido.Fatura is not null;
         public bool HasNotaFiscal => Pedido.NotasFiscais.Count > 0;
         public bool FaturaTabItemIsSelected { get; set; }
@@ -47,14 +58,14 @@ namespace SisMaper.ViewModel
         #region ICommands
 
         public FullCmd<TextChangedEventArgs> VerificaQuantidadeCmd => new(VerificaQuantidadeEventHandler);
+        public FullCmd<string> EmitirNotaFiscalCmd => new(NewNF);
         public SimpleCommand AddItemCmd => new(AddItem, IsPedidoAberto());
-        public SimpleCommand EditarClienteCmd => new(EditCliente, IsPedidoAberto());
-        public SimpleCommand AdicionarClienteCmd => new(NewCliente);
+        public SimpleCommand EditarClienteCmd => new(EditarCliente, IsPedidoAberto());
+        public SimpleCommand AdicionarClienteCmd => new(AdicionarCliente);
         public SimpleCommand AdicionarClienteContextMenuCmd => new(ShowContextMenu, IsPedidoAberto());
         public SimpleCommand EmitirNotaFiscalContextMenuCmd => new(ShowContextMenu, IsPedidoAberto(false));
-        public FullCmd<string> EmitirNotaFiscalCmd => new(NewNF);
         public SimpleCommand SalvarCmd => new(SavePedido, IsPedidoAberto());
-        public SimpleCommand CancelarCmd => new(Cancel, IsPedidoAberto());
+        public SimpleCommand CancelarCmd => new(() => Cancel?.Invoke(), IsPedidoAberto());
         public SimpleCommand AtualizarSituacaoCmd => new(AtualizarSituacaoNF, _ => NotaFiscalSelecionada is not null);
         public SimpleCommand AbrirFaturaCmd => new(AbrirFaturaPedido);
         public SimpleCommand ReceberCmd => new(ReceberPedido, _ => Pedido.IsOpen() && Pedido.Itens.Count > 0);
@@ -75,11 +86,9 @@ namespace SisMaper.ViewModel
         public PedidoViewModel(long? pedidoId)
         {
             PersistenceContext = new PersistenceContext();
-            Naturezas = PersistenceContext.Get<Natureza>("ID>0");
-            Clientes = new PList<Cliente>();
-            Clientes.AddRange(PersistenceContext.Get<PessoaFisica>("Cliente_ID>0"));
-            Clientes.AddRange(PersistenceContext.Get<PessoaJuridica>("Cliente_ID>0"));
-            Produtos = PersistenceContext.Get<Produto>("ID>0");
+            Naturezas = PersistenceContext.All<Natureza>();
+            Clientes = View.Execute<ListarClientes>();
+            Produtos = View.Execute<ListarProdutos>();
             ProdutosAtivos = Produtos.Where(p => p.Inativo == false);
 
             Pedido = PersistenceContext.Get<Pedido>(pedidoId);
@@ -163,7 +172,8 @@ namespace SisMaper.ViewModel
         {
             var vm = new BuscarProdutoViewModel(Produtos);
             OpenBuscarProduto?.Invoke(vm);
-            NovoItem.Produto = vm.ProdutoSelecionado;
+            if (vm.ProdutoSelecionado is null) return;
+            NovoItem.Produto = PersistenceContext.Get<Produto>(vm.ProdutoSelecionado.Id);
             if (NovoItem.Produto != null && NovoItem.Quantidade > 0)
                 AddItem();
         }
@@ -256,6 +266,7 @@ namespace SisMaper.ViewModel
             }
             else
             {
+                Pedido.Fatura.Load();
                 SystemSounds.Beep.Play();
                 AbrirFaturaPedido();
             }
@@ -289,6 +300,7 @@ namespace SisMaper.ViewModel
                 Pedido.Fatura.Status = Fatura.Fatura_Status.Fechada;
                 if (Pedido.Fatura.Save())
                 {
+                    Pedido.Fatura.Load();
                     OnShowMessage("Receber Pedido", "O pedido foi salvo e recebido!");
                     RaisePropertyChanged(nameof(Pedido));
                     RaisePropertyChanged(nameof(HasFatura));
@@ -321,7 +333,7 @@ namespace SisMaper.ViewModel
             return fatura;
         }
 
-        private void NewCliente(object obj)
+        private void AdicionarCliente(object obj)
         {
             var isPf = obj.Equals("PF");
             Cliente cliente = isPf ? new PessoaFisica() : new PessoaJuridica();
@@ -330,6 +342,7 @@ namespace SisMaper.ViewModel
             if (cliente is {Id: > 0})
             {
                 Pedido.Cliente = PersistenceContext.Get<Cliente>(cliente.Id);
+                Clientes = View.Execute<ListarClientes>();
             }
         }
 
@@ -379,19 +392,19 @@ namespace SisMaper.ViewModel
             EmitindoNotaFiscal(apiNf, nf);
         }
 
-        private async Task EmitindoNotaFiscal(INotaFiscal apiNf, NotaFiscal nf)
+        private async void EmitindoNotaFiscal(INotaFiscal apiNf, NotaFiscal nf)
         {
-            var pdc = OnShowProgressAsync(new MetroDialogSettings {NegativeButtonText = "Fechar"});
+            var pdc = await OnShowProgressAsync(new MetroDialogSettings {NegativeButtonText = "Fechar"});
             pdc?.SetTitle("Emitindo Nota Fiscal");
             pdc?.SetMessage("Aguarde. A Nota Fiscal está em processo de emissão.");
             pdc?.SetIndeterminate();
-            var task = Task.Factory.StartNew(apiNf.Emit);
-            pdc?.SetCancelableDelayed(true, 3000);
-            pdc?.SetMessageDelayed(
-                "A emissão está demorando mais do que o normal. Verifique a sua Conexão com a Internet", 3000);
-            await task.ContinueWith(_ => pdc?.TryCloseAsync());
 
-            if (!task.Result)
+            var task = Task.Factory.StartNew(apiNf.Emit);
+            pdc?.SetCancelableDelayed(true, 5000);
+            pdc?.SetMessageDelayed(
+                "A emissão está demorando mais do que o normal. Verifique a sua Conexão com a Internet", 5000);
+            await task.ContinueWith(_ => pdc?.CloseAsync());
+            if (!task.Result || apiNf.NF_Result is null)
             {
                 OnShowMessage("Erro ao emitir Nota Fiscal", "Erro ao enviar a Nota Fiscal para emissão");
                 nf.Delete();
@@ -432,23 +445,41 @@ namespace SisMaper.ViewModel
             }
         }
 
-        private void EditCliente()
+        private void EditarCliente()
         {
             if (Pedido.Cliente is null) return;
-            if (DAO.Load<PessoaFisica>(Pedido.Cliente.Id) is var pf and not null)
+            switch (Pedido.Cliente)
             {
-                OpenCrudCliente?.Invoke(new CrudClienteViewModel(pf));
-                Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaFisica>(pf.Id);
+                case PessoaFisica pf:
+                    OpenCrudCliente?.Invoke(new CrudClienteViewModel(pf));
+                    Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaFisica>(pf.Id);
+                    break;
+                case PessoaJuridica pj:
+                    OpenCrudCliente?.Invoke(new CrudClienteViewModel(pj));
+                    Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaJuridica>(pj.Id);
+                    break;
+                default:
+                    OnShowMessage("Editar Cliente", "Não foi possível editar este cliente");
+                    break;
             }
-            else if (DAO.Load<PessoaJuridica>(Pedido.Cliente.Id) is var pj and not null)
+
+            Clientes = View.Execute<ListarClientes>();
+        }
+
+        private void SetCliente(ListarClientes? cliente)
+        {
+            Pedido.Cliente = cliente?.Tipo switch
             {
-                OpenCrudCliente?.Invoke(new CrudClienteViewModel(pj));
-                Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaJuridica>(pj.Id);
-            }
-            else
-            {
-                OnShowMessage("Editar Cliente", "Não foi possível editar este cliente");
-            }
+                ListarClientes.Pessoa.Fisica => PersistenceContext.Get<PessoaFisica>(cliente.Id),
+                ListarClientes.Pessoa.Juridica => PersistenceContext.Get<PessoaJuridica>(cliente.Id),
+                _ => Pedido.Cliente
+            };
+        }
+
+        private void SetProduto(ListarProdutos? produto)
+        {
+            if (produto is not null)
+                NovoItem.Produto = PersistenceContext.Get<Produto>(produto.Id);
         }
 
         private void VerificaQuantidadeEventHandler(TextChangedEventArgs e)

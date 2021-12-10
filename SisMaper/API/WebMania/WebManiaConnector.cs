@@ -10,7 +10,6 @@ using SisMaper.Tools;
 
 namespace SisMaper.API.WebMania
 {
-    
     public static class WebManiaConnector
     {
         private static RestClient Client;
@@ -19,7 +18,7 @@ namespace SisMaper.API.WebMania
         private const string URL_EMISSAO = "https://webmaniabr.com/api/1/nfe/emissao/";
         private const string URL_CONSULTA = "https://webmaniabr.com/api/1/nfe/consulta/";
         private const string URL_SEFAZ = "https://webmaniabr.com/api/1/nfe/sefaz/";
-        
+
         private static string ACCESS_TOKEN_SECRET;
         private static string ACCESS_TOKEN;
         private static string CONSUMER_SECRET;
@@ -41,7 +40,7 @@ namespace SisMaper.API.WebMania
             CONSUMER_SECRET = Encrypt.RSADecryption(empresa.CONSUMER_SECRET);
             CONSUMER_KEY = Encrypt.RSADecryption(empresa.CONSUMER_KEY);
         }
-        
+
         public static RestRequest BuildRequest(string URL, Method method)
         {
             var request = new RestRequest(URL, method);
@@ -53,27 +52,30 @@ namespace SisMaper.API.WebMania
             request.AddHeader("cache-control", "no-cache");
             return request;
         }
-        
+
         public static NF_Result? Emitir(string json)
         {
-            var request = BuildRequest(URL_EMISSAO,Method.POST);
+            var request = BuildRequest(URL_EMISSAO, Method.POST);
             request.AddParameter("undefined", json, ParameterType.RequestBody);
             var timer = new Stopwatch();
             timer.Start();
             IRestResponse response = Client.Execute(request);
             timer.Stop();
-            LogRequest(request,response,timer.ElapsedMilliseconds);
+            LogRequest(request, response, timer.ElapsedMilliseconds);
             try
             {
+                if (response.Content is null && response.ErrorMessage != null)
+                    return new NF_Result() {Error = response.ErrorMessage};
                 return Serializer.Deserialize<NF_Result>(new JsonTextReader(new StringReader(response.Content)));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
+
             return null;
         }
-        
+
         public static NF_Result? Consultar(string chave)
         {
             var request = BuildRequest(URL_CONSULTA, Method.GET);
@@ -82,19 +84,20 @@ namespace SisMaper.API.WebMania
             timer.Start();
             IRestResponse response = Client.Execute(request);
             timer.Stop();
-            LogRequest(request,response,0);
+            LogRequest(request, response, 0);
             try
             {
                 return Serializer.Deserialize<NF_Result>(new JsonTextReader(new StringReader(response.Content)));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
+
             return null;
         }
-        
-        
+
+
         private static void LogRequest(IRestRequest request, IRestResponse response, long durationMs)
         {
             var requestToLog = new
@@ -119,7 +122,7 @@ namespace SisMaper.API.WebMania
             };
 
             Trace.Write(string.Format("Request completed in {0} ms, Request: {1}, Response: {2}",
-                durationMs, 
+                durationMs,
                 JsonConvert.SerializeObject(requestToLog, Formatting.Indented),
                 JsonConvert.SerializeObject(responseToLog, Formatting.Indented)));
         }

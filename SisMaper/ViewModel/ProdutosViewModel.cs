@@ -6,15 +6,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using SisMaper.Models.Views;
 using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
 {
     public class ProdutosViewModel : BaseViewModel, IProdutos
     {
-        public ViewListarProdutos ProdutoSelecionado { get; set; }
-        public List<ViewListarProdutos> Produtos { get; set; }
-        public IEnumerable<ViewListarProdutos> ProdutosFiltrados { get; set; }
+        public ListarProdutos ProdutoSelecionado { get; set; }
+        public List<ListarProdutos> Produtos { get; set; }
+        public IEnumerable<ListarProdutos> ProdutosFiltrados { get; set; }
         
         public Categoria? CategoriaSelecionada { get; set; }
         public PList<Categoria> Categorias { get; set; }
@@ -38,7 +39,7 @@ namespace SisMaper.ViewModel
 
         public ProdutosViewModel()
         {
-            Categorias = DAO.FindWhereQuery<Categoria>("ID > 0");
+            Categorias = DAO.All<Categoria>();
             NovoProduto = new NovoProdutoCommand();
             Editar = new EditarProdutoCommand();
             Deletar = new ExcluirProdutoCommand();
@@ -47,7 +48,7 @@ namespace SisMaper.ViewModel
             
             DialogCoordinator = new DialogCoordinator();
             PropertyChanged += UpdateFilter;
-            Produtos = View.Execute<ViewListarProdutos>();
+            Produtos = View.Execute<ListarProdutos>();
 
         }
 
@@ -70,7 +71,7 @@ namespace SisMaper.ViewModel
         {
             try
             {
-                PList<Lote> lotesBanco = DAO.FindWhereQuery<Lote>("Id > 0");
+                PList<Lote> lotesBanco = DAO.All<Lote>();
                 PList<Lote> lotesParaDeletar = new PList<Lote>();
 
                 foreach(Lote l in lotesBanco)

@@ -79,7 +79,7 @@ namespace SisMaper.Views.Templates
                     if (values.Length != 2) continue;
                     if (int.TryParse(values[0], out var index) && index >= 0 && index < dg.Columns.Count)
                         c.DisplayIndex = index;
-                    if (double.TryParse(values[1], out var val))
+                    if (double.TryParse(values[1], out var val) && val > 0)
                         c.Width = new DataGridLength(val, c.Width.UnitType);
                 }
             };

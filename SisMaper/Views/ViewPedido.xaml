@@ -12,12 +12,10 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:cfsharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:myInteractions="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     x:Class="SisMaper.Views.ViewPedido"
     x:Name="this"
     mc:Ignorable="d"
-    Dialog:DialogParticipation.Register="{Binding }"
     Title="{Binding Pedido.Id, StringFormat=Pedido - {0}}"
     TitleCharacterCasing="Normal"
     Height="599"
@@ -26,6 +24,7 @@
     MinWidth="812"
     SaveWindowPosition="True"
     ShowInTaskbar="False"
+    templates:DialogParticipation.MyRegister="{Binding}"
     d:DataContext="{d:DesignInstance viewModels:PedidoViewModel}">
     <mah:MetroWindow.Resources>
         <Style
@@ -122,7 +121,7 @@
             mah:TextBoxHelper.Watermark="Buscar Cliente"
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             ItemsSource="{Binding Clientes}"
-            SelectedItem="{Binding Pedido.Cliente}"
+            SelectedItem="{Binding ClienteSelecionado, Mode=OneWayToSource}"
             Text="{Binding Pedido.Cliente.Nome, Mode=OneWay}"
             DisplayMemberPath="Nome"
             IsEditable="True"
@@ -248,7 +247,7 @@
                         FontSize="16"
                         MaxDropDownHeight="125"
                         ItemsSource="{Binding ProdutosAtivos}"
-                        SelectedItem="{Binding NovoItem.Produto, Mode=TwoWay}"
+                        SelectedItem="{Binding ProdutoSelecionado, Mode=OneWayToSource}"
                         mah:TextBoxHelper.WatermarkAlignment="Right"
                         mah:TextBoxHelper.AutoWatermark="True"
                         mah:TextBoxHelper.Watermark="Buscar Produto"

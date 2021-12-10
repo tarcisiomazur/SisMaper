@@ -9,7 +9,7 @@ namespace SisMaper.ViewModel
     {
         #region Properties
 
-        readonly RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SisMaper");
+        private readonly RegistryKey _key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SisMaper");
         public Usuario Usuario { get; set; }
 
         #endregion
@@ -38,7 +38,7 @@ namespace SisMaper.ViewModel
         public LoginViewModel()
         {
             Usuario = new Usuario();
-            var username = key.GetValue("LastUsername");
+            var username = _key.GetValue("LastUsername");
             if (username is string usernamestr)
             {
                 Usuario.Login = usernamestr;
@@ -52,7 +52,7 @@ namespace SisMaper.ViewModel
             if (user is {Permissao: >0})
             {
                 Main.Usuario = user;
-                key.SetValue("LastUsername", Usuario.Login);
+                _key.SetValue("LastUsername", Usuario.Login);
                 Login?.Invoke();
             }
             else

@@ -1,10 +1,10 @@
 ﻿using System;
 using Persistence;
 
-namespace SisMaper.Models
+namespace SisMaper.Models.Views
 {
     [View(ViewName = "ListarPedidos")]
-    public class ViewListarPedido
+    public class ListarPedido
     {
         public long Id { get; set; }
         public DateTime Data { get; set; }

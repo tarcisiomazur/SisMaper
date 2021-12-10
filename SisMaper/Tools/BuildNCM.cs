@@ -24,7 +24,7 @@ namespace SisMaper.Tools
 
             var file = File.OpenText(fileChoser.FileName);
 
-            var oldNCMs = DAO.FindWhereQuery<NCM>("Id > 0");
+            var oldNCMs = DAO.All<NCM>();
             var newNCMs = new PList<NCM>();
             while (!file.EndOfStream)
             {

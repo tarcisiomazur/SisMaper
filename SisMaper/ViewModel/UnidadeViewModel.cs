@@ -32,7 +32,7 @@ namespace SisMaper.ViewModel
         
         public UnidadeViewModel()
         {
-            PList<Unidade> listaUnidade = DAO.FindWhereQuery<Unidade>("Id > 0");
+            PList<Unidade> listaUnidade = DAO.All<Unidade>();
 
             Unidades = new ObservableCollection<Unidade>();
             DialogCoordinator = new DialogCoordinator();

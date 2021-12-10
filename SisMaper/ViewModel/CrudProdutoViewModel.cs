@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using SisMaper.Models.Views;
 
 namespace SisMaper.ViewModel
 {
@@ -88,7 +89,7 @@ namespace SisMaper.ViewModel
             Salvar = new SalvarCommand();
             Adicionar = new AdicionarLoteCommand();
             Remover = new RemoverLoteCommand();
-            ViewListarProdutos view = (ViewListarProdutos) produtoSelecionado;
+            ListarProdutos view = (ListarProdutos) produtoSelecionado;
 
             if (view is not null)
             {
@@ -99,9 +100,9 @@ namespace SisMaper.ViewModel
                 Produto = null;
             }
 
-            ListaNCM = DAO.FindWhereQuery<NCM>("Id > 0");
-            PList<Categoria> listaCategorias = DAO.FindWhereQuery<Categoria>("Id > 0");
-            PList<Unidade> listaUnidades = DAO.FindWhereQuery<Unidade>("Id > 0");
+            ListaNCM = DAO.All<NCM>();
+            PList<Categoria> listaCategorias = DAO.All<Categoria>();
+            PList<Unidade> listaUnidades = DAO.All<Unidade>();
 
 
             DialogCoordinator = new DialogCoordinator();
@@ -155,7 +156,7 @@ namespace SisMaper.ViewModel
                 }
 
 
-                var lotesBanco = DAO.FindWhereQuery<Lote>("Id > 0");
+                var lotesBanco = DAO.All<Lote>();
 
 
                 foreach (Lote l in lotesBanco)
@@ -171,7 +172,7 @@ namespace SisMaper.ViewModel
 
             else
             {
-                PList<Produto> produtos = DAO.FindWhereQuery<Produto>("Id > 0");
+                PList<Produto> produtos = DAO.All<Produto>();
 
                 if (produtos.Count == 0)
                 {

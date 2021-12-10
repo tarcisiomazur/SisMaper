@@ -10,7 +10,7 @@ namespace SisMaper.Views
     /// </summary>
     public partial class MainWindow
     {
-        public static MainWindow Instance;
+        public static MainWindow? Instance { get; set; }
 
         public MainWindow()
         {
@@ -36,24 +36,12 @@ namespace SisMaper.Views
             {
                 newVm.ShowProgress += Helper.MahAppsDefaultProgress;
                 newVm.ShowMessage += Helper.MahAppsDefaultMessage;
-                Main.MySqlProtocol.Connected += newVm.Connected;
-                Main.MySqlProtocol.Disconnected += newVm.Disconnected;
-                Main.MySqlProtocol.Reconnecting += newVm.Reconnecting;
             }
-
-            if (e.OldValue is MainViewModel oldVm)
-            {
-                Main.MySqlProtocol.Connected -= oldVm.Connected;
-                Main.MySqlProtocol.Disconnected -= oldVm.Disconnected;
-                Main.MySqlProtocol.Reconnecting -= oldVm.Reconnecting;
-            }
-
-            Main.Instance.Status = Main.MySqlProtocol.IsConnected ? "Conectado" : "Desconectado";
         }
 
         private void OpenConfig(object sender, RoutedEventArgs e)
         {
-            new ViewConfiguracoes(Main.Empresa).ShowDialog();
+            new ViewConfiguracoes(Main.Empresa) {Owner = this}.ShowDialog();
             e.Handled = true;
         }
 

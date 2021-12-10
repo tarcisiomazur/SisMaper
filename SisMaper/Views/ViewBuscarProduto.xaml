@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
@@ -33,7 +32,8 @@
             IsChecked="{Binding Inativos, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Content="Inativos"
             VerticalAlignment="Top"
-            IsThreeState="True" HorizontalAlignment="Right" />
+            IsThreeState="True"
+            HorizontalAlignment="Right" />
         <TextBox
             x:Name="FilterTextBox"
             Margin="10,13,358,0"
@@ -44,7 +44,6 @@
             Text="{Binding TextoFiltro, Delay=300, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Height="35"
             VerticalAlignment="Top">
-            
             <TextBox.ToolTip>
                 <StackPanel>
                     <TextBlock
@@ -94,7 +93,7 @@
                     <DataGridTextColumn
                         Width="30*"
                         Header="Categoria"
-                        Binding="{Binding Categoria.Descricao}"
+                        Binding="{Binding Categoria}"
                         IsReadOnly="True" />
                     <mah:DataGridNumericUpDownColumn
                         Width="40*"
@@ -104,8 +103,6 @@
                         Binding="{Binding PrecoVenda}"
                         IsReadOnly="true" />
                 </DataGrid.Columns>
-
-
             </DataGrid>
         </Border>
         <Button
@@ -114,13 +111,17 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding SelecionarCmd}"
-            Margin="0,0,10,10" Height="30" Width="92" />
+            Margin="0,0,10,10"
+            Height="30"
+            Width="92" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding CancelarCmd}"
-            Margin="0,0,112,10" Height="30" Width="81" />
+            Margin="0,0,112,10"
+            Height="30"
+            Width="81" />
     </Grid>
 </mah:MetroWindow>

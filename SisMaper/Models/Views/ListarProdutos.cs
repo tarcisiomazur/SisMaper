@@ -1,14 +1,15 @@
 ﻿using Persistence;
 
-namespace SisMaper.Models
+namespace SisMaper.Models.Views
 {
     [View(ViewName = "ListarProdutos")]
-    public class ViewListarProdutos
+    public class ListarProdutos
     {
         public long Id { get; set; }
         public string CodigoBarras { get; set; }
         public string Descricao { get; set; }
         public string Unidade { get; set; }
+        public bool Fracionado { get; set; }
         public string NCM { get; set; }
 
         public string NCM_String

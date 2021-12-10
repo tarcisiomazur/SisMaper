@@ -86,7 +86,7 @@ namespace SisMaper.ViewModel
             //Clientes = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
 
 
-            Clientes = DAO.FindWhereQuery<Cliente>("Id > 0");
+            Clientes = DAO.All<Cliente>();
 
 
             ClienteSelecionado = null;
@@ -166,8 +166,8 @@ namespace SisMaper.ViewModel
         {
             if (!isClienteSelecionadoCorrect)
             {
-                PList<PessoaFisica> pessoasFisicas = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
-                PList<PessoaJuridica> pessoasJuridicas = DAO.FindWhereQuery<PessoaJuridica>("Cliente_Id > 0");
+                PList<PessoaFisica> pessoasFisicas = DAO.All<PessoaFisica>();
+                PList<PessoaJuridica> pessoasJuridicas = DAO.All<PessoaJuridica>();
 
                 int countPf = pessoasFisicas.Count;
                 int countPj = pessoasJuridicas.Count;

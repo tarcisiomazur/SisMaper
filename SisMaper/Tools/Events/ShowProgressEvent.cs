@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using MahApps.Metro.Controls.Dialogs;
 
 namespace SisMaper.Tools.Events
 {
-    public delegate void ShowProgressEventHandler(object? sender, ShowProgressEventArgs e);
+    public delegate Task ShowProgressEventHandler(object? sender, ShowProgressEventArgs e);
 
     public class ShowProgressEventArgs : EventArgs
     {

@@ -30,7 +30,7 @@ namespace SisMaper.ViewModel
 
         public NaturezaViewModel()
         {
-            Naturezas = DAO.FindWhereQuery<Natureza>("Id > 0");
+            Naturezas = DAO.All<Natureza>();
             NaturezaSelecionada = Naturezas.FirstOrDefault();
         }
 

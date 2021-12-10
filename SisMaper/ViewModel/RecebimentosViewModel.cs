@@ -5,15 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using SisMaper.Models.Views;
 using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
 {
     public class RecebimentosViewModel : BaseViewModel, IRecebimento
     {
-        public List<ViewListarFatura>? Faturas { get; set; }
-        public IEnumerable<ViewListarFatura>? FaturasFiltradas { get; set; }
-        public ViewListarFatura? FaturaSelecionada { get; set; }
+        public List<ListarFatura>? Faturas { get; set; }
+        public IEnumerable<ListarFatura>? FaturasFiltradas { get; set; }
+        public ListarFatura? FaturaSelecionada { get; set; }
         public string TextoFiltro { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
@@ -98,7 +99,7 @@ namespace SisMaper.ViewModel
 
         private void GetFaturas()
         {
-            Faturas = View.Execute<ViewListarFatura>();
+            Faturas = View.Execute<ListarFatura>();
         }
 
         public void Clear(object? sender, EventArgs e)

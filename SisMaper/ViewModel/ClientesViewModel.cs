@@ -38,8 +38,8 @@ namespace SisMaper.ViewModel
 
         public ClientesViewModel()
         {
-            PessoaFisicaList = DAO.FindWhereQuery<PessoaFisica>("Cliente_Id > 0");
-            PessoaJuridicaList = DAO.FindWhereQuery<PessoaJuridica>("Cliente_Id > 0");
+            PessoaFisicaList = DAO.All<PessoaFisica>();
+            PessoaJuridicaList = DAO.All<PessoaJuridica>();
             
             DialogCoordinator = new DialogCoordinator();
 
@@ -69,7 +69,7 @@ namespace SisMaper.ViewModel
             {
                 Cliente clienteToDelete = new Cliente();
 
-                PList<Cliente> clientes = DAO.FindWhereQuery<Cliente>("Id > 0");
+                PList<Cliente> clientes = DAO.All<Cliente>();
 
                 foreach(Cliente c in clientes)
                 {
