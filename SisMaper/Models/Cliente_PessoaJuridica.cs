@@ -14,6 +14,4 @@ public class PessoaJuridica : Cliente
 
     [Field(FieldType = SqlDbType.VarChar, Length = 10)]
     public string InscricaoEstadual { get; set; }
-
-    public string MaskedCNPJ => long.TryParse(CNPJ, out var c) ? c.ToString(@"00\.000\.000/000\-00") : "";
 }
