@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using SisMaper.Models.Views;
-using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
 {

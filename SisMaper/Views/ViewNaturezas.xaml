@@ -46,7 +46,7 @@
         </StackPanel>
         <DataGrid
             x:Name="DataGridNaturezas"
-            templates:ColumnDataGridSave.SaveSizes="True"
+            templates:SaveUIProperty.SaveSizes="True"
             BorderThickness="1"
             SelectionMode="Single"
             Style="{DynamicResource MahApps.Styles.DataGrid}"

@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-
     xmlns:tools="clr-namespace:SisMaper.Tools">
     <Style
         x:Key="FocusVisualButton">
@@ -26,6 +25,10 @@
     <tools:PedidoStatusToBoolean
         IsEditable="True"
         x:Key="PedidoStatusIsEditable" />
+    <tools:ParamIfTrue
+        x:Key="ParamIfTrue" />
+    <tools:NotZero
+        x:Key="NotZero" />
     <tools:PedidoStatusToBoolean
         IsEditable="False"
         x:Key="PedidoStatusIsReadOnly" />
@@ -57,11 +60,19 @@
         Color="#FF838383" />
 
     <Style
-        x:Key="RightGridHeaderStyle"
+        x:Key="SisMaper.DataGrid.HeaderStyle.Right"
         TargetType="DataGridColumnHeader"
         BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}">
         <Setter
             Property="HorizontalContentAlignment"
+            Value="Right" />
+    </Style>
+    <Style
+        x:Key="SisMaper.TextBlock.DataGrid.Right"
+        TargetType="TextBlock"
+        BasedOn="{StaticResource MahApps.Styles.TextBlock.DataGrid}">
+        <Setter
+            Property="TextAlignment"
             Value="Right" />
     </Style>
     <Style

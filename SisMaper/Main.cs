@@ -15,7 +15,7 @@ namespace SisMaper
     {
         private const string DbCfg = "Database.cfg";
         public static Main Instance { get; set; }
-        public static string Version => "Version: " + Application.ResourceAssembly.GetName().Version;
+        public static string Version => "Versão: " + Application.ResourceAssembly.GetName().Version;
         public string Status { get; set; } = "Desconectado";
         public static Usuario Usuario { get; set; } = new();
         public static Configuracoes? Empresa { get; set; }

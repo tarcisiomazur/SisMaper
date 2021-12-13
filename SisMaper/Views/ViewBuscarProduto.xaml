@@ -71,7 +71,7 @@
                 HorizontalContentAlignment="Stretch"
                 x:Name="ProdutosDataGrid"
                 ColumnWidth="*"
-                templates:ColumnDataGridSave.SaveSizes="True"
+                templates:SaveUIProperty.SaveSizes="True"
                 ItemsSource="{Binding ProdutosFiltrados, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"

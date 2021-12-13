@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using CefSharp;
 using CefSharp.Wpf;
 using SisMaper.Tools;
@@ -17,6 +18,10 @@ namespace SisMaper.Views
             DataContextChanged += SetActions;
         }
 
+        ~ViewPedido()
+        {
+            Console.WriteLine("Gc Collect");
+        }
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (e.IsChanged(out PedidoViewModel viewModel))

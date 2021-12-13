@@ -5,67 +5,69 @@ using System.Linq;
 using SisMaper.Models.Views;
 using SisMaper.Tools;
 
-namespace SisMaper.ViewModel
+namespace SisMaper.ViewModel;
+
+public class BuscarProdutoViewModel : BaseViewModel
 {
-    public class BuscarProdutoViewModel : BaseViewModel
+    public BuscarProdutoViewModel(List<ListarProdutos> produtos)
     {
-        #region Properties
+        PropertyChanged += UpdateFilter;
+        Produtos = produtos;
+        Categorias = new SortedSet<string>(produtos.Select(p => p.Categoria));
+    }
 
-        public List<ListarProdutos> Produtos { get; set; }
-        public SortedSet<string> Categorias { get; set; }
-        public ListarProdutos? ProdutoSelecionado { get; set; }
+    #region Actions
 
-        #endregion
+    public event Action? Cancel;
 
-        #region UIProperties
+    public event Action? Select;
 
-        public IEnumerable<ListarProdutos> ProdutosFiltrados { get; set; }
-        public ListarProdutos? Selecionado { get; set; }
-        public string? CategoriaSelecionada { get; set; }
-        public string TextoFiltro { get; set; } = "";
-        public bool? Inativos { get; set; } = false;
+    #endregion
 
-        #endregion
+    #region Properties
 
+    public bool? Inativos { get; set; } = false;
 
-        #region ICommands
+    public IEnumerable<ListarProdutos> ProdutosFiltrados { get; set; }
 
-        public SimpleCommand CancelarCmd => new(_ => Cancel?.Invoke());
-        public SimpleCommand SelecionarCmd => new(Selecionar, _ => Selecionado is not null);
+    public List<ListarProdutos> Produtos { get; set; }
 
-        #endregion
+    public ListarProdutos? ProdutoSelecionado { get; set; }
 
-        #region Actions
+    public ListarProdutos? Selecionado { get; set; }
 
-        public event Action? Cancel;
-        public event Action? Select;
+    public SortedSet<string> Categorias { get; set; }
 
-        #endregion
+    public string TextoFiltro { get; set; } = "";
 
-        public BuscarProdutoViewModel(List<ListarProdutos> produtos)
-        {
-            PropertyChanged += UpdateFilter;
-            Produtos = produtos;
-            Categorias = new SortedSet<string>(produtos.Select(p => p.Categoria));
-        }
+    public string? CategoriaSelecionada { get; set; }
 
-        private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName is nameof(CategoriaSelecionada) or nameof(Produtos) or nameof(TextoFiltro) or nameof(
+    #endregion
+
+    #region ICommands
+
+    public SimpleCommand CancelarCmd => new(_ => Cancel?.Invoke());
+
+    public SimpleCommand SelecionarCmd => new(Selecionar, _ => Selecionado is not null);
+
+    #endregion
+
+    private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(CategoriaSelecionada) or nameof(Produtos) or nameof(TextoFiltro) or nameof(
                 Inativos))
-            {
-                ProdutosFiltrados = Produtos.Where(p =>
-                    (TextoFiltro.IsContainedIn(p.Descricao) || TextoFiltro.IsContainedIn(p.CodigoBarras) ||
-                     TextoFiltro.IsContainedIn(p.Id.ToString())) && (Inativos is null || Inativos == p.Inativo) &&
-                    (CategoriaSelecionada == null || p.Categoria == CategoriaSelecionada)
-                );
-            }
-        }
-
-        private void Selecionar()
         {
-            ProdutoSelecionado = Selecionado;
-            Select?.Invoke();
+            ProdutosFiltrados = Produtos.Where(p =>
+                (TextoFiltro.IsContainedIn(p.Descricao) || TextoFiltro.IsContainedIn(p.CodigoBarras) ||
+                 TextoFiltro.IsContainedIn(p.Id.ToString())) && (Inativos is null || Inativos == p.Inativo) &&
+                (CategoriaSelecionada == null || p.Categoria == CategoriaSelecionada)
+            );
         }
+    }
+
+    private void Selecionar()
+    {
+        ProdutoSelecionado = Selecionado;
+        Select?.Invoke();
     }
 }

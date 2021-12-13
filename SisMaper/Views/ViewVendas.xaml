@@ -13,7 +13,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     Height="450"
-    Width="800"
+    Width="945"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:mi="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     Dialog:DialogParticipation.Register="{Binding}">
@@ -38,7 +38,7 @@
                 <StackPanel
                     Orientation="Horizontal">
                     <Button
-                        CommandParameter="{Binding}" 
+                        CommandParameter="{Binding}"
                         Command="{Binding NovoPedidoCmd}"
                         Style="{StaticResource SisMaper.ToolBar.Button}">
                         <StackPanel>
@@ -53,9 +53,9 @@
                                 Text="Novo" />
                         </StackPanel>
                     </Button>
-                    <Button 
-                            CommandParameter="{Binding}"
-                            Command="{Binding EditarPedidoCmd}"
+                    <Button
+                        CommandParameter="{Binding}"
+                        Command="{Binding EditarPedidoCmd}"
                         Style="{StaticResource SisMaper.ToolBar.Button}">
                         <StackPanel>
                             <iconpacks:PackIconModern
@@ -70,7 +70,7 @@
                         </StackPanel>
                     </Button>
                     <Button
-                        CommandParameter="{Binding}" 
+                        CommandParameter="{Binding}"
                         Command="{Binding ExcluirPedidoCmd}"
                         Style="{StaticResource SisMaper.ToolBar.Button}">
                         <StackPanel>
@@ -90,11 +90,97 @@
             </Fluent:RibbonGroupBox>
             <Fluent:RibbonGroupBox
                 Header="Filtrar"
-                Width="489">
+                Width="auto">
                 <Grid>
+                    <ComboBox
+                        x:Name="FiltrarTipo"
+                        FontSize="14"
+                        Margin="7,6,0,0"
+                        HorizontalAlignment="Left"
+                        ItemsSource="{Binding StatusList}"
+                        SelectedItem="{Binding StatusSelecionado}"
+                        mah:TextBoxHelper.ClearTextButton="True"
+                        VerticalAlignment="Top"
+                        Width="136"
+                        mah:TextBoxHelper.Watermark="Status"
+                        Height="28
+                        " />
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Margin="154,11,0,0"
+                        FontSize="14"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                        Height="20">
+                        <Run
+                            Language="pt-br"
+                            Text="De:" />
+                    </TextBlock>
+                    <DatePicker
+                        FontSize="14"
+                        HorizontalAlignment="Left"
+                        Margin="184,6,0,0"
+                        SelectedDate="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Top"
+                        Width="110"
+                        VerticalContentAlignment="Center"
+                        Height="28" />
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        Margin="312,11,0,0"
+                        FontSize="14"
+                        TextWrapping="Wrap"
+                        VerticalAlignment="Top"
+                        Text="Até:"
+                        Height="20" />
+                    <DatePicker
+                        FontSize="14"
+                        HorizontalAlignment="Left"
+                        Margin="347,6,0,0"
+                        SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Top"
+                        Height="28"
+                        Width="110"
+                        VerticalContentAlignment="Center" />
+                    <ComboBox
+                        x:Name="Intervalo"
+                        templates:SaveUIProperty.SaveSelected="True"
+                        FontSize="14"
+                        HorizontalAlignment="Left"
+                        mah:TextBoxHelper.ClearTextButton="True"
+                        VerticalAlignment="Top"
+                        Width="150"
+                        mah:TextBoxHelper.Watermark="Intervalo"
+                        SelectedValue="{Binding IntervaloSelecionado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValuePath="Uid"
+                        Height="28"
+                        Margin="480,6,0,0">
+                        <ComboBox.Items>
+                            <TextBlock
+                                Uid="0"
+                                Text="Hoje">
+                            </TextBlock>
+                            <TextBlock
+                                Uid="1"
+                                Text="Esta Semana">
+                            </TextBlock>
+                            <TextBlock
+                                Uid="2"
+                                Text="Este Mês">
+                            </TextBlock>
+                            <TextBlock
+                                Uid="3"
+                                Text="Últimos 60d">
+                            </TextBlock>
+                            <TextBlock
+                                Uid="4"
+                                Text="Todos">
+                            </TextBlock>
+                        </ComboBox.Items>
+                    </ComboBox>
                     <TextBox
                         x:Name="FilterTextBox"
-                        Margin="7,46,3,0"
+                        Margin="7,41,0,0"
                         mah:TextBoxHelper.Watermark="Buscar pedido... (Ctrl + F)"
                         Background="{DynamicResource MahApps.Brushes.Gray9}"
                         BorderThickness="0"
@@ -119,121 +205,86 @@
                             </StackPanel>
                         </TextBox.ToolTip>
                     </TextBox>
-                    <ComboBox
-                        x:Name="FiltrarTipo"
-                        FontSize="16"
-                        Margin="7,4,0,0"
-                        HorizontalAlignment="Left"
-                        ItemsSource="{Binding StatusList}"
-                        SelectedItem="{Binding StatusSelecionado}"
-                        mah:TextBoxHelper.ClearTextButton="True"
-                        VerticalAlignment="Top"
-                        Width="136"
-                        mah:TextBoxHelper.Watermark="Status"
-                        Height="39" />
-                    <DatePicker
-                        FontSize="14"
-                        HorizontalAlignment="Left"
-                        Margin="210,4,0,0"
-                        SelectedDate="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        VerticalAlignment="Top"
-                        Width="121"
-                        mah:TextBoxHelper.Watermark="De"
-                        mah:TextBoxHelper.UseFloatingWatermark="True"
-                        VerticalContentAlignment="Center"
-                        Height="39" />
-                    <DatePicker
-                        FontSize="14"
-                        HorizontalAlignment="Left"
-                        Margin="337,4,0,0"
-                        SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        VerticalAlignment="Top"
-                        Height="39"
-                        mah:TextBoxHelper.UseFloatingWatermark="True"
-                        Width="121"
-                        mah:TextBoxHelper.Watermark="Até"
-                        VerticalContentAlignment="Center" />
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        Margin="172,12,0,0"
-                        FontSize="16"
-                        TextWrapping="Wrap"
-                        VerticalAlignment="Top"
-                        Height="23">
-                        <Run
-                            Language="pt-br"
-                            Text="Data" />
-                    </TextBlock>
                 </Grid>
             </Fluent:RibbonGroupBox>
-            </ToolBar>
-            <DataGrid
-                Grid.Row="1"
-                BorderThickness="3"
-                BorderBrush="#FFC4C4C4"
-                Style="{DynamicResource MahApps.Styles.DataGrid}"
-                templates:ColumnDataGridSave.SaveSizes="True"
-                HorizontalContentAlignment="Stretch"
-                ColumnWidth="*"
-                x:Name="DataGridPedidos"
-                SelectedItem="{Binding PedidoSelecionado, Mode=OneWayToSource}"
-                ItemsSource="{Binding PedidosFiltrados}"
-                AutoGenerateColumns="False"
-                CanUserAddRows="False"
-                IsReadOnly="True"
-                VerticalContentAlignment="Stretch"
-            Margin="5,5,5,5">
+        </ToolBar>
+        <DataGrid
+            Grid.Row="1"
+            BorderThickness="3"
+            BorderBrush="#FFC4C4C4"
+            Style="{DynamicResource MahApps.Styles.DataGrid}"
+            templates:SaveUIProperty.SaveSizes="True"
+            HorizontalContentAlignment="Stretch"
+            ColumnWidth="*"
+            x:Name="DataGridPedidos"
+            SelectedItem="{Binding PedidoSelecionado, Mode=OneWayToSource}"
+            ItemsSource="{Binding PedidosFiltrados}"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            IsReadOnly="True"
+            VerticalContentAlignment="Stretch"
+            Margin="5,5,5,29">
             <DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" 
-                        Command="{Binding EditarPedidoCmd}" 
-                        CommandParameter="{Binding }" />
+                <MouseBinding
+                    Gesture="LeftDoubleClick"
+                    Command="{Binding EditarPedidoCmd}"
+                    CommandParameter="{Binding }" />
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn
-                        Width="30*"
-                        MinWidth="70"
-                        Header="Status"
-                        Binding="{Binding Status}"
-                        IsReadOnly="True" />
+                    Width="30*"
+                    MinWidth="70"
+                    Header="Status"
+                    Binding="{Binding Status}"
+                    IsReadOnly="True" />
                 <DataGridTextColumn
-                        Width="30*"
-                        MinWidth="70"
-                        Header="Fatura"
-                        Binding="{Binding Fatura}"
-                        IsReadOnly="True" />
+                    Width="30*"
+                    MinWidth="70"
+                    Header="Fatura"
+                    Binding="{Binding Fatura}"
+                    IsReadOnly="True" />
                 <mah:DataGridNumericUpDownColumn
-                        HeaderStyle="{StaticResource RightGridHeaderStyle}"
-                        Width="15*"
-                        MinWidth="75"
-                        Header="Número"
-                        Binding="{Binding Id}"
-                        IsReadOnly="True" />
+                    HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
+                    Width="15*"
+                    MinWidth="75"
+                    Header="Número"
+                    Binding="{Binding Id}"
+                    IsReadOnly="True" />
                 <DataGridTextColumn
-                        Width="30*"
-                        MinWidth="95"
-                        Header="Data"
-                        Binding="{Binding Data, StringFormat='dd/MM/yyyy'}"
-                        IsReadOnly="True" />
+                    Width="30*"
+                    MinWidth="95"
+                    Header="Data"
+                    Binding="{Binding Data, StringFormat='dd/MM/yyyy'}"
+                    IsReadOnly="True" />
                 <DataGridTextColumn
-                        Width="80*"
-                        MinWidth="125"
-                        Header="Cliente"
-                        Binding="{Binding Cliente}"
-                        IsReadOnly="true" />
+                    Width="80*"
+                    MinWidth="125"
+                    Header="Cliente"
+                    Binding="{Binding Cliente}"
+                    IsReadOnly="true" />
                 <mah:DataGridNumericUpDownColumn
-                        HeaderStyle="{StaticResource RightGridHeaderStyle}"
-                        Width="40*"
-                        MinWidth="125"
-                        Header="Valor Total(R$)"
-                        StringFormat="{}{0:N2}"
-                        Culture="pt-BR"
-                        Binding="{Binding ValorTotal}"
-                        IsReadOnly="true" />
+                    HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
+                    Width="40*"
+                    MinWidth="125"
+                    Header="Valor Total(R$)"
+                    StringFormat="{}{0:N2}"
+                    Culture="pt-BR"
+                    Binding="{Binding ValorTotal}"
+                    IsReadOnly="true" />
             </DataGrid.Columns>
-
         </DataGrid>
+        <TextBlock
+            HorizontalAlignment="Right"
+            Grid.Row="1"
+            Text="{Binding PedidosFiltrados.Count, StringFormat={}Pedidos: {0}, Mode=OneWay}"
+            VerticalAlignment="Bottom"
+            TextAlignment="Right"
+            Width="120"
+            Margin="0,0,5,5" />
         <i:Interaction.Triggers>
-            <i:KeyTrigger Key="F" Modifiers="Control">
+            <i:KeyTrigger
+                Key="F"
+                Modifiers="Control">
                 <mi:MyCallMethodAction
                     MethodName="Focus"
                     TargetObject="{Binding ElementName=FilterTextBox}" />

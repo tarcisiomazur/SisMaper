@@ -23,32 +23,38 @@
     ResizeMode="NoResize"
     SaveWindowPosition="True">
     <mah:MetroWindow.DataContext>
-        <m:ConfiguracoesViewModel/>
+        <m:ConfiguracoesViewModel />
     </mah:MetroWindow.DataContext>
-    <Grid Margin="1,0,-1,0">
+    <Grid
+        Margin="1,0,-1,0">
         <TextBlock
             HorizontalAlignment="Left"
             Margin="28,108,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="23"
-            Width="92" FontSize="14"><Run Language="pt-br" Text="Razão Social"/></TextBlock>
+            Width="92"
+            FontSize="14"
+            Text="Razão Social"/>
         <TextBox
             Style="{StaticResource MahApps.Styles.TextBox}"
             HorizontalAlignment="Left"
             Margin="125,103,0,0"
             Text="{Binding Empresa.Razao_Social, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
-            Width="196" Height="30" UndoLimit="99" FontSize="14" />
-
+            Width="196"
+            Height="30"
+            UndoLimit="99"
+            FontSize="14" />
         <TextBlock
             HorizontalAlignment="Left"
             Margin="28,150,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="23"
-            Width="92" FontSize="14"><Run Language="pt-br" Text="CNPJ"/></TextBlock>
-
+            Width="92"
+            FontSize="14"
+            Text="CNPJ"/>
         <xctk:MaskedTextBox
             Style="{StaticResource MahApps.Styles.TextBox}"
             Mask="00\.000\.000/0000-00"
@@ -58,28 +64,36 @@
             ValueDataType="{x:Type system:String}"
             Value="{Binding Empresa.CNPJ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
-            Width="196" Height="30" UndoLimit="99" FontSize="14" />
+            Width="196"
+            Height="30"
+            UndoLimit="99"
+            FontSize="14" />
         <TextBlock
             HorizontalAlignment="Left"
             Margin="28,191,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="22"
-            Width="92" FontSize="14"><Run Language="pt-br" Text="Consumer Key"/></TextBlock>
+            Text="Consumer Key"
+            Width="92"
+            FontSize="14" />
         <PasswordBox
             x:Name="ConsumerKey"
             HorizontalAlignment="Left"
             Margin="125,187,0,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
-            Width="196" Height="30" />
+            Width="196"
+            Height="30" />
         <TextBlock
             HorizontalAlignment="Left"
             Margin="28,233,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="24"
-            Width="92" FontSize="14"><Run Text="Access Token"/><LineBreak/><Run/></TextBlock>
+            Text="Access Token"
+            Width="92"
+            FontSize="14" />
         <PasswordBox
             x:Name="Token"
             Style="{StaticResource MahApps.Styles.PasswordBox}"
@@ -87,70 +101,82 @@
             Margin="125,229,0,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
-            Width="196" Height="30" />
+            Width="196"
+            Height="30" />
         <TextBlock
             HorizontalAlignment="Right"
             Margin="0,190,234,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="24"
-            Width="112" FontSize="14"><Run Text="Consumer Secret"/><LineBreak/><Run/></TextBlock>
+            Text="Consumer Secret"
+            Width="112"
+            FontSize="14" />
         <PasswordBox
             x:Name="ConsumerSecret"
             HorizontalAlignment="Right"
             Margin="0,187,31,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
-            Width="196" Height="30" />
+            Width="196"
+            Height="30" />
         <TextBlock
             HorizontalAlignment="Right"
             Margin="0,232,234,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"
             Height="24"
-            Width="126" Text="Access Token Secret" FontSize="14"/>
+            Width="126"
+            Text="Access Token Secret"
+            FontSize="14" />
         <PasswordBox
             x:Name="TokenSecret"
             HorizontalAlignment="Right"
             Margin="0,229,31,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
-            Width="196" Height="30" />
+            Width="196"
+            Height="30" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Atualizar NCMs"
             PreviewMouseLeftButtonDown="AtualizarNCMs"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Margin="0,10,31,0" Width="123"/>
+            Margin="0,10,31,0"
+            Width="123" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Alterar Naturezas"
             PreviewMouseLeftButtonDown="AlterarNaturezas"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Margin="0,10,287,0" Width="131" />
+            Margin="0,10,287,0"
+            Width="131" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Importar PEM"
             PreviewMouseLeftButtonDown="ImportPem"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Margin="0,10,159,0" Width="123" />
+            Margin="0,10,159,0"
+            Width="123" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             PreviewMouseLeftButtonDown="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,120,25" Width="61" />
+            Margin="0,0,120,25"
+            Width="61" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"
             PreviewMouseLeftButtonDown="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,31,25" Width="75"/>
+            Margin="0,0,31,25"
+            Width="75" />
 
     </Grid>
 </mah:MetroWindow>

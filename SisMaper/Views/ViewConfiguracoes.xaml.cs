@@ -9,7 +9,7 @@ using Xceed.Wpf.Toolkit.Core;
 
 namespace SisMaper.Views
 {
-    public partial class ViewConfiguracoes : INotifyPropertyChanged
+    public partial class ViewConfiguracoes
     {
         public ConfiguracoesViewModel ViewModel => (ConfiguracoesViewModel) DataContext;
         public IDialogCoordinator DialogCoordinator { get; set; }

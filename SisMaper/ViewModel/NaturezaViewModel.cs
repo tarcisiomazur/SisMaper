@@ -4,117 +4,122 @@ using MahApps.Metro.Controls.Dialogs;
 using Persistence;
 using SisMaper.Models;
 
-namespace SisMaper.ViewModel
+namespace SisMaper.ViewModel;
+
+public class NaturezaViewModel : BaseViewModel
 {
-    public class NaturezaViewModel : BaseViewModel
+    public NaturezaViewModel()
     {
-        #region Properties
+        Naturezas = DAO.All<Natureza>();
+        NaturezaSelecionada = Naturezas.FirstOrDefault();
+    }
 
-        public IList<Natureza> Naturezas { get; private set; }
+    #region Properties
 
-        #endregion
+    public IList<Natureza> Naturezas { get; }
 
-        #region UIProperties
+    public Natureza? NaturezaSelecionada { get; set; }
 
-        public Natureza? NaturezaSelecionada { get; set; }
+    #endregion
 
-        #endregion
+    #region ICommands
 
-        #region ICommands
+    public SimpleCommand AdicionarCmd => new(AdicionarNatureza);
 
-        public SimpleCommand AdicionarCmd => new(AdicionarNatureza);
-        public SimpleCommand EditarCmd => new(EditarNatureza, _ => NaturezaSelecionada is not null);
-        public SimpleCommand RemoverCmd => new(ExcluirNatureza, _ => NaturezaSelecionada is not null);
+    public SimpleCommand EditarCmd => new(EditarNatureza, _ => NaturezaSelecionada is not null);
 
-        #endregion
+    public SimpleCommand RemoverCmd => new(ExcluirNatureza, _ => NaturezaSelecionada is not null);
 
-        public NaturezaViewModel()
+    #endregion
+
+    private void AdicionarNatureza()
+    {
+        string desc = OnInput("Editar Natureza", "Digite a Descrição");
+        if (desc is null) return;
+        string classe = OnInput("Editar Natureza", "Digite a Classe de Imposto");
+        if (classe is null) return;
+
+        if (Naturezas.Any(n => n.Descricao.Equals(desc)))
         {
-            Naturezas = DAO.All<Natureza>();
-            NaturezaSelecionada = Naturezas.FirstOrDefault();
+            OnShowMessage("Erro", "Natureza ja existente");
+            return;
         }
 
-        private void AdicionarNatureza()
+        Natureza c = new Natureza
         {
-            string desc = OnInput("Editar Natureza", "Digite a Descrição");
-            if (desc is null) return;
-            string classe = OnInput("Editar Natureza", "Digite a Classe de Imposto");
-            if (classe is null) return;
-
-            if (Naturezas.Any(n => n.Descricao.Equals(desc)))
-            {
-                OnShowMessage("Erro", "Natureza ja existente");
+            Descricao = desc,
+            Classe_de_Imposto = classe
+        };
+        switch (c)
+        {
+            case {Classe_de_Imposto: ""}:
+                OnShowMessage("Erro", "Classe de imposto não pode ser vazia!!");
                 return;
-            }
-
-            Natureza c = new Natureza()
-            {
-                Descricao = desc,
-                Classe_de_Imposto = classe
-            };
-            switch (c)
-            {
-                case {Classe_de_Imposto: ""}:
-                    OnShowMessage("Erro", "Classe de imposto não pode ser vazia!!");
-                    return;
-                case {Descricao: ""}:
-                    OnShowMessage("Erro", "Natureza não pode ser vazia!!");
-                    return;
-            }
-
-            Naturezas.Add(c);
-            if (c.Save())
-                OnShowMessage("Natureza", "Natureza adicionada com sucesso");
-            else
-                OnShowMessage("Erro", "Natureza não pode ser adicionada!!");
+            case {Descricao: ""}:
+                OnShowMessage("Erro", "Natureza não pode ser vazia!!");
+                return;
         }
 
-        public void EditarNatureza()
+        Naturezas.Add(c);
+        if (c.Save())
         {
-            MetroDialogSettings dialogSettings = new MetroDialogSettings()
-            {
-                DefaultText = NaturezaSelecionada.Descricao
-            };
+            OnShowMessage("Natureza", "Natureza adicionada com sucesso");
+        }
+        else
+        {
+            OnShowMessage("Erro", "Natureza não pode ser adicionada!!");
+        }
+    }
 
-            var desc = OnInput("Editar Natureza", "Digite a Descrição", dialogSettings);
-            if (desc is null) return;
-            dialogSettings.DefaultText = NaturezaSelecionada.Classe_de_Imposto;
-            var classe = OnInput("Editar Natureza", "Digite a Classe de Imposto", dialogSettings);
-            if (classe is null) return;
+    public void EditarNatureza()
+    {
+        MetroDialogSettings dialogSettings = new MetroDialogSettings
+        {
+            DefaultText = NaturezaSelecionada.Descricao
+        };
 
-            switch (new {Classe_de_Imposto = classe, Descricao = desc})
-            {
-                case {Classe_de_Imposto: ""}:
-                    OnShowMessage("Erro", "Classe de imposto não pode ser vazia!!");
-                    return;
-                case {Descricao: ""}:
-                    OnShowMessage("Erro", "Natureza não pode ser vazia!!");
-                    return;
-            }
+        var desc = OnInput("Editar Natureza", "Digite a Descrição", dialogSettings);
+        if (desc is null) return;
+        dialogSettings.DefaultText = NaturezaSelecionada.Classe_de_Imposto;
+        var classe = OnInput("Editar Natureza", "Digite a Classe de Imposto", dialogSettings);
+        if (classe is null) return;
 
-            NaturezaSelecionada.Descricao = desc;
-            NaturezaSelecionada.Classe_de_Imposto = classe;
-            if (NaturezaSelecionada.Save())
-                OnShowMessage("Natureza", "Natureza salva com sucesso");
-            else
-                OnShowMessage("Erro", "Natureza não pode ser editada!!");
+        switch (new {Classe_de_Imposto = classe, Descricao = desc})
+        {
+            case {Classe_de_Imposto: ""}:
+                OnShowMessage("Erro", "Classe de imposto não pode ser vazia!!");
+                return;
+            case {Descricao: ""}:
+                OnShowMessage("Erro", "Natureza não pode ser vazia!!");
+                return;
         }
 
-        public void ExcluirNatureza()
+        NaturezaSelecionada.Descricao = desc;
+        NaturezaSelecionada.Classe_de_Imposto = classe;
+        if (NaturezaSelecionada.Save())
         {
-            MessageDialogResult afirmacao = OnShowMessage("Confirmação",
-                "Excluir Natureza " + NaturezaSelecionada.Descricao, MessageDialogStyle.AffirmativeAndNegative);
+            OnShowMessage("Natureza", "Natureza salva com sucesso");
+        }
+        else
+        {
+            OnShowMessage("Erro", "Natureza não pode ser editada!!");
+        }
+    }
 
-            if (!afirmacao.Equals(MessageDialogResult.Affirmative)) return;
-            if (NaturezaSelecionada.Delete())
-            {
-                Naturezas.Remove(NaturezaSelecionada);
-                OnShowMessage("Confirmado", "Natureza removida");
-            }
-            else
-            {
-                OnShowMessage("Erro", "Natureza não pode ser removida!!");
-            }
+    public void ExcluirNatureza()
+    {
+        MessageDialogResult afirmacao = OnShowMessage("Confirmação",
+            "Excluir Natureza " + NaturezaSelecionada.Descricao, MessageDialogStyle.AffirmativeAndNegative);
+
+        if (!afirmacao.Equals(MessageDialogResult.Affirmative)) return;
+        if (NaturezaSelecionada.Delete())
+        {
+            Naturezas.Remove(NaturezaSelecionada);
+            OnShowMessage("Confirmado", "Natureza removida");
+        }
+        else
+        {
+            OnShowMessage("Erro", "Natureza não pode ser removida!!");
         }
     }
 }

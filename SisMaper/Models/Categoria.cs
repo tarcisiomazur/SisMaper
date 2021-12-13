@@ -1,27 +1,25 @@
 using System.Data;
 using Persistence;
 
-namespace SisMaper.Models
+namespace SisMaper.Models;
+
+[Table(Name = "Categoria")]
+public class Categoria : DAO
 {
-    [Table(Name = "Categoria")]
-    public class Categoria : DAO
+    public Categoria()
     {
-        [Field(FieldType = SqlDbType.VarChar, Length = 45)]
-        public string Descricao { get; set; }
+        Descricao = "";
+        Produtos = new PList<Produto>();
+    }
 
-        [OneToMany(Fetch = Fetch.Lazy, ItemsByAccess = 10)]
-        public PList<Produto> Produtos { get; set; }
+    [Field(FieldType = SqlDbType.VarChar, Length = 45)]
+    public string Descricao { get; set; }
 
-        public Categoria()
-        {
-            Descricao = "";
-            Produtos = new PList<Produto>();
-        }
+    [OneToMany(Fetch = Fetch.Lazy, ItemsByAccess = 10)]
+    public PList<Produto> Produtos { get; set; }
 
-        public override string ToString()
-        {
-            return Descricao;
-        }
-
+    public override string ToString()
+    {
+        return Descricao;
     }
 }

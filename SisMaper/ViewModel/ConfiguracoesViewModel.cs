@@ -1,9 +1,12 @@
 ﻿using SisMaper.Models;
 
-namespace SisMaper.ViewModel
+namespace SisMaper.ViewModel;
+
+public class ConfiguracoesViewModel : BaseViewModel
 {
-    public class ConfiguracoesViewModel
-    {
-        public Configuracoes Empresa { get; set; }
-    }
+    #region Properties
+
+    public Configuracoes Empresa { get; set; }
+
+    #endregion
 }

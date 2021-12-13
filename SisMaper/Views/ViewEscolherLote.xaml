@@ -135,7 +135,7 @@
         </TextBlock>
         <DataGrid
             x:Name="DataGridEscolherLote"
-            templates:ColumnDataGridSave.SaveSizes="True"
+            templates:SaveUIProperty.SaveSizes="True"
             ItemsSource="{Binding Lotes}"
             SelectedItem="{Binding LoteSelecionado}"
             AutoGenerateColumns="False"

@@ -1,42 +1,31 @@
 ﻿using System.Threading.Tasks;
 using MahApps.Metro.Controls.Dialogs;
 
-namespace SisMaper.Tools
-{
-    public static class ProgressDialogHelper
-    {
+namespace SisMaper.Tools;
 
-        public static async Task SetMessageDelayed(this ProgressDialogController controller, string message, int delay)
+public static class ProgressDialogHelper
+{
+    public static async Task SetMessageDelayed(this ProgressDialogController controller, string message, int delay)
+    {
+        await Task.Delay(delay);
+        if (controller.IsOpen) controller.SetMessage(message);
+    }
+
+    public static async Task SetCancelableDelayed(this ProgressDialogController controller, bool value, int delay)
+    {
+        await Task.Delay(delay);
+        if (controller.IsOpen) controller.SetCancelable(value);
+    }
+
+    public static void TryCloseAsync(this ProgressDialogController controller)
+    {
+        try
         {
-            await Task.Delay(delay);
-            if (controller.IsOpen)
-            {
-                controller.SetMessage(message);
-            }
+            if (controller.IsOpen) controller.CloseAsync().Wait();
         }
-        public static async Task SetCancelableDelayed(this ProgressDialogController controller, bool value, int delay)
+        catch
         {
-            await Task.Delay(delay);
-            if (controller.IsOpen)
-            {
-                controller.SetCancelable(value);
-            }
+            //
         }
-        public static void TryCloseAsync(this ProgressDialogController controller)
-        {
-            try
-            {
-                if (controller.IsOpen)
-                {
-                    controller.CloseAsync().Wait();
-                }
-            }
-            catch
-            {
-                //
-            }
-            
-        }
-        
     }
 }
