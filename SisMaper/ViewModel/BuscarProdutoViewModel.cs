@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using SisMaper.Models.Views;
 using SisMaper.Tools;
 
@@ -12,9 +13,13 @@ public class BuscarProdutoViewModel : BaseViewModel
     public BuscarProdutoViewModel(List<ListarProdutos> produtos)
     {
         PropertyChanged += UpdateFilter;
-        Produtos = produtos;
+        ProdutosFiltrados = new ListCollectionView(produtos)
+        {
+            Filter = Filtro
+        };
         Categorias = new SortedSet<string>(produtos.Select(p => p.Categoria));
     }
+    
 
     #region Actions
 
@@ -28,9 +33,7 @@ public class BuscarProdutoViewModel : BaseViewModel
 
     public bool? Inativos { get; set; } = false;
 
-    public IEnumerable<ListarProdutos> ProdutosFiltrados { get; set; }
-
-    public List<ListarProdutos> Produtos { get; set; }
+    public ListCollectionView ProdutosFiltrados { get; set; }
 
     public ListarProdutos? ProdutoSelecionado { get; set; }
 
@@ -54,14 +57,10 @@ public class BuscarProdutoViewModel : BaseViewModel
 
     private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(CategoriaSelecionada) or nameof(Produtos) or nameof(TextoFiltro) or nameof(
+        if (e.PropertyName is nameof(CategoriaSelecionada) or nameof(TextoFiltro) or nameof(
                 Inativos))
         {
-            ProdutosFiltrados = Produtos.Where(p =>
-                (TextoFiltro.IsContainedIn(p.Descricao) || TextoFiltro.IsContainedIn(p.CodigoBarras) ||
-                 TextoFiltro.IsContainedIn(p.Id.ToString())) && (Inativos is null || Inativos == p.Inativo) &&
-                (CategoriaSelecionada == null || p.Categoria == CategoriaSelecionada)
-            );
+            ProdutosFiltrados.Refresh();
         }
     }
 
@@ -69,5 +68,13 @@ public class BuscarProdutoViewModel : BaseViewModel
     {
         ProdutoSelecionado = Selecionado;
         Select?.Invoke();
+    }
+
+    private bool Filtro(object obj)
+    {
+        return obj is ListarProdutos p &&
+               (TextoFiltro.IsContainedIn(p.Descricao) || TextoFiltro.IsContainedIn(p.CodigoBarras) ||
+                TextoFiltro.IsContainedIn(p.Id.ToString())) && (Inativos is null || Inativos == p.Inativo) &&
+               (CategoriaSelecionada == null || p.Categoria == CategoriaSelecionada);
     }
 }

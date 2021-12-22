@@ -10,13 +10,12 @@
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
+    xmlns:mi="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     Height="450"
     Width="945"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-    xmlns:mi="clr-namespace:SisMaper.Views.Templates.MyInteractions"
-    Dialog:DialogParticipation.Register="{Binding}">
+    templates:DialogParticipation.MyRegister="{Binding}">
     <UserControl.DataContext>
         <viewModel:VendasViewModel />
     </UserControl.DataContext>
@@ -124,6 +123,7 @@
                         VerticalAlignment="Top"
                         Width="110"
                         VerticalContentAlignment="Center"
+                        mah:TextBoxHelper.Watermark=" "
                         Height="28" />
                     <TextBlock
                         HorizontalAlignment="Left"
@@ -138,6 +138,7 @@
                         HorizontalAlignment="Left"
                         Margin="347,6,0,0"
                         SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        mah:TextBoxHelper.Watermark=" "
                         VerticalAlignment="Top"
                         Height="28"
                         Width="110"
@@ -280,7 +281,7 @@
             VerticalAlignment="Bottom"
             TextAlignment="Right"
             Width="120"
-            Margin="0,0,5,5" />
+            Margin="0,0,15,5" />
         <i:Interaction.Triggers>
             <i:KeyTrigger
                 Key="F"

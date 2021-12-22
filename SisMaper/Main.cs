@@ -18,7 +18,7 @@ namespace SisMaper
         public static string Version => "Versão: " + Application.ResourceAssembly.GetName().Version;
         public string Status { get; set; } = "Desconectado";
         public static Usuario Usuario { get; set; } = new();
-        public static Configuracoes? Empresa { get; set; }
+        public static Configuracoes Empresa { get; set; }
         private static MySqlProtocol MySqlProtocol { get; set; }
         private static Dispatcher Dispatcher => Application.Current.Dispatcher;
 

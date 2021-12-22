@@ -17,16 +17,25 @@ namespace SisMaper.Views
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (e.IsChanged(out LoginViewModel viewModel))
+            if (e.NewValue is LoginViewModel newViewModel)
             {
-                viewModel.Login += () =>
-                {
-                    (Application.Current.MainWindow = new MainWindow()).Show();
-                    Close();
-                };
-                viewModel.Cancel += Close;
-                viewModel.ShowMessage += Helper.SystemDefaultMessage;
+                newViewModel.Login += OpenMainWindow;
+                newViewModel.Cancel += Close;
+                newViewModel.ShowMessage += Helper.SystemDefaultMessage;
             }
+
+            if (e.OldValue is LoginViewModel oldViewModel)
+            {
+                oldViewModel.Login -= OpenMainWindow;
+                oldViewModel.Cancel -= Close;
+                oldViewModel.ShowMessage -= Helper.SystemDefaultMessage;
+            }
+        }
+
+        private void OpenMainWindow()
+        {
+            (Application.Current.MainWindow = new MainWindow()).Show();
+            Close();
         }
     }
 }

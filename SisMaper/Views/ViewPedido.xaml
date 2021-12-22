@@ -67,7 +67,7 @@
             HorizontalAlignment="Left"
             Margin="151,24,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Pedido.Id, StringFormat='{}{0:00000}'}"
+            Text="{Binding Pedido.Id, StringFormat='{}{0:00000}', FallbackValue='-', Converter={StaticResource NotZero}}"
             VerticalAlignment="Top"
             Width="66" />
         <TextBlock
@@ -103,7 +103,7 @@
             Height="32"
             Width="211"
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
-            SelectedDate="{Binding Pedido.Data, Mode=TwoWay}" />
+            SelectedDate="{Binding Data, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}" />
         <TextBlock
             HorizontalAlignment="Left"
             Margin="26,75,0,0"
@@ -219,7 +219,7 @@
             VerticalAlignment="Top"
             MaxDropDownHeight="125"
             ItemsSource="{Binding Naturezas}"
-            SelectedItem="{Binding Pedido.Natureza, Mode=TwoWay}"
+            SelectedItem="{Binding NaturezaSelecionada, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             DisplayMemberPath="Descricao"
             HorizontalAlignment="Right"
@@ -235,8 +235,11 @@
             <TabItem
                 Header="  Itens  "
                 mah:HeaderedControlHelper.HeaderBackground="Black">
-                <DockPanel Margin="0">
-                    <Grid DockPanel.Dock="Top" Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <DockPanel
+                    Margin="0">
+                    <Grid
+                        DockPanel.Dock="Top"
+                        Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ComboBox
                             Grid.Row="0"
                             VerticalAlignment="Top"
@@ -246,7 +249,8 @@
                             FontSize="16"
                             MaxDropDownHeight="125"
                             ItemsSource="{Binding ProdutosAtivos}"
-                            SelectedItem="{Binding ProdutoSelecionado, Mode=TwoWay}"
+                            SelectedItem="{Binding ProdutoSelecionado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding TextoFiltro, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             mah:TextBoxHelper.WatermarkAlignment="Right"
                             mah:TextBoxHelper.AutoWatermark="True"
                             mah:TextBoxHelper.Watermark="Buscar Produto"
@@ -344,7 +348,8 @@
                             CommandParameter="{Binding ''}"
                             Margin="0,10,10,0" />
                     </Grid>
-                    <Grid DockPanel.Dock="Bottom">
+                    <Grid
+                        DockPanel.Dock="Bottom">
                         <TextBox
                             IsEnabled="False"
                             Style="{DynamicResource TextBoxStyle1}"
@@ -369,6 +374,7 @@
                     <DataGrid
                         x:Name="DataGridItens"
                         templates:SaveUIProperty.SaveSizes="True"
+                        CanUserSortColumns="False"
                         BorderThickness="1"
                         Style="{DynamicResource MahApps.Styles.DataGrid}"
                         HorizontalContentAlignment="Stretch"
@@ -379,7 +385,6 @@
                         CanUserAddRows="False"
                         Height="auto"
                         Width="auto"
-                        CanUserSortColumns="False"
                         Margin="10,10,10,10"
                         BorderBrush="#FFD2D2D2">
                         <DataGrid.Columns>
@@ -550,8 +555,7 @@
                                             HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
                                             Binding="{Binding Indice}"
                                             ElementStyle="{StaticResource SisMaper.TextBlock.DataGrid.Right}"
-                                            IsReadOnly="True">
-                                        </DataGridTextColumn>
+                                            IsReadOnly="True" />
                                         <DataGridTextColumn
                                             Width="20*"
                                             MinWidth="90"

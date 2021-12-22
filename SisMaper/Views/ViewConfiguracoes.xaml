@@ -9,22 +9,21 @@
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:tools="clr-namespace:SisMaper.Tools"
-    xmlns:m="clr-namespace:SisMaper.ViewModel"
+    xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-    Dialog:DialogParticipation.Register="{Binding }"
+    templates:DialogParticipation.MyRegister="{Binding }"
     mc:Ignorable="d"
+    TitleCharacterCasing="Normal"
     Title="{Binding Empresa.Razao_Social, StringFormat='Configurações - {0}'}"
     MinHeight="450"
     MinWidth="708"
     MaxHeight="450"
     MaxWidth="708"
     ResizeMode="NoResize"
-    SaveWindowPosition="True">
-    <mah:MetroWindow.DataContext>
-        <m:ConfiguracoesViewModel />
-    </mah:MetroWindow.DataContext>
+    SaveWindowPosition="True"
+    ShowInTaskbar="False"
+    d:DataContext="{d:DesignInstance viewModels:ConfiguracoesViewModel}">
     <Grid
         Margin="1,0,-1,0">
         <TextBlock
@@ -82,7 +81,9 @@
             HorizontalAlignment="Left"
             Margin="125,187,0,0"
             VerticalAlignment="Top"
-            mah:TextBoxHelper.SelectAllOnFocus="true"
+            mah:TextBoxHelper.SelectAllOnFocus="True"
+            templates:UnSecurePassword.UnSecurePassword="{Binding ConsumerKey, Mode=TwoWay}"
+            templates:UnSecurePassword.UnSecure="True"
             Width="196"
             Height="30" />
         <TextBlock
@@ -100,6 +101,8 @@
             HorizontalAlignment="Left"
             Margin="125,229,0,0"
             VerticalAlignment="Top"
+            templates:UnSecurePassword.UnSecurePassword="{Binding Token, Mode=TwoWay}"
+            templates:UnSecurePassword.UnSecure="true"
             mah:TextBoxHelper.SelectAllOnFocus="true"
             Width="196"
             Height="30" />
@@ -118,6 +121,8 @@
             Margin="0,187,31,0"
             VerticalAlignment="Top"
             mah:TextBoxHelper.SelectAllOnFocus="true"
+            templates:UnSecurePassword.UnSecurePassword="{Binding ConsumerSecret, Mode=TwoWay}"
+            templates:UnSecurePassword.UnSecure="true"
             Width="196"
             Height="30" />
         <TextBlock
@@ -134,6 +139,8 @@
             HorizontalAlignment="Right"
             Margin="0,229,31,0"
             VerticalAlignment="Top"
+            templates:UnSecurePassword.UnSecurePassword="{Binding TokenSecret, Mode=TwoWay}"
+            templates:UnSecurePassword.UnSecure="true"
             mah:TextBoxHelper.SelectAllOnFocus="true"
             Width="196"
             Height="30" />
@@ -164,7 +171,7 @@
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
-            PreviewMouseLeftButtonDown="Salvar"
+            Command="{Binding SaveCmd}"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Margin="0,0,120,25"

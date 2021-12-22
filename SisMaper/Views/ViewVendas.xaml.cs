@@ -14,19 +14,21 @@ namespace SisMaper.Views
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (e.IsChanged(out VendasViewModel viewModel))
+            if (e.NewValue is VendasViewModel newViewModel)
             {
-                Show += viewModel.Initialize;
-                Hide += viewModel.Clear;
-                viewModel.OpenPedido += OpenPedido;
-                viewModel.ShowMessage += Helper.MahAppsDefaultMessage;
-                viewModel.ShowProgress += Helper.MahAppsDefaultProgress;
+                Show += newViewModel.Initialize;
+                Hide += newViewModel.Clear;
+                newViewModel.OpenPedido += OpenPedido;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+                newViewModel.ShowProgress += Helper.MahAppsDefaultProgress;
             }
-
-            if (e.OldValue is VendasViewModel oldVm)
+            if (e.OldValue is VendasViewModel oldViewModel)
             {
-                Show -= oldVm.Initialize;
-                Hide -= oldVm.Clear;
+                Show -= oldViewModel.Initialize;
+                Hide -= oldViewModel.Clear;
+                oldViewModel.OpenPedido -= OpenPedido;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
+                oldViewModel.ShowProgress -= Helper.MahAppsDefaultProgress;
             }
         }
 

@@ -17,7 +17,7 @@ using SisMaper.Views;
 
 namespace SisMaper.ViewModel;
 
-public class PedidoViewModel : BaseViewModel
+public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 {
     private ListarProdutos? _produtoSelecionado;
 
@@ -61,6 +61,8 @@ public class PedidoViewModel : BaseViewModel
 
     #region Properties
 
+    [Description("Test-Property")] public string Error => string.Empty;
+
     public bool HasFatura => Pedido.Fatura is not null;
 
     public bool HasNotaFiscal => Pedido.NotasFiscais.Count > 0;
@@ -72,6 +74,8 @@ public class PedidoViewModel : BaseViewModel
     private PersistenceContext PersistenceContext { get; }
 
     public bool FaturaTabItemIsSelected { get; set; }
+
+    public string TextoFiltro { get; set; } = "";
 
     public bool NotaFiscalTabItemIsSelected { get; set; }
 
@@ -97,6 +101,18 @@ public class PedidoViewModel : BaseViewModel
     public NotaFiscal? NotaFiscalSelecionada { get; set; }
 
     public Pedido Pedido { get; set; }
+
+    public DateTime? Data
+    {
+        get => Pedido.Data;
+        set => Pedido.Data = value;
+    }   
+    
+    public Natureza? NaturezaSelecionada
+    {
+        get => Pedido.Natureza;
+        set => Pedido.Natureza = value;
+    }
 
     public PList<Natureza> Naturezas { get; set; }
 
@@ -133,6 +149,16 @@ public class PedidoViewModel : BaseViewModel
     public SimpleCommand SalvarCmd => new(SavePedido, IsPedidoAberto());
 
     #endregion
+
+    public string this[string columnName]
+    {
+        get
+        {
+            if (columnName is nameof(Data) or nameof(NaturezaSelecionada) && IsOpen && Data is null)
+                return "Campo Obrigatório";
+            return "";
+        }
+    }
 
     private Func<bool> IsPedidoAberto(bool x = true)
     {
@@ -205,10 +231,14 @@ public class PedidoViewModel : BaseViewModel
 
     private void AbrirBuscarProduto()
     {
-        var vm = new BuscarProdutoViewModel(Produtos);
+        var vm = new BuscarProdutoViewModel(Produtos)
+        {
+            TextoFiltro = TextoFiltro
+        };
         OpenBuscarProduto?.Invoke(vm);
-        if (vm.ProdutoSelecionado is null) return;
-        NovoItem.Produto = PersistenceContext.Get<Produto>(vm.ProdutoSelecionado.Id);
+        ProdutoSelecionado = vm.ProdutoSelecionado;
+        if (ProdutoSelecionado is null) return;
+        NovoItem.Produto = PersistenceContext.Get<Produto>(ProdutoSelecionado.Id);
         if (NovoItem.Produto != null && NovoItem.Quantidade > 0)
         {
             AddItem();
@@ -245,6 +275,7 @@ public class PedidoViewModel : BaseViewModel
             SumPedido();
             NovoItem = new Item {Pedido = Pedido, Context = PersistenceContext};
             QuantidadeItem = "";
+            TextoFiltro = "";
             ProdutoSelecionado = null;
         }
         else
@@ -528,10 +559,7 @@ public class PedidoViewModel : BaseViewModel
     private void SetProduto(ListarProdutos? produto)
     {
         _produtoSelecionado = produto;
-        if (produto is not null)
-        {
-            NovoItem.Produto = PersistenceContext.Get<Produto>(produto.Id);
-        }
+        NovoItem.Produto = produto is not null ? PersistenceContext.Get<Produto>(produto.Id) : null;
     }
 
     private void VerificaQuantidadeEventHandler(TextChangedEventArgs e)

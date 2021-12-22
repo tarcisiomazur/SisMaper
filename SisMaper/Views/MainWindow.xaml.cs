@@ -32,16 +32,25 @@ namespace SisMaper.Views
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue is MainViewModel newVm)
+            if (e.NewValue is MainViewModel newViewModel)
             {
-                newVm.ShowProgress += Helper.MahAppsDefaultProgress;
-                newVm.ShowMessage += Helper.MahAppsDefaultMessage;
+                newViewModel.ShowProgress += Helper.MahAppsDefaultProgress;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+            }
+
+            if (e.OldValue is MainViewModel oldViewModel)
+            {
+                oldViewModel.ShowProgress -= Helper.MahAppsDefaultProgress;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             }
         }
 
         private void OpenConfig(object sender, RoutedEventArgs e)
         {
-            new ViewConfiguracoes(Main.Empresa) {Owner = this}.ShowDialog();
+            var vm = new ConfiguracoesViewModel();
+            var window = new ViewConfiguracoes {Owner = this, DataContext = vm};
+            window.Loaded += (_, _) => vm.Initialize(Main.Empresa);
+            window.ShowDialog();
             e.Handled = true;
         }
 

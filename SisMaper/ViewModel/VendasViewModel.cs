@@ -14,7 +14,10 @@ public class VendasViewModel : BaseViewModel
 {
     public VendasViewModel()
     {
-        PedidosFiltrados = new ListCollectionView(Pedidos);
+        PedidosFiltrados = new ListCollectionView(Pedidos)
+        {
+            Filter = Filter
+        };
         StatusList = new List<Pedido.Pedido_Status>
         {
             Pedido.Pedido_Status.Aberto,
@@ -118,10 +121,7 @@ public class VendasViewModel : BaseViewModel
     {
         Pedidos.Clear();
         Pedidos.AddRange(View.Execute<ListarPedido>());
-        PedidosFiltrados = new ListCollectionView(Pedidos)
-        {
-            Filter = Filter
-        };
+        PedidosFiltrados.Refresh();
         TextoFiltro = "";
     }
 
@@ -144,12 +144,11 @@ public class VendasViewModel : BaseViewModel
 
     public void Clear(object? sender, EventArgs e)
     {
-        Pedidos = null;
+        Pedidos.Clear();
     }
 
     private void ChangeIntervalo(string? value)
     {
-        Console.WriteLine("Change Intervalo");
         var today = DateTime.Today;
         (EndDate, StartDate) = value switch
         {
@@ -164,7 +163,6 @@ public class VendasViewModel : BaseViewModel
 
     private string? GetIntervalo()
     {
-        Console.WriteLine("Get Intervalo");
         var today = DateTime.Today;
         if (StartDate is null && EndDate is null)
         {

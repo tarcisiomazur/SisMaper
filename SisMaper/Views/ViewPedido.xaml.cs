@@ -5,56 +5,63 @@ using CefSharp.Wpf;
 using SisMaper.Tools;
 using SisMaper.ViewModel;
 
-namespace SisMaper.Views
+namespace SisMaper.Views;
+
+/// <summary>
+///     Lógica interna para ViewPedido.xaml
+/// </summary>
+public partial class ViewPedido
 {
-    /// <summary>
-    /// Lógica interna para ViewPedido.xaml
-    /// </summary>
-    public partial class ViewPedido
+    public ViewPedido()
     {
-        public ViewPedido()
-        {
-            InitializeComponent();
-            DataContextChanged += SetActions;
-        }
+        InitializeComponent();
+        DataContextChanged += SetActions;
+    }
 
-        ~ViewPedido()
+    private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is PedidoViewModel newViewModel)
         {
-            Console.WriteLine("Gc Collect");
+            newViewModel.Save += Close;
+            newViewModel.Cancel += Close;
+            newViewModel.OpenFatura += OpenFatura;
+            newViewModel.OpenBuscarProduto += OpenBuscarProduto;
+            newViewModel.OpenCrudCliente += OpenCrudCliente;
+            newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+            newViewModel.ShowProgress += Helper.MahAppsDefaultProgress;
         }
-        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
+        if (e.OldValue is PedidoViewModel oldViewModel)
         {
-            if (e.IsChanged(out PedidoViewModel viewModel))
-            {
-                viewModel.Save += Close;
-                viewModel.Cancel += Close;
-                viewModel.OpenFatura += OpenFatura;
-                viewModel.OpenBuscarProduto += OpenBuscarProduto;
-                viewModel.OpenCrudCliente += OpenCrudCliente;
-                viewModel.ShowMessage += Helper.MahAppsDefaultMessage;
-                viewModel.ShowProgress += Helper.MahAppsDefaultProgress;
-            }
+            oldViewModel.Save -= Close;
+            oldViewModel.Cancel -= Close;
+            oldViewModel.OpenFatura -= OpenFatura;
+            oldViewModel.OpenBuscarProduto -= OpenBuscarProduto;
+            oldViewModel.OpenCrudCliente -= OpenCrudCliente;
+            oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
+            oldViewModel.ShowProgress -= Helper.MahAppsDefaultProgress;
         }
+    }
 
-        private void OpenCrudCliente(CrudClienteViewModel viewModel)
-        {
-            new CrudPessoaFisica {DataContext = viewModel, Owner = this}.ShowDialog();
-        }
+    private void OpenCrudCliente(CrudClienteViewModel viewModel)
+    {
+        new CrudPessoaFisica {DataContext = viewModel, Owner = this}.ShowDialog();
+    }
 
-        private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)
-        {
-            new ViewBuscarProduto {DataContext = viewModel, Owner = this}.ShowDialog();
-        }
+    private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)
+    {
+        new ViewBuscarProduto {DataContext = viewModel, Owner = this}.ShowDialog();
+    }
 
-        private void OpenFatura(FaturaViewModel viewModel)
-        {
-            new ViewFatura {DataContext = viewModel, Owner = this}.ShowDialog();
-        }
+    private void OpenFatura(FaturaViewModel viewModel)
+    {
+        new ViewFatura {DataContext = viewModel, Owner = this}.ShowDialog();
+    }
 
-        private void SetZoom(object? sender, FrameLoadEndEventArgs frameLoadEndEventArgs)
+    private void SetZoom(object? sender, FrameLoadEndEventArgs frameLoadEndEventArgs)
+    {
+        if (sender is ChromiumWebBrowser webBrowser)
         {
-            if (sender is ChromiumWebBrowser webBrowser)
-                webBrowser.SetZoomLevel(2);
+            webBrowser.SetZoomLevel(2);
         }
     }
 }

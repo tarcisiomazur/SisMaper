@@ -16,7 +16,7 @@ public class Pedido : DAO
     }
 
     [Field(FieldType = SqlDbType.DateTime)]
-    public DateTime Data { get; set; } = DateTime.Now;
+    public DateTime? Data { get; set; } = DateTime.Now;
 
     [Field(FieldType = SqlDbType.Bit, Length = 3)]
     public Pedido_Status Status { get; set; } = Pedido_Status.Aberto;

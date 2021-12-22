@@ -10,8 +10,7 @@
     xmlns:local="clr-namespace:SisMaper.Views"
     mc:Ignorable="d"
     Title="Escolher Lote"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-    Dialog:DialogParticipation.Register="{Binding}"
+    templates:DialogParticipation.MyRegister="{Binding}"
     Height="271"
     Width="410"
     SaveWindowPosition="True">

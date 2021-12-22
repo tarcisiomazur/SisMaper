@@ -39,7 +39,7 @@ public class DecimalToRealString : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return "";
+        throw new NotSupportedException();
     }
 }
 
@@ -146,9 +146,9 @@ public static class InterfaceExtension
         return false;
     }
 
-    public static bool IsContainedIn(this string str, string? value)
+    public static bool IsContainedIn(this string? str, string? value)
     {
-        return value != null && (value.Length == 0 || value.Contains(str, StringComparison.InvariantCultureIgnoreCase));
+        return str == null || value != null && (value.Length == 0 || value.Contains(str, StringComparison.InvariantCultureIgnoreCase));
     }
 
     public static bool IsOpen(this Pedido pedido)

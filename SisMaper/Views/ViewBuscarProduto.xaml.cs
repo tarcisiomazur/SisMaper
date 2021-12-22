@@ -9,16 +9,21 @@ namespace SisMaper.Views
         
         public ViewBuscarProduto()
         {
-            InitializeComponent();
             DataContextChanged += SetActions;
+            InitializeComponent();
         }
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (e.IsChanged(out BuscarProdutoViewModel viewModel))
+            if (e.NewValue is BuscarProdutoViewModel newViewModel)
             {
-                viewModel.Cancel += Close;
-                viewModel.Select += Close;
+                newViewModel.Cancel += Close;
+                newViewModel.Select += Close; 
+            }
+            if (e.OldValue is BuscarProdutoViewModel oldViewModel)
+            {
+                oldViewModel.Cancel -= Close;
+                oldViewModel.Select -= Close;
             }
         }
     }

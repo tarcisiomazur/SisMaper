@@ -6,6 +6,9 @@ namespace SisMaper.Models;
 [Table(Name = "Produto")]
 public class Produto : DAO
 {
+    [Field(FieldType = SqlDbType.VarChar, Length = 10)]
+    public string CodigoInterno { get; set; }
+    
     [Field(FieldType = SqlDbType.VarChar, Length = 13)]
     public string CodigoBarras { get; set; }
 
@@ -30,7 +33,7 @@ public class Produto : DAO
 
     [ManyToOne(Fetch = Fetch.Eager)] public Unidade? Unidade { get; set; }
 
-    [OneToMany] public PList<Lote> Lotes { get; set; }
+    [OneToMany] public PList<Lote>? Lotes { get; set; }
 
     public double Porcentagem
     {

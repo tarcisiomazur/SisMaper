@@ -82,21 +82,25 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="40*"
+                        MinWidth="100"
                         Header="Código"
                         Binding="{Binding CodigoBarras}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Width="80*"
+                        MinWidth="150"
                         Header="Descrição"
                         Binding="{Binding Descricao}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Width="30*"
+                        MinWidth="100"
                         Header="Categoria"
                         Binding="{Binding Categoria}"
                         IsReadOnly="True" />
                     <mah:DataGridNumericUpDownColumn
                         Width="40*"
+                        MinWidth="150"
                         Header="Preço de Venda(R$)"
                         StringFormat="{}{0:N2}"
                         Culture="pt-BR"
