@@ -149,7 +149,7 @@
 
     <Grid x:Name="grid" >
         <TabControl>
-            <TabItem Header="  Pessoa Física  " Height="35" x:Name="PessoaFisicaTabItem" >
+            <TabItem Header="  Pessoa Física  " Height="35" x:Name="PessoaFisicaTabItem" Visibility="Hidden"> 
                 <StackPanel>
 
                     <StackPanel Orientation="Horizontal">
@@ -307,7 +307,7 @@
 
             </TabItem>
 
-            <TabItem Header="  Pessoa Jurídica  " Height="35" x:Name="PessoaJuridicaTabItem">
+            <TabItem Header="  Pessoa Jurídica  " Height="35" x:Name="PessoaJuridicaTabItem" Visibility="Hidden">
                 <StackPanel>
 
                     <StackPanel Orientation="Horizontal">

@@ -108,10 +108,6 @@ namespace SisMaper.ViewModel
                 }
 
 
-
-
-
-
                 PList<PessoaFisica> pessoasFisicas = DAO.All<PessoaFisica>();
                 PList<PessoaJuridica> pessoasJuridicas = DAO.All<PessoaJuridica>();
 
@@ -132,9 +128,6 @@ namespace SisMaper.ViewModel
                         break;
                     }
                 }
-
-
-
 
 
             }
@@ -236,6 +229,79 @@ namespace SisMaper.ViewModel
             }
         }
 
+
+        private bool CheckDigitoVerificadorCPF(string cpf)
+        {
+            //verifica se todos os elementos são iguais
+            if (cpf.All(ch => ch == cpf[0]))
+                return false;
+
+            int somaDigito1 = 0, somaDigito2 = 0, multiplicador = 11;
+
+            for(int i = 0;i < 10;i++)
+            {
+                somaDigito2 += Convert.ToInt16(cpf[i].ToString()) * multiplicador;
+
+                if(multiplicador < 11)
+                    somaDigito1 += Convert.ToInt16(cpf[i-1].ToString()) * multiplicador;
+
+                multiplicador--;
+            }
+
+            int digito1 = 11 - (somaDigito1 % 11);
+            int digito2 = 11 - (somaDigito2 % 11);
+
+            if (digito1 > 9)
+                digito1 = 0;
+
+
+            if (digito2 > 9)
+                digito2 = 0;
+
+
+            String digitos = digito1.ToString() + digito2.ToString();
+
+            return (cpf.EndsWith(digitos));
+        }
+
+
+        private bool CheckDigitoVerificadorCNPJ(string cnpj)
+        {
+            //verifica se todos os elementos são iguais
+            if (cnpj.All(ch => ch == cnpj[0]))
+                return false;
+
+            int[] multiplicadores = new int[] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int somaDigito1 = 0, somaDigito2 = 0;
+
+            for(int i = 0;i < multiplicadores.Length;i++)
+            {
+
+                Console.WriteLine(cnpj[i].ToString());
+
+                somaDigito2 += Convert.ToInt16(cnpj[i].ToString()) * multiplicadores[i];
+
+                if(i > 0)
+                    somaDigito1 += Convert.ToInt16(cnpj[i-1].ToString()) * multiplicadores[i];
+            }
+
+            int digito1 = 11 - (somaDigito1 % 11);
+            int digito2 = 11 - (somaDigito2 % 11);
+
+            if (digito1 > 9)
+                digito1 = 0;
+
+            if (digito2 > 9)
+                digito2 = 0;
+
+            string digitos = digito1.ToString() + digito2.ToString();
+
+            return (cnpj.EndsWith(digitos));
+
+        }
+       
+
+
         private void SalvarCliente<T>(T clienteParameter) where T : Cliente
         {
             if (cliente is null)
@@ -275,14 +341,18 @@ namespace SisMaper.ViewModel
                         throw new InvalidOperationException("CPF não pode ser vazio");
                     }
 
-                    pf.CPF = pf.CPF.Remove(3, 1);
-                    pf.CPF = pf.CPF.Remove(6, 1);
-                    pf.CPF = pf.CPF.Remove(9, 1);
+                    pf.CPF = pf.CPF.Replace(".", "").Replace("-", "");
 
                     if (pf.CPF.Contains('_'))
                     {
                         cliente = null;
                         throw new InvalidOperationException("CPF incompleto");
+                    }
+
+                    if(!CheckDigitoVerificadorCPF(pf.CPF))
+                    {
+                        cliente = null;
+                        throw new InvalidOperationException("CPF Inválido");
                     }
 
                     if (SearchCliente(pf))
@@ -309,10 +379,8 @@ namespace SisMaper.ViewModel
                         throw new InvalidOperationException("CNPJ não pode ser vazio");
                     }
 
-                    pj.CNPJ = pj.CNPJ.Remove(2, 1);
-                    pj.CNPJ = pj.CNPJ.Remove(5, 1);
-                    pj.CNPJ = pj.CNPJ.Remove(8, 1);
-                    pj.CNPJ = pj.CNPJ.Remove(12, 1);
+
+                    pj.CNPJ = pj.CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
 
                     if (pj.CNPJ.Contains('_'))
                     {
@@ -320,6 +388,11 @@ namespace SisMaper.ViewModel
                         throw new InvalidOperationException("CNPJ incompleto");
                     }
 
+                    if(!CheckDigitoVerificadorCNPJ(pj.CNPJ))
+                    {
+                        cliente = null;
+                        throw new InvalidOperationException("CNPJ Inválido");
+                    }
 
                     if (SearchCliente(pj))
                     {
@@ -354,14 +427,17 @@ namespace SisMaper.ViewModel
 
                     if (pf.CPF.Length == 14)
                     {
-                        pf.CPF = pf.CPF.Remove(3, 1);
-                        pf.CPF = pf.CPF.Remove(6, 1);
-                        pf.CPF = pf.CPF.Remove(9, 1);
+                        pf.CPF = pf.CPF.Replace(".", "").Replace("-", "");
                     }
 
                     if (pf.CPF.Contains('_'))
                     {
                         throw new InvalidOperationException("CPF incompleto");
+                    }
+
+                    if (!CheckDigitoVerificadorCPF(pf.CPF))
+                    {
+                        throw new InvalidOperationException("CPF Inválido");
                     }
 
                     if (SearchCliente(pf))
@@ -403,15 +479,18 @@ namespace SisMaper.ViewModel
 
                     if (pj.CNPJ.Length == 18)
                     {
-                        pj.CNPJ = pj.CNPJ.Remove(2, 1);
-                        pj.CNPJ = pj.CNPJ.Remove(5, 1);
-                        pj.CNPJ = pj.CNPJ.Remove(8, 1);
-                        pj.CNPJ = pj.CNPJ.Remove(12, 1);
+                        pj.CNPJ = pj.CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
                     }
 
                     if (pj.CNPJ.Contains('_'))
                     {
                         throw new InvalidOperationException("CNPJ incompleto");
+                    }
+
+                    if (!CheckDigitoVerificadorCNPJ(pj.CNPJ))
+                    {
+                        cliente = null;
+                        throw new InvalidOperationException("CNPJ Inválido");
                     }
 
                     if (SearchCliente(pj))
@@ -451,7 +530,7 @@ namespace SisMaper.ViewModel
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro: " + ex.Message + " Stack: " + ex.StackTrace);
+                MessageBox.Show("Erro: " + ex.Message);
             }
 
         }

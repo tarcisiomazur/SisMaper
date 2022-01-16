@@ -13,7 +13,7 @@ namespace SisMaper.ViewModel
     public class ProdutosViewModel : BaseViewModel, IProdutos
     {
         public ListarProdutos ProdutoSelecionado { get; set; }
-        public List<ListarProdutos> Produtos { get; set; }
+        public List<ListarProdutos>? Produtos { get; set; }
         public IEnumerable<ListarProdutos> ProdutosFiltrados { get; set; }
         
         public Categoria? CategoriaSelecionada { get; set; }
@@ -38,6 +38,8 @@ namespace SisMaper.ViewModel
 
         public ProdutosViewModel()
         {
+            Produtos = View.Execute<ListarProdutos>();
+
             Categorias = DAO.All<Categoria>();
             NovoProduto = new NovoProdutoCommand();
             Editar = new EditarProdutoCommand();
@@ -46,8 +48,9 @@ namespace SisMaper.ViewModel
             AbrirUnidades = new OpenUnidadeCommand();
             
             DialogCoordinator = new DialogCoordinator();
+            
             PropertyChanged += UpdateFilter;
-            Produtos = View.Execute<ListarProdutos>();
+            
 
         }
 
