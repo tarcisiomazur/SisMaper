@@ -263,18 +263,24 @@
 
         <ComboBox ItemsSource="{Binding ListaNCM}"
             SelectedItem="{Binding NCMSelecionado, Mode=TwoWay}"
-            Text="{Binding NCMSelecionado.Descricao}"
+            DisplayMemberPath="Descricao"
             Grid.Row="0"
             Height="32"
             Margin="158,248,427,0"
             FontSize="16"
             mah:TextBoxHelper.Watermark="NCM"
-            IsEditable="true"
+            IsEditable="false"
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
-            VerticalAlignment="Top" 
+            VerticalAlignment="Top"
+                  
             >
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="Width" Value="700"/>
+                </Style>
+            </ComboBox.ItemContainerStyle>
 
         </ComboBox>
 
@@ -312,6 +318,7 @@
             TextWrapping="Wrap"
             Text="{Binding Produto.Porcentagem, ConverterCulture={x:Static sysglob:CultureInfo.CurrentCulture}, StringFormat={}{0:#0.000}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
+            IsEnabled="False"
             Width="165" Padding="20,4,20,4" />
         <TextBlock 
             Text="%"

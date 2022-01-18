@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
+using MySql.Data.MySqlClient;
 using Persistence;
 using SisMaper.Models;
 using System;
@@ -52,21 +53,65 @@ namespace SisMaper.ViewModel
         }
 
 
-        private void SalvarCategoriaNoBanco(Categoria c)
+
+        private bool SalvarCategoriaNoBanco(Categoria c)
         {
-            c.Save();
+            try
+            {
+                c.Save();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Erro ao salvar categoria: " + ex.Message, MessageDialogStyle.Affirmative);
+                return false;
+            }
         }
 
-        private void DeletarCategoriaDoBanco(Categoria c)
+        private bool DeletarCategoriaDoBanco(Categoria c)
         {
-            c.Delete();
+            try
+            {
+                c.Delete();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                
+                if(ex is MySqlConnector.MySqlConnectorException && ex.InnerException is MySqlException)
+                {
+                    //MessageBox.Show((ex as MySqlConnector.MySqlConnectorException).ErrorCode.ToString());
+                    if( (ex as MySqlConnector.MySqlConnectorException).ErrorCode == -2147467259)
+                    {
+                        DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Categoria {0} está vinculada a algum produto, não pode ser excluida", c.Descricao), MessageDialogStyle.Affirmative);
+                        return false;
+                    }
+
+                    DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Erro ao deletar categoria {0}: " + ex.Message, c.Descricao), MessageDialogStyle.Affirmative);
+                    return false;
+                }
+
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Erro ao deletar categoria {0}: " + ex.Message, c.Descricao), MessageDialogStyle.Affirmative);
+                return false;
+            }
         }
 
-        private void EditarCategoriaDoBanco(Categoria original, Categoria nova)
+        private bool EditarCategoriaDoBanco(Categoria original, Categoria nova)
         {
-            original.Descricao = nova.Descricao;
-            original.Save();
+            try
+            {
+                original.Descricao = nova.Descricao;
+                original.Save();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Erro ao editar categoria: " + ex.Message, MessageDialogStyle.Affirmative);
+                return false;
+            }
         }
+
+
 
 
         public void AdicionarCategoria(string defaultText)
@@ -99,9 +144,11 @@ namespace SisMaper.ViewModel
 
             if (!string.IsNullOrEmpty(cat) && !string.IsNullOrWhiteSpace(cat))
             {
-                Categorias.Add(c);
-                SalvarCategoriaNoBanco(c);
-                DialogCoordinator.ShowModalMessageExternal(this, "Categoria", "Categoria adicionada com sucesso");
+                if (SalvarCategoriaNoBanco(c))
+                {
+                    Categorias.Add(c);
+                    DialogCoordinator.ShowModalMessageExternal(this, "Categoria", "Categoria adicionada com sucesso");
+                }
                 return;
             }
 
@@ -147,9 +194,11 @@ namespace SisMaper.ViewModel
 
             if (!string.IsNullOrEmpty(cat) && !string.IsNullOrWhiteSpace(cat))
             {
-                EditarCategoriaDoBanco(Categorias[Categorias.IndexOf(CategoriaSelecionada)], c);
-                Categorias[Categorias.IndexOf(CategoriaSelecionada)] = c;
-                DialogCoordinator.ShowModalMessageExternal(this, "Categoria", "Categoria editada com sucesso");
+                if (EditarCategoriaDoBanco(Categorias[Categorias.IndexOf(CategoriaSelecionada)], c))
+                {
+                    Categorias[Categorias.IndexOf(CategoriaSelecionada)] = c;
+                    DialogCoordinator.ShowModalMessageExternal(this, "Categoria", "Categoria editada com sucesso");
+                }
                 return;
             }
 
@@ -173,9 +222,11 @@ namespace SisMaper.ViewModel
             
             if(afirmacao.Equals(MessageDialogResult.Affirmative))
             {
-                DeletarCategoriaDoBanco(CategoriaSelecionada);
-                Categorias.Remove(CategoriaSelecionada);
-                DialogCoordinator.ShowModalMessageExternal(this, "Confirmado", "Categoria removida");
+                if (DeletarCategoriaDoBanco(CategoriaSelecionada))
+                {
+                    Categorias.Remove(CategoriaSelecionada);
+                    DialogCoordinator.ShowModalMessageExternal(this, "Confirmado", "Categoria removida");
+                }
             }
             
         }

@@ -48,9 +48,11 @@ namespace SisMaper.ViewModel
             AbrirUnidades = new OpenUnidadeCommand();
             
             DialogCoordinator = new DialogCoordinator();
+
             
             PropertyChanged += UpdateFilter;
-            
+
+            ProdutosFiltrados = Produtos;
 
         }
 

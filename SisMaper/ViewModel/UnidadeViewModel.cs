@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
+using MySql.Data.MySqlClient;
 using Persistence;
 using SisMaper.Models;
 using System;
@@ -49,21 +50,64 @@ namespace SisMaper.ViewModel
 
         }
 
-        private void SalvarUnidadeNoBanco(Unidade u)
+
+        private bool SalvarUnidadeNoBanco(Unidade u)
         {
-            u.Save();
+            try
+            {
+                u.Save();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Erro ao salvar unidade: " + ex.Message, MessageDialogStyle.Affirmative);
+                return false;
+            }
         }
 
-        private void DeletarUnidadeDoBanco(Unidade u)
+        private bool DeletarUnidadeDoBanco(Unidade u)
         {
-            u.Delete();
+            try
+            {
+                u.Delete();
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                if (ex is MySqlConnector.MySqlConnectorException && ex.InnerException is MySqlException)
+                {
+                    //MessageBox.Show((ex as MySqlConnector.MySqlConnectorException).ErrorCode.ToString());
+                    if ((ex as MySqlConnector.MySqlConnectorException).ErrorCode == -2147467259)
+                    {
+                        DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Unidade {0} está vinculada a algum produto, não pode ser excluida", u.Descricao), MessageDialogStyle.Affirmative);
+                        return false;
+                    }
+
+                    DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Erro ao deletar unidade {0}: " + ex.Message, u.Descricao), MessageDialogStyle.Affirmative);
+                    return false;
+                }
+
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Erro ao deletar unidade {0}: " + ex.Message, u.Descricao), MessageDialogStyle.Affirmative);
+                return false;
+            }
         }
 
-        private void EditarUnidadeDoBanco(Unidade original, Unidade nova)
+        private bool EditarUnidadeDoBanco(Unidade original, Unidade nova)
         {
-            original.Descricao = nova.Descricao;
-            original.Save();
+            try
+            {
+                original.Descricao = nova.Descricao;
+                original.Save();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Erro ao editar unidade: " + ex.Message, MessageDialogStyle.Affirmative);
+                return false;
+            }
         }
+
 
 
 
@@ -101,9 +145,11 @@ namespace SisMaper.ViewModel
 
             if (!string.IsNullOrEmpty(uni) && !string.IsNullOrWhiteSpace(uni))
             {
-                SalvarUnidadeNoBanco(u);
-                Unidades.Add(u);
-                DialogCoordinator.ShowModalMessageExternal(this, "Unidade", "Unidade adicionada com sucesso");
+                if (SalvarUnidadeNoBanco(u))
+                {
+                    Unidades.Add(u);
+                    DialogCoordinator.ShowModalMessageExternal(this, "Unidade", "Unidade adicionada com sucesso");
+                }
                 return;
             }
 
@@ -149,9 +195,11 @@ namespace SisMaper.ViewModel
 
             if (!string.IsNullOrEmpty(uni) && !string.IsNullOrWhiteSpace(uni))
             {
-                EditarUnidadeDoBanco(Unidades[Unidades.IndexOf(UnidadeSelecionada)], u);
-                Unidades[Unidades.IndexOf(UnidadeSelecionada)] = u;
-                DialogCoordinator.ShowModalMessageExternal(this, "Unidade", "Unidade editada com sucesso");
+                if (EditarUnidadeDoBanco(Unidades[Unidades.IndexOf(UnidadeSelecionada)], u))
+                {
+                    Unidades[Unidades.IndexOf(UnidadeSelecionada)] = u;
+                    DialogCoordinator.ShowModalMessageExternal(this, "Unidade", "Unidade editada com sucesso");
+                }
                 return;
             }
 
@@ -175,9 +223,11 @@ namespace SisMaper.ViewModel
 
             if (afirmacao.Equals(MessageDialogResult.Affirmative))
             {
-                DeletarUnidadeDoBanco(UnidadeSelecionada);
-                Unidades.Remove(UnidadeSelecionada);
-                DialogCoordinator.ShowModalMessageExternal(this, "Confirmado", "Unidade removida");
+                if (DeletarUnidadeDoBanco(UnidadeSelecionada))
+                {
+                    Unidades.Remove(UnidadeSelecionada);
+                    DialogCoordinator.ShowModalMessageExternal(this, "Confirmado", "Unidade removida");
+                }
             }
 
         }

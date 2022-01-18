@@ -294,8 +294,9 @@ namespace SisMaper.ViewModel
         {
             try
             {
+                Lote l = LoteSelecionado;
                 Lotes.Remove(LoteSelecionado);
-                LoteSelecionado.Delete();
+                l.Delete();
             }
             catch(Exception ex)
             {
@@ -305,34 +306,40 @@ namespace SisMaper.ViewModel
 
         public void SalvarProduto()
         {
+            try 
+            {
+                CheckCategoria();
+                CheckUnidade();
+
+                if(!prontoPraSalvarCategoria || !prontoPraSalvarUnidade)
+                {
+                    return;
+                }
+
+
+                
+                PList<Lote> listaLotesPraAdicionar = new PList<Lote>();
+
+                Produto.Lotes = new PList<Lote>();
+
+                foreach (Lote l in Lotes)
+                {
+                    listaLotesPraAdicionar.Add(l);
+                    Produto.Lotes.Add(l);
+                }
+                
+
+                Produto.Categoria = CategoriaSelecionada;
+                Produto.Unidade = UnidadeSelecionada;
+                Produto.NCM = NCMSelecionado;
+
             
-            CheckCategoria();
-            CheckUnidade();
-
-            if(!prontoPraSalvarCategoria || ! prontoPraSalvarUnidade)
-            {
-                return;
-            }
-
-            PList<Lote> listaLotesPraAdicionar = new PList<Lote>();
-
-            Produto.Lotes = new PList<Lote>();
-
-            foreach (Lote l in Lotes)
-            {
-                listaLotesPraAdicionar.Add(l);
-                Produto.Lotes.Add(l);
-            }
-
-            Produto.Categoria = CategoriaSelecionada;
-            Produto.Unidade = UnidadeSelecionada;
-            Produto.NCM = NCMSelecionado;
-
-            try
-            {
+            
                 CheckCodigoBarras();
+
                 Produto.Save();
 
+                
                 foreach (Lote l in listaLotesPraAdicionar)
                 {
                     l.Produto = Produto;
@@ -349,6 +356,9 @@ namespace SisMaper.ViewModel
                 DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar produto", "Erro: " + ex.Message + ex.StackTrace, MessageDialogStyle.Affirmative, new MetroDialogSettings() {AffirmativeButtonText = "Ok" });
             }
         }
+
+
+
 
         public class SalvarCommand : BaseCommand
         {
