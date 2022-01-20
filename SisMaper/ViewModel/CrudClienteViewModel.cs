@@ -18,9 +18,10 @@ namespace SisMaper.ViewModel
         {
             get { return _estadoSelecionado; }
             set
-            {    
+            {
                 SetField(ref _estadoSelecionado, value);
                 SetCidades(value);
+
             }
         }
 
@@ -33,7 +34,6 @@ namespace SisMaper.ViewModel
             set 
             { 
                 SetField(ref _cidadeSelecionada, value);
-                TextoCidade = value.Nome;
             }
 
         }
@@ -60,16 +60,6 @@ namespace SisMaper.ViewModel
         public Action SaveCliente { get; set; }
 
 
-        public string _textoCidade;
-        public string TextoCidade
-        {
-            get { return _textoCidade; }
-            set 
-            {
-                SetField(ref _textoCidade, value);
-                SetTextoCidade(value);
-            } 
-        }
 
         public Action ClientePessoaFisica { get; set; }
         public Action ClientePessoaJuridica { get; set; }
@@ -85,26 +75,8 @@ namespace SisMaper.ViewModel
             {
                 if (cliente.Cidade is not null)
                 {
-                    
-                    EstadoSelecionado = cliente.Cidade.Estado;
-                    CidadeSelecionada = cliente.Cidade;
-
-                    foreach (Estado e in Estados)
-                    {
-                        if (e.Id == CidadeSelecionada.Estado.Id)
-                        {
-                            EstadoSelecionado = e;
-                            foreach (Cidade c in e.Cidades)
-                            {
-                                if (c.Id == cliente.Cidade.Id)
-                                {
-                                    CidadeSelecionada = c;
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    EstadoSelecionado = Estados.Where(e => e.Id == cliente.Cidade.Estado.Id).First();
+                    CidadeSelecionada = Cidades.Where(c => c.Id == cliente.Cidade.Id).First();
                 }
 
 
@@ -149,27 +121,27 @@ namespace SisMaper.ViewModel
             if (cliente is PessoaFisica pf)
             {
                 PessoaFisica = pf;
-                //ClientePessoaFisica?.Invoke();
             }
 
             else if (cliente is PessoaJuridica pj)
             {
                 PessoaJuridica = pj;
-                //ClientePessoaJuridica?.Invoke();
             }
+
+
 
         }
 
 
         private void SetCidades(Estado e)
         {
+
             if (e is not null)
             {
                 Cidades = e.Cidades;
                 if(Cidades is not null && Cidades.Count > 0)
                 {
                     CidadeSelecionada = Cidades.First();
-                    TextoCidade = CidadeSelecionada.Nome;
                 }
                 
             }
@@ -177,44 +149,24 @@ namespace SisMaper.ViewModel
             else
             {
                 CidadeSelecionada = null;
-                TextoCidade = null;
                 Cidades = null;
             }
         }
 
-        private void SetTextoCidade(string cidade)
-        {
-            if(String.IsNullOrWhiteSpace(cidade))
-            {
-                EstadoSelecionado = null;
-            }
-        }
 
 
         private bool SearchCliente(Cliente c)
         {
             if (c is PessoaFisica pf)
-            {
+            {           
                 PList<PessoaFisica> pessoas = DAO.All<PessoaFisica>();
-                foreach (PessoaFisica p in pessoas)
-                {
-                    if (p.CPF == pf.CPF && p.Id != pf.Id)
-                    {
-                        return true;
-                    }
-                }
+                return pessoas.Where(p => (p.CPF == pf.CPF && p.Id != pf.Id)).Count() != 0;
             }
 
             else if (c is PessoaJuridica pj)
             {
                 PList<PessoaJuridica> pessoas = DAO.All<PessoaJuridica>();
-                foreach (PessoaJuridica p in pessoas)
-                {
-                    if (p.CNPJ == pj.CNPJ && p.Id != pj.Id)
-                    {
-                        return true;
-                    }
-                }
+                return pessoas.Where(p => (p.CNPJ == pj.CNPJ && p.Id != pj.Id)).Count() != 0;
             }
 
             return false;

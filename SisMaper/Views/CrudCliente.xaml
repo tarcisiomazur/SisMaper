@@ -180,7 +180,7 @@
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Estado" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}" 
+                        <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}" x:Name="EstadoCB" SelectionChanged="EstadoCB_SelectionChanged"
                             SelectedItem="{Binding EstadoSelecionado, Mode=TwoWay}"
                             Grid.Row="0" BorderThickness="2"
                             Height="32"
@@ -188,7 +188,7 @@
                             Margin="30,20,0,0"
                             FontSize="16"
                             mah:TextBoxHelper.Watermark="Buscar Estado"
-                            IsEditable="True"
+                            IsEditable="false"
                             MaxDropDownHeight="125"
                             mah:TextBoxHelper.WatermarkAlignment="Right"
                             mah:TextBoxHelper.AutoWatermark="True"
@@ -206,13 +206,12 @@
                             Margin="30,20,0,0"
                             FontSize="16"
                             mah:TextBoxHelper.Watermark="Buscar Cidade"
-                            IsEditable="true"
+                            IsEditable="false"
                             MaxDropDownHeight="125"
                             mah:TextBoxHelper.WatermarkAlignment="Right"
                             mah:TextBoxHelper.AutoWatermark="True"
                             VerticalAlignment="Top" 
                             HorizontalAlignment="Left"
-                            Text="{Binding TextoCidade}"
                             mah:TextBoxHelper.ClearTextButton="True"/>
                     </StackPanel>
 
@@ -382,7 +381,7 @@
                             Margin="30,20,0,0"
                             FontSize="16"
                             mah:TextBoxHelper.Watermark="Buscar Estado"
-                            IsEditable="true"
+                            IsEditable="false"
                             MaxDropDownHeight="125"
                             mah:TextBoxHelper.WatermarkAlignment="Right"
                             mah:TextBoxHelper.AutoWatermark="True"
@@ -400,13 +399,12 @@
                             Margin="30,20,0,0"
                             FontSize="16"
                             mah:TextBoxHelper.Watermark="Buscar Cidade"
-                            IsEditable="true"
+                            IsEditable="false"
                             MaxDropDownHeight="125"
                             mah:TextBoxHelper.WatermarkAlignment="Right"
                             mah:TextBoxHelper.AutoWatermark="True"
                             VerticalAlignment="Top" 
                             HorizontalAlignment="Left"
-                            Text="{Binding TextoCidade}"
                             mah:TextBoxHelper.ClearTextButton="True"/>
                     </StackPanel>
 

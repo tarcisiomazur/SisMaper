@@ -32,11 +32,14 @@ namespace SisMaper.Views
             InitializeComponent();
             
             Loaded += CrudPessoaFisica_Loaded;
+
+            //EstadoCB.SelectionChanged += EstadoCB_SelectionChanged;
         }
 
-
-
-
+        private void EstadoCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //MessageBox.Show( EstadoCB.Equals(null).ToString() );
+        }
 
         private void CrudPessoaFisica_Loaded(object sender, RoutedEventArgs e)
         {
