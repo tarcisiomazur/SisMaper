@@ -19,8 +19,6 @@ public static class AuthLogin
         try
         {
             var users = FunctionLogin.Execute(user.Login, user.Senha);
-            foreach (var usuario in users) Console.WriteLine(usuario);
-
             return users.FirstOrDefault();
         }
         catch

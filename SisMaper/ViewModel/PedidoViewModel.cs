@@ -106,8 +106,8 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     {
         get => Pedido.Data;
         set => Pedido.Data = value;
-    }   
-    
+    }
+
     public Natureza? NaturezaSelecionada
     {
         get => Pedido.Natureza;
@@ -406,19 +406,6 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         return fatura;
     }
 
-    private void AdicionarCliente(object obj)
-    {
-        var isPf = obj.Equals("PF");
-        var vm = new CrudClienteViewModel(null);
-        OpenCrudCliente?.Invoke(vm, isPf);
-
-        if(!Clientes.Equals(View.Execute<ListarClientes>()))
-        {
-            Clientes = View.Execute<ListarClientes>();
-            Pedido.Cliente = PersistenceContext.Get<Cliente>(Clientes.Last().Id);
-        }
-    }
-
     private void NewNF(string obj)
     {
         var isNFC = obj.Equals("NFC-e");
@@ -525,18 +512,32 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         }
     }
 
+    private void AdicionarCliente(object obj)
+    {
+        var isPf = obj.Equals("PF");
+        var vm = new CrudClienteViewModel(null);
+        OpenCrudCliente?.Invoke(vm, isPf);
+
+        if ((Cliente) (isPf ? vm.PessoaFisica : vm.PessoaJuridica) is {Id: > 0} cliente)
+        {
+            Pedido.Cliente = PersistenceContext.GetOrRefresh<Cliente>(cliente.Id);
+            UpdateSelectionCliente();
+        }
+    }
+
     private void EditarCliente()
     {
         if (Pedido.Cliente is null) return;
-        Clientes = View.Execute<ListarClientes>();
         switch (Pedido.Cliente)
         {
             case PessoaFisica pf:
-                OpenCrudCliente?.Invoke(new CrudClienteViewModel(Clientes.Where(cliente => cliente.Id == pf.Id).First()), true);
+                OpenCrudCliente?.Invoke(
+                    new CrudClienteViewModel(Clientes.FirstOrDefault(cliente => cliente.Id == pf.Id)), true);
                 Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaFisica>(pf.Id);
                 break;
             case PessoaJuridica pj:
-                OpenCrudCliente?.Invoke(new CrudClienteViewModel(Clientes.Where(cliente => cliente.Id == pj.Id).First()), false);
+                OpenCrudCliente?.Invoke(
+                    new CrudClienteViewModel(Clientes.FirstOrDefault(cliente => cliente.Id == pj.Id)), false);
                 Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaJuridica>(pj.Id);
                 break;
             default:
@@ -544,9 +545,16 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
                 break;
         }
 
-        
+        UpdateSelectionCliente();
     }
 
+    private void UpdateSelectionCliente()
+    {
+        Clientes = View.Execute<ListarClientes>();
+        ClienteSelecionado = Pedido.Cliente is not null
+            ? Clientes.FirstOrDefault(cliente => cliente.Id == Pedido.Cliente.Id)
+            : null;
+    }
 
     private void SetCliente(ListarClientes? cliente)
     {
@@ -557,7 +565,6 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
             _ => Pedido.Cliente
         };
     }
-
 
     private void SetProduto(ListarProdutos? produto)
     {

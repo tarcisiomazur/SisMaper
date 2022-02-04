@@ -9,16 +9,14 @@
     xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
+    xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:mi="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     Height="450"
     Width="945"
+    d:DataContext="{d:DesignInstance viewModels:VendasViewModel}"
     templates:DialogParticipation.MyRegister="{Binding}">
-    <UserControl.DataContext>
-        <viewModel:VendasViewModel />
-    </UserControl.DataContext>
 
     <Grid
         Background="White">
