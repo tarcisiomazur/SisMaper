@@ -7,112 +7,67 @@ using Persistence;
 using SisMaper.Models;
 using SisMaper.Tools;
 using SisMaper.ViewModel;
+using SisMaper.Views.Templates;
 
 namespace SisMaper.Views
 {
-    public partial class ViewProdutos : UserControl
+    public partial class ViewProdutos
     {
-
-
-        //private string _filterText;
-
-        /*
-        public string FilterText
-        {
-            get => _filterText;
-            set => _filterText = value;
-        }
-        */
-
 
         public ViewProdutos()
         {
+            DataContextChanged += SetActions;
             InitializeComponent();
-            SetActions();
+            
         }
 
-
-
-        private void SetActions()
+        
+        
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (this.DataContext is IProdutos vm)
+            if (e.NewValue is ProdutosViewModel newViewModel)
             {
-                vm.OpenEditarProduto += () =>
-                {
-                    new CrudProduto() { DataContext = new CrudProdutoViewModel(ProdutosDataGrid.SelectedItem) }.ShowDialog();
-                    DataContext = new ProdutosViewModel();
-                    SetActions();
-                };
+                Show += newViewModel.Initialize;
+                Hide += newViewModel.Clear;
+                newViewModel.OpenCrudProduto += OpenCrudProduto;
+                newViewModel.OpenCategoria += OpenCategorias;
+                newViewModel.OpenUnidade += OpenUnidades;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
 
-                vm.OpenNovoProduto += () =>
-                {
-                    new CrudProduto() { DataContext = new CrudProdutoViewModel(null) }.ShowDialog();
-                    DataContext = new ProdutosViewModel();
-                    SetActions();
-                };
-
-                vm.ProdutoExcluido += () =>
-                {
-                    DataContext = new ProdutosViewModel();
-                    SetActions();
-                };
-
-                vm.OpenCategoria += () =>
-                {
-                    new ViewCategorias().ShowDialog();
-                    DataContext = new ProdutosViewModel();
-                    SetActions();
-                };
-
-                vm.OpenUnidade += () =>
-                {
-                    new ViewUnidades().ShowDialog();
-                    DataContext = new ProdutosViewModel();
-                    SetActions();
-                };
             }
-
-        }
-
-
-        private void NovoProduto(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("Height: " + Height + "    Width: " + Width);
-            new CrudProduto().ShowDialog();
-        }
-
-        private void Produtos_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-            if (sender != null)
+            if (e.OldValue is ProdutosViewModel oldViewModel)
             {
-                DataGrid? grid = sender as DataGrid;
-                if (grid != null)
-                {
-                    DataGridRow? dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
-                    if (dgr != null && dgr.IsMouseOver)
-                    {
-                        new CrudProduto() { DataContext = new CrudProdutoViewModel(grid.SelectedItem) }.ShowDialog();
-                    }
-                }
-            }
+                Show -= oldViewModel.Initialize;
+                Hide -= oldViewModel.Clear;
+                oldViewModel.OpenCrudProduto -= OpenCrudProduto;
+                oldViewModel.OpenCategoria -= OpenCategorias;
+                oldViewModel.OpenUnidade -= OpenUnidades;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
 
-        }
-
-        private void Produtos_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender != null)
-            {
-                DataGrid? grid = sender as DataGrid;
-                if (grid != null && grid.SelectedItems != null)
-                {
-                    DataGridRow? dgr = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
-                    if (dgr != null && !dgr.IsMouseOver)
-                    {
-                        dgr.IsSelected = false;
-                    }
-                }
             }
         }
+
+   
+
+        private void OpenCrudProduto(CrudProdutoViewModel viewModel)
+        {
+            new CrudProduto() { DataContext = viewModel, Owner = Window }.ShowDialog();
+            OnShow();
+        }
+
+
+        private void OpenCategorias()
+        {
+            new ViewCategorias() { Owner = Window }.ShowDialog();
+            OnShow();
+        }
+
+
+        private void OpenUnidades()
+        {
+            new ViewUnidades() { Owner = Window }.ShowDialog();
+            OnShow();
+        }
+
     }
 }

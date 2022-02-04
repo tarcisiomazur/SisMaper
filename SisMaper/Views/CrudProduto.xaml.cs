@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 using System;
 using System.Text.RegularExpressions;
@@ -12,18 +13,41 @@ namespace SisMaper.Views
         
         public CrudProduto()
         {
+            DataContextChanged += SetActions;
             InitializeComponent();
-            Loaded += CrudProdutoLoaded;
 
         }
-        
 
-        private void CrudProdutoLoaded(object sender, RoutedEventArgs e)
+
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(this.DataContext is ICloseWindow vm)
+            if (e.NewValue is CrudProdutoViewModel newViewModel)
             {
-                vm.Close += Close;
+                newViewModel.ProdutoSaved += Close;
+                newViewModel.OpenEditarCategoria += OpenEditarCategoria;
+                newViewModel.OpenEditarUnidade += OpenEditarUnidade;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             }
+
+            if (e.OldValue is CrudProdutoViewModel oldViewModel)
+            {
+                oldViewModel.ProdutoSaved -= Close;
+                oldViewModel.OpenEditarCategoria -= OpenEditarCategoria;
+                oldViewModel.OpenEditarUnidade -= OpenEditarUnidade;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
+            }
+        }
+
+
+
+        private void OpenEditarCategoria()
+        {
+            new ViewCategorias { Owner = this }.ShowDialog();
+        }
+
+        private void OpenEditarUnidade()
+        {
+            new ViewUnidades { Owner = this }.ShowDialog();
         }
 
 
@@ -39,11 +63,6 @@ namespace SisMaper.Views
                 e.Handled = true;
             }
             
-        }
-
-        private void TextBox_TextInput(object sender, TextCompositionEventArgs e)
-        {
-            //e.Handled = !new Regex("[0-9]+").IsMatch(e.Text);
         }
     }
 

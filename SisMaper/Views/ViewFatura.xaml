@@ -6,7 +6,7 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
-    xmlns:viewmodel="clr-namespace:SisMaper.ViewModel"
+    xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
     x:Class="SisMaper.Views.ViewFatura"
     mc:Ignorable="d"
     Title="Fatura"
@@ -15,6 +15,7 @@
     Width="812"
     SaveWindowPosition="True">
 
+    
     
     <mah:MetroWindow.Resources>
         <Style
@@ -218,6 +219,7 @@
             <TabItem
                 Header="   Parcelas   "
                 mah:HeaderedControlHelper.HeaderBackground="Black">
+                
                 <Grid IsEnabled="{Binding IsFaturaAberta}">
                     <DataGrid x:Name="ParcelasDataGrid"
                         BorderThickness="1"
@@ -267,7 +269,6 @@
                         Content="Adicionar"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        PreviewMouseLeftButtonDown="AdicionarParcela"
                         Margin="10,10,0,0" 
                         CommandParameter="{Binding}"
                         Command="{Binding NovaParcela}"/>
@@ -351,7 +352,6 @@
                         Content="Remover"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        PreviewMouseLeftButtonDown="AdicionarParcela"
                         Margin="10,10,0,0" />
                     <TextBox
                         IsEnabled="False"
@@ -385,7 +385,7 @@
             mah:TextBoxHelper.AutoWatermark="True"
             Grid.IsSharedSizeScope="True"
             VerticalAlignment="Top"
-            Text="{Binding Fatura.Cliente.Nome}"/>
+            Text="{Binding ClienteSelecionado.Nome}"/>
         
         <Button x:Name="ChangeFaturaButton"
             Style="{DynamicResource OptionsButtonStyle}"

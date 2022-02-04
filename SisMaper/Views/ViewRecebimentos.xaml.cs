@@ -1,4 +1,6 @@
-﻿using SisMaper.ViewModel;
+﻿using SisMaper.Models.Views;
+using SisMaper.Tools;
+using SisMaper.ViewModel;
 using SisMaper.Views.Templates;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ using System.Windows.Shapes;
 namespace SisMaper.Views
 {
     /// <summary>
-    /// Interação lógica para ViewRecebimentos.xam
+    /// Interação lógica para ViewRecebimentos.xaml
     /// </summary>
     public partial class ViewRecebimentos : MyUserControl
     {
@@ -26,32 +28,34 @@ namespace SisMaper.Views
 
         public ViewRecebimentos()
         {
-            
+            DataContextChanged += SetActions;
             InitializeComponent();
-            Show += viewModel.Initialize;
-            Hide += viewModel.Clear;
-            SetActions();
+
         }
 
-
-        private void SetActions()
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(DataContext is IRecebimento vm)
+            if(e.NewValue is RecebimentosViewModel newViewModel)
             {
-                vm.OpenEditarFatura += (object? fat) =>
-                {
-                    ViewFatura viewFatura = new ViewFatura() { DataContext = new FaturaViewModel(fat) };
-                    viewFatura.Closed += viewModel.Initialize;
-                    viewFatura.ShowDialog();
-                };
-
-                /*
-                vm.FaturaExcluida += () =>
-                {
-                    DataContext = new RecebimentosViewModel();
-                };
-                */
+                Show += newViewModel.Initialize;
+                Hide += newViewModel.Clear;
+                newViewModel.OpenFatura += OpenFatura;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+            }
+            if(e.OldValue is RecebimentosViewModel oldViewModel)
+            {
+                Show -= oldViewModel.Initialize;
+                Hide -= oldViewModel.Clear;
+                oldViewModel.OpenFatura -= OpenFatura;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             }
         }
+
+        private void OpenFatura(FaturaViewModel viewModel)
+        {
+            new ViewFatura { DataContext = viewModel, Owner = Window }.ShowDialog();
+            OnShow();
+        }
+
     }
 }

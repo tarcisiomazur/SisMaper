@@ -10,7 +10,7 @@ using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
 {
-    public class RecebimentosViewModel : BaseViewModel, IRecebimento
+    public class RecebimentosViewModel : BaseViewModel
     {
         public List<ListarFatura>? Faturas { get; set; }
         public IEnumerable<ListarFatura>? FaturasFiltradas { get; set; }
@@ -24,13 +24,9 @@ namespace SisMaper.ViewModel
         public EditarFaturaCommand EditarFatura { get; private set; }
         public ExcluirFaturaCommand DeletarFatura { get; private set; }
 
-        public Action OpenNovaFatura { get; set; }
-        public Action<object?> OpenEditarFatura { get; set; }
-        public Action FaturaExcluida { get; set; }
+        public Action<FaturaViewModel> OpenFatura { get; set; }
 
         private PersistenceContext persistenceContext;
-
-        IDialogCoordinator DialogCoordinator { get; set; }
 
 
         public RecebimentosViewModel()
@@ -43,7 +39,6 @@ namespace SisMaper.ViewModel
             }
             */
 
-            DialogCoordinator = new DialogCoordinator();
             //GetFaturas();
             persistenceContext = new PersistenceContext();
             StatusList = new List<Fatura.Fatura_Status>()
@@ -73,8 +68,7 @@ namespace SisMaper.ViewModel
             }
         }
 
-        public void OpenCrudEditarFatura() => OpenEditarFatura?.Invoke(DAO.Load<Fatura>(FaturaSelecionada.Id));
-        //public void OpenCrudEditarFatura() => Console.WriteLine(FaturaSelecionada.Id);
+        public void OpenCrudEditarFatura() => OpenFatura?.Invoke(new FaturaViewModel(FaturaSelecionada.Id));
 
 
         public void ExcluirFatura()
@@ -83,21 +77,16 @@ namespace SisMaper.ViewModel
             {
                 var fat = DAO.Load<Fatura>(FaturaSelecionada.Id);
                 fat.Delete();
-                GetFaturas();
+                Initialize(null, EventArgs.Empty);
             }
             catch(Exception ex)
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro", ex.ToString());
+                OnShowMessage("Erro", ex.Message);
             }
         }
 
 
         public void Initialize(object? sender, EventArgs e)
-        {
-            GetFaturas();
-        }
-
-        private void GetFaturas()
         {
             Faturas = View.Execute<ListarFatura>();
         }
@@ -141,10 +130,4 @@ namespace SisMaper.ViewModel
         }
     }
 
-
-    public interface IRecebimento
-    {
-        public Action<object?> OpenEditarFatura { get; set; }
-        public Action FaturaExcluida { get; set; }
-    }
 }

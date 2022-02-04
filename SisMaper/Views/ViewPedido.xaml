@@ -122,7 +122,7 @@
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             ItemsSource="{Binding Clientes}"
             SelectedItem="{Binding ClienteSelecionado, Mode=OneWayToSource}"
-            Text="{Binding Pedido.Cliente.Nome, Mode=OneTime}"
+            Text="{Binding Pedido.Cliente.Nome, Mode=TwoWay}"
             DisplayMemberPath="Nome"
             IsEditable="True"
             MaxDropDownHeight="125"

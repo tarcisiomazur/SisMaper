@@ -10,8 +10,9 @@
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:m="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    Dialog:DialogParticipation.Register="{Binding}"
-    x:Class="SisMaper.Views.CrudPessoaFisica"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    templates:DialogParticipation.MyRegister="{Binding}"
+    x:Class="SisMaper.Views.CrudCliente"
     x:Name="this"
     mc:Ignorable="d"
     Title="Cliente"
@@ -147,7 +148,7 @@
 
 
 
-    <Grid x:Name="grid" >
+    <Grid x:Name="grid" IsEnabled="{Binding IsGridEnabled}">
         <TabControl>
             <TabItem Header="  Pessoa Física  " Height="35" x:Name="PessoaFisicaTabItem" Visibility="Hidden"> 
                 <StackPanel>
@@ -180,7 +181,7 @@
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Estado" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}" x:Name="EstadoCB" SelectionChanged="EstadoCB_SelectionChanged"
+                        <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}"
                             SelectedItem="{Binding EstadoSelecionado, Mode=TwoWay}"
                             Grid.Row="0" BorderThickness="2"
                             Height="32"
@@ -416,17 +417,6 @@
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
                             Text="{Binding PessoaJuridica.Endereco}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="pt-br" Text="Bairro"/></TextBlock>
-                        <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaJuridica.Bairro}"
                             VerticalAlignment="Top"
                             Width="220" />
                     </StackPanel>

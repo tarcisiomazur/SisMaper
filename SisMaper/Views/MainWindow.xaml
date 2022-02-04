@@ -485,7 +485,7 @@
                                 Text="Cadastros" />
                         </StackPanel>
                 </TabItem.Header>
-                <TabControl
+                <TabControl SelectedItem="{Binding CadastroSelecionado, Mode=TwoWay}"
                     Margin="0">
                     <TabItem
                         Name="Produtos"

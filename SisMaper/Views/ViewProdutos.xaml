@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<templates:MyUserControl
     x:Class="SisMaper.Views.ViewProdutos"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,14 +10,12 @@
     xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     x:Name="userControl"
-    
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:myInteractions="clr-namespace:SisMaper.Views.Templates.MyInteractions"
-    Dialog:DialogParticipation.Register="{Binding}"
     mc:Ignorable="d"
     Height="500"
-    Width="1000">
+    Width="1000"
+    templates:DialogParticipation.MyRegister="{Binding}">
 
     <UserControl.DataContext>
         <viewModels:ProdutosViewModel />
@@ -168,8 +166,6 @@
                     CanUserAddRows="False"
                     IsReadOnly="True"
                     Margin="0,10,0,24"
-                    PreviewMouseLeftButtonDown="Produtos_MouseDown"
-                    MouseDoubleClick="Produtos_MouseDoubleClick"
                     SelectionMode="Single"
                     SelectedItem="{Binding ProdutoSelecionado, Mode=TwoWay}">
                     <DataGrid.Columns>
@@ -226,4 +222,4 @@
     </Grid>
 
 
-</UserControl>
+</templates:MyUserControl>

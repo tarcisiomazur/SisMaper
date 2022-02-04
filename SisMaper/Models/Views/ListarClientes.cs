@@ -1,4 +1,5 @@
 ﻿using Persistence;
+using System;
 
 namespace SisMaper.Models.Views;
 
@@ -7,9 +8,8 @@ public class ListarClientes
 {
     public enum Pessoa
     {
-        Null,
-        Fisica,
-        Juridica
+        Juridica,
+        Fisica
     }
 
     public Fatura.Fatura_Status Status { get; set; }
@@ -23,6 +23,12 @@ public class ListarClientes
     public string Cidade { get; set; }
 
     public string Estado { get; set; }
+
+    public string InscricaoEstadual { get; set; }
+
+    public string RazaoSocial { get; set; }
+
+    public string CPF_CNPJ { get; set; }
 
     public Pessoa Tipo { get; set; }
 }

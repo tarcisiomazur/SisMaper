@@ -1,4 +1,5 @@
-﻿using SisMaper.ViewModel;
+﻿using SisMaper.Tools;
+using SisMaper.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,45 @@ namespace SisMaper.Views
     /// <summary>
     /// Interação lógica para ViewClientes.xaml
     /// </summary>
-    public partial class ViewClientes : UserControl
+    public partial class ViewClientes
     {
         public ViewClientes()
         {
+            DataContextChanged += SetActions;
             InitializeComponent();
-            SetActions();
-
-
         }
 
 
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is ClientesViewModel newViewModel)
+            {
+                Show += newViewModel.Initialize;
+                Hide += newViewModel.Clear;
+                newViewModel.OpenCrudCliente += OpenCrudCliente;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+
+            }
+            if (e.OldValue is ClientesViewModel oldViewModel)
+            {
+                Show -= oldViewModel.Initialize;
+                Hide -= oldViewModel.Clear;
+                oldViewModel.OpenCrudCliente -= OpenCrudCliente;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
+
+            }
+        }
+
+
+
+        private void OpenCrudCliente(CrudClienteViewModel? viewModel)
+        {
+            new CrudCliente() { IsSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected)? true : false, DataContext = viewModel, Owner = Window }.ShowDialog();
+            OnShow();
+        }
+
+
+        /*
         private void SetActions()
         {
             if(PessoaFisicaTabItem.IsSelected)
@@ -47,14 +76,14 @@ namespace SisMaper.Views
             {
                 vm.OpenNovoCliente += () =>
                 {
-                    new CrudPessoaFisica() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected) ? true : false, DataContext = new CrudClienteViewModel(null) }.ShowDialog();
+                    new CrudCliente() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected) ? true : false, DataContext = new CrudClienteViewModel(null) }.ShowDialog();
                     DataContext = new ClientesViewModel();
                     SetActions();
                 };
 
                 vm.OpenEditarCliente += () =>
                 {
-                    new CrudPessoaFisica() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected)? true : false, DataContext = new CrudClienteViewModel( (PessoaFisicaTabItem.IsSelected)? PessoaFisicaDataGrid.SelectedItem : PessoaJuridicaDataGrid.SelectedItem ) }.ShowDialog();
+                    new CrudCliente() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected)? true : false, DataContext = new CrudClienteViewModel( (PessoaFisicaTabItem.IsSelected)? PessoaFisicaDataGrid.SelectedItem : PessoaJuridicaDataGrid.SelectedItem ) }.ShowDialog();
                     DataContext = new ClientesViewModel();
                     SetActions();
                 };
@@ -67,6 +96,7 @@ namespace SisMaper.Views
             }
         }
 
+        */
 
         private void PessoaFisicaTabItem_GotFocus(object sender, RoutedEventArgs e)
         {

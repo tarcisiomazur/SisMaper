@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -19,33 +20,40 @@ namespace SisMaper.Views
     /// <summary>
     /// Lógica interna para CrudPessoaFisica.xaml
     /// </summary>
-    public partial class CrudPessoaFisica : MetroWindow
+    public partial class CrudCliente : MetroWindow
     {
-        public bool isSelectedPessoaFisicaTab { get; set; }
-        public bool IsGridEnabled { get; set; }
+        public bool IsSelectedPessoaFisicaTab { get; set; }
+        public bool IsGridEnabled { get; set; } = true;
         
 
-        public CrudPessoaFisica()
+        public CrudCliente()
         {
-            IsGridEnabled = true;
-
+            DataContextChanged += SetActions;
             InitializeComponent();
             
             Loaded += CrudPessoaFisica_Loaded;
 
-            //EstadoCB.SelectionChanged += EstadoCB_SelectionChanged;
         }
 
-        private void EstadoCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //MessageBox.Show( EstadoCB.Equals(null).ToString() );
+            if (e.NewValue is CrudClienteViewModel newViewModel)
+            {
+                newViewModel.ClienteSaved += Close;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+            }
+
+            if (e.OldValue is CrudClienteViewModel oldViewModel)
+            {
+                oldViewModel.ClienteSaved -= Close;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
+            }
         }
 
         private void CrudPessoaFisica_Loaded(object sender, RoutedEventArgs e)
         {
             
-
-            if(isSelectedPessoaFisicaTab)
+            if(IsSelectedPessoaFisicaTab)
             {
                 PessoaFisicaTabItem.IsSelected = true;
                 PessoaJuridicaTabItem.IsEnabled = false;
@@ -55,11 +63,6 @@ namespace SisMaper.Views
             {
                 PessoaJuridicaTabItem.IsSelected = true;
                 PessoaFisicaTabItem.IsEnabled = false;
-            }
-
-            if(DataContext is IClienteSave vm)
-            {
-                vm.SaveCliente += () => Close();
             }
 
             grid.IsEnabled = IsGridEnabled;

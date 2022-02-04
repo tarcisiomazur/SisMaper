@@ -19,7 +19,7 @@ using SisMaper.Models.Views;
 namespace SisMaper.ViewModel
 {
 
-    public class CrudProdutoViewModel : BaseViewModel, ICloseWindow
+    public class CrudProdutoViewModel : BaseViewModel
     {
 
         private NCM? _ncmSelecionado;
@@ -30,7 +30,6 @@ namespace SisMaper.ViewModel
             set { SetField(ref _ncmSelecionado, value); }
         }
 
-        public event Action OnSave;
 
         private Categoria? _categoriaSelecionada;
 
@@ -57,15 +56,13 @@ namespace SisMaper.ViewModel
             set { SetField(ref _loteSelecionado, value); }
         }
 
-        public string TextoCategoria { get; set; }
-        public string TextoUnidade { get; set; }
-        public Produto Produto { get; set; }
+        public Produto? Produto { get; set; }
 
         public double Valor1 { get; set; }
 
         public ObservableCollection<NCM> NCMs { get; private set; }
-        public ObservableCollection<Categoria> Categorias { get; private set; }
-        public ObservableCollection<Unidade> Unidades { get; private set; }
+        public PList<Categoria> Categorias { get; private set; }
+        public PList<Unidade> Unidades { get; private set; }
         public ObservableCollection<Lote> Lotes { get; set; }
 
         public PList<NCM> ListaNCM { get; private set; }
@@ -73,27 +70,32 @@ namespace SisMaper.ViewModel
         public SalvarCommand Salvar { get; private set; }
         public AdicionarLoteCommand Adicionar { get; private set; }
         public RemoverLoteCommand Remover { get; private set; }
-
-        public IDialogCoordinator DialogCoordinator { get; set; }
-
-        public Action Close { get; set; }
+        public EditarCategoriaCommand EditarCategorias { get; private set; }
+        public EditarUnidadeCommand EditarUnidades { get; private set; }
 
 
-        private bool prontoPraSalvarCategoria;
-        private bool prontoPraSalvarUnidade;
+        public Action? ProdutoSaved { get; set; }
+        public Action? OpenEditarCategoria { get; set; }
+        public Action? OpenEditarUnidade { get; set; }
 
 
-        public CrudProdutoViewModel(object produtoSelecionado)
+
+        public CrudProdutoViewModel(ListarProdutos? produtoSelecionado)
         {
 
             Salvar = new SalvarCommand();
             Adicionar = new AdicionarLoteCommand();
             Remover = new RemoverLoteCommand();
-            ListarProdutos view = (ListarProdutos) produtoSelecionado;
+            EditarCategorias = new EditarCategoriaCommand();
+            EditarUnidades = new EditarUnidadeCommand();
 
-            if (view is not null)
+            NCMSelecionado = null;
+            CategoriaSelecionada = null;
+            UnidadeSelecionada = null;
+
+            if (produtoSelecionado is not null)
             {
-                Produto = DAO.Load<Produto>(view.Id);
+                Produto = DAO.Load<Produto>(produtoSelecionado.Id);
             }
             else
             {
@@ -101,63 +103,21 @@ namespace SisMaper.ViewModel
             }
 
             ListaNCM = DAO.All<NCM>();
-            PList<Categoria> listaCategorias = DAO.All<Categoria>();
-            PList<Unidade> listaUnidades = DAO.All<Unidade>();
-
-
-            DialogCoordinator = new DialogCoordinator();
-
-            TextoCategoria = "";
-            TextoUnidade = "";
+            Categorias = DAO.All<Categoria>();
+            Unidades = DAO.All<Unidade>();
 
             Lotes = new ObservableCollection<Lote>();
 
 
-            Categorias = new ObservableCollection<Categoria>();
-            Unidades = new ObservableCollection<Unidade>();
-
-
-            foreach (Categoria c in listaCategorias)
-            {
-                Categorias.Add(c);
-            }
-
-            foreach (Unidade u in listaUnidades)
-            {
-                Unidades.Add(u);
-            }
-
-
             if (Produto is not null)
             {
-
-                CategoriaSelecionada = Produto.Categoria;
-                UnidadeSelecionada = Produto.Unidade;
-                NCMSelecionado = Produto.NCM;
-
-                if (!Equals(CategoriaSelecionada, null))
-                {
-                    TextoCategoria = CategoriaSelecionada.Descricao;
-                }
-                else
-                {
-                    TextoCategoria = "";
-                }
-
-
-
-                if (!Equals(UnidadeSelecionada, null))
-                {
-                    TextoUnidade = UnidadeSelecionada.Descricao;
-                }
-                else
-                {
-                    TextoUnidade = "";
-                }
-
+                if(Produto.Categoria is not null) CategoriaSelecionada = Categorias.Where(cat => cat.Id == Produto.Categoria.Id).First();
+                
+                if(Produto.Unidade is not null) UnidadeSelecionada = Unidades.Where(uni => uni.Id == Produto.Unidade.Id).First();
+                
+                if(Produto.NCM is not null) NCMSelecionado = ListaNCM.Where(n => n.Id == Produto.NCM.Id).First();
 
                 var lotesBanco = DAO.All<Lote>();
-
 
                 foreach (Lote l in lotesBanco)
                 {
@@ -184,7 +144,6 @@ namespace SisMaper.ViewModel
                 }
                 else
                 {
-
                     Produto p2 = produtos.Last();
 
                     Produto = new Produto()
@@ -193,9 +152,6 @@ namespace SisMaper.ViewModel
                     };
                 }
 
-                NCMSelecionado = null;
-                CategoriaSelecionada = null;
-                UnidadeSelecionada = null;
             }
 
         }
@@ -203,74 +159,7 @@ namespace SisMaper.ViewModel
 
 
 
-        private void CheckCategoria()
-        {
-
-            if (string.IsNullOrWhiteSpace(TextoCategoria))
-            {
-                CategoriaSelecionada = null;
-                prontoPraSalvarCategoria = true;
-                return;
-            }
-
-            if (!object.Equals(CategoriaSelecionada, null) && CategoriaSelecionada.Descricao.Equals(TextoCategoria))
-            {
-                prontoPraSalvarCategoria = true;
-                return;
-            }
-
-
-            MessageDialogResult resultado = DialogCoordinator.ShowModalMessageExternal(this, "Categoria", "Categoria selecionada não existe. Deseja criar nova categoria?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
-
-            if (resultado == MessageDialogResult.Affirmative)
-            {
-                prontoPraSalvarCategoria = true;
-
-                Categoria c = new Categoria() { Descricao = TextoCategoria };
-                Categorias.Add(c);
-                CategoriaSelecionada = c;
-
-                c.Save();
-                return;
-            }
-
-            prontoPraSalvarCategoria = false;
-
-        }
-
-        private void CheckUnidade()
-        {
-
-            if (string.IsNullOrWhiteSpace(TextoUnidade))
-            {
-                prontoPraSalvarUnidade = true;
-                UnidadeSelecionada = null;
-                return;
-            }
-
-            if (!object.Equals(UnidadeSelecionada, null) && UnidadeSelecionada.Descricao.Equals(TextoUnidade))
-            {
-                prontoPraSalvarUnidade = true;
-                return;
-            }
-
-            MessageDialogResult resultado = DialogCoordinator.ShowModalMessageExternal(this, "Unidade", "Unidade selecionada não existe. Deseja criar nova unidade?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
-
-            if (resultado == MessageDialogResult.Affirmative)
-            {
-                prontoPraSalvarUnidade = true;
-
-                Unidade u = new Unidade() { Descricao = TextoUnidade };
-                Unidades.Add(u);
-                UnidadeSelecionada = u;
-
-                u.Save();
-                return;
-            }
-
-            prontoPraSalvarUnidade = false;
-
-        }
+      
 
         private void CheckCodigoBarras()
         {
@@ -300,7 +189,7 @@ namespace SisMaper.ViewModel
             }
             catch(Exception ex)
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao remover lote", "Erro" + ex.Message);
+                OnShowMessage("Erro ao remover lote", "Erro" + ex.Message);
             }
         }
 
@@ -308,15 +197,6 @@ namespace SisMaper.ViewModel
         {
             try 
             {
-                CheckCategoria();
-                CheckUnidade();
-
-                if(!prontoPraSalvarCategoria || !prontoPraSalvarUnidade)
-                {
-                    return;
-                }
-
-
                 
                 PList<Lote> listaLotesPraAdicionar = new PList<Lote>();
 
@@ -348,15 +228,29 @@ namespace SisMaper.ViewModel
                 listaLotesPraAdicionar.Save();
                 
 
-                Close?.Invoke();
+                ProdutoSaved?.Invoke();
             }
 
             catch (Exception ex)
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar produto", "Erro: " + ex.Message + ex.StackTrace, MessageDialogStyle.Affirmative, new MetroDialogSettings() {AffirmativeButtonText = "Ok" });
+                OnShowMessage("Erro ao salvar produto", "Erro: " + ex.Message, MessageDialogStyle.Affirmative, new MetroDialogSettings() {AffirmativeButtonText = "Ok" });
             }
         }
 
+
+        public void EditCategoria()
+        {
+            OpenEditarCategoria?.Invoke();
+            Categorias = DAO.All<Categoria>();
+            CategoriaSelecionada = null;
+        } 
+        public void EditUnidade()
+        {
+            OpenEditarUnidade?.Invoke();
+            Unidades = DAO.All<Unidade>();
+            UnidadeSelecionada = null;
+        }
+        
 
 
 
@@ -407,12 +301,26 @@ namespace SisMaper.ViewModel
             }
         }
 
+
+
+        public class EditarCategoriaCommand : BaseCommand
+        {
+            public override void Execute(object parameter)
+            {
+                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
+                vm.EditCategoria();
+            }
+        }
+
+        public class EditarUnidadeCommand : BaseCommand
+        {
+            public override void Execute(object parameter)
+            {
+                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
+                vm.EditUnidade();
+            }
+        }
+
     }
 
-
-
-    public interface ICloseWindow
-    {
-        public Action Close { get; set; }
-    }
 }

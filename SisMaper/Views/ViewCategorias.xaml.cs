@@ -1,4 +1,6 @@
 ﻿using MahApps.Metro.Controls;
+using SisMaper.Tools;
+using SisMaper.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +24,23 @@ namespace SisMaper.Views
     {
         public ViewCategorias()
         {
+            DataContextChanged += SetActions;
             InitializeComponent();
         }
 
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is CategoriaViewModel newViewModel)
+            {
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+                newViewModel.ShowInput += Helper.MahAppsDefaultInput;
+            }
+
+            if(e.OldValue is CategoriaViewModel oldViewModel)
+            {
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
+                oldViewModel.ShowInput -= Helper.MahAppsDefaultInput;
+            }
+        }
     }
 }

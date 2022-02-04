@@ -4,10 +4,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Persistence;
 using SisMaper.Models;
+using SisMaper.Models.Views;
 
 namespace SisMaper.ViewModel
 {
-    public class FaturaViewModel : BaseViewModel, ICloseWindow, IFatura
+    public class FaturaViewModel : BaseViewModel
     {
         public Fatura Fatura { get; set; }
 
@@ -15,17 +16,17 @@ namespace SisMaper.ViewModel
         //public List<object> Clientes { get; private set; }
 
 
-        private Cliente _clienteSelecionado;
+        private ListarClientes _clienteSelecionado;
 
-        public Cliente ClienteSelecionado
+        public ListarClientes ClienteSelecionado
         {
             get { return _clienteSelecionado; }
             set
             {
-                if (ClienteSelecionado is PessoaFisica || ClienteSelecionado is PessoaJuridica) isClienteSelecionadoCorrect = false;
+                //if (ClienteSelecionado is PessoaFisica || ClienteSelecionado is PessoaJuridica) isClienteSelecionadoCorrect = false;
 
                 SetField(ref _clienteSelecionado, value);
-                SetCliente(value);
+                //SetCliente(value);
             }
         }
 
@@ -51,29 +52,25 @@ namespace SisMaper.ViewModel
         public AlterarStatusFaturaCommand AlterarFatura { get; private set; }
 
 
-        public Action Close { get; set; }
-
-
-        public Action FaturaChanged { get; set; }
-        public Action ClienteChangedToPessoaFisica { get; set; }
-        public Action ClienteChangedToPessoaJuridica { get; set; }
-        public Action OpenNovaParcela { get; set; }
-        public Action OpenEditarParcela { get; set; }
+        
+        
 
         public Action ChangeCliente { get; set; }
 
         public NovaParcelaCommand NovaParcela { get; private set; }
         public EditarParcelaCommand EditarParcela { get; private set; }
         public ExcluirParcelaCommand ExcluirParcela { get; private set; }
-
-
-        private bool isPessoaFisica;
-
-        public Action<bool> OpenClienteView { get; set; }
-
         public VerClienteCommand VerCliente { get; private set; }
 
-        public FaturaViewModel(object? faturaSelecionada)
+
+        public Action<ParcelaViewModel>? OpenCrudParcela { get; set; }
+        public Action<CrudClienteViewModel,bool>? OpenViewCliente { get; set; }
+        public Action? FaturaChanged { get; set; }
+        public Action? FaturaSaved { get; set; }
+
+
+
+        public FaturaViewModel(long faturaId)
         {
             VerCliente = new VerClienteCommand();
 
@@ -91,7 +88,7 @@ namespace SisMaper.ViewModel
 
             ClienteSelecionado = null;
 
-            Fatura = (Fatura)faturaSelecionada;
+            Fatura = DAO.Load<Fatura>(faturaId);
 
 
             Salvar = new SalvarFaturaCommand();
@@ -100,7 +97,7 @@ namespace SisMaper.ViewModel
 
             if (Fatura is not null)
             {
-                IsFaturaAberta = (Fatura.Status == Fatura.Fatura_Status.Aberta) ? true : false;
+                IsFaturaAberta = (Fatura.Status == Fatura.Fatura_Status.Aberta);
 
                 Fatura.Parcelas.Load();
                 Fatura.Pedidos.Load();
@@ -111,7 +108,10 @@ namespace SisMaper.ViewModel
                 }
 
                 if (Fatura.Cliente == null) return;
-                
+
+                ClienteSelecionado = View.Execute<ListarClientes>().Find(cliente => cliente.Id == Fatura.Cliente.Id);
+
+                /*
                 PessoaFisica? c1 = DAO.Load<PessoaFisica>(Fatura.Cliente.Id);
 
                 if(c1 is not null)
@@ -127,41 +127,13 @@ namespace SisMaper.ViewModel
                         isPessoaFisica = false;
                     }
                 }
-
-
-                //Fatura.Cliente.Load();
-
-                //ClienteSelecionado = Fatura.Cliente;
-                //ClienteSelecionado = DAO.Load<Cliente>(Fatura.Cliente.Id);
-
-                //ClienteSelecionado = Clientes[0];
+                */
 
             }
 
         }
 
-
         /*
-        private void ClienteChange()
-        {
-
-            if (Fatura.Cliente.Load())
-            {
-                foreach (Cliente c in Clientes)
-                {
-                    if (c.Id == Fatura.Cliente.Id)
-                    {
-                        ClienteSelecionado = c;
-                        //isClienteSelecionadoCorrect = false;
-                        //SetCliente(c);
-                        return;
-                    }
-                }
-            }
-            
-        }*/
-
-
         private void SetCliente(Cliente c)
         {
             if (!isClienteSelecionadoCorrect)
@@ -194,18 +166,10 @@ namespace SisMaper.ViewModel
 
         }
 
+        */
 
 
 
-        public void SalvarFatura()
-        {
-            Close?.Invoke();
-        }
-
-
-        public void OpenCrudNovaParcela() => OpenNovaParcela?.Invoke();
-
-        public void OpenCrudEditarParcela() => OpenEditarParcela?.Invoke();
 
 
         public void AlterarStatusFatura()
@@ -228,18 +192,25 @@ namespace SisMaper.ViewModel
         {
             if (Fatura.Status == Fatura.Fatura_Status.Aberta)
             {
-                //return decimal.Equals(Fatura.ValorPago, Fatura.ValorTotal);
+                return decimal.Equals(Fatura.ValorPago, Fatura.ValorTotal);
             }
 
 
             //teste de usuário -> se for administrador retorna true
             return true;
 
-
         }
 
-        public void OpenCliente() => OpenClienteView?.Invoke(isPessoaFisica);
+        public void OpenCliente() => OpenViewCliente?.Invoke(new CrudClienteViewModel(ClienteSelecionado), ClienteSelecionado.Tipo == ListarClientes.Pessoa.Fisica);
+        
+        public void OpenCrudNovaParcela() => OpenCrudParcela?.Invoke(new ParcelaViewModel(null, Fatura));
+        public void OpenCrudEditarParcela() => OpenCrudParcela?.Invoke(new ParcelaViewModel(ParcelaSelecionada, Fatura));
+
+        public void SalvarFatura() => FaturaSaved?.Invoke();
+
+
     }
+
 
 
     public class SalvarFaturaCommand : BaseCommand
@@ -314,18 +285,4 @@ namespace SisMaper.ViewModel
     }
 
 
-
-
-    public interface IFatura
-    {
-        public Action FaturaChanged { get; set; }
-        public Action ClienteChangedToPessoaFisica { get; set; }
-        public Action ClienteChangedToPessoaJuridica { get; set; }
-        public Action OpenNovaParcela { get; set; }
-        public Action OpenEditarParcela { get; set; }
-
-        public Action ChangeCliente { get; set; }
-
-        public Action<bool> OpenClienteView { get; set; }
-    }
 }

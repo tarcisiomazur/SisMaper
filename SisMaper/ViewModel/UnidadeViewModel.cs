@@ -28,15 +28,12 @@ namespace SisMaper.ViewModel
             set { SetField(ref _unidadeSelecionada, value); }
         }
 
-
-        public IDialogCoordinator DialogCoordinator { get; set; }
         
         public UnidadeViewModel()
         {
             PList<Unidade> listaUnidade = DAO.All<Unidade>();
 
             Unidades = new ObservableCollection<Unidade>();
-            DialogCoordinator = new DialogCoordinator();
 
 
             
@@ -60,7 +57,7 @@ namespace SisMaper.ViewModel
             }
             catch (Exception ex)
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Erro ao salvar unidade: " + ex.Message, MessageDialogStyle.Affirmative);
+                OnShowMessage("Erro", "Erro ao salvar unidade: " + ex.Message, MessageDialogStyle.Affirmative);
                 return false;
             }
         }
@@ -77,18 +74,18 @@ namespace SisMaper.ViewModel
 
                 if (ex is MySqlConnector.MySqlConnectorException && ex.InnerException is MySqlException)
                 {
-                    //MessageBox.Show((ex as MySqlConnector.MySqlConnectorException).ErrorCode.ToString());
+                    
                     if ((ex as MySqlConnector.MySqlConnectorException).ErrorCode == -2147467259)
                     {
-                        DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Unidade {0} está vinculada a algum produto, não pode ser excluida", u.Descricao), MessageDialogStyle.Affirmative);
+                        OnShowMessage("Erro", String.Format("Unidade {0} está vinculada a algum produto, não pode ser excluida", u.Descricao), MessageDialogStyle.Affirmative);
                         return false;
                     }
 
-                    DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Erro ao deletar unidade {0}: " + ex.Message, u.Descricao), MessageDialogStyle.Affirmative);
+                    OnShowMessage("Erro", String.Format("Erro ao deletar unidade {0}: " + ex.Message, u.Descricao), MessageDialogStyle.Affirmative);
                     return false;
                 }
 
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro", String.Format("Erro ao deletar unidade {0}: " + ex.Message, u.Descricao), MessageDialogStyle.Affirmative);
+                OnShowMessage("Erro", String.Format("Erro ao deletar unidade {0}: " + ex.Message, u.Descricao), MessageDialogStyle.Affirmative);
                 return false;
             }
         }
@@ -103,7 +100,7 @@ namespace SisMaper.ViewModel
             }
             catch (Exception ex)
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Erro ao editar unidade: " + ex.Message, MessageDialogStyle.Affirmative);
+                OnShowMessage("Erro", "Erro ao editar unidade: " + ex.Message, MessageDialogStyle.Affirmative);
                 return false;
             }
         }
@@ -122,14 +119,14 @@ namespace SisMaper.ViewModel
                 DefaultText = defaultText
             };
 
-            string uni = DialogCoordinator.ShowModalInputExternal(this, "Adicionar Unidade", "Unidade", dialogSettings);
+            string? uni = OnInput("Adicionar Unidade", "Unidade", dialogSettings);
 
 
             foreach (Unidade element in Unidades)
             {
                 if (element.Descricao.Equals(uni))
                 {
-                    DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Unidade ja existente");
+                    OnShowMessage("Erro", "Unidade ja existente");
                     AdicionarUnidade(uni);
                     return;
                 }
@@ -148,14 +145,14 @@ namespace SisMaper.ViewModel
                 if (SalvarUnidadeNoBanco(u))
                 {
                     Unidades.Add(u);
-                    DialogCoordinator.ShowModalMessageExternal(this, "Unidade", "Unidade adicionada com sucesso");
+                    OnShowMessage("Unidade", "Unidade adicionada com sucesso");
                 }
                 return;
             }
 
             else if (string.Equals(uni, string.Empty) || (string.IsNullOrWhiteSpace(uni) && !string.Equals(uni, null)))
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Unidade não pode ser vazia!!");
+                OnShowMessage("Erro", "Unidade não pode ser vazia!!");
                 AdicionarUnidade("");
                 return;
             }
@@ -175,13 +172,13 @@ namespace SisMaper.ViewModel
                 DefaultText = UnidadeSelecionada.Descricao
             };
 
-            string uni = DialogCoordinator.ShowModalInputExternal(this, "Editar Unidade", "Unidade", dialogSettings);
+            string? uni = OnInput("Editar Unidade", "Unidade", dialogSettings);
 
             foreach (Unidade element in Unidades)
             {
-                if (element.Descricao.Equals(uni))
+                if (element.Descricao.Equals(uni) && element.Id != UnidadeSelecionada.Id)
                 {
-                    DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Unidade ja existente");
+                    OnShowMessage("Erro", "Unidade ja existente");
                     EditarUnidade();
                     return;
                 }
@@ -198,14 +195,14 @@ namespace SisMaper.ViewModel
                 if (EditarUnidadeDoBanco(Unidades[Unidades.IndexOf(UnidadeSelecionada)], u))
                 {
                     Unidades[Unidades.IndexOf(UnidadeSelecionada)] = u;
-                    DialogCoordinator.ShowModalMessageExternal(this, "Unidade", "Unidade editada com sucesso");
+                    OnShowMessage("Unidade", "Unidade editada com sucesso");
                 }
                 return;
             }
 
             else if (string.Equals(uni, string.Empty) || (string.IsNullOrWhiteSpace(uni) && !string.Equals(uni, null)))
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro", "Unidade não pode ser vazia!!");
+                OnShowMessage("Erro", "Unidade não pode ser vazia!!");
                 EditarUnidade();
                 return;
             }
@@ -219,14 +216,14 @@ namespace SisMaper.ViewModel
 
         public void ExcluirUnidade()
         {
-            MessageDialogResult afirmacao = DialogCoordinator.ShowModalMessageExternal(this, "Confirmação", "Excluir unidade " + UnidadeSelecionada.Descricao, MessageDialogStyle.AffirmativeAndNegative);
+            MessageDialogResult afirmacao = OnShowMessage("Confirmação", "Excluir unidade " + UnidadeSelecionada.Descricao, MessageDialogStyle.AffirmativeAndNegative);
 
             if (afirmacao.Equals(MessageDialogResult.Affirmative))
             {
                 if (DeletarUnidadeDoBanco(UnidadeSelecionada))
                 {
                     Unidades.Remove(UnidadeSelecionada);
-                    DialogCoordinator.ShowModalMessageExternal(this, "Confirmado", "Unidade removida");
+                    OnShowMessage("Confirmado", "Unidade removida");
                 }
             }
 

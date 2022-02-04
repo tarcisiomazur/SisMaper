@@ -1,5 +1,6 @@
 ﻿using Persistence;
 using SisMaper.Models;
+using SisMaper.Models.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Windows;
 
 namespace SisMaper.ViewModel
 {
-    public class CrudClienteViewModel : BaseViewModel, IClienteSave
+    public class CrudClienteViewModel : BaseViewModel
     {
         private Estado _estadoSelecionado;
 
@@ -38,10 +39,10 @@ namespace SisMaper.ViewModel
 
         }
 
-        public PessoaFisica PessoaFisica { get; set; }
-        public PessoaJuridica PessoaJuridica { get; set; }
+        public PessoaFisica PessoaFisica { get; set; } = new();
+        public PessoaJuridica PessoaJuridica { get; set; } = new();
 
-        private Cliente cliente;
+        public ListarClientes? cliente;
 
 
         public PList<Estado> Estados { get; private set; }
@@ -57,20 +58,55 @@ namespace SisMaper.ViewModel
 
         public SavePessoaJuridicaCommand SavePessoaJuridica { get; private set; }
 
-        public Action SaveCliente { get; set; }
+        public Action? ClienteSaved { get; set; }
 
 
-
-        public Action ClientePessoaFisica { get; set; }
-        public Action ClientePessoaJuridica { get; set; }
-
-        public CrudClienteViewModel(object clienteSelecionado)
+        public CrudClienteViewModel(ListarClientes? clienteSelecionado)
         {
 
-            cliente = (Cliente)clienteSelecionado;
+            cliente = clienteSelecionado;
 
             Estados = DAO.All<Estado>();
 
+            SavePessoaFisica = new SavePessoaFisicaCommand();
+            SavePessoaJuridica = new SavePessoaJuridicaCommand();
+
+            if (cliente is not null)
+            {
+                if (cliente.Tipo == ListarClientes.Pessoa.Fisica)
+                {
+                    PessoaFisica = DAO.Load<PessoaFisica>(cliente.Id);
+
+                    if (PessoaFisica.Cidade is not null)
+                    {
+                        EstadoSelecionado = Estados.Where(e => e.Id == PessoaFisica.Cidade.Estado.Id).First();
+                        CidadeSelecionada = Cidades.Where(c => c.Id == PessoaFisica.Cidade.Id).First();
+                    }
+
+                }
+                else
+                {
+                    PessoaJuridica = DAO.Load<PessoaJuridica>(cliente.Id);
+                    if (PessoaJuridica.Cidade is not null)
+                    {
+                        EstadoSelecionado = Estados.Where(e => e.Id == PessoaJuridica.Cidade.Estado.Id).First();
+                        CidadeSelecionada = Cidades.Where(c => c.Id == PessoaJuridica.Cidade.Id).First();
+                    }
+                }
+
+                return;
+                
+            }
+
+            CidadeSelecionada = null;
+            EstadoSelecionado = null;
+            Cidades = null;
+
+
+
+
+
+            /*
             if (cliente is not null)
             {
                 if (cliente.Cidade is not null)
@@ -79,7 +115,7 @@ namespace SisMaper.ViewModel
                     CidadeSelecionada = Cidades.Where(c => c.Id == cliente.Cidade.Id).First();
                 }
 
-
+                
                 PList<PessoaFisica> pessoasFisicas = DAO.All<PessoaFisica>();
                 PList<PessoaJuridica> pessoasJuridicas = DAO.All<PessoaJuridica>();
 
@@ -100,6 +136,7 @@ namespace SisMaper.ViewModel
                         break;
                     }
                 }
+                
 
 
             }
@@ -128,7 +165,7 @@ namespace SisMaper.ViewModel
                 PessoaJuridica = pj;
             }
 
-
+            */
 
         }
 
@@ -168,7 +205,7 @@ namespace SisMaper.ViewModel
                 PList<PessoaJuridica> pessoas = DAO.All<PessoaJuridica>();
                 return pessoas.Where(p => (p.CNPJ == pj.CNPJ && p.Id != pj.Id)).Count() != 0;
             }
-
+            
             return false;
         }
 
@@ -258,7 +295,7 @@ namespace SisMaper.ViewModel
         {
             if (cliente is null)
             {
-
+                /*
                 PList<Cliente> clientes = DAO.All<Cliente>();
 
                 if (clientes.Count == 0)
@@ -278,6 +315,7 @@ namespace SisMaper.ViewModel
                         Id = c2.Id + 1
                     };
                 }
+                */
 
                 if (clienteParameter is PessoaFisica pf)
                 {
@@ -312,8 +350,6 @@ namespace SisMaper.ViewModel
                         cliente = null;
                         throw new InvalidOperationException("CPF já registrado");
                     }
-
-                    pf.Id = cliente.Id;
                     pf.Save();
 
                 }
@@ -351,8 +387,6 @@ namespace SisMaper.ViewModel
                         cliente = null;
                         throw new InvalidOperationException("CNPJ já registrado");
                     }
-
-                    pj.Id = cliente.Id;
 
                     pj.Save();
                 }
@@ -399,8 +433,8 @@ namespace SisMaper.ViewModel
 
                     if (cliente.Id == pf.Id)
                     {
-                        string nome = pf.Nome;
-                        string endereco = pf.Endereco;
+                        string? nome = pf.Nome;
+                        string? endereco = pf.Endereco;
 
                         NullText(ref nome);
                         NullText(ref endereco);
@@ -452,9 +486,9 @@ namespace SisMaper.ViewModel
 
                     if (cliente.Id == pj.Id)
                     {
-                        string nome = pj.Nome;
-                        string endereco = pj.Endereco;
-                        string razaoSocial = pj.RazaoSocial;
+                        string? nome = pj.Nome;
+                        string? endereco = pj.Endereco;
+                        string? razaoSocial = pj.RazaoSocial;
 
                         NullText(ref nome);
                         NullText(ref endereco);
@@ -478,11 +512,11 @@ namespace SisMaper.ViewModel
             try
             {
                 SalvarCliente(PessoaFisica);
-                SaveCliente?.Invoke();
+                ClienteSaved?.Invoke();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro: " + ex.Message);
+                OnShowMessage("Erro ao salvar Cliente", "Erro: " + ex.Message);
             }
 
         }
@@ -492,11 +526,11 @@ namespace SisMaper.ViewModel
             try
             {
                 SalvarCliente(PessoaJuridica);
-                SaveCliente?.Invoke();
+                ClienteSaved?.Invoke();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro: " + ex.Message);
+                OnShowMessage("Erro ao salvar Cliente", "Erro: " + ex.Message);
             }
         }
     }
@@ -525,14 +559,6 @@ namespace SisMaper.ViewModel
     }
 
 
-
-
-    public interface IClienteSave
-    {
-        public Action SaveCliente { get; set; }
-        public Action ClientePessoaFisica { get; set; }
-        public Action ClientePessoaJuridica { get; set; }
-    }
 
 
 }

@@ -42,9 +42,9 @@ public partial class ViewPedido
         }
     }
 
-    private void OpenCrudCliente(CrudClienteViewModel viewModel)
+    private void OpenCrudCliente(CrudClienteViewModel viewModel, bool isPessoaFisica)
     {
-        new CrudPessoaFisica {DataContext = viewModel, Owner = this}.ShowDialog();
+        new CrudCliente {DataContext = viewModel, Owner = this, IsSelectedPessoaFisicaTab = isPessoaFisica}.ShowDialog();
     }
 
     private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)

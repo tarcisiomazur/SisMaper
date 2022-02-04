@@ -12,13 +12,13 @@ using System.Windows;
 
 namespace SisMaper.ViewModel
 {
-    public class ParcelaViewModel : BaseViewModel, ICloseWindow
+    public class ParcelaViewModel : BaseViewModel
     {
         public bool isParcelaEditable { get; private set; }
 
-        public Parcela Parcela { get; set; }
+        public Parcela? Parcela { get; set; }
         public Fatura Fatura { get; set; }
-
+        
         
         private decimal _valorMoeda;
 
@@ -139,7 +139,7 @@ namespace SisMaper.ViewModel
 
         public decimal TotalPagamentos { get; private set; }
 
-        public ParcelaViewModel(object? parcelaSelecionada, object? faturaSelecionada)
+        public ParcelaViewModel(Parcela? parcelaSelecionada, Fatura faturaSelecionada)
         {
             if(faturaSelecionada is null)
             {
@@ -151,7 +151,7 @@ namespace SisMaper.ViewModel
             isParcelaEditable = true;
 
 
-            Parcela = (Parcela)parcelaSelecionada;
+            Parcela = parcelaSelecionada;
 
 
             //Fatura = (Fatura)faturaSelecionada;

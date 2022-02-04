@@ -10,7 +10,7 @@ using SisMaper.Models.Views;
 
 namespace SisMaper.ViewModel
 {
-    public class ProdutosViewModel : BaseViewModel, IProdutos
+    public class ProdutosViewModel : BaseViewModel
     {
         public ListarProdutos ProdutoSelecionado { get; set; }
         public List<ListarProdutos>? Produtos { get; set; }
@@ -26,15 +26,17 @@ namespace SisMaper.ViewModel
         public ExcluirProdutoCommand Deletar { get; private set; }
         public OpenCategoriaCommand AbrirCategorias { get; private set; }
         public OpenUnidadeCommand AbrirUnidades { get; private set; }
+
+
+
+        public Action<CrudProdutoViewModel>? OpenCrudProduto { get; set; }
+        public Action? OpenCategoria { get; set; }
+        public Action? OpenUnidade { get; set; }
+
+
+
         
-        public IDialogCoordinator DialogCoordinator { get; set; }
 
-
-        public Action OpenNovoProduto { get; set; }
-        public Action OpenEditarProduto { get; set; }
-        public Action ProdutoExcluido { get; set; }
-        public Action OpenCategoria { get; set; }
-        public Action OpenUnidade { get; set; }
 
         public ProdutosViewModel()
         {
@@ -47,13 +49,23 @@ namespace SisMaper.ViewModel
             AbrirCategorias = new OpenCategoriaCommand();
             AbrirUnidades = new OpenUnidadeCommand();
             
-            DialogCoordinator = new DialogCoordinator();
 
             
             PropertyChanged += UpdateFilter;
 
             ProdutosFiltrados = Produtos;
 
+        }
+
+
+        public void Initialize(object? sender, EventArgs e)
+        {
+            Produtos = View.Execute<ListarProdutos>();
+        }
+
+        public void Clear(object? sender, EventArgs e)
+        {
+            Produtos = null;
         }
 
         private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
@@ -70,7 +82,7 @@ namespace SisMaper.ViewModel
             }
         }
 
-
+        
         public void ExcluirProduto()
         {
             try
@@ -86,7 +98,8 @@ namespace SisMaper.ViewModel
                     }
                 }
 
-                MessageDialogResult confirmacao = DialogCoordinator.ShowModalMessageExternal(this, "Excluir Produto", "Deseja Excluir produto selecionado?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
+
+                MessageDialogResult confirmacao = OnShowMessage("Excluir Produto", "Deseja Excluir produto selecionado?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
 
                 if (confirmacao.Equals(MessageDialogResult.Affirmative))
                 {
@@ -98,20 +111,20 @@ namespace SisMaper.ViewModel
                     var p = DAO.Load<Produto>(ProdutoSelecionado.Id);
                     if (p?.Delete() ?? false)
                     {
-                        ProdutoExcluido?.Invoke();
+                        Initialize(null, EventArgs.Empty);
+                        OnShowMessage("Excluir Produto", "Produto excluido com sucesso");
                     }
                 }
+                return;
 
             }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Erro: " + ex.Message);
-            }
+            catch { }
+            OnShowMessage("Erro", "Erro ao excluir produto");
         }
 
-        internal void OpenCrudProdutos() => OpenNovoProduto?.Invoke();
+        internal void OpenNovoProduto() => OpenCrudProduto?.Invoke(new CrudProdutoViewModel(null));
 
-        internal void OpenEditarCrudProdutos() => OpenEditarProduto?.Invoke();
+        internal void OpenEditarCrudProdutos() => OpenCrudProduto?.Invoke(new CrudProdutoViewModel(ProdutoSelecionado));
 
         public void OpenCategorias() => OpenCategoria?.Invoke();
 
@@ -150,7 +163,7 @@ namespace SisMaper.ViewModel
         {
             ProdutosViewModel vm = (ProdutosViewModel)parameter;
 
-            vm.OpenCrudProdutos();
+            vm.OpenNovoProduto();
         }
     }
 
@@ -189,14 +202,5 @@ namespace SisMaper.ViewModel
     }
 
 
-
-    public interface IProdutos
-    {
-        public Action OpenNovoProduto { get; set; }
-        public Action OpenEditarProduto { get; set; }
-        public Action ProdutoExcluido { get; set; }
-        public Action OpenCategoria { get; set; }
-        public Action OpenUnidade { get; set; }
-    }
 
 }

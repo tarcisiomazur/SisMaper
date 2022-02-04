@@ -7,10 +7,11 @@
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:m="clr-namespace:SisMaper.ViewModel"
+    xmlns:viewmodel="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:models="clr-namespace:SisMaper.Models"
-    Dialog:DialogParticipation.Register="{Binding}"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    templates:DialogParticipation.MyRegister="{Binding}"
     x:Class="SisMaper.Views.ViewCategorias"
     x:Name="this"
     mc:Ignorable="d"
@@ -22,7 +23,7 @@
     >
 
     <mah:MetroWindow.DataContext>
-        <m:CategoriaViewModel/>
+        <viewmodel:CategoriaViewModel/>
     </mah:MetroWindow.DataContext>
 
     <Grid>

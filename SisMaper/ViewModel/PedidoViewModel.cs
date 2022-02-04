@@ -53,7 +53,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     public event Action<BuscarProdutoViewModel>? OpenBuscarProduto;
 
-    public event Action<CrudClienteViewModel>? OpenCrudCliente;
+    public event Action<CrudClienteViewModel, bool>? OpenCrudCliente;
 
     public event Action<FaturaViewModel>? OpenFatura;
 
@@ -208,8 +208,8 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     private void AbrirFaturaPedido()
     {
+        OpenFatura?.Invoke(new FaturaViewModel(Pedido.Fatura.Id));
         Save?.Invoke();
-        OpenFatura?.Invoke(new FaturaViewModel(Pedido.Fatura));
     }
 
     private void AtualizarSituacaoNF()
@@ -409,13 +409,13 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     private void AdicionarCliente(object obj)
     {
         var isPf = obj.Equals("PF");
-        Cliente cliente = isPf ? new PessoaFisica() : new PessoaJuridica();
-        var vm = new CrudClienteViewModel(cliente);
-        OpenCrudCliente?.Invoke(vm);
-        if (cliente is {Id: > 0})
+        var vm = new CrudClienteViewModel(null);
+        OpenCrudCliente?.Invoke(vm, isPf);
+
+        if(!Clientes.Equals(View.Execute<ListarClientes>()))
         {
-            Pedido.Cliente = PersistenceContext.Get<Cliente>(cliente.Id);
             Clientes = View.Execute<ListarClientes>();
+            Pedido.Cliente = PersistenceContext.Get<Cliente>(Clientes.Last().Id);
         }
     }
 
@@ -528,14 +528,15 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     private void EditarCliente()
     {
         if (Pedido.Cliente is null) return;
+        Clientes = View.Execute<ListarClientes>();
         switch (Pedido.Cliente)
         {
             case PessoaFisica pf:
-                OpenCrudCliente?.Invoke(new CrudClienteViewModel(pf));
+                OpenCrudCliente?.Invoke(new CrudClienteViewModel(Clientes.Where(cliente => cliente.Id == pf.Id).First()), true);
                 Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaFisica>(pf.Id);
                 break;
             case PessoaJuridica pj:
-                OpenCrudCliente?.Invoke(new CrudClienteViewModel(pj));
+                OpenCrudCliente?.Invoke(new CrudClienteViewModel(Clientes.Where(cliente => cliente.Id == pj.Id).First()), false);
                 Pedido.Cliente = PersistenceContext.GetOrRefresh<PessoaJuridica>(pj.Id);
                 break;
             default:
@@ -543,8 +544,9 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
                 break;
         }
 
-        Clientes = View.Execute<ListarClientes>();
+        
     }
+
 
     private void SetCliente(ListarClientes? cliente)
     {
@@ -555,6 +557,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
             _ => Pedido.Cliente
         };
     }
+
 
     private void SetProduto(ListarProdutos? produto)
     {
