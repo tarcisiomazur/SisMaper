@@ -401,19 +401,19 @@
             <ToolBar DockPanel.Dock="Top" >
                     <Fluent:RibbonGroupBox>
                         <StackPanel Orientation="Horizontal">
-                            <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding NovoCliente}">
+                            <Button Style="{DynamicResource Button1}" Command="{Binding NovoClienteCmd}">
                                 <StackPanel>
                                     <icons:PackIconPixelartIcons Kind="AddBox" HorizontalAlignment="Center" />
                                     <TextBlock Style="{DynamicResource Head1}" Text="Novo" />
                                 </StackPanel>
                             </Button>
-                            <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding EditarCliente}">
+                            <Button Style="{DynamicResource Button1}" Command="{Binding EditarClienteCmd}">
                                 <StackPanel>
                                     <icons:PackIconModern Kind="EditBox" HorizontalAlignment="Center" />
                                     <TextBlock Style="{DynamicResource Head1}" Text="Editar" />
                                 </StackPanel>
                             </Button>
-                            <Button Style="{DynamicResource Button1}" CommandParameter="{Binding}" Command="{Binding ExcluirCliente}">
+                            <Button Style="{DynamicResource Button1}" Command="{Binding ExcluirClienteCmd}">
                                 <StackPanel>
                                     <icons:PackIconMaterial Kind="DeleteForever" HorizontalAlignment="Center" />
                                     <TextBlock Style="{DynamicResource Head1}" Text="Excluir" />
@@ -442,7 +442,12 @@
                           CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
                           SelectionMode="Single"
                           SelectedItem="{Binding ClienteSelecionado, Mode=OneWayToSource}">
-                            
+                            <DataGrid.InputBindings>
+                                <MouseBinding
+                                    Gesture="LeftDoubleClick"
+                                    Command="{Binding EditarClienteCmd}" /> 
+                            </DataGrid.InputBindings>
+
                             <DataGrid.Columns>
                                 <DataGridTextColumn
                                 Width="50*"
@@ -498,7 +503,11 @@
                           CanUserAddRows="False" IsReadOnly="True" Margin="0,10,0,24"
                           SelectionMode="Single"
                           SelectedItem="{Binding ClienteSelecionado, Mode=OneWayToSource}">
-
+                            <DataGrid.InputBindings>
+                                <MouseBinding
+                                    Gesture="LeftDoubleClick"
+                                    Command="{Binding EditarClienteCmd}" />
+                            </DataGrid.InputBindings>
                             <DataGrid.Columns>
                                 <DataGridTextColumn
                                 Width="40*"

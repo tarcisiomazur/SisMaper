@@ -8,6 +8,7 @@ using MahApps.Metro.Controls;
 //using System.Windows.Data;
 //using Google.Protobuf.WellKnownTypes;
 using SisMaper.Models;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 
 namespace SisMaper.Views
@@ -34,6 +35,7 @@ namespace SisMaper.Views
                 newViewModel.OpenViewCliente += OpenViewCliente;
                 newViewModel.OpenCrudParcela += OpenCrudParcela;
                 newViewModel.FaturaChanged += ChangeFatura;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             }
 
             if (e.OldValue is FaturaViewModel oldViewModel)
@@ -42,6 +44,7 @@ namespace SisMaper.Views
                 oldViewModel.OpenViewCliente -= OpenViewCliente;
                 oldViewModel.OpenCrudParcela -= OpenCrudParcela;
                 oldViewModel.FaturaChanged -= ChangeFatura;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             }
         }
 
@@ -56,6 +59,7 @@ namespace SisMaper.Views
         private void OpenCrudParcela(ParcelaViewModel viewModel)
         {
             new ViewParcela { DataContext = viewModel, Owner = this }.ShowDialog();
+            ((FaturaViewModel)DataContext).ResetFatura();
         }
 
 

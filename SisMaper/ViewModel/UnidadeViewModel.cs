@@ -15,9 +15,9 @@ namespace SisMaper.ViewModel
     {
         public ObservableCollection<Unidade> Unidades { get; private set; }
 
-        public AdicionarUnidadeCommand AdicionarUni { get; private set; } = new AdicionarUnidadeCommand();
-        public EditarUnidadeCommand EditarUni { get; private set; } = new EditarUnidadeCommand();
-        public RemoverUnidadeCommand RemoverUni { get; private set; } = new RemoverUnidadeCommand();
+        public SimpleCommand AdicionarUnidadeCmd => new(() => AdicionarUnidade());
+        public SimpleCommand EditarUnidadeCmd => new(EditarUnidade, () => !string.IsNullOrEmpty(UnidadeSelecionada?.Descricao));
+        public SimpleCommand RemoverUnidadeCmd => new(ExcluirUnidade, () => !string.IsNullOrEmpty(UnidadeSelecionada?.Descricao));
 
 
         private Unidade _unidadeSelecionada;
@@ -107,12 +107,7 @@ namespace SisMaper.ViewModel
 
 
 
-
-
-
-
-
-        public void AdicionarUnidade(string defaultText)
+        public void AdicionarUnidade(string defaultText = "")
         {
             MetroDialogSettings dialogSettings = new MetroDialogSettings()
             {
@@ -230,55 +225,4 @@ namespace SisMaper.ViewModel
         }
     }
 
-
-
-
-
-    public class AdicionarUnidadeCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            UnidadeViewModel vm = (UnidadeViewModel)parameter;
-            vm.AdicionarUnidade("");
-        }
-    }
-
-
-
-    public class EditarUnidadeCommand : BaseCommand
-    {
-
-        public override bool CanExecute(object parameter)
-        {
-            var vm = (UnidadeViewModel)parameter;
-            return !String.IsNullOrEmpty(vm.UnidadeSelecionada?.Descricao);
-        }
-
-        public override void Execute(object parameter)
-        {
-            UnidadeViewModel vm = (UnidadeViewModel)parameter;
-            vm.EditarUnidade();
-        }
-    }
-
-
-
-    public class RemoverUnidadeCommand : BaseCommand
-    {
-
-        public override bool CanExecute(object parameter)
-        {
-            UnidadeViewModel vm = (UnidadeViewModel)parameter;
-            return !String.IsNullOrEmpty(vm.UnidadeSelecionada?.Descricao);
-        }
-
-
-
-        public override void Execute(object parameter)
-        {
-            UnidadeViewModel vm = (UnidadeViewModel)parameter;
-            vm.ExcluirUnidade();
-
-        }
-    }
 }

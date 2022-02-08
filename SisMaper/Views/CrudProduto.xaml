@@ -19,8 +19,6 @@
     Title="{Binding Produto.Id, StringFormat='{}Produto - {0:00000}', FallbackValue='Novo Produto', Converter={StaticResource NotZero}}"
     TitleCharacterCasing="Normal"
     ResizeMode="NoResize"
-    MinHeight="500"
-    MinWidth="750"
     Height="500"
     Width="750"
     >
@@ -163,15 +161,22 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Margin="0,0,31,17"
-            CommandParameter="{Binding}"
-            Command="{Binding Salvar}"/>
+            Command="{Binding SalvarProdutoCmd}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="20,93,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"><Run
                 Language="pt-br"
-                Text="Descrição" /></TextBlock>
+                Text="Descrição" />
+            <Run
+                Language="pt-br"
+                Text="*"
+                FontWeight="UltraBold"
+                BaselineAlignment="TextTop"
+                FontSize="20"
+                Foreground="Red"/>
+        </TextBlock>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="396,50,0,0"
@@ -210,7 +215,7 @@
 
             </ComboBox>
 
-            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" CommandParameter="{Binding}" Command="{Binding EditarCategorias}" Background="White" >
+            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarCategoriasCmd}" Background="White" >
                 <StackPanel>
                     <iconpacks:PackIconMaterial Kind="Pencil" Foreground="Green" Width="18" Height="18"/>
                 </StackPanel>
@@ -283,7 +288,7 @@
 
             </ComboBox>
 
-            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" CommandParameter="{Binding}" Command="{Binding EditarUnidades}" Background="White" >
+            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarUnidadesCmd}" Background="White" >
                 <StackPanel>
                     <iconpacks:PackIconMaterial Kind="Pencil" Foreground="Green" Width="18" Height="18"/>
                 </StackPanel>
@@ -403,8 +408,7 @@
             Margin="580,172,0,0" VerticalAlignment="Top" 
             Height="26" Width="68" FontWeight="Regular" 
             FontFamily="Segoe UI"
-            CommandParameter="{Binding}"
-            Command="{Binding Adicionar}">
+            Command="{Binding AdicionarLoteCmd}">
         </Button>
 
         <Button
@@ -413,13 +417,31 @@
             Margin="655,172,0,0" VerticalAlignment="Top" 
             Height="26" Width="64" 
             FontWeight="Normal"
-            CommandParameter="{Binding}"
-            Command="{Binding Remover}">
+            Command="{Binding RemoverLoteCmd}">
         </Button>
 
-
-
-
+        <TextBlock
+            TextWrapping="Wrap"
+            HorizontalAlignment="left"
+            VerticalAlignment="Bottom"
+            Margin="20,0,95,0" 
+            Height="32" 
+            Width="200">
+            <Run
+                Language="pt-br"
+                Text="*"
+                FontWeight="UltraBold"
+                FontSize="20"
+                BaselineAlignment="Subscript"
+                Foreground="Red"/>
+            <Run
+                Language="pt-br"
+                Text=" - Campos Obrigatórios"
+                FontWeight="UltraBold"
+                BaselineAlignment="TextTop"
+                FontSize="14"
+                Foreground="Red"/>
+        </TextBlock>
 
     </Grid>
 </mah:MetroWindow>

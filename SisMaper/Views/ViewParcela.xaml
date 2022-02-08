@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:SisMaper.Views"
-        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:templates="clr-namespace:SisMaper.Views.Templates" xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Dialog:DialogParticipation.Register="{Binding}"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+        templates:DialogParticipation.MyRegister="{Binding}"
         mc:Ignorable="d"
         Title="Parcela"
         MinHeight="500"
@@ -143,7 +145,7 @@
         </Style>
     </mah:MetroWindow.Resources>
 
-    <Grid >
+    <Grid IsEnabled="{Binding IsParcelaEditable}">
         <TextBlock Margin="40,6,0,0" Text="Parcela" FontSize="26" Width="100" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <Border BorderThickness="1" Margin="40,40,0,0" CornerRadius="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top" Width="460" Height="350">
             <StackPanel>
@@ -274,7 +276,7 @@
                 <StackPanel Orientation="Horizontal" >
                     <ComboBox
                         ItemsSource="{Binding TiposPagamento}"
-                        SelectedItem="{Binding TipoSelecionado, Mode=TwoWay}"
+                        SelectedItem="{Binding TipoPagamentoSelecionado, Mode=TwoWay}"
                         IsEditable="False"
                         Height="36"
                         Margin="10,20,0,0"
@@ -301,7 +303,14 @@
                         VerticalAlignment="Bottom"
                         Width="160" />
 
-                    <Button Width="36" Height="36" Margin="10,0,0,0" VerticalAlignment="Bottom" Focusable="false" CommandParameter="{Binding}" Command="{Binding Modificar}" Background="White" >
+                    <Button 
+                        Width="36" 
+                        Height="36" 
+                        Margin="10,0,0,0" 
+                        VerticalAlignment="Bottom" 
+                        Focusable="false" 
+                        Command="{Binding ModificarPagamentoCmd}" 
+                        Background="White" >
                         <StackPanel>
                             <iconpacks:PackIconMaterial Kind="Plus" Foreground="Green" Width="22" Height="22"/>
                         </StackPanel>
@@ -324,7 +333,7 @@
                         <DataGridTextColumn
                             Width="40*"
                             Header="Tipo de pagamento"
-                            Binding="{Binding Tipo}"
+                            Binding="{Binding TipoPagamento}"
                             IsReadOnly="True" 
                             FontSize="20"/>
                         <mah:DataGridNumericUpDownColumn
@@ -374,8 +383,7 @@
                 HorizontalAlignment="Left"
                 Margin="40,0,0,0"
                 Content="Salvar"
-                CommandParameter="{Binding}"
-                Command="{Binding Salvar}"/>
+                Command="{Binding SalvarParcelaCmd}"/>
 
             <Button
                 Style="{DynamicResource OptionsButtonStyle}" 
@@ -383,15 +391,14 @@
                 VerticalAlignment="Top"
                 Margin="20,0,0,0"
                 Content="Cancelar"
-                PreviewMouseLeftButtonDown="CancelarButton"/>
+                PreviewMouseLeftButtonDown="CancelarButtonPress"/>
             <Button
                 Style="{DynamicResource OptionsButtonStyle}" 
                 Height="50"
                 FontSize="16"
                 VerticalAlignment="Top"
                 Margin="338,0,0,0"
-                CommandParameter="{Binding}"
-                Command="{Binding Confirmar}">
+                Command="{Binding ConfirmarRecebimentoCmd}">
                 <Button.Content>
                     <TextBlock>Confirmar<LineBreak/> Recebimento</TextBlock>
                 </Button.Content>
@@ -402,180 +409,4 @@
         
     </Grid>
     
-
-    <!--<Grid IsEnabled="{Binding isParcelaEditable}">
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Language="pt-br" Text="Índice" FontSize="22" Margin="20, 20, 0, 0" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  
-                    Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
-                    HorizontalAlignment="Left"
-                    Margin="10,20,0,0"
-                    TextWrapping="Wrap"
-                    VerticalAlignment="Top"
-                    Width="40" 
-                    IsEnabled="false"
-                    Text="{Binding Parcela.Indice}"/>
-
-                <TextBlock Language="pt-br" Text="Status" FontSize="22" Margin="60, 20, 0, 0" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  
-                    Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
-                    HorizontalAlignment="Left"
-                    Margin="10,20,0,0"
-                    TextWrapping="Wrap"
-                    VerticalAlignment="Top"
-                    Width="100" 
-                    IsEnabled="false"
-                    Text="{Binding Parcela.Status}"/>
-
-            </StackPanel>
-            <Separator Margin="10,10,10,0"/>
-
-            <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
-                <TextBlock Language="pt-br" Text="Valor" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  
-                    Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Language="pt-br"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0"
-                    TextWrapping="Wrap"
-                    VerticalAlignment="Top"
-                    Width="200" 
-                    Text="{Binding Parcela.Valor}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                <TextBlock Language="pt-br" Text="Data de Vencimento" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <DatePicker  BorderThickness="2" x:Name="DataVencimentoDatePicker"
-                    Height="32"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0"
-                    VerticalAlignment="Top"
-                    Width="200" 
-                    Focusable="False"
-                    SelectedDate="{Binding Parcela.DataVencimento, Mode=TwoWay}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                <TextBlock Language="pt-br" Text="Data de Pagamento" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
-                    Height="32"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0"
-                    VerticalAlignment="Top"
-                    Width="200" 
-                    IsEnabled="False"
-                    Text="{Binding Parcela.DataPagamento, StringFormat={}{0:dd/MM/yyyy  HH:mm:ss}}"/>
-            </StackPanel>
-
-            <Separator Margin="10,10,10,0"/>
-
-            <StackPanel Orientation="Horizontal" Margin="0, 60, 0, 0">
-                <StackPanel>
-                    <Separator Margin="20, 0, 0, 0" Width="200" HorizontalAlignment="Left" Background="black"/>
-                    <TextBlock Language="pt-br" Text="Recebimento" FontSize="28" Margin="20, 0, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Separator Margin="20, 0, 0, 0" Width="200" HorizontalAlignment="Left" Background="black"/>
-                </StackPanel>
-                <Button 
-                    Style="{DynamicResource OptionsButtonStyle}" 
-                    Height="50"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="115,0,0,0"
-                    CommandParameter="{Binding}"
-                    Command="{Binding Confirmar}">
-                    <Button.Content>
-                        <TextBlock>Confirmar<LineBreak/> Recebimento</TextBlock>
-                    </Button.Content>
-
-                </Button>
-
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                <TextBlock Language="pt-br" Text="Moeda" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Language="pt-br"
-                        Height="32" x:Name="tx" 
-                        FontSize="16"
-                        HorizontalAlignment="Left"
-                        Margin="30,20,0,0"
-                        VerticalAlignment="Top"
-                        Width="200" 
-                        Text="{Binding ValorMoeda, UpdateSourceTrigger=LostFocus}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                <TextBlock Language="pt-br" Text="Crédito" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Language="pt-br"
-                    Height="32"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0"
-                    VerticalAlignment="Top"
-                    Width="200" 
-                    Text="{Binding ValorCredito, UpdateSourceTrigger=LostFocus}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                <TextBlock Language="pt-br" Text="Débito" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Language="pt-br"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0"
-                    VerticalAlignment="Top"
-                    Width="200" 
-                    Text="{Binding ValorDebito, UpdateSourceTrigger=LostFocus}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                <TextBlock Language="pt-br" Text="Outro" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Language="pt-br"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0"
-                    VerticalAlignment="Top"
-                    Width="200" 
-                    Text="{Binding ValorOutro, UpdateSourceTrigger=LostFocus}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                <TextBlock Language="pt-br" Text="Total" FontSize="22" Margin="20, 20, 0, 0" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Language="pt-br"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0"
-                    VerticalAlignment="Top"
-                    Width="200" 
-                    IsEnabled="False"
-                    Text="{Binding ValorTotal, Mode=OneWay}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
-
-                <Button 
-                    Style="{DynamicResource OptionsButtonStyle}" 
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Margin="20,0,0,0"
-                    Content="Salvar"
-                    CommandParameter="{Binding}"
-                    Command="{Binding Salvar}"/>
-
-                <Button 
-                    Style="{DynamicResource OptionsButtonStyle}" 
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Margin="300,0,0,0"
-                    Content="Cancelar"
-                    PreviewMouseLeftButtonDown="CancelarButton"/>
-
-            </StackPanel>
-
-
-
-        </StackPanel>
-
-    </Grid>-->
 </mah:MetroWindow>

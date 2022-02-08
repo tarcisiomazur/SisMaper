@@ -8,8 +8,7 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    x:Name="userControl" 
-    
+    x:Name="userControl"   
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     Dialog:DialogParticipation.Register="{Binding}"
@@ -40,8 +39,7 @@
                     Orientation="Horizontal">
                     <Button
                         Style="{StaticResource SisMaper.ToolBar.Button}"
-                        CommandParameter="{Binding}"
-                        Command="{Binding EditarFatura}">
+                        Command="{Binding EditarFaturaCmd}">
                         <StackPanel>
                             <icons:PackIconModern
                                 Kind="EditBox"
@@ -157,17 +155,22 @@
             BorderThickness="3"
             Margin="5"
             BorderBrush="#FFC4C4C4"
-                Style="{DynamicResource MahApps.Styles.DataGrid}"
-                HorizontalContentAlignment="Stretch"
-                ColumnWidth="*"
-                ItemsSource="{Binding FaturasFiltradas}"
-                AutoGenerateColumns="False"
-                CanUserAddRows="False"
-                IsReadOnly="True"
-                VerticalContentAlignment="Stretch"
-                FontWeight="Regular"
-                SelectedItem="{Binding FaturaSelecionada}">
-                <DataGrid.Columns>
+            Style="{DynamicResource MahApps.Styles.DataGrid}"
+            HorizontalContentAlignment="Stretch"
+            ColumnWidth="*"
+            ItemsSource="{Binding FaturasFiltradas}"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            IsReadOnly="True"
+            VerticalContentAlignment="Stretch"
+            FontWeight="Regular"
+            SelectedItem="{Binding FaturaSelecionada}">
+            <DataGrid.InputBindings>
+                <MouseBinding
+                    Gesture="LeftDoubleClick"
+                    Command="{Binding EditarFaturaCmd}" />
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
                     <mah:DataGridNumericUpDownColumn
                         Width="10*"
                         MinWidth="75"

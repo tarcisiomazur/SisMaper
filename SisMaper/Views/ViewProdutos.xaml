@@ -32,8 +32,7 @@
                         Orientation="Horizontal">
                         <Button
                             Style="{StaticResource SisMaper.ToolBar.Button}"
-                            CommandParameter="{Binding}"
-                            Command="{Binding NovoProduto}">
+                            Command="{Binding NovoProdutoCmd}">
                             <StackPanel>
                                 <icons:PackIconPixelartIcons
                                     Kind="AddBox"
@@ -45,8 +44,7 @@
                         </Button>
                         <Button
                             Style="{StaticResource SisMaper.ToolBar.Button}"
-                            CommandParameter="{Binding}"
-                            Command="{Binding Editar}">
+                            Command="{Binding EditarProdutoCmd}">
                             <StackPanel>
                                 <icons:PackIconModern
                                     Kind="EditBox"
@@ -58,8 +56,7 @@
                         </Button>
                         <Button
                             Style="{StaticResource SisMaper.ToolBar.Button}"
-                            CommandParameter="{Binding}"
-                            Command="{Binding Deletar}">
+                            Command="{Binding DeletarProdutoCmd}">
                             <StackPanel>
                                 <icons:PackIconMaterial
                                     Kind="DeleteForever"
@@ -134,8 +131,7 @@
                         Margin="5, 10"
                         Content="Categorias"
                         Background="LightGray"
-                        CommandParameter="{Binding}"
-                        Command="{Binding AbrirCategorias}" />
+                        Command="{Binding OpenCategoriasCmd}" />
 
                     <Button
                         Height="30"
@@ -143,8 +139,7 @@
                         Margin="5, 10"
                         Content="Unidades"
                         Background="LightGray"
-                        CommandParameter="{Binding}"
-                        Command="{Binding AbrirUnidades}" />
+                        Command="{Binding OpenUnidadesCmd}" />
 
 
                 </StackPanel>
@@ -168,6 +163,11 @@
                     Margin="0,10,0,24"
                     SelectionMode="Single"
                     SelectedItem="{Binding ProdutoSelecionado, Mode=TwoWay}">
+                    <DataGrid.InputBindings>
+                        <MouseBinding
+                            Gesture="LeftDoubleClick"
+                            Command="{Binding EditarProdutoCmd}" />
+                    </DataGrid.InputBindings>
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="40*"

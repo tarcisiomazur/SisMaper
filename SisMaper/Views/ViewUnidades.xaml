@@ -31,24 +31,21 @@
                 Content="Adicionar" 
                 Width="100" 
                 Margin="10" 
-                CommandParameter="{Binding}"
-                Command="{Binding AdicionarUni}">
+                Command="{Binding AdicionarUnidadeCmd}">
                 
             </Button>
             <Button 
                 Content="Editar" 
                 Width="100" 
                 Margin="10"
-                CommandParameter="{Binding}"
-                Command="{Binding EditarUni}">
+                Command="{Binding EditarUnidadeCmd}">
                 
             </Button>
             <Button 
                 Content="Remover" 
                 Width="100" 
                 Margin="10" 
-                CommandParameter="{Binding}"
-                Command="{Binding RemoverUni}">
+                Command="{Binding RemoverUnidadeCmd}">
                 
             </Button>
         </StackPanel>

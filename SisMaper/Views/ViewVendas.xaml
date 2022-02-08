@@ -18,6 +18,10 @@
     d:DataContext="{d:DesignInstance viewModels:VendasViewModel}"
     templates:DialogParticipation.MyRegister="{Binding}">
 
+    <UserControl.DataContext>
+        <viewModels:VendasViewModel/>
+    </UserControl.DataContext>
+    
     <Grid
         Background="White">
         <Grid.RowDefinitions>

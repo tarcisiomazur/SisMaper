@@ -13,9 +13,9 @@ namespace SisMaper.ViewModel
 {
     public class CrudClienteViewModel : BaseViewModel
     {
-        private Estado _estadoSelecionado;
+        private Estado? _estadoSelecionado;
 
-        public Estado EstadoSelecionado
+        public Estado? EstadoSelecionado
         {
             get { return _estadoSelecionado; }
             set
@@ -27,9 +27,9 @@ namespace SisMaper.ViewModel
         }
 
 
-        private Cidade _cidadeSelecionada;
+        private Cidade? _cidadeSelecionada;
 
-        public Cidade CidadeSelecionada
+        public Cidade? CidadeSelecionada
         {
             get { return _cidadeSelecionada; }
             set 
@@ -42,21 +42,21 @@ namespace SisMaper.ViewModel
         public PessoaFisica PessoaFisica { get; set; } = new();
         public PessoaJuridica PessoaJuridica { get; set; } = new();
 
-        public ListarClientes? cliente;
+        private ListarClientes? cliente;
 
 
         public PList<Estado> Estados { get; private set; }
 
-        private PList<Cidade> _cidades;
-        public PList<Cidade> Cidades
+        private PList<Cidade>? _cidades;
+        public PList<Cidade>? Cidades
         {
             get { return _cidades; }
             set { SetField(ref _cidades, value); }
         }
 
-        public SavePessoaFisicaCommand SavePessoaFisica { get; private set; }
+        public SimpleCommand SalvarPessoaFisicaCmd => new(SalvarPessoaFisica);
 
-        public SavePessoaJuridicaCommand SavePessoaJuridica { get; private set; }
+        public SimpleCommand SalvarPessoaJuridicaCmd => new(SalvarPessoaJuridica);
 
         public Action? ClienteSaved { get; set; }
 
@@ -68,8 +68,8 @@ namespace SisMaper.ViewModel
 
             Estados = DAO.All<Estado>();
 
-            SavePessoaFisica = new SavePessoaFisicaCommand();
-            SavePessoaJuridica = new SavePessoaJuridicaCommand();
+            //SavePessoaFisica = new SavePessoaFisicaCommand();
+            //SavePessoaJuridica = new SavePessoaJuridicaCommand();
 
             if (cliente is not null)
             {
@@ -79,8 +79,8 @@ namespace SisMaper.ViewModel
 
                     if (PessoaFisica.Cidade is not null)
                     {
-                        EstadoSelecionado = Estados.Where(e => e.Id == PessoaFisica.Cidade.Estado.Id).First();
-                        CidadeSelecionada = Cidades.Where(c => c.Id == PessoaFisica.Cidade.Id).First();
+                        EstadoSelecionado = Estados.Where(e => e.Id == PessoaFisica.Cidade.Estado.Id).FirstOrDefault();
+                        CidadeSelecionada = Cidades.Where(c => c.Id == PessoaFisica.Cidade.Id).FirstOrDefault();
                     }
 
                 }
@@ -89,8 +89,8 @@ namespace SisMaper.ViewModel
                     PessoaJuridica = DAO.Load<PessoaJuridica>(cliente.Id);
                     if (PessoaJuridica.Cidade is not null)
                     {
-                        EstadoSelecionado = Estados.Where(e => e.Id == PessoaJuridica.Cidade.Estado.Id).First();
-                        CidadeSelecionada = Cidades.Where(c => c.Id == PessoaJuridica.Cidade.Id).First();
+                        EstadoSelecionado = Estados.Where(e => e.Id == PessoaJuridica.Cidade.Estado.Id).FirstOrDefault();
+                        CidadeSelecionada = Cidades.Where(c => c.Id == PessoaJuridica.Cidade.Id).FirstOrDefault();
                     }
                 }
 
@@ -101,71 +101,6 @@ namespace SisMaper.ViewModel
             CidadeSelecionada = null;
             EstadoSelecionado = null;
             Cidades = null;
-
-
-
-
-
-            /*
-            if (cliente is not null)
-            {
-                if (cliente.Cidade is not null)
-                {
-                    EstadoSelecionado = Estados.Where(e => e.Id == cliente.Cidade.Estado.Id).First();
-                    CidadeSelecionada = Cidades.Where(c => c.Id == cliente.Cidade.Id).First();
-                }
-
-                
-                PList<PessoaFisica> pessoasFisicas = DAO.All<PessoaFisica>();
-                PList<PessoaJuridica> pessoasJuridicas = DAO.All<PessoaJuridica>();
-
-                int countPf = pessoasFisicas.Count;
-                int countPj = pessoasJuridicas.Count;
-
-                for (int i = 0; i < Math.Max(countPf, countPj); i++)
-                {
-                    if (i < countPf && pessoasFisicas[i].Id == cliente.Id)
-                    {
-                        cliente = pessoasFisicas[i];
-                        break;
-                    }
-
-                    if (i < countPj && pessoasJuridicas[i].Id == cliente.Id)
-                    {
-                        cliente = pessoasJuridicas[i];
-                        break;
-                    }
-                }
-                
-
-
-            }
-            else
-            {
-                CidadeSelecionada = null;
-                EstadoSelecionado = null;
-                Cidades = null;
-            }
-
-
-            SavePessoaFisica = new SavePessoaFisicaCommand();
-            SavePessoaJuridica = new SavePessoaJuridicaCommand();
-
-
-            PessoaFisica = new PessoaFisica();
-            PessoaJuridica = new PessoaJuridica();
-
-            if (cliente is PessoaFisica pf)
-            {
-                PessoaFisica = pf;
-            }
-
-            else if (cliente is PessoaJuridica pj)
-            {
-                PessoaJuridica = pj;
-            }
-
-            */
 
         }
 
@@ -197,13 +132,13 @@ namespace SisMaper.ViewModel
             if (c is PessoaFisica pf)
             {           
                 PList<PessoaFisica> pessoas = DAO.All<PessoaFisica>();
-                return pessoas.Where(p => (p.CPF == pf.CPF && p.Id != pf.Id)).Count() != 0;
+                return pessoas.Where(p => (p.CPF == pf.CPF && p.Id != pf.Id)).Any();
             }
 
             else if (c is PessoaJuridica pj)
             {
                 PList<PessoaJuridica> pessoas = DAO.All<PessoaJuridica>();
-                return pessoas.Where(p => (p.CNPJ == pj.CNPJ && p.Id != pj.Id)).Count() != 0;
+                return pessoas.Where(p => (p.CNPJ == pj.CNPJ && p.Id != pj.Id)).Any();
             }
             
             return false;
@@ -291,223 +226,120 @@ namespace SisMaper.ViewModel
        
 
 
-        private void SalvarCliente<T>(T clienteParameter) where T : Cliente
+        private void SalvarCliente(Cliente clienteParameter)
         {
-            if (cliente is null)
+
+          
+            if (clienteParameter is PessoaFisica pf)
             {
-                /*
-                PList<Cliente> clientes = DAO.All<Cliente>();
-
-                if (clientes.Count == 0)
+                if(CidadeSelecionada is not null)
                 {
-                    cliente = new Cliente()
-                    {
-                        Id = 1
-                    };
+                    pf.Cidade = CidadeSelecionada;
                 }
-
                 else
                 {
-                    Cliente c2 = clientes.Last();
-
-                    cliente = new Cliente()
-                    {
-                        Id = c2.Id + 1
-                    };
+                    pf.Cidade = null;
                 }
-                */
 
-                if (clienteParameter is PessoaFisica pf)
+                if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
                 {
+                    throw new InvalidOperationException("CPF não pode ser vazio");
+                }
 
-                    if (CidadeSelecionada is not null)
-                    {
-                        pf.Cidade = CidadeSelecionada;
-                    }
-
-                    if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CPF não pode ser vazio");
-                    }
-
+                if (pf.CPF.Length == 14)
+                {
                     pf.CPF = pf.CPF.Replace(".", "").Replace("-", "");
-
-                    if (pf.CPF.Contains('_'))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CPF incompleto");
-                    }
-
-                    if(!CheckDigitoVerificadorCPF(pf.CPF))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CPF Inválido");
-                    }
-
-                    if (SearchCliente(pf))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CPF já registrado");
-                    }
-                    pf.Save();
-
                 }
 
-                else if (clienteParameter is PessoaJuridica pj)
+                if (pf.CPF.Contains('_'))
                 {
-                    if (CidadeSelecionada is not null)
-                    {
-                        pj.Cidade = CidadeSelecionada;
-                    }
-
-                    if (pj.CNPJ is null || pj.CNPJ.Equals("__.___.___/____-__"))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CNPJ não pode ser vazio");
-                    }
-
-
-                    pj.CNPJ = pj.CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
-
-                    if (pj.CNPJ.Contains('_'))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CNPJ incompleto");
-                    }
-
-                    if(!CheckDigitoVerificadorCNPJ(pj.CNPJ))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CNPJ Inválido");
-                    }
-
-                    if (SearchCliente(pj))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CNPJ já registrado");
-                    }
-
-                    pj.Save();
+                    throw new InvalidOperationException("CPF incompleto");
                 }
+
+                if (!CheckDigitoVerificadorCPF(pf.CPF))
+                {
+                    throw new InvalidOperationException("CPF Inválido");
+                }
+
+                if (SearchCliente(pf))
+                {
+                    throw new InvalidOperationException("CPF já registrado");
+                }
+
+ 
+                string? nome = pf.Nome;
+                string? endereco = pf.Endereco;
+
+                NullText(ref nome);
+                NullText(ref endereco);
+
+                pf.Nome = nome;
+                pf.Endereco = endereco;
+
+                pf.Save();
+
 
             }
 
-            else
+            else if (clienteParameter is PessoaJuridica pj)
             {
-                if (clienteParameter is PessoaFisica pf)
+                if(CidadeSelecionada is not null)
                 {
-                    if(CidadeSelecionada is not null)
-                    {
-                        pf.Cidade = CidadeSelecionada;
-                    }
-                    else
-                    {
-                        pf.Cidade = null;
-                    }
-
-                    if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
-                    {
-                        throw new InvalidOperationException("CPF não pode ser vazio");
-                    }
-
-                    if (pf.CPF.Length == 14)
-                    {
-                        pf.CPF = pf.CPF.Replace(".", "").Replace("-", "");
-                    }
-
-                    if (pf.CPF.Contains('_'))
-                    {
-                        throw new InvalidOperationException("CPF incompleto");
-                    }
-
-                    if (!CheckDigitoVerificadorCPF(pf.CPF))
-                    {
-                        throw new InvalidOperationException("CPF Inválido");
-                    }
-
-                    if (SearchCliente(pf))
-                    {
-                        throw new InvalidOperationException("CPF já registrado");
-                    }
-
-                    if (cliente.Id == pf.Id)
-                    {
-                        string? nome = pf.Nome;
-                        string? endereco = pf.Endereco;
-
-                        NullText(ref nome);
-                        NullText(ref endereco);
-
-                        pf.Nome = nome;
-                        pf.Endereco = endereco;
-
-                        pf.Save();
-                    }
-
+                    pj.Cidade = CidadeSelecionada;
+                }
+                else
+                {
+                    pj.Cidade = null;
                 }
 
-                else if (clienteParameter is PessoaJuridica pj)
+                if (pj.CNPJ is null || pj.CNPJ.Equals("__.___.___/____-__"))
                 {
-                    if(CidadeSelecionada is not null)
-                    {
-                        pj.Cidade = CidadeSelecionada;
-                    }
-                    else
-                    {
-                        pj.Cidade = null;
-                    }
-
-                    if (pj.CNPJ is null || pj.CNPJ.Equals("__.___.___/____-__"))
-                    {
-                        throw new InvalidOperationException("CNPJ não pode ser vazio");
-                    }
-
-                    if (pj.CNPJ.Length == 18)
-                    {
-                        pj.CNPJ = pj.CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
-                    }
-
-                    if (pj.CNPJ.Contains('_'))
-                    {
-                        throw new InvalidOperationException("CNPJ incompleto");
-                    }
-
-                    if (!CheckDigitoVerificadorCNPJ(pj.CNPJ))
-                    {
-                        cliente = null;
-                        throw new InvalidOperationException("CNPJ Inválido");
-                    }
-
-                    if (SearchCliente(pj))
-                    {
-                        throw new InvalidOperationException("CNPJ já registrado");
-                    }
-
-                    if (cliente.Id == pj.Id)
-                    {
-                        string? nome = pj.Nome;
-                        string? endereco = pj.Endereco;
-                        string? razaoSocial = pj.RazaoSocial;
-
-                        NullText(ref nome);
-                        NullText(ref endereco);
-                        NullText(ref razaoSocial);
-
-                        pj.Nome = nome;
-                        pj.Endereco = endereco;
-                        pj.RazaoSocial = razaoSocial;
-
-                        pj.Save();
-                    }
+                    throw new InvalidOperationException("CNPJ não pode ser vazio");
                 }
 
+                if (pj.CNPJ.Length == 18)
+                {
+                    pj.CNPJ = pj.CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
+                }
+
+                if (pj.CNPJ.Contains('_'))
+                {
+                    throw new InvalidOperationException("CNPJ incompleto");
+                }
+
+                if (!CheckDigitoVerificadorCNPJ(pj.CNPJ))
+                {
+                    throw new InvalidOperationException("CNPJ Inválido");
+                }
+
+                if (SearchCliente(pj))
+                {
+                    throw new InvalidOperationException("CNPJ já registrado");
+                }
+
+
+                string? nome = pj.Nome;
+                string? endereco = pj.Endereco;
+                string? razaoSocial = pj.RazaoSocial;
+
+                NullText(ref nome);
+                NullText(ref endereco);
+                NullText(ref razaoSocial);
+
+                pj.Nome = nome;
+                pj.Endereco = endereco;
+                pj.RazaoSocial = razaoSocial;
+
+                pj.Save();
+                    
             }
+
+            
         }
 
 
 
-        public void SalvarPessoaFisica()
+        private void SalvarPessoaFisica()
         {
             try
             {
@@ -521,7 +353,7 @@ namespace SisMaper.ViewModel
 
         }
 
-        public void SalvarPessoaJuridica()
+        private void SalvarPessoaJuridica()
         {
             try
             {
@@ -534,31 +366,6 @@ namespace SisMaper.ViewModel
             }
         }
     }
-
-
-
-
-    public class SavePessoaFisicaCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            CrudClienteViewModel vm = (CrudClienteViewModel)parameter;
-
-            vm.SalvarPessoaFisica();
-        }
-    }
-
-    public class SavePessoaJuridicaCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            CrudClienteViewModel vm = (CrudClienteViewModel)parameter;
-
-            vm.SalvarPessoaJuridica();
-        }
-    }
-
-
 
 
 }

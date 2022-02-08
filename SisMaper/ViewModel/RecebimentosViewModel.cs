@@ -21,35 +21,30 @@ namespace SisMaper.ViewModel
         public Fatura.Fatura_Status? StatusSelecionado { get; set; }
         public List<Fatura.Fatura_Status> StatusList { get; set; }
 
-        public EditarFaturaCommand EditarFatura { get; private set; }
-        public ExcluirFaturaCommand DeletarFatura { get; private set; }
-
         public Action<FaturaViewModel> OpenFatura { get; set; }
 
-        private PersistenceContext persistenceContext;
+        public SimpleCommand EditarFaturaCmd => new( () => OpenFatura?.Invoke(new FaturaViewModel(FaturaSelecionada.Id)), () => FaturaSelecionada != null);
 
 
         public RecebimentosViewModel()
         {
-            //Faturas = DAO.FindWhereQuery<Fatura>("Id > 0");
-            /*
-            foreach(Fatura f in Faturas)
-            {
-                f?.Cliente?.Load();
-            }
-            */
-
-            //GetFaturas();
-            persistenceContext = new PersistenceContext();
             StatusList = new List<Fatura.Fatura_Status>()
             {
                 Fatura.Fatura_Status.Aberta,
                 Fatura.Fatura_Status.Fechada
             };
 
-            EditarFatura = new EditarFaturaCommand();
-            DeletarFatura = new ExcluirFaturaCommand();
             PropertyChanged += UpdateFilter;
+        }
+
+        public void Initialize(object? sender, EventArgs e)
+        {
+            Faturas = View.Execute<ListarFatura>();
+        }
+
+        public void Clear(object? sender, EventArgs e)
+        {
+            Faturas = null;
         }
 
         private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
@@ -68,10 +63,8 @@ namespace SisMaper.ViewModel
             }
         }
 
-        public void OpenCrudEditarFatura() => OpenFatura?.Invoke(new FaturaViewModel(FaturaSelecionada.Id));
 
-
-        public void ExcluirFatura()
+        private void ExcluirFatura()
         {
             try
             {
@@ -81,53 +74,12 @@ namespace SisMaper.ViewModel
             }
             catch(Exception ex)
             {
-                OnShowMessage("Erro", ex.Message);
+                OnShowMessage("Erro", ex.Message + "  inner: " + ex.InnerException);
             }
         }
 
 
-        public void Initialize(object? sender, EventArgs e)
-        {
-            Faturas = View.Execute<ListarFatura>();
-        }
 
-        public void Clear(object? sender, EventArgs e)
-        {
-            Faturas = null;
-        }
 
     }
-
-
-
-
-    public class EditarFaturaCommand : BaseCommand
-    {
-        public override bool CanExecute(object parameter)
-        {
-            RecebimentosViewModel vm = (RecebimentosViewModel)parameter;
-            return vm.FaturaSelecionada is not null;
-            //return true;
-        }
-        public override void Execute(object parameter)
-        {
-            RecebimentosViewModel vm = (RecebimentosViewModel)parameter;
-            vm.OpenCrudEditarFatura();
-        }
-    }
-
-    public class ExcluirFaturaCommand : BaseCommand
-    {
-        public override bool CanExecute(object parameter)
-        {
-            RecebimentosViewModel vm = (RecebimentosViewModel)parameter;
-            return vm.FaturaSelecionada is not null;
-        }
-        public override void Execute(object parameter)
-        {
-            RecebimentosViewModel vm = (RecebimentosViewModel)parameter;
-            vm.ExcluirFatura();
-        }
-    }
-
 }

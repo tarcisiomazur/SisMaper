@@ -7,6 +7,8 @@
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
     xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    templates:DialogParticipation.MyRegister="{Binding}"
     x:Class="SisMaper.Views.ViewFatura"
     mc:Ignorable="d"
     Title="Fatura"
@@ -139,8 +141,10 @@
         </Style>
     </mah:MetroWindow.Resources>
     <Grid >
-        <DatePicker IsEnabled="{Binding IsFaturaAberta}"
-            FontSize="15" IsTodayHighlighted="true" Focusable="false"
+        <DatePicker 
+            IsEnabled="False"
+            FontSize="15"
+            Focusable="false"
             HorizontalAlignment="Right"
             Margin="0,25,20,0"
             SelectedDate="{Binding Fatura.Data}"
@@ -168,8 +172,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Margin="0,0,20,20" 
-            CommandParameter="{Binding}"
-            Command="{Binding Salvar}"/>
+            Command="{Binding SalvarFaturaCmd}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="26,29,0,0"
@@ -270,8 +273,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="10,10,0,0" 
-                        CommandParameter="{Binding}"
-                        Command="{Binding NovaParcela}"/>
+                        Command="{Binding NovaParcelaCmd}"/>
                     <TextBox
                         IsEnabled="False"
                         x:Name="ValorTotal"
@@ -298,16 +300,14 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="96,10,0,0" 
-                        CommandParameter="{Binding}"
-                        Command="{Binding EditarParcela}"/>
+                        Command="{Binding EditarParcelaCmd}"/>
                     <Button
                         Style="{DynamicResource OptionsButtonStyle}"
                         Content="Remover"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="172,10,0,0" 
-                        CommandParameter="{Binding}"
-                        Command="{Binding ExcluirParcela}"/>
+                        Command="{Binding ExcluirParcelaCmd}"/>
 
                 </Grid>
             </TabItem>
@@ -389,13 +389,20 @@
         
         <Button x:Name="ChangeFaturaButton"
             Style="{DynamicResource OptionsButtonStyle}"
-            CommandParameter="{Binding}"
-            Command="{Binding AlterarFatura}"
+            Command="{Binding AlterarStatusFaturaCmd}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="20,0,0,20" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" />
 
-        <Button Margin="0,70,365,0" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Top" Background="white" Focusable="false" CommandParameter="{Binding}" Command="{Binding VerCliente}" >
+        <Button 
+            Margin="0,70,365,0" 
+            Width="32" 
+            Height="32" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Top" 
+            Background="white" 
+            Focusable="false" 
+            Command="{Binding VerClienteCmd}" >
             <StackPanel>
                 <iconpacks:PackIconMaterial Kind="AccountDetails" Width="22" Height="22"/>
             </StackPanel>

@@ -58,8 +58,6 @@ namespace SisMaper.ViewModel
 
         public Produto? Produto { get; set; }
 
-        public double Valor1 { get; set; }
-
         public ObservableCollection<NCM> NCMs { get; private set; }
         public PList<Categoria> Categorias { get; private set; }
         public PList<Unidade> Unidades { get; private set; }
@@ -67,12 +65,11 @@ namespace SisMaper.ViewModel
 
         public PList<NCM> ListaNCM { get; private set; }
 
-        public SalvarCommand Salvar { get; private set; }
-        public AdicionarLoteCommand Adicionar { get; private set; }
-        public RemoverLoteCommand Remover { get; private set; }
-        public EditarCategoriaCommand EditarCategorias { get; private set; }
-        public EditarUnidadeCommand EditarUnidades { get; private set; }
-
+        public SimpleCommand SalvarProdutoCmd => new( SalvarProduto, () => !string.IsNullOrWhiteSpace(Produto?.Descricao) );
+        public SimpleCommand AdicionarLoteCmd => new(AdicionarLote);
+        public SimpleCommand RemoverLoteCmd => new(ExcluirLote, () => LoteSelecionado != null);
+        public SimpleCommand EditarCategoriasCmd => new(EditarCategorias);
+        public SimpleCommand EditarUnidadesCmd => new(EditarUnidades);
 
         public Action? ProdutoSaved { get; set; }
         public Action? OpenEditarCategoria { get; set; }
@@ -82,12 +79,6 @@ namespace SisMaper.ViewModel
 
         public CrudProdutoViewModel(ListarProdutos? produtoSelecionado)
         {
-
-            Salvar = new SalvarCommand();
-            Adicionar = new AdicionarLoteCommand();
-            Remover = new RemoverLoteCommand();
-            EditarCategorias = new EditarCategoriaCommand();
-            EditarUnidades = new EditarUnidadeCommand();
 
             NCMSelecionado = null;
             CategoriaSelecionada = null;
@@ -111,11 +102,11 @@ namespace SisMaper.ViewModel
 
             if (Produto is not null)
             {
-                if(Produto.Categoria is not null) CategoriaSelecionada = Categorias.Where(cat => cat.Id == Produto.Categoria.Id).First();
+                if(Produto.Categoria is not null) CategoriaSelecionada = Categorias.Where(cat => cat.Id == Produto.Categoria.Id).FirstOrDefault();
                 
-                if(Produto.Unidade is not null) UnidadeSelecionada = Unidades.Where(uni => uni.Id == Produto.Unidade.Id).First();
+                if(Produto.Unidade is not null) UnidadeSelecionada = Unidades.Where(uni => uni.Id == Produto.Unidade.Id).FirstOrDefault();
                 
-                if(Produto.NCM is not null) NCMSelecionado = ListaNCM.Where(n => n.Id == Produto.NCM.Id).First();
+                if(Produto.NCM is not null) NCMSelecionado = ListaNCM.Where(n => n.Id == Produto.NCM.Id).FirstOrDefault();
 
                 var lotesBanco = DAO.All<Lote>();
 
@@ -155,11 +146,7 @@ namespace SisMaper.ViewModel
             }
 
         }
-
-
-
-
-      
+ 
 
         private void CheckCodigoBarras()
         {
@@ -189,7 +176,7 @@ namespace SisMaper.ViewModel
             }
             catch(Exception ex)
             {
-                OnShowMessage("Erro ao remover lote", "Erro" + ex.Message);
+                OnShowMessage("Erro ao remover lote", "Erro " + ex.Message);
             }
         }
 
@@ -208,13 +195,10 @@ namespace SisMaper.ViewModel
                     Produto.Lotes.Add(l);
                 }
                 
-
                 Produto.Categoria = CategoriaSelecionada;
                 Produto.Unidade = UnidadeSelecionada;
                 Produto.NCM = NCMSelecionado;
-
-            
-            
+           
                 CheckCodigoBarras();
 
                 Produto.Save();
@@ -238,87 +222,25 @@ namespace SisMaper.ViewModel
         }
 
 
-        public void EditCategoria()
+        private void EditarCategorias()
         {
             OpenEditarCategoria?.Invoke();
             Categorias = DAO.All<Categoria>();
             CategoriaSelecionada = null;
-        } 
-        public void EditUnidade()
+        }
+
+        private void EditarUnidades()
         {
             OpenEditarUnidade?.Invoke();
             Unidades = DAO.All<Unidade>();
             UnidadeSelecionada = null;
         }
         
-
-
-
-        public class SalvarCommand : BaseCommand
+        private void AdicionarLote()
         {
-            public override bool CanExecute(object parameter)
-            {
-                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
-                return !string.IsNullOrWhiteSpace(vm.Produto.Descricao);
-            }
-
-            public override void Execute(object parameter)
-            {
-                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
-                vm.SalvarProduto();
-
-            }
-        }
-
-
-
-        public class AdicionarLoteCommand : BaseCommand
-        {
-            public override void Execute(object parameter)
-            {
-                var viewModel = (CrudProdutoViewModel)parameter;
-
-                Lote l = new Lote() { Descricao = "Descrição", Informacoes = "Informações" };
-
-                viewModel.Lotes.Add(l);
-                viewModel.LoteSelecionado = l;
-            }
-        }
-
-
-        public class RemoverLoteCommand : BaseCommand
-        {
-            public override bool CanExecute(object parameter)
-            {
-                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
-                return !Equals(vm.LoteSelecionado, null);
-            }
-
-            public override void Execute(object parameter)
-            {
-                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
-                vm.ExcluirLote();
-            }
-        }
-
-
-
-        public class EditarCategoriaCommand : BaseCommand
-        {
-            public override void Execute(object parameter)
-            {
-                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
-                vm.EditCategoria();
-            }
-        }
-
-        public class EditarUnidadeCommand : BaseCommand
-        {
-            public override void Execute(object parameter)
-            {
-                CrudProdutoViewModel vm = (CrudProdutoViewModel)parameter;
-                vm.EditUnidade();
-            }
+            Lote l = new Lote() { Descricao = "Descrição", Informacoes = "Informações" };
+            Lotes.Add(l);
+            LoteSelecionado = l;
         }
 
     }

@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Xceed.Wpf.Toolkit;
 
 namespace SisMaper.Views
 {
@@ -74,18 +75,20 @@ namespace SisMaper.Views
             Close();
         }
 
-        private void CPFMaskedTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void MaskedTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            CPFMaskedTextBox.Focus();
-            CPFMaskedTextBox.Select(0, 0);
-            e.Handled = true;
-        }
 
-        private void CNPJMaskedTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            CNPJMaskedTextBox.Focus();
-            CNPJMaskedTextBox.Select(0, 0);
-            e.Handled = true;
+            if (sender is MaskedTextBox maskedTextBox)
+            {
+                int posicaoAtual = maskedTextBox.MaskedTextProvider.FindUnassignedEditPositionFrom(0, true);
+
+                if (maskedTextBox.IsFocused && maskedTextBox.SelectionStart > posicaoAtual && maskedTextBox.SelectionLength == 0)
+                {
+                    if (posicaoAtual >= 0)
+                        maskedTextBox.Select(posicaoAtual, 0);
+                }
+
+            }
         }
     }
 }

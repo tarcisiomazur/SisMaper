@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using SisMaper.Tools;
 using SisMaper.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -23,35 +24,38 @@ namespace SisMaper.Views
     {
         public ViewParcela()
         {
+            DataContextChanged += SetActions;
             InitializeComponent();
             Loaded += ViewParcelaLoaded;
         }
 
-
-        private void CancelarButton(object sender, MouseButtonEventArgs e)
+        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Close();
+            if(e.NewValue is ParcelaViewModel newViewModel)
+            {
+                newViewModel.ParcelaSaved += Close;
+                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+            }
+            if(e.OldValue is ParcelaViewModel oldViewModel)
+            {
+                oldViewModel.ParcelaSaved -= Close;
+                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
+            }
         }
+
 
         private void ViewParcelaLoaded(object sender, RoutedEventArgs e)
         {
             DataVencimentoDatePicker.DisplayDateStart = DateTime.Today;
-
-            //if(DataContext is ICloseWindow vm)
-           // {
-              //  vm.Close = () => Close();
-            //}
-
         }
 
-        /*
-        private void MoedaTextBox(object sender, RoutedEventArgs e)
+        private void CancelarButtonPress(object sender, MouseButtonEventArgs e)
         {
-            if(tx.Text.Length == 0)
-            {
-                tx.Text = "0";
-            }
+            Close();
         }
-        */
+
+
+
+
     }
 }

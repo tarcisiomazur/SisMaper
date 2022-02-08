@@ -17,9 +17,9 @@ namespace SisMaper.ViewModel
     {
         public ObservableCollection<Categoria> Categorias { get; private set; }
 
-        public AdicionarCategoriaCommand AdicionarCat { get; private set; } = new AdicionarCategoriaCommand();
-        public EditarCategoriaCommand EditarCat { get; private set; } = new EditarCategoriaCommand();
-        public RemoverCategoriaCommand RemoverCat { get; private set; } = new RemoverCategoriaCommand();
+        public SimpleCommand AdicionarCategoriaCmd => new(() => AdicionarCategoria());
+        public SimpleCommand EditarCategoriaCmd => new(EditarCategoria, () => !string.IsNullOrEmpty(CategoriaSelecionada?.Descricao));
+        public SimpleCommand RemoverCategoriaCmd => new(ExcluirCategoria, () => !string.IsNullOrEmpty(CategoriaSelecionada?.Descricao));
 
 
         private Categoria _categoriaSelecionada;
@@ -111,7 +111,7 @@ namespace SisMaper.ViewModel
 
 
 
-        public void AdicionarCategoria(string defaultText)
+        public void AdicionarCategoria(string defaultText = "")
         {
             MetroDialogSettings dialogSettings = new MetroDialogSettings()
             {
@@ -229,60 +229,4 @@ namespace SisMaper.ViewModel
             
         }
     }
-
-
-
-
-
-    public class AdicionarCategoriaCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            CategoriaViewModel vm = (CategoriaViewModel)parameter;
-            vm.AdicionarCategoria("");
-        }
-    }
-
-
-
-    public class EditarCategoriaCommand : BaseCommand
-    {
-
-        public override bool CanExecute(object parameter)
-        {
-            CategoriaViewModel vm = (CategoriaViewModel)parameter;
-            return !String.IsNullOrEmpty(vm.CategoriaSelecionada?.Descricao);
-        }
-
-        public override void Execute(object parameter)
-        {
-            CategoriaViewModel vm = (CategoriaViewModel)parameter;
-            vm.EditarCategoria();
-        }
-    }
-
-
-
-    public class RemoverCategoriaCommand : BaseCommand
-    {
-        
-        public override bool CanExecute(object parameter)
-        {
-            CategoriaViewModel vm = (CategoriaViewModel)parameter;
-            return !String.IsNullOrEmpty(vm.CategoriaSelecionada?.Descricao);
-        }
-
-        
-
-        public override void Execute(object parameter)
-        {
-            CategoriaViewModel vm = (CategoriaViewModel)parameter;
-            vm.ExcluirCategoria();
-
-        }
-    }
-
-
-
-
 }

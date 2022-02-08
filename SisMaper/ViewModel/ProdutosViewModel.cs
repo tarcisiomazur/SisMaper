@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using SisMaper.Models.Views;
+using MySql.Data.MySqlClient;
 
 namespace SisMaper.ViewModel
 {
@@ -20,43 +21,25 @@ namespace SisMaper.ViewModel
         public PList<Categoria> Categorias { get; set; }
         public string? TextoFiltro { get; set; }
         public bool? Inativos { get; set; } = false;
-        
-        public NovoProdutoCommand NovoProduto { get; private set; }
-        public EditarProdutoCommand Editar { get; private set; }
-        public ExcluirProdutoCommand Deletar { get; private set; }
-        public OpenCategoriaCommand AbrirCategorias { get; private set; }
-        public OpenUnidadeCommand AbrirUnidades { get; private set; }
 
-
+        public SimpleCommand NovoProdutoCmd => new( () => OpenCrudProduto?.Invoke(new CrudProdutoViewModel(null)) );
+        public SimpleCommand OpenCategoriasCmd => new( () => OpenCategoria?.Invoke() );
+        public SimpleCommand OpenUnidadesCmd => new( () => OpenUnidade?.Invoke() );
+        public SimpleCommand EditarProdutoCmd => new( () => OpenCrudProduto?.Invoke(new CrudProdutoViewModel(ProdutoSelecionado)), () => ProdutoSelecionado != null);
+        public SimpleCommand DeletarProdutoCmd => new( ExcluirProduto, () => ProdutoSelecionado != null );
 
         public Action<CrudProdutoViewModel>? OpenCrudProduto { get; set; }
         public Action? OpenCategoria { get; set; }
         public Action? OpenUnidade { get; set; }
 
 
-
-        
-
-
         public ProdutosViewModel()
         {
-            Produtos = View.Execute<ListarProdutos>();
-
-            Categorias = DAO.All<Categoria>();
-            NovoProduto = new NovoProdutoCommand();
-            Editar = new EditarProdutoCommand();
-            Deletar = new ExcluirProdutoCommand();
-            AbrirCategorias = new OpenCategoriaCommand();
-            AbrirUnidades = new OpenUnidadeCommand();
-            
-
-            
+            Produtos = View.Execute<ListarProdutos>();       
             PropertyChanged += UpdateFilter;
-
             ProdutosFiltrados = Produtos;
 
         }
-
 
         public void Initialize(object? sender, EventArgs e)
         {
@@ -83,16 +66,16 @@ namespace SisMaper.ViewModel
         }
 
         
-        public void ExcluirProduto()
+        private void ExcluirProduto()
         {
             try
             {
                 PList<Lote> lotesBanco = DAO.All<Lote>();
                 PList<Lote> lotesParaDeletar = new PList<Lote>();
 
-                foreach(Lote l in lotesBanco)
+                foreach (Lote l in lotesBanco)
                 {
-                    if(l.Produto.Id.Equals(ProdutoSelecionado.Id))
+                    if (l.Produto.Id.Equals(ProdutoSelecionado.Id))
                     {
                         lotesParaDeletar.Add(l);
                     }
@@ -118,89 +101,18 @@ namespace SisMaper.ViewModel
                 return;
 
             }
-            catch { }
-            OnShowMessage("Erro", "Erro ao excluir produto");
-        }
-
-        internal void OpenNovoProduto() => OpenCrudProduto?.Invoke(new CrudProdutoViewModel(null));
-
-        internal void OpenEditarCrudProdutos() => OpenCrudProduto?.Invoke(new CrudProdutoViewModel(ProdutoSelecionado));
-
-        public void OpenCategorias() => OpenCategoria?.Invoke();
-
-        public void OpenUnidades() => OpenUnidade?.Invoke();
-
-    }
+            catch (Exception ex) 
+            {  
+                if(ex.InnerException is not null && ex.InnerException is MySqlException)
+                {
+                    if (ex.InnerException.Message.StartsWith("Cannot delete or update a parent row")) OnShowMessage("Erro ao excluir produto", "O produto está vinculado em alguma venda");
+                }
+            }
 
 
 
-
-
-    public class OpenCategoriaCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            ProdutosViewModel vm = (ProdutosViewModel)parameter;
-            vm.OpenCategorias();
         }
     }
-
-
-    public class OpenUnidadeCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            ProdutosViewModel vm = (ProdutosViewModel)parameter;
-            vm.OpenUnidades();
-        }
-    }
-
-
-
-    public class NovoProdutoCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            ProdutosViewModel vm = (ProdutosViewModel)parameter;
-
-            vm.OpenNovoProduto();
-        }
-    }
-
-
-    public class EditarProdutoCommand : BaseCommand
-    {
-        public override bool CanExecute(object parameter)
-        {
-            ProdutosViewModel vm = (ProdutosViewModel)parameter;
-
-            return !Equals(vm.ProdutoSelecionado, null);
-        }
-
-
-        public override void Execute(object parameter)
-        {
-            ProdutosViewModel vm = (ProdutosViewModel)parameter;
-            vm.OpenEditarCrudProdutos();
-        }
-    }
-
-
-    public class ExcluirProdutoCommand : BaseCommand
-    {
-        public override bool CanExecute(object parameter)
-        {
-            ProdutosViewModel vm = (ProdutosViewModel)parameter;
-
-            return !Equals(vm.ProdutoSelecionado, null);
-        }
-        public override void Execute(object parameter)
-        {
-            ProdutosViewModel vm = (ProdutosViewModel)parameter;
-            vm.ExcluirProduto();
-        }
-    }
-
 
 
 }

@@ -14,93 +14,23 @@ namespace SisMaper.ViewModel
 {
     public class ParcelaViewModel : BaseViewModel
     {
-        public bool isParcelaEditable { get; private set; }
+        public bool IsParcelaEditable { get; private set; }
 
         public Parcela? Parcela { get; set; }
         public Fatura Fatura { get; set; }
         
-        
-        private decimal _valorMoeda;
-
-        public decimal ValorMoeda 
-        {
-            get
-            {
-                return _valorMoeda;
-            }
-            set 
-            {
-                _valorMoeda = value;
-                SetValorTotal();
-            } 
-        }
-
-        private decimal _valorCredito;
-
-        public decimal ValorCredito
-        {
-            get
-            {
-                return _valorCredito;
-            }
-            set
-            {
-                _valorCredito = value;
-                SetValorTotal();
-            }
-        }
-
-        private decimal _valorDebito;
-
-        public decimal ValorDebito
-        {
-            get
-            {
-                return _valorDebito;
-            }
-            set
-            {
-                _valorDebito = value;
-                SetValorTotal();
-            }
-        }
-
-        private decimal _valorOutro;
-
-        public decimal ValorOutro
-        {
-            get
-            {
-                return _valorOutro;
-            }
-            set
-            {
-                _valorOutro = value;
-                SetValorTotal();
-            }
-        }
-
-
-        public SalvarParcelaCommand Salvar { get; private set; }
-        public ConfirmarRecebimentoCommand Confirmar { get; private set; }
-
-        public Action Close { get; set; }
-
-
-        public IDialogCoordinator DialogCoordinator { get; set; }
 
 
         public decimal ValorTotal  { get; private set; }
-
 
         public PList<Pagamento> Pagamentos { get; private set; }
 
         public List<Pagamento.EnumTipoPagamento> TiposPagamento { get; private set; }
 
-        private Pagamento.EnumTipoPagamento _enumTipoSelecionado;
-        public Pagamento.EnumTipoPagamento EnumTipoSelecionado
+        private Pagamento.EnumTipoPagamento _tipoPagamentoSelecionado;
+        public Pagamento.EnumTipoPagamento TipoPagamentoSelecionado
         {
-            get { return _enumTipoSelecionado; }
+            get { return _tipoPagamentoSelecionado; }
             set
             {
                 foreach(Pagamento p in Pagamentos)
@@ -110,7 +40,7 @@ namespace SisMaper.ViewModel
                         Valor = p.ValorPagamento;
                     }
                 }
-                SetField(ref _enumTipoSelecionado, value);
+                SetField(ref _tipoPagamentoSelecionado, value);
 
                 if (PagamentoSelecionado is not null)
                     ChangePagamentoSelecionado(value);
@@ -135,9 +65,13 @@ namespace SisMaper.ViewModel
 
         public decimal Valor { get; set; }
 
-        public ModificarPagamentoCommand Modificar { get; private set; }
+        public SimpleCommand ModificarPagamentoCmd => new(ChangePagamento);
+        public SimpleCommand SalvarParcelaCmd => new(SalvarParcela);
+        public SimpleCommand ConfirmarRecebimentoCmd => new(ConfirmarRecebimento);
 
         public decimal TotalPagamentos { get; private set; }
+
+        public Action? ParcelaSaved { get; set; }
 
         public ParcelaViewModel(Parcela? parcelaSelecionada, Fatura faturaSelecionada)
         {
@@ -146,15 +80,11 @@ namespace SisMaper.ViewModel
                 return;
             }
 
-            Modificar = new ModificarPagamentoCommand();
-
-            isParcelaEditable = true;
+            IsParcelaEditable = true;
 
 
             Parcela = parcelaSelecionada;
 
-
-            //Fatura = (Fatura)faturaSelecionada;
 
             Fatura = DAO.Load<Fatura>((faturaSelecionada as Fatura).Id);
 
@@ -166,11 +96,6 @@ namespace SisMaper.ViewModel
                 ValorRegistrado += p.Valor;
             }
 
-
-            Salvar = new SalvarParcelaCommand();
-            Confirmar = new ConfirmarRecebimentoCommand();
-
-            DialogCoordinator = new DialogCoordinator();
 
 
             if(Parcela is null)
@@ -189,15 +114,18 @@ namespace SisMaper.ViewModel
 
                 if(Parcela.Status == Parcela.Status_Parcela.Pago)
                 {
-                    isParcelaEditable = false;
+                    Parcela.Pagamentos.Load();
+                    for(int i = 0;i < Parcela.Pagamentos.Count;i++)
+                    {
+                        if(Parcela.Pagamentos[i].ValorPagamento > 0)
+                        {
+                            Pagamentos[i].ValorPagamento = Parcela.Pagamentos[i].ValorPagamento;
+                        }
+                    }
+                    SetValorTotal();
+                    IsParcelaEditable = false;
                 }
             }
-
-            //DataVencimento = Parcela.DataVencimento;
-            //DataVencimento = DateTime.Today;
-
-            //Console.WriteLine(Main.Usuario.Id);
-
 
         }
 
@@ -217,9 +145,9 @@ namespace SisMaper.ViewModel
         }
         private void ChangeTipoSelecionado(Pagamento value)
         {
-            if(EnumTipoSelecionado != value.TipoPagamento)
+            if(TipoPagamentoSelecionado != value.TipoPagamento)
             {
-                EnumTipoSelecionado = value.TipoPagamento;
+                TipoPagamentoSelecionado = value.TipoPagamento;
             }
         }
 
@@ -270,9 +198,6 @@ namespace SisMaper.ViewModel
             Pagamentos.Add(p_debito);
             Pagamentos.Add(p_outro);
 
-            EnumTipoSelecionado = TiposPagamento.First();
-            PagamentoSelecionado = Pagamentos.First();
-
         }
 
         private void SetValorTotal()
@@ -284,9 +209,9 @@ namespace SisMaper.ViewModel
             }
         }
 
-        public void ChangePagamento()
+        private void ChangePagamento()
         {
-            switch(EnumTipoSelecionado)
+            switch(TipoPagamentoSelecionado)
             {
                 case Pagamento.EnumTipoPagamento.Moeda:
                     Pagamentos[0].ValorPagamento = Valor;
@@ -311,12 +236,11 @@ namespace SisMaper.ViewModel
             SetValorTotal();
         }
 
-
-        private void Check()
+        private void CheckPagamentos()
         {
 
             PList<Pagamento> pagamentosParaSalvar = new PList<Pagamento>();
-
+            
             foreach (Pagamento p in Pagamentos)
             {
                 if (p.ValorPagamento > 0)
@@ -324,8 +248,9 @@ namespace SisMaper.ViewModel
                     pagamentosParaSalvar.Add(p);
                 }
             }
+            
 
-            if (pagamentosParaSalvar.Count == 0)
+            if (!pagamentosParaSalvar.Any())
             {
                 throw new InvalidOperationException("Não há pagamentos registrados");
             }
@@ -338,78 +263,20 @@ namespace SisMaper.ViewModel
             Parcela.Pagamentos = pagamentosParaSalvar;
         }
 
-        private void CheckValoresRecebimento()
-        {
-            if(ValorMoeda < 0 || ValorCredito < 0 || ValorDebito < 0 || ValorOutro < 0)
-            {
-                throw new InvalidOperationException("Valores de pagamento não podem ser negativos");
-            }
-
-            if(ValorMoeda + ValorCredito + ValorDebito + ValorOutro != Parcela.Valor)
-            {
-                throw new InvalidOperationException("O valor de pagamento não pode ser diferente do valor da parcela");
-            }
-
-
-            //Parcela.Pagamentos = new PList<Pagamento>();
-            //pagamentos = new PList<Pagamento>();
-
-            if(ValorMoeda > 0)
-            {
-                Parcela.Pagamentos.Add(new Pagamento()
-                {
-                    Usuario = Main.Usuario,
-                    ValorPagamento = ValorMoeda,
-                    TipoPagamento = Pagamento.EnumTipoPagamento.Moeda,
-                });
-            }
-
-            if (ValorCredito > 0)
-            {
-                Parcela.Pagamentos.Add(new Pagamento()
-                {
-                    Usuario = Main.Usuario,
-                    TipoPagamento = Pagamento.EnumTipoPagamento.Credito,
-                    ValorPagamento = ValorCredito,
-                });
-            }
-
-            if (ValorDebito > 0)
-            {
-                Parcela.Pagamentos.Add(new Pagamento()
-                {
-                    Usuario = Main.Usuario,
-                    TipoPagamento = Pagamento.EnumTipoPagamento.Debito,
-                    ValorPagamento = ValorDebito
-                });
-            }
-
-            if (ValorOutro > 0)
-            {
-                Parcela.Pagamentos.Add(new Pagamento()
-                {
-                    Usuario = Main.Usuario,
-                    TipoPagamento = Pagamento.EnumTipoPagamento.Outro,
-                    ValorPagamento = ValorOutro
-                });
-            }
-        }
-
         private void CheckValorParcela()
         {
-            if(Parcela.Valor <= 0)
-            {
-                throw new InvalidOperationException("Valor da parcela inválido");
-            }
-
             if(Parcela.Valor > Fatura.ValorTotal - ValorRegistrado)
             {
                 throw new InvalidOperationException("O valor da parcela não pode exceder o valor restante da fatura: " + (Fatura.ValorTotal - ValorRegistrado));
             }
+
+            if(Parcela.Valor == 0)
+            {
+                throw new InvalidOperationException("O valor da parcela deve ser maior que zero");
+            }
         }
 
-
-        public void SalvarParcela()
+        private void SalvarParcela()
         {
             try
             {
@@ -418,7 +285,7 @@ namespace SisMaper.ViewModel
                 Parcela.Fatura = Fatura;
                 Parcela.Save();
 
-                Close?.Invoke();
+                ParcelaSaved?.Invoke();
             }
             catch (Exception ex)
             {
@@ -426,25 +293,24 @@ namespace SisMaper.ViewModel
                 {
                     if(e.Number == 40004)
                     {
-                        DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar parcela", "ERRO: " + e.Message);
+                        OnShowMessage("Erro ao salvar parcela", "ERRO: " + e.Message );
                     }
                 }
 
                 else
                 {
-                    DialogCoordinator.ShowModalMessageExternal(this, "Erro ao salvar parcela", "Erro: " + ex.Message);
+                    OnShowMessage("Erro ao salvar parcela", ex.Message);
                 }
             }
             
         }
 
-        public void ConfirmarRecebimento()
+        private void ConfirmarRecebimento()
         {
             try
             {
                 CheckValorParcela();
-                //CheckValoresRecebimento();
-                Check();
+                CheckPagamentos();
 
 
                 Parcela.DataPagamento = DateTime.Now;
@@ -452,45 +318,15 @@ namespace SisMaper.ViewModel
                 Parcela.Fatura = Fatura;
                 Parcela.Save();
 
-                Close?.Invoke();
+                ParcelaSaved?.Invoke();
 
             }
             catch(Exception ex)
             {
-                DialogCoordinator.ShowModalMessageExternal(this, "Erro ao confirmar recebimento", "Erro: " + ex.Message);
+                OnShowMessage("Erro ao confirmar recebimento", ex.Message);
             }
 
             
-        }
-    }
-
-
-    public class ModificarPagamentoCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            ParcelaViewModel vm = (ParcelaViewModel) parameter;
-            vm.ChangePagamento();
-        }
-    }
-
-
-    public class SalvarParcelaCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            ParcelaViewModel vm = (ParcelaViewModel) parameter;
-            vm.SalvarParcela();
-        }
-    }
-
-
-    public class ConfirmarRecebimentoCommand : BaseCommand
-    {
-        public override void Execute(object parameter)
-        {
-            ParcelaViewModel vm = (ParcelaViewModel)parameter;
-            vm.ConfirmarRecebimento();
         }
     }
 

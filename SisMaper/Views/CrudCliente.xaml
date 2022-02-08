@@ -17,8 +17,7 @@
     mc:Ignorable="d"
     Title="Cliente"
     TitleCharacterCasing="Normal"
-    MinHeight="720"
-    MinWidth="480"
+    ResizeMode="NoResize"
     Height="720"
     Width="480"
     >
@@ -150,7 +149,7 @@
 
     <Grid x:Name="grid" IsEnabled="{Binding IsGridEnabled}">
         <TabControl>
-            <TabItem Header="  Pessoa Física  " Height="35" x:Name="PessoaFisicaTabItem" Visibility="Hidden"> 
+            <TabItem x:Name="PessoaFisicaTabItem" Visibility="Hidden"> 
                 <StackPanel>
 
                     <StackPanel Orientation="Horizontal">
@@ -169,7 +168,11 @@
                         <TextBlock Language="pt-br" Text="CPF" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
                         <xctk:MaskedTextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2" Mask="000\.000\.000-00" ValueDataType="{x:Type system:String}" x:Name="CPFMaskedTextBox" PreviewMouseLeftButtonDown="CPFMaskedTextBox_PreviewMouseLeftButtonDown"
+                            Style="{DynamicResource TextBoxStyle1}" 
+                            BorderThickness="2" Mask="000\.000\.000-00" 
+                            ValueDataType="{x:Type system:String}" 
+                            x:Name="CPFMaskedTextBox" 
+                            SelectionChanged="MaskedTextBox_SelectionChanged"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -297,8 +300,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Margin="0, 30, 30, 0"
-                            CommandParameter="{Binding}"
-                            Command="{Binding SavePessoaFisica}"/>
+                            Command="{Binding SalvarPessoaFisicaCmd}"/>
 
                     </StackPanel>
 
@@ -307,7 +309,7 @@
 
             </TabItem>
 
-            <TabItem Header="  Pessoa Jurídica  " Height="35" x:Name="PessoaJuridicaTabItem" Visibility="Hidden">
+            <TabItem x:Name="PessoaJuridicaTabItem" Visibility="Hidden">
                 <StackPanel>
 
                     <StackPanel Orientation="Horizontal">
@@ -325,7 +327,11 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="CNPJ" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-                        <xctk:MaskedTextBox Mask="00\.000\.000/0000-00" ValueDataType="{x:Type system:String}" x:Name="CNPJMaskedTextBox" PreviewMouseLeftButtonDown="CNPJMaskedTextBox_PreviewMouseLeftButtonDown"  
+                        <xctk:MaskedTextBox 
+                            Mask="00\.000\.000/0000-00" 
+                            ValueDataType="{x:Type system:String}" 
+                            x:Name="CNPJMaskedTextBox" 
+                            SelectionChanged="MaskedTextBox_SelectionChanged"
                             Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
@@ -465,7 +471,8 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
+                        <Button 
+                            PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
                             Style="{DynamicResource OptionsButtonStyle}"
                             Content="Cancelar"
                             VerticalAlignment="Bottom"
@@ -476,8 +483,7 @@
                             Content="Salvar"
                             VerticalAlignment="Bottom"
                             Margin="0, 30, 30, 0"
-                            CommandParameter="{Binding}"
-                            Command="{Binding SavePessoaJuridica}"/>
+                            Command="{Binding SalvarPessoaJuridicaCmd}"/>
                     </StackPanel>
 
 

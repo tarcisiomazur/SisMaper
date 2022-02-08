@@ -51,52 +51,11 @@ namespace SisMaper.Views
 
 
 
-        private void OpenCrudCliente(CrudClienteViewModel? viewModel)
+        private void OpenCrudCliente(CrudClienteViewModel viewModel)
         {
-            new CrudCliente() { IsSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected)? true : false, DataContext = viewModel, Owner = Window }.ShowDialog();
+            new CrudCliente() { IsSelectedPessoaFisicaTab = PessoaFisicaTabItem.IsSelected, DataContext = viewModel, Owner = Window }.ShowDialog();
             OnShow();
         }
-
-
-        /*
-        private void SetActions()
-        {
-            if(PessoaFisicaTabItem.IsSelected)
-            {
-                PessoaJuridicaDataGrid.SelectedItem = null;
-            }
-
-            if (PessoaJuridicaTabItem.IsSelected)
-            {
-                PessoaFisicaDataGrid.SelectedItem = null;
-            }
-
-
-            if (DataContext is ICliente vm)
-            {
-                vm.OpenNovoCliente += () =>
-                {
-                    new CrudCliente() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected) ? true : false, DataContext = new CrudClienteViewModel(null) }.ShowDialog();
-                    DataContext = new ClientesViewModel();
-                    SetActions();
-                };
-
-                vm.OpenEditarCliente += () =>
-                {
-                    new CrudCliente() { isSelectedPessoaFisicaTab = (PessoaFisicaTabItem.IsSelected)? true : false, DataContext = new CrudClienteViewModel( (PessoaFisicaTabItem.IsSelected)? PessoaFisicaDataGrid.SelectedItem : PessoaJuridicaDataGrid.SelectedItem ) }.ShowDialog();
-                    DataContext = new ClientesViewModel();
-                    SetActions();
-                };
-
-                vm.ClienteExcluido += () =>
-                {
-                    DataContext = new ClientesViewModel();
-                    SetActions();
-                };
-            }
-        }
-
-        */
 
         private void PessoaFisicaTabItem_GotFocus(object sender, RoutedEventArgs e)
         {
