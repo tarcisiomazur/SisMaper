@@ -26,6 +26,7 @@ public partial class ViewPedido
             newViewModel.Cancel += Close;
             newViewModel.OpenFatura += OpenFatura;
             newViewModel.OpenBuscarProduto += OpenBuscarProduto;
+            newViewModel.OpenEditarItem += OpenEditarItem;
             newViewModel.OpenCrudCliente += OpenCrudCliente;
             newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             newViewModel.ShowProgress += Helper.MahAppsDefaultProgress;
@@ -36,6 +37,7 @@ public partial class ViewPedido
             oldViewModel.Cancel -= Close;
             oldViewModel.OpenFatura -= OpenFatura;
             oldViewModel.OpenBuscarProduto -= OpenBuscarProduto;
+            oldViewModel.OpenEditarItem -= OpenEditarItem;
             oldViewModel.OpenCrudCliente -= OpenCrudCliente;
             oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             oldViewModel.ShowProgress -= Helper.MahAppsDefaultProgress;
@@ -45,6 +47,11 @@ public partial class ViewPedido
     private void OpenCrudCliente(CrudClienteViewModel viewModel, bool isPessoaFisica)
     {
         new CrudCliente {DataContext = viewModel, Owner = this, IsSelectedPessoaFisicaTab = isPessoaFisica}.ShowDialog();
+    }    
+    
+    private void OpenEditarItem(EditarItemViewModel viewModel)
+    {
+        new ViewEditarItem() {DataContext = viewModel, Owner = this}.ShowDialog();
     }
 
     private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)

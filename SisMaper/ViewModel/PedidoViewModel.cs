@@ -55,13 +55,13 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     public event Action<CrudClienteViewModel, bool>? OpenCrudCliente;
 
+    public event Action<EditarItemViewModel>? OpenEditarItem;
+
     public event Action<FaturaViewModel>? OpenFatura;
 
     #endregion
 
     #region Properties
-
-    [Description("Test-Property")] public string Error => string.Empty;
 
     public bool HasFatura => Pedido.Fatura is not null;
 
@@ -73,15 +73,36 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     private PersistenceContext PersistenceContext { get; }
 
+    [Description("Test-Property")] public string Error => string.Empty;
+
+    public string this[string columnName]
+    {
+        get
+        {
+            if (columnName is nameof(Data) or nameof(NaturezaSelecionada) && IsOpen && Data is null)
+            {
+                return "Campo Obrigatório";
+            }
+
+            return "";
+        }
+    }
+
     public bool FaturaTabItemIsSelected { get; set; }
 
-    public string TextoFiltro { get; set; } = "";
-
     public bool NotaFiscalTabItemIsSelected { get; set; }
+
+    public DateTime? Data
+    {
+        get => Pedido.Data;
+        set => Pedido.Data = value;
+    }
 
     public ICollectionView NotasFiscaisView { get; set; }
 
     public IEnumerable<ListarProdutos> ProdutosAtivos { get; set; }
+
+    public Item ItemSelecionado { get; set; }
 
     private Item NovoItem { get; set; }
 
@@ -98,25 +119,21 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         get => _produtoSelecionado;
     }
 
-    public NotaFiscal? NotaFiscalSelecionada { get; set; }
-
-    public Pedido Pedido { get; set; }
-
-    public DateTime? Data
-    {
-        get => Pedido.Data;
-        set => Pedido.Data = value;
-    }
-
     public Natureza? NaturezaSelecionada
     {
         get => Pedido.Natureza;
         set => Pedido.Natureza = value;
     }
 
+    public NotaFiscal? NotaFiscalSelecionada { get; set; }
+
+    public Pedido Pedido { get; set; }
+
     public PList<Natureza> Naturezas { get; set; }
 
     public string QuantidadeItem { get; set; } = "";
+
+    public string TextoFiltro { get; set; } = "";
 
     #endregion
 
@@ -140,25 +157,19 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     public SimpleCommand EditarClienteCmd => new(EditarCliente, IsPedidoAberto());
 
+    public SimpleCommand EditarItemCmd => new(EditarItem);
+
     public SimpleCommand EmitirNotaFiscalContextMenuCmd => new(ShowContextMenu, IsPedidoAberto(false));
 
     public SimpleCommand OpenBuscarProdutoCmd => new(AbrirBuscarProduto, IsPedidoAberto());
 
     public SimpleCommand ReceberCmd => new(ReceberPedido, _ => Pedido.IsOpen() && Pedido.Itens.Count > 0);
 
+    public SimpleCommand RemoverItemCmd => new(RemoverItem);
+
     public SimpleCommand SalvarCmd => new(SavePedido, IsPedidoAberto());
 
     #endregion
-
-    public string this[string columnName]
-    {
-        get
-        {
-            if (columnName is nameof(Data) or nameof(NaturezaSelecionada) && IsOpen && Data is null)
-                return "Campo Obrigatório";
-            return "";
-        }
-    }
 
     private Func<bool> IsPedidoAberto(bool x = true)
     {
@@ -587,5 +598,18 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         {
             NovoItem.Quantidade = quantidade;
         }
+    }
+
+    public void EditarItem()
+    {
+        if (ItemSelecionado is null) return;
+        var vm = new EditarItemViewModel(ItemSelecionado);
+        OpenEditarItem?.Invoke(vm);
+    }
+
+    public void RemoverItem()
+    {
+        if (ItemSelecionado is null) return;
+        Pedido.Itens.Remove(ItemSelecionado);
     }
 }

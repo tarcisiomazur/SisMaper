@@ -46,102 +46,6 @@
                 Property="Height"
                 Value="32" />
         </Style>
-        <Style
-            x:Key="OptionsButtonStyle"
-            TargetType="{x:Type Button}">
-            <Setter
-                Property="FocusVisualStyle"
-                Value="{DynamicResource FocusVisual}" />
-            <Setter
-                Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter
-                Property="HorizontalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="VerticalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="Padding"
-                Value="10,4" />
-            <Setter
-                Property="FontSize"
-                Value="14" />
-            <Setter
-                Property="Height"
-                Value="31" />
-            <Setter
-                Property="Width"
-                Value="auto" />
-
-            <Setter
-                Property="Template">
-                <Setter.Value>
-                    <ControlTemplate
-                        TargetType="{x:Type Button}">
-                        <Border
-                            x:Name="border"
-                            CornerRadius="3,3,3,3"
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}"
-                            SnapsToDevicePixels="true"
-                            Visibility="Visible"
-                            BorderBrush="#FF939393">
-                            <ContentPresenter
-                                x:Name="contentPresenter"
-                                Focusable="False"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                Margin="{TemplateBinding Padding}"
-                                RecognizesAccessKey="True"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger
-                                Property="IsDefaulted"
-                                Value="true">
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsMouseOver"
-                                Value="true">
-                                <Setter
-                                    Property="BorderThickness"
-                                    TargetName="border"
-                                    Value="1" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsPressed"
-                                Value="true">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Pressed.Background}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsEnabled"
-                                Value="false">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Background}" />
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Border}" />
-                                <Setter
-                                    Property="TextElement.Foreground"
-                                    TargetName="contentPresenter"
-                                    Value="{StaticResource Button.Disabled.Foreground}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </mah:MetroWindow.Resources>
 
 
@@ -288,14 +192,14 @@
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
-                            Style="{DynamicResource OptionsButtonStyle}"
+                            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                             Content="Cancelar"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Margin="0, 30, 30, 0"/>
 
                         <Button
-                            Style="{DynamicResource OptionsButtonStyle}"
+                            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                             Content="Salvar"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
@@ -473,13 +377,13 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button 
                             PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
-                            Style="{DynamicResource OptionsButtonStyle}"
+                            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                             Content="Cancelar"
                             VerticalAlignment="Bottom"
                             Margin="0, 30, 30, 0"/>
 
                         <Button
-                            Style="{DynamicResource OptionsButtonStyle}"
+                            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                             Content="Salvar"
                             VerticalAlignment="Bottom"
                             Margin="0, 30, 30, 0"

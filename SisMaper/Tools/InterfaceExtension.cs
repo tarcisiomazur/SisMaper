@@ -30,6 +30,20 @@ public class MyConverter<T> : IValueConverter
     }
 }
 
+public class NullToVisibility : IValueConverter
+{
+    public object IfNull { get; set; }
+    public object IfNotNull { get; set; }
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value is null ? IfNull : IfNotNull;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotSupportedException();
+    }
+}
 public class DecimalToRealString : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

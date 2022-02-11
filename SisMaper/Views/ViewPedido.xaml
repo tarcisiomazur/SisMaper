@@ -27,6 +27,22 @@
     SaveWindowPosition="True"
     ShowInTaskbar="False">
     <mah:MetroWindow.Resources>
+        <ContextMenu
+            x:Key="RowMenu">
+            <MenuItem
+                Header="Edit"
+                IsEnabled="{Binding DataContext.IsOpen, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                Command="{Binding DataContext.EditarItemCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                CommandParameter="{Binding}" />
+        </ContextMenu>
+        <Style
+            x:Key="DefaultRowStyle"
+            BasedOn="{StaticResource MahApps.Styles.DataGridRow}"
+            TargetType="{x:Type DataGridRow}">
+            <Setter
+                Property="ContextMenu"
+                Value="{StaticResource RowMenu}" />
+        </Style>
         <Style
             TargetType="{x:Type TextBlock}">
             <Setter
@@ -39,19 +55,11 @@
                 Property="FontSize"
                 Value="16" />
         </Style>
-        <Style
-            x:Key="TextBoxStyle1"
-            TargetType="{x:Type TextBox}"
-            BasedOn="{StaticResource MahApps.Styles.TextBox}">
-            <Setter
-                Property="FontSize"
-                Value="16" />
-            <Setter
-                Property="Height"
-                Value="32" />
-        </Style>
     </mah:MetroWindow.Resources>
     <Grid>
+        <FrameworkElement
+            x:Name="Proxy"
+            Visibility="Collapsed" />
         <TextBlock
             HorizontalAlignment="Left"
             Margin="26,29,0,0"
@@ -63,7 +71,7 @@
         </TextBlock>
         <TextBox
             IsEnabled="False"
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             Margin="151,24,0,0"
             TextWrapping="Wrap"
@@ -78,7 +86,7 @@
             Text="Status" />
         <TextBox
             IsEnabled="False"
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Right"
             Margin="0,24,410,0"
             TextWrapping="Wrap"
@@ -314,7 +322,7 @@
                             </StackPanel>
                         </Button>
                         <TextBox
-                            Style="{DynamicResource TextBoxStyle1}"
+                            Style="{DynamicResource SisMaper.TextBox}"
                             HorizontalAlignment="Right"
                             Margin="0,10,118,0"
                             TextWrapping="Wrap"
@@ -352,7 +360,7 @@
                         DockPanel.Dock="Bottom">
                         <TextBox
                             IsEnabled="False"
-                            Style="{DynamicResource TextBoxStyle1}"
+                            Style="{DynamicResource SisMaper.TextBox}"
                             HorizontalAlignment="Right"
                             Margin="0,0,10,1"
                             TextWrapping="Wrap"
@@ -373,6 +381,7 @@
                     </Grid>
                     <DataGrid
                         x:Name="DataGridItens"
+                        RowStyle="{DynamicResource DefaultRowStyle}"
                         templates:SaveUIProperty.SaveSizes="True"
                         CanUserSortColumns="False"
                         BorderThickness="1"
@@ -382,12 +391,48 @@
                         IsReadOnly="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsReadOnly}}"
                         AutoGenerateColumns="False"
                         ItemsSource="{Binding Pedido.Itens, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding ItemSelecionado}"
                         CanUserAddRows="False"
+                        SelectionMode="Single"
                         Height="auto"
                         Width="auto"
                         Margin="10,10,10,10"
                         BorderBrush="#FFD2D2D2">
                         <DataGrid.Columns>
+                            <DataGridTemplateColumn
+                                Visibility="{Binding DataContext.IsOpen, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Reference Name=Proxy}}"
+                                Width="50"
+                                CanUserSort="False"
+                                CanUserResize="False"
+                                templates:SaveUIProperty.SavePath="Ações">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel
+                                            Orientation="Horizontal">
+                                            <Button
+                                                Command="{Binding DataContext.EditarItemCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}">
+                                                <StackPanel>
+                                                    <iconpacks:PackIconMaterial
+                                                        Kind="Pencil"
+                                                        Foreground="Green"
+                                                        Width="12"
+                                                        Height="12" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button
+                                                Command="{Binding DataContext.RemoverItemCmd, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}">
+                                                <StackPanel>
+                                                    <iconpacks:PackIconMaterial
+                                                        Kind="Delete"
+                                                        Foreground="DarkRed"
+                                                        Width="12"
+                                                        Height="12" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <mah:DataGridNumericUpDownColumn
                                 HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
                                 Width="17*"
@@ -402,12 +447,27 @@
                                 Header="Un"
                                 Binding="{Binding Produto.Unidade.Descricao}"
                                 IsReadOnly="True" />
-                            <DataGridTextColumn
+                            <DataGridTemplateColumn
                                 Width="100*"
                                 MinWidth="200"
                                 Header="Descrição"
-                                Binding="{Binding Produto.Descricao}"
-                                IsReadOnly="True" />
+                                IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel
+                                            Orientation="Vertical">
+                                            <TextBlock
+                                                Text="{Binding Produto.Descricao}" />
+                                            <TextBlock Style="{StaticResource MahApps.Styles.TextBlock}"
+                                                Visibility="{Binding Lote, Converter={StaticResource NullToVisibilityConverter}}"
+                                                >
+                                                <Run Text="lote: " Foreground="Blue"/>
+                                                <Run Text="{Binding Lote.Descricao}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <mah:DataGridNumericUpDownColumn
                                 HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
                                 Width="25*"
@@ -439,28 +499,6 @@
                                 Binding="{Binding Total, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem
-                                    Header="Remover">
-                                    <MenuItem.Icon>
-                                        <Image
-                                            Width="12"
-                                            Height="12"
-                                            Source="/Images/Delete.png" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem
-                                    Header="Editar">
-                                    <MenuItem.Icon>
-                                        <Image
-                                            Width="12"
-                                            Height="12"
-                                            Source="/Images/Edit.png" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
                     </DataGrid>
                 </DockPanel>
             </TabItem>
@@ -480,7 +518,7 @@
                     </TextBlock>
                     <TextBox
                         IsEnabled="False"
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         HorizontalAlignment="Left"
                         Margin="125,5,0,0"
                         TextWrapping="Wrap"
@@ -495,7 +533,7 @@
                         Text="Status" />
                     <TextBox
                         IsEnabled="False"
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         HorizontalAlignment="Right"
                         Margin="0,5,401,0"
                         TextWrapping="Wrap"
@@ -588,7 +626,7 @@
                                 <TextBox
                                     IsEnabled="False"
                                     x:Name="ValorTotal"
-                                    Style="{DynamicResource TextBoxStyle1}"
+                                    Style="{DynamicResource SisMaper.TextBox}"
                                     HorizontalAlignment="Right"
                                     Margin="0,0,10,1"
                                     TextWrapping="Wrap"
@@ -606,7 +644,7 @@
                                     VerticalAlignment="Bottom" />
                                 <TextBox
                                     IsEnabled="False"
-                                    Style="{DynamicResource TextBoxStyle1}"
+                                    Style="{DynamicResource SisMaper.TextBox}"
                                     HorizontalAlignment="Right"
                                     Margin="0,0,238,1"
                                     TextWrapping="Wrap"

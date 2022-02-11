@@ -587,31 +587,12 @@ namespace SisMaper.Views.Templates
         /// </summary>
         private void RemoveRightMostDigit()
         {
-            try
-            {
-                bool isNegative = Number < 0;
-                var digitCount = GetDigitCount();
-                string decimalSeparator = !string.IsNullOrEmpty(StringFormat) &&
-                                          StringFormat.StartsWith("C", StringComparison.OrdinalIgnoreCase)
-                    ? Culture.NumberFormat.CurrencyDecimalSeparator
-                    : Culture.NumberFormat.NumberDecimalSeparator;
-
-                string numberString = Math.Abs(Number).ToString("#.###########", Culture);
-                numberString = numberString.Substring(0, numberString.Length - 1);
-                numberString = numberString.Replace(decimalSeparator, string.Empty);
-                numberString = numberString.PadLeft(digitCount + 1, '0');
-
-                numberString = (isNegative ? Culture.NumberFormat.NegativeSign : string.Empty) +
-                               numberString.Substring(0, numberString.Length - digitCount) +
-                               Culture.NumberFormat.NumberDecimalSeparator +
-                               numberString.Substring(numberString.Length - digitCount);
-
-                Number = Convert.ToDecimal(numberString, Culture);
-            }
-            catch
-            {
-                Clear();
-            }
+            var str = Number.ToString("F");
+            Console.WriteLine(str);
+            var index = str.IndexOf(',');
+            str = str.Remove(str.Length - 1,1).Remove(index,1).Insert(index - 1, ",");
+            Console.WriteLine(str);
+            Number = Convert.ToDecimal(str);
         }
 
         #endregion Privates methodes

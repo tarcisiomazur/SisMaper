@@ -8,6 +8,13 @@ namespace SisMaper.Views.Templates;
 
 public static class SaveUIProperty
 {
+    
+    public static readonly DependencyProperty SavePathProperty =
+        DependencyProperty.RegisterAttached("SavePath",
+            typeof(string),
+            typeof(DataGridColumn),
+            new FrameworkPropertyMetadata(null, SaveSizesPropertyChanged));
+    
     public static readonly DependencyProperty SaveSizesProperty =
         DependencyProperty.RegisterAttached("SaveSizes",
             typeof(bool),
@@ -20,6 +27,16 @@ public static class SaveUIProperty
             typeof(ComboBox),
             new FrameworkPropertyMetadata(false, SaveSelectPropertyChanged));
 
+    public static void SetSavePath(DependencyObject obj, string value)
+    {
+        obj.SetValue(SavePathProperty, value);
+    }
+
+    public static string? GetSavePath(DependencyObject obj)
+    {
+        return (string?) obj.GetValue(SavePathProperty);
+    }
+    
     public static void SetSaveSizes(DependencyObject obj, bool value)
     {
         obj.SetValue(SaveSizesProperty, value);
@@ -116,12 +133,13 @@ public static class SaveUIProperty
         if (sender is not DataGrid dg) return;
         var path = Window.GetWindow(dg)?.ToString() ?? GetUserControl(dg)?.ToString();
         if (path is null) return;
-
         var reg = Registry.CurrentUser.CreateSubKey(@$"SOFTWARE\SisMaper\{path}\DataGridSizes\{dg.Name}");
         if (reg == null) return;
         foreach (var c in dg.Columns)
         {
-            if (reg?.GetValue(c.Header.ToString()) is not string value) continue;
+            
+            var str = GetSavePath(c) ?? c.Header?.ToString();
+            if (reg?.GetValue(str) is not string value) continue;
             var values = value.Split(';');
             if (values.Length != 3) continue;
             if (int.TryParse(values[0], out var index) && index >= 0 && index < dg.Columns.Count)
@@ -154,7 +172,9 @@ public static class SaveUIProperty
         foreach (var c in dg.Columns)
         {
             var sort = (int?) c.SortDirection ?? 2;
-            reg.SetValue(c.Header.ToString(), $"{c.DisplayIndex};{c.Width.DesiredValue};{sort}");
+            var str = GetSavePath(c) ?? c.Header?.ToString();
+            if(str is not null)
+                reg.SetValue(str, $"{c.DisplayIndex};{c.Width.DesiredValue};{sort}");
         }
     }
 }

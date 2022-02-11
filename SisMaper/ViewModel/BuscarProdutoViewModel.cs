@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
+using Persistence;
 using SisMaper.Models.Views;
 using SisMaper.Tools;
 
@@ -10,8 +11,9 @@ namespace SisMaper.ViewModel;
 
 public class BuscarProdutoViewModel : BaseViewModel
 {
-    public BuscarProdutoViewModel(List<ListarProdutos> produtos)
+    public BuscarProdutoViewModel(List<ListarProdutos>? produtos = null)
     {
+        produtos ??= View.Execute<ListarProdutos>();
         PropertyChanged += UpdateFilter;
         ProdutosFiltrados = new ListCollectionView(produtos)
         {
@@ -19,7 +21,6 @@ public class BuscarProdutoViewModel : BaseViewModel
         };
         Categorias = new SortedSet<string>(produtos.Select(p => p.Categoria));
     }
-    
 
     #region Actions
 
@@ -33,11 +34,11 @@ public class BuscarProdutoViewModel : BaseViewModel
 
     public bool? Inativos { get; set; } = false;
 
-    public ListCollectionView ProdutosFiltrados { get; set; }
-
     public ListarProdutos? ProdutoSelecionado { get; set; }
 
     public ListarProdutos? Selecionado { get; set; }
+
+    public ListCollectionView ProdutosFiltrados { get; set; }
 
     public SortedSet<string> Categorias { get; set; }
 
