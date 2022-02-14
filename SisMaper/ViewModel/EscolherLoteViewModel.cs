@@ -2,37 +2,47 @@
 using Persistence;
 using SisMaper.Models;
 
-namespace SisMaper.ViewModel
+namespace SisMaper.ViewModel;
+
+public class EscolherLoteViewModel : BaseViewModel
 {
-    public class EscolherLoteViewModel: BaseViewModel
+    public EscolherLoteViewModel(PList<Lote> lotes)
     {
-        public PList<Lote> Lotes { get; set; }
-        public Lote? LoteSelecionado { get; set; }
+        Lotes = lotes;
+    }
 
-        public event Action? OnOK;
-        public event Action? OnCancel;
-        
-        public BaseCommand OKCommand => new SimpleCommand(OK, _ => LoteSelecionado is not null);
-        
-        public BaseCommand CancelarCommand => new SimpleCommand(Cancel);
-        
-        public EscolherLoteViewModel()
-        {
-            
-        }
+    #region Actions
 
-        public void Initialize(PList<Lote> lotes)
-        {
-            Lotes = lotes;
-        }
-        
-        private void OK()
-        {
-            OnOK?.Invoke();
-        }
-        private void Cancel()
-        {
-            OnCancel?.Invoke();
-        }
+    public event Action? OnCancel;
+
+    public event Action? OnOk;
+
+    #endregion
+
+    #region Properties
+
+    public Lote? LoteSelecionado { get; set; }
+
+    public PList<Lote> Lotes { get; set; }
+
+    #endregion
+
+    #region ICommands
+
+    public SimpleCommand CancelarCmd => new(Cancel);
+
+    public SimpleCommand OkCmd => new(Ok, _ => LoteSelecionado is not null);
+
+    #endregion
+
+    private void Ok()
+    {
+        OnOk?.Invoke();
+    }
+
+    private void Cancel()
+    {
+        LoteSelecionado = null;
+        OnCancel?.Invoke();
     }
 }

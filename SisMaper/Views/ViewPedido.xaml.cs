@@ -28,6 +28,7 @@ public partial class ViewPedido
             newViewModel.OpenBuscarProduto += OpenBuscarProduto;
             newViewModel.OpenEditarItem += OpenEditarItem;
             newViewModel.OpenCrudCliente += OpenCrudCliente;
+            newViewModel.OpenEscolherLote += OpenEscolherLote;
             newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             newViewModel.ShowProgress += Helper.MahAppsDefaultProgress;
         }
@@ -39,6 +40,7 @@ public partial class ViewPedido
             oldViewModel.OpenBuscarProduto -= OpenBuscarProduto;
             oldViewModel.OpenEditarItem -= OpenEditarItem;
             oldViewModel.OpenCrudCliente -= OpenCrudCliente;
+            oldViewModel.OpenEscolherLote -= OpenEscolherLote;
             oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             oldViewModel.ShowProgress -= Helper.MahAppsDefaultProgress;
         }
@@ -57,6 +59,11 @@ public partial class ViewPedido
     private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)
     {
         new ViewBuscarProduto {DataContext = viewModel, Owner = this}.ShowDialog();
+    }
+    
+    private void OpenEscolherLote(EscolherLoteViewModel viewModel)
+    {
+        new ViewEscolherLote {DataContext = viewModel, Owner = this}.ShowDialog();
     }
 
     private void OpenFatura(FaturaViewModel viewModel)

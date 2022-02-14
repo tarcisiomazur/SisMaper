@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -30,6 +31,7 @@ namespace SisMaper.Views.Templates
 
         //Event
         public event EventHandler PopupClosed;
+
         public event EventHandler NumberChanged;
 
         #endregion Global variables
@@ -65,8 +67,6 @@ namespace SisMaper.Views.Templates
             CaretIndex = Text.LastIndexOfAny(new[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}) + 1;
 
             PreviewKeyDown += TextBox_PreviewKeyDown;
-            PreviewMouseDown += TextBox_PreviewMouseDown;
-            PreviewMouseUp += TextBox_PreviewMouseUp;
             TextChanged += TextBox_TextChanged;
 
             //Disable contextmenu
@@ -158,7 +158,7 @@ namespace SisMaper.Views.Templates
             get => (bool) GetValue(IsNegativeProperty);
             set => SetValue(IsNegativeProperty, value);
         }
-        
+
         public bool IsCalculPanelMode
         {
             get => (bool) GetValue(IsCalculPanelModeProperty);
@@ -185,7 +185,8 @@ namespace SisMaper.Views.Templates
 
         public static readonly DependencyProperty MaximumValueProperty =
             DependencyProperty.Register(nameof(MaximumValue), typeof(decimal), typeof(CurrencyTextBox),
-                new FrameworkPropertyMetadata(0M, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                new FrameworkPropertyMetadata(decimal.MaxValue / 2,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     MaximumValuePropertyChanged, MaximumCoerceValue), MaximumValidateValue);
 
         private static bool MaximumValidateValue(object value) => (decimal) value <= decimal.MaxValue / 2;
@@ -222,7 +223,8 @@ namespace SisMaper.Views.Templates
 
         public static readonly DependencyProperty MinimumValueProperty =
             DependencyProperty.Register(nameof(MinimumValue), typeof(decimal), typeof(CurrencyTextBox),
-                new FrameworkPropertyMetadata(0M, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                new FrameworkPropertyMetadata(decimal.MinValue / 2,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     MinimumValuePropertyChanged, MinimumCoerceValue), MinimumValidateValue);
 
         private static bool MinimumValidateValue(object value) =>
@@ -260,13 +262,12 @@ namespace SisMaper.Views.Templates
         private static bool StringFormatValidateValue(object value)
         {
             var val = value.ToString().ToUpper();
-
             return val == "C0" || val == "C" || val == "C1" || val == "C2" || val == "C3" || val == "C4" ||
                    val == "C5" || val == "C6" ||
                    val == "N0" || val == "N" || val == "N1" || val == "N2" || val == "N3" || val == "N4" ||
                    val == "N5" || val == "N6" ||
                    val == "P0" || val == "P" || val == "P1" || val == "P2" || val == "P3" || val == "P4" ||
-                   val == "P5" || val == "P6";
+                   val == "P5" || val == "P6" || val.All(c => c is '0' or '#' or '.');
         }
 
         public string StringFormat
@@ -305,13 +306,11 @@ namespace SisMaper.Views.Templates
 
         #endregion Dependency Properties
 
-
         public void Insert(Key K)
         {
             AddUndoInList(Number);
             InsertKey(K);
         }
-
 
         #region Events
 
@@ -435,8 +434,11 @@ namespace SisMaper.Views.Templates
             else if (KeyValidator.IsSubstractKey(e.Key))
             {
                 e.Handled = true;
-                AddUndoInList(Number);
-                if(IsNegative) InvertValue();
+                if (IsNegative)
+                {
+                    AddUndoInList(Number);
+                    InvertValue();
+                }
             }
             else if (KeyValidator.IsIgnoredKey(e.Key))
             {
@@ -489,10 +491,16 @@ namespace SisMaper.Views.Templates
             try
             {
                 // Push the new number from the right
-                if (KeyValidator.IsNumericKey(key))
-                    Number = Number < 0
-                        ? Number * 10M - GetDigitFromKey(key) / GetDivider()
-                        : Number * 10M + GetDigitFromKey(key) / GetDivider();
+                var caret = CaretIndex - Text.Length + SelectionLength;
+                var txt = Text.Remove(CaretIndex, SelectionLength).Insert(CaretIndex, GetDigitFromChar(key));
+                txt = txt.Where(c => c is >= '0' and <= '9').Aggregate("", (s, c) => s + c);
+                if (decimal.TryParse(txt, out var number))
+                {
+                    number /= GetDivider();
+                    Number = number > MaximumValue ? MaximumValue :
+                        number < MinimumValue ? MinimumValue : number;
+                }
+                CaretIndex = caret + Text.Length;
             }
             catch (OverflowException)
             {
@@ -532,11 +540,43 @@ namespace SisMaper.Views.Templates
         }
 
         /// <summary>
+        /// Get the digit from key
+        /// </summary>        
+        private static string GetDigitFromChar(Key key)
+        {
+            switch (key)
+            {
+                case Key.D0:
+                case Key.NumPad0: return "0";
+                case Key.D1:
+                case Key.NumPad1: return "1";
+                case Key.D2:
+                case Key.NumPad2: return "2";
+                case Key.D3:
+                case Key.NumPad3: return "3";
+                case Key.D4:
+                case Key.NumPad4: return "4";
+                case Key.D5:
+                case Key.NumPad5: return "5";
+                case Key.D6:
+                case Key.NumPad6: return "6";
+                case Key.D7:
+                case Key.NumPad7: return "7";
+                case Key.D8:
+                case Key.NumPad8: return "8";
+                case Key.D9:
+                case Key.NumPad9: return "9";
+                default: throw new ArgumentOutOfRangeException($"Invalid key: {key}");
+            }
+        }
+
+        /// <summary>
         /// Get a decimal for adjust digit when a key was inserted
         /// </summary>
         private decimal GetDivider()
         {
-            switch (GetBindingExpression(TextProperty).ParentBinding.StringFormat)
+            var format = GetBindingExpression(TextProperty).ParentBinding.StringFormat;
+            switch (format)
             {
                 case "N0":
                 case "C0": return 1M;
@@ -562,7 +602,13 @@ namespace SisMaper.Views.Templates
                 case "P4": return 1000000M;
                 case "P5": return 10000000M;
                 case "P6": return 100000000M;
-                default: return 1M;
+                default:
+                    if (!format.Contains('.'))
+                        return 1M;
+                    var split = format.Split('.');
+                    if (split.Length > 1)
+                        return (decimal) Math.Pow(10, split[1].Length);
+                    return 1M;
             }
         }
 
@@ -587,12 +633,20 @@ namespace SisMaper.Views.Templates
         /// </summary>
         private void RemoveRightMostDigit()
         {
-            var str = Number.ToString("F");
-            Console.WriteLine(str);
-            var index = str.IndexOf(',');
-            str = str.Remove(str.Length - 1,1).Remove(index,1).Insert(index - 1, ",");
-            Console.WriteLine(str);
-            Number = Convert.ToDecimal(str);
+            if (CaretIndex == 0) return;
+            var txt = SelectionLength > 0
+                ? Text.Remove(SelectionStart, SelectionLength)
+                : Text.Remove(CaretIndex - 1, 1);
+            txt = txt.Where(c => c is >= '0' and <= '9').Aggregate("", (s, c) => s + c);
+            var caret = CaretIndex + SelectionLength;
+            if (decimal.TryParse(txt, out var number))
+            {
+                number /= GetDivider();
+                Number = number > MaximumValue ? MaximumValue :
+                    number < MinimumValue ? MinimumValue : number;
+            }
+
+            CaretIndex = caret;
         }
 
         #endregion Privates methodes
@@ -945,7 +999,7 @@ namespace SisMaper.Views.Templates
 
         public static bool IsDeleteKey(Key key) => key == Key.Delete;
 
-        public static bool IsIgnoredKey(Key key) => key == Key.Tab;
+        public static bool IsIgnoredKey(Key key) => key is Key.Tab or Key.Left or Key.Right;
 
         public static bool IsUpKey(Key key) => key == Key.Up;
 

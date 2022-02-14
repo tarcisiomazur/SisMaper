@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using SisMaper.Tools;
 
 namespace SisMaper.ViewModel;
 
@@ -81,7 +82,15 @@ public class SimpleCommand : BaseCommand
 
     public override void Execute(object parameter)
     {
-        ExecuteDelegate?.Invoke(parameter);
+        try
+        {
+            ExecuteDelegate?.Invoke(parameter);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex.ToString());
+            throw;
+        }
     }
 }
 

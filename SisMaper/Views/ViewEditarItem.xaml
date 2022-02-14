@@ -49,7 +49,7 @@
             IsEnabled="False"
             Text="{Binding ItemChanged.Produto.Descricao, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
-            Width="370"
+            Width="346"
             Height="64"
             HorizontalScrollBarVisibility="Visible"
             VerticalScrollBarVisibility="Auto"
@@ -57,120 +57,146 @@
         <Button
             Width="32"
             Height="32"
-            Margin="394,48,0,0"
+            Margin="368,48,0,0"
             VerticalAlignment="Top"
             Focusable="false"
             Command="{Binding OpenBuscarProdutoCmd}"
             Background="White"
             HorizontalAlignment="Left">
             <Button.ToolTip>
-                <TextBlock
-                    Foreground="Black"
-                    Text="Alterar Produto" />
+                <templates:MyToolTip AutoMove="True"
+            Text="Alterar Produto." />
             </Button.ToolTip>
             <StackPanel>
                 <iconpacks:PackIconMaterial
-                    Kind="Pencil"
+                    Kind="MagnifyPlus"
                     Foreground="Green"
                     Width="18"
                     Height="18" />
             </StackPanel>
         </Button>
         <Grid Visibility="{Binding HasLotes, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
-        <TextBlock
-            Margin="462,22,0,0"
+            <TextBlock
+            Margin="442,22,0,0"
             Text="Lote" />
 
-        <ComboBox
+            <ComboBox
             ItemsSource="{Binding ItemChanged.Produto.Lotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedItem="{Binding Lote, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
             Grid.Row="0"
             Height="32"
-            Width="165"
-            Margin="462,48,0,0"
+            Width="151"
+            Margin="442,48,0,0"
             FontSize="16"
             MaxDropDownHeight="125"
             mah:TextBoxHelper.WatermarkAlignment="Right"
             mah:TextBoxHelper.AutoWatermark="True"
             VerticalAlignment="Top"
             HorizontalAlignment="Left"
-            DisplayMemberPath="Descricao"
-            mah:TextBoxHelper.ClearTextButton="True" />
+            DisplayMemberPath="Descricao" />
+            <Button
+            Width="32"
+            Height="32"
+            Margin="595,48,0,0"
+            VerticalAlignment="Top"
+            Focusable="false"
+            Command="{Binding OpenEscolherLoteCmd}"
+            Background="White"
+            HorizontalAlignment="Left">
+                <Button.ToolTip>
+                    <templates:MyToolTip AutoMove="True"
+                    Text="Buscar Lote" />
+                </Button.ToolTip>
+                <StackPanel>
+                    <iconpacks:PackIconMaterial
+                    Kind="MagnifyPlus"
+                    Foreground="Green"
+                    Width="18"
+                    Height="18" />
+                </StackPanel>
+            </Button>
         </Grid>
         <TextBlock
-            Margin="22,139,0,0"
+            Margin="22,154,0,0"
             Text="Quantidade" />
         <TextBox
             Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Right"
-            Margin="144,133,0,0"
+            Margin="144,148,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Quantidade, ConverterCulture={x:Static Globalization:CultureInfo.CurrentCulture}, Mode=TwoWay, StringFormat=\{0:#.000\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+            Text="{Binding Quantidade, ConverterCulture={x:Static Globalization:CultureInfo.CurrentCulture}, Mode=OneWayToSource, StringFormat=\{0:#.#########\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
             VerticalAlignment="Top"
-            Width="165"
+            Width="180"
             Padding="20,4,20,4" />
 
         <TextBlock
-            Margin="22,189,0,0"
+            Margin="22,204,0,0"
             Text="Preço Venda" />
         <templates:CurrencyTextBox
             Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Right"
-            Margin="144,183,0,0"
+            Margin="144,198,0,0"
             TextWrapping="Wrap"
             IsEnabled="False"
             IsNegative="False"
             Number="{Binding ItemChanged.Produto.PrecoVenda, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
-            Width="165"
+            Width="180"
+            MinimumValue="0"
             Height="32" />
         <TextBlock
-            Margin="333,190,0,0"
+            Margin="352,205,0,0"
             Text="Desconto" />
-        <TextBox
+        <templates:CurrencyTextBox
             Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Right"
-            Margin="462,184,0,0"
+            Margin="447,199,0,0"
             TextWrapping="Wrap"
-            Text="{Binding DescontoPorcentagem, ConverterCulture={x:Static Globalization:CultureInfo.CurrentCulture}, Mode=TwoWay, StringFormat=\{0:#0.000\}, UpdateSourceTrigger=PropertyChanged}"
+            Number="{Binding DescontoPorcentagem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
-            Width="165"
+            Width="180"
+            StringFormat="0.000"
+            MaximumValue="100"
+            MinimumValue="0"
+            IsNegative="False"
             Padding="20,4,20,4"
             Height="32" />
         <TextBlock
             Text="%"
-            Margin="608,189,0,0"/>
+            Margin="609,204,0,0"/>
         <TextBlock
-            Margin="22,239,0,0"
+            Margin="22,254,0,0"
             Text="Valor Unitário" />
         <templates:CurrencyTextBox
             Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Right"
-            Margin="144,233,0,0"
+            Margin="144,248,0,0"
             TextWrapping="Wrap"
             IsNegative="False"
             Number="{Binding ValorUnitario, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            MaximumValue="{Binding ItemChanged.Produto.PrecoVenda, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            MinimumValue="0"
             VerticalAlignment="Top"
-            Width="165"
+            Width="180"
             Height="32" />
         <TextBlock
-            Margin="333,239,0,0"
+            Margin="352,254,0,0"
             Text="Valor Total"/>
         <templates:CurrencyTextBox
             Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Right"
-            Margin="462,233,0,0"
+            Margin="447,248,0,0"
             TextWrapping="Wrap"
             IsNegative="False"
+            MinimumValue="0"
             Number="{Binding ValorTotal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
-            Width="165"
-            Height="32" />
+            Width="180" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"

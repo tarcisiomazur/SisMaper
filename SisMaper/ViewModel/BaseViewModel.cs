@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MahApps.Metro.Controls.Dialogs;
+using SisMaper.Tools;
 using SisMaper.Tools.Events;
 
 namespace SisMaper.ViewModel;

@@ -194,7 +194,10 @@
             Value="True" />
         <Setter
             Property="Foreground"
-            Value="#5095D6" />
+            Value="#aecce8" />
+        <Setter
+            Property="FontSize"
+            Value="13" />
         <Setter
             Property="Template">
             <Setter.Value>

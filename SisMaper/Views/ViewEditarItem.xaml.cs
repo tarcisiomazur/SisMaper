@@ -18,18 +18,25 @@ public partial class ViewEditarItem
             newViewModel.Save += Close;
             newViewModel.Cancel += Close;
             newViewModel.OpenBuscarProduto += OpenBuscarProduto;
+            newViewModel.OpenEscolherLote += OpenEscolherLote;
         }
-        if (e.OldValue is EditarItemViewModel oldViewModel) { 
+
+        if (e.OldValue is EditarItemViewModel oldViewModel)
+        {
             oldViewModel.Save -= Close;
             oldViewModel.Cancel -= Close;
             oldViewModel.OpenBuscarProduto -= OpenBuscarProduto;
+            oldViewModel.OpenEscolherLote -= OpenEscolherLote;
         }
     }
-    
-    
-    
+
     private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)
     {
         new ViewBuscarProduto {DataContext = viewModel, Owner = this}.ShowDialog();
+    }
+
+    private void OpenEscolherLote(EscolherLoteViewModel viewModel)
+    {
+        new ViewEscolherLote {DataContext = viewModel, Owner = this}.ShowDialog();
     }
 }

@@ -129,8 +129,7 @@
             mah:TextBoxHelper.Watermark="{Binding IsOpen, Converter={StaticResource ParamIfTrue}, ConverterParameter=Buscar Cliente}"
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             ItemsSource="{Binding Clientes}"
-            SelectedItem="{Binding ClienteSelecionado, Mode=OneWayToSource}"
-            Text="{Binding Pedido.Cliente.Nome, Mode=TwoWay}"
+            SelectedItem="{Binding ClienteSelecionado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             DisplayMemberPath="Nome"
             IsEditable="True"
             MaxDropDownHeight="125"
@@ -148,14 +147,12 @@
             VerticalAlignment="Top"
             Height="32"
             Width="32">
-            <StackPanel>
-                <iconpacks:PackIconMaterial
+            <iconpacks:PackIconMaterial
                     Kind="AccountEditOutline"
                     Height="20"
                     Width="20"
                     Foreground="#FF939393"
                     HorizontalAlignment="Left" />
-            </StackPanel>
         </Button>
         <Button
             Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -167,14 +164,12 @@
             VerticalAlignment="Top"
             Width="32"
             Height="32">
-            <StackPanel>
-                <iconpacks:PackIconMaterial
+            <iconpacks:PackIconMaterial
                     Kind="AccountPlusOutline"
                     Height="20"
                     Width="20"
                     Foreground="#FF939393"
                     HorizontalAlignment="Left" />
-            </StackPanel>
             <Button.ContextMenu>
                 <ContextMenu
                     HorizontalAlignment="Right"
@@ -438,9 +433,10 @@
                                 Width="17*"
                                 MinWidth="70"
                                 Header="Qtde"
-                                Minimum="0.0001"
-                                Binding="{Binding Quantidade, UpdateSourceTrigger=LostFocus}"
-                                IsReadOnly="False" />
+                                Binding="{Binding Quantidade}"
+                                StringFormat="{}{0:N5}"
+                                Culture="pt-BR"
+                                IsReadOnly="True" />
                             <DataGridTextColumn
                                 Width="18*"
                                 MinWidth="50"
@@ -476,19 +472,16 @@
                                 StringFormat="{}{0:N2}"
                                 Culture="pt-BR"
                                 Binding="{Binding Valor}"
-                                IsReadOnly="true" />
+                                IsReadOnly="True" />
                             <mah:DataGridNumericUpDownColumn
                                 HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
                                 Width="35*"
                                 MinWidth="105"
                                 Header="Desconto(%)"
                                 StringFormat="{}{0:N2}"
-                                Minimum="0"
-                                Maximum="100"
-                                Interval="0.1"
                                 Culture="pt-BR"
-                                Binding="{Binding DescontoPorcentagem, UpdateSourceTrigger=LostFocus}"
-                                IsReadOnly="False" />
+                                Binding="{Binding DescontoPorcentagem}"
+                                IsReadOnly="True" />
                             <mah:DataGridNumericUpDownColumn
                                 HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
                                 Width="35*"
@@ -496,7 +489,7 @@
                                 Header="Total(R$)"
                                 StringFormat="{}{0:N2}"
                                 Culture="pt-BR"
-                                Binding="{Binding Total, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                Binding="{Binding Total, Mode=OneWay}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>

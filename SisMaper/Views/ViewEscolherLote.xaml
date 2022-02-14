@@ -13,11 +13,8 @@
     templates:DialogParticipation.MyRegister="{Binding}"
     Height="271"
     Width="410"
-    SaveWindowPosition="True">
-
-    <mah:MetroWindow.DataContext>
-        <viewModels:EscolherLoteViewModel />
-    </mah:MetroWindow.DataContext>
+    SaveWindowPosition="True"
+    d:DataContext="{d:DesignInstance viewModels:EscolherLoteViewModel}">
     <Grid>
         <TextBlock
             HorizontalAlignment="Left"
@@ -49,7 +46,7 @@
                     Header="Lote"
                     Width="5*"
                     Binding="{Binding Descricao}"
-                    IsReadOnly="True"/>
+                    IsReadOnly="True" />
                 <DataGridTextColumn
                     Header="Informações"
                     Width="10*"
@@ -63,14 +60,14 @@
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Command="{Binding CancelarCommand}"
+            Command="{Binding CancelarCmd}"
             Margin="0,0,10,6" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="OK"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Command="{Binding OKCommand}"
+            Command="{Binding OkCmd}"
             Margin="0,0,95,6" />
 
     </Grid>

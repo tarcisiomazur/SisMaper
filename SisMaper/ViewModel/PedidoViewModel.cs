@@ -55,6 +55,8 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     public event Action<CrudClienteViewModel, bool>? OpenCrudCliente;
 
+    public event Action<EscolherLoteViewModel>? OpenEscolherLote;
+
     public event Action<EditarItemViewModel>? OpenEditarItem;
 
     public event Action<FaturaViewModel>? OpenFatura;
@@ -110,6 +112,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     public ListarClientes? ClienteSelecionado
     {
+        get => Clientes.FirstOrDefault(c => c.Id == Pedido.Cliente?.Id);
         set => SetCliente(value);
     }
 
@@ -214,6 +217,10 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
                 OnShowMessage("Salvar Pedido", "O pedido não pode ser salvo pois está desatualizado!");
                 Cancel?.Invoke();
             }
+            else
+            {
+                OnShowMessage("Fatal Error", ex.Message);
+            }
         }
     }
 
@@ -270,10 +277,11 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
             NovoItem.Produto.Lotes.Load();
             if (NovoItem.Produto.Lotes?.Count > 0)
             {
-                var view = new ViewEscolherLote(NovoItem.Produto.Lotes);
-                if (view.ShowDialog().IsTrue())
+                var vm = new EscolherLoteViewModel(NovoItem.Produto.Lotes);
+                OpenEscolherLote?.Invoke(vm);
+                if (vm.LoteSelecionado != null)
                 {
-                    NovoItem.Lote = view.ViewModel.LoteSelecionado;
+                    NovoItem.Lote = vm.LoteSelecionado;
                 }
                 else
                 {
@@ -562,9 +570,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     private void UpdateSelectionCliente()
     {
         Clientes = View.Execute<ListarClientes>();
-        ClienteSelecionado = Pedido.Cliente is not null
-            ? Clientes.FirstOrDefault(cliente => cliente.Id == Pedido.Cliente.Id)
-            : null;
+        RaisePropertyChanged(nameof(ClienteSelecionado));
     }
 
     private void SetCliente(ListarClientes? cliente)

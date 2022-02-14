@@ -11,6 +11,7 @@ public class EditarItemViewModel : BaseViewModel, IDataErrorInfo
 {
     public EditarItemViewModel(Item item)
     {
+        ItemOld = item;
         item.Produto?.Lotes?.Load();
         ItemChanged = (Item) item.Clone(PersistenceContext);
     }
@@ -22,6 +23,7 @@ public class EditarItemViewModel : BaseViewModel, IDataErrorInfo
     public event Action? Save;
 
     public event Action<BuscarProdutoViewModel>? OpenBuscarProduto;
+    public event Action<EscolherLoteViewModel>? OpenEscolherLote;
 
     #endregion
 
@@ -78,6 +80,7 @@ public class EditarItemViewModel : BaseViewModel, IDataErrorInfo
     }
 
     public Item ItemChanged { get; set; }
+    public Item ItemOld { get; set; }
 
     public Lote? Lote
     {
@@ -93,12 +96,24 @@ public class EditarItemViewModel : BaseViewModel, IDataErrorInfo
 
     public SimpleCommand OpenBuscarProdutoCmd => new(AbrirBuscarProduto);
 
-    public SimpleCommand SalvarCmd => new(Salvar);
+    public SimpleCommand OpenEscolherLoteCmd => new(AbrirEscolherLote);
+
+    public SimpleCommand SalvarCmd => new(Salvar, NotHasErrors);
+
+    private bool NotHasErrors()
+    {
+        return this["Lote"] == "" && this["Quantidade"] == "";
+    }
 
     #endregion
 
     private void Salvar()
     {
+        ItemOld.Produto = ItemChanged.Produto;
+        ItemOld.Lote = ItemChanged.Lote;
+        ItemOld.Quantidade = ItemChanged.Quantidade;
+        ItemOld.Valor = ItemChanged.Valor;
+        ItemOld.DescontoPorcentagem = ItemChanged.DescontoPorcentagem;
         Save?.Invoke();
     }
 
@@ -115,5 +130,15 @@ public class EditarItemViewModel : BaseViewModel, IDataErrorInfo
         Lote = null;
         RaisePropertyChanged(nameof(Lote));
         RaisePropertyChanged(nameof(HasLotes));
+    }
+
+    private void AbrirEscolherLote()
+    {
+        var vm = new EscolherLoteViewModel(ItemChanged.Produto.Lotes);
+        OpenEscolherLote?.Invoke(vm);
+        if (vm.LoteSelecionado != null)
+        {
+            Lote = vm.LoteSelecionado;
+        }
     }
 }
