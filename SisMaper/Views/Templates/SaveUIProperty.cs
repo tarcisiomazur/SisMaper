@@ -8,13 +8,12 @@ namespace SisMaper.Views.Templates;
 
 public static class SaveUIProperty
 {
-    
     public static readonly DependencyProperty SavePathProperty =
         DependencyProperty.RegisterAttached("SavePath",
             typeof(string),
             typeof(DataGridColumn),
             new FrameworkPropertyMetadata(null, SaveSizesPropertyChanged));
-    
+
     public static readonly DependencyProperty SaveSizesProperty =
         DependencyProperty.RegisterAttached("SaveSizes",
             typeof(bool),
@@ -36,7 +35,7 @@ public static class SaveUIProperty
     {
         return (string?) obj.GetValue(SavePathProperty);
     }
-    
+
     public static void SetSaveSizes(DependencyObject obj, bool value)
     {
         obj.SetValue(SaveSizesProperty, value);
@@ -137,7 +136,6 @@ public static class SaveUIProperty
         if (reg == null) return;
         foreach (var c in dg.Columns)
         {
-            
             var str = GetSavePath(c) ?? c.Header?.ToString();
             if (reg?.GetValue(str) is not string value) continue;
             var values = value.Split(';');
@@ -173,8 +171,10 @@ public static class SaveUIProperty
         {
             var sort = (int?) c.SortDirection ?? 2;
             var str = GetSavePath(c) ?? c.Header?.ToString();
-            if(str is not null)
+            if (str is not null)
+            {
                 reg.SetValue(str, $"{c.DisplayIndex};{c.Width.DesiredValue};{sort}");
+            }
         }
     }
 }

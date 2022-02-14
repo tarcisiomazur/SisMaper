@@ -3,48 +3,51 @@ using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
 
-namespace SisMaper.Views.Templates
+namespace SisMaper.Views.Templates;
+
+public static class DialogParticipation
 {
-    public static class DialogParticipation
+    public static readonly DependencyProperty MyRegisterProperty = DependencyProperty.RegisterAttached(
+        "MyRegister",
+        typeof(object),
+        typeof(DialogParticipation),
+        new PropertyMetadata(default, RegisterPropertyChangedCallback));
+
+    private static void RegisterPropertyChangedCallback(DependencyObject dependencyObject,
+        DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
-        public static readonly DependencyProperty MyRegisterProperty = DependencyProperty.RegisterAttached(
-            "MyRegister",
-            typeof(object),
-            typeof(DialogParticipation),
-            new PropertyMetadata(default, RegisterPropertyChangedCallback));
-        private static void RegisterPropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        switch (dependencyObject)
         {
-            switch (dependencyObject)
-            {
-                case MetroWindow metroWindow:
-                    metroWindow.Closed += UnRegister;
-                    break;
-                case Control control:
-                    control.Unloaded += UnRegister;
-                    break;
-            }
-            
-            if (dependencyPropertyChangedEventArgs.NewValue != null)
-            {
-                MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(dependencyObject, dependencyPropertyChangedEventArgs.NewValue);
-            }
+            case MetroWindow metroWindow:
+                metroWindow.Closed += UnRegister;
+                break;
+            case Control control:
+                control.Unloaded += UnRegister;
+                break;
         }
 
-        private static void UnRegister(object? sender, EventArgs eventArgs)
+        if (dependencyPropertyChangedEventArgs.NewValue != null)
         {
-            if (sender is DependencyObject dp)
-            {
-                MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(dp, null);
-            }
+            MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(dependencyObject,
+                dependencyPropertyChangedEventArgs.NewValue);
         }
-        public static void SetMyRegister(DependencyObject element, object context)
-        {
-            element.SetValue(MyRegisterProperty, context);
-        }
+    }
 
-        public static object GetMyRegister(DependencyObject element)
+    private static void UnRegister(object? sender, EventArgs eventArgs)
+    {
+        if (sender is DependencyObject dp)
         {
-            return element.GetValue(MyRegisterProperty);
+            MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(dp, null);
         }
+    }
+
+    public static void SetMyRegister(DependencyObject element, object context)
+    {
+        element.SetValue(MyRegisterProperty, context);
+    }
+
+    public static object GetMyRegister(DependencyObject element)
+    {
+        return element.GetValue(MyRegisterProperty);
     }
 }
