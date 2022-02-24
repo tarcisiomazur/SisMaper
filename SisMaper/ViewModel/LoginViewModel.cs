@@ -45,6 +45,18 @@ public class LoginViewModel : BaseViewModel
 
     #endregion
 
+    public void SetFocus()
+    {
+        if (string.IsNullOrEmpty(Usuario.Login))
+        {
+            UsuarioFocus = true;
+        }
+        else
+        {
+            PasswordFocus = true;
+        }
+    }
+
     private void ConfirmLogin()
     {
         var user = AuthLogin.Login(Usuario);

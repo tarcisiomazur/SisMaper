@@ -30,7 +30,19 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         NotasFiscaisView = CollectionViewSource.GetDefaultView(Pedido.NotasFiscais);
         NotasFiscaisView.GroupDescriptions.Add(new PropertyGroupDescription("Chave"));
 
-        if (!IsOpen) return; // Se o pedido está fechado não é preciso carregar Clientes, Categorias, etc
+        if (!IsOpen) // Se o pedido está fechado não é preciso carregar Clientes, Categorias, etc
+        {
+            if (Pedido.Cliente is null)
+            {
+                return;
+            }
+
+            Clientes = new List<ListarClientes>
+            {
+                new(Pedido.Cliente)
+            };
+            return;
+        }
 
         Clientes = View.Execute<ListarClientes>();
         Produtos = View.Execute<ListarProdutos>();
@@ -55,9 +67,9 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     public event Action<CrudClienteViewModel, bool>? OpenCrudCliente;
 
-    public event Action<EscolherLoteViewModel>? OpenEscolherLote;
-
     public event Action<EditarItemViewModel>? OpenEditarItem;
+
+    public event Action<EscolherLoteViewModel>? OpenEscolherLote;
 
     public event Action<FaturaViewModel>? OpenFatura;
 
@@ -108,11 +120,11 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     private Item NovoItem { get; set; }
 
-    public List<ListarClientes> Clientes { get; set; }
+    public List<ListarClientes>? Clientes { get; set; }
 
     public ListarClientes? ClienteSelecionado
     {
-        get => Clientes.FirstOrDefault(c => c.Id == Pedido.Cliente?.Id);
+        get => Clientes?.FirstOrDefault(c => c.Id == Pedido.Cliente?.Id);
         set => SetCliente(value);
     }
 

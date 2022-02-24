@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using CefSharp;
 using CefSharp.Wpf;
 using SisMaper.Tools;
@@ -32,6 +31,7 @@ public partial class ViewPedido
             newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             newViewModel.ShowProgress += Helper.MahAppsDefaultProgress;
         }
+
         if (e.OldValue is PedidoViewModel oldViewModel)
         {
             oldViewModel.Save -= Close;
@@ -48,19 +48,20 @@ public partial class ViewPedido
 
     private void OpenCrudCliente(CrudClienteViewModel viewModel, bool isPessoaFisica)
     {
-        new CrudCliente {DataContext = viewModel, Owner = this, IsSelectedPessoaFisicaTab = isPessoaFisica}.ShowDialog();
-    }    
-    
+        new CrudCliente
+            {DataContext = viewModel, Owner = this, IsSelectedPessoaFisicaTab = isPessoaFisica}.ShowDialog();
+    }
+
     private void OpenEditarItem(EditarItemViewModel viewModel)
     {
-        new ViewEditarItem() {DataContext = viewModel, Owner = this}.ShowDialog();
+        new ViewEditarItem {DataContext = viewModel, Owner = this}.ShowDialog();
     }
 
     private void OpenBuscarProduto(BuscarProdutoViewModel viewModel)
     {
         new ViewBuscarProduto {DataContext = viewModel, Owner = this}.ShowDialog();
     }
-    
+
     private void OpenEscolherLote(EscolherLoteViewModel viewModel)
     {
         new ViewEscolherLote {DataContext = viewModel, Owner = this}.ShowDialog();

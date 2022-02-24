@@ -26,6 +26,16 @@
         <vm:LoginViewModel />
     </mah:MetroWindow.DataContext>
 
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands
+            ShowLastSeparator="False">
+            <Button
+                Command="{Binding Source={x:Static tools:HelpWebService.OpenHelp}}"
+                Content="Help"
+                ToolTip="Abrir Help" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
     <mah:MetroWindow.Resources>
         <tools:StringToSha512
             x:Key="StringToSha512" />
@@ -146,7 +156,7 @@
             Height="32"
             FontSize="16"
             IsShow="{Binding IsChecked, ElementName=ToggleSenha, Mode=TwoWay}"
-            templates:FocusExtension.IsFocused="{Binding PasswordFocus, NotifyOnSourceUpdated=True, Mode=TwoWay}"
+            templates:FocusExtension.IsFocused="{Binding PasswordFocus, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             ContentPadding="4,4,28,4"
             MaxLength="30">
             <i:Interaction.Triggers>
@@ -203,7 +213,8 @@
             Image="/Images/Show.png"
             Opacity="0.5"
             Focusable="False"
-            ClickMode="Press" />
+            ClickMode="Press"
+            templates:HelperPopupToolTip.HelpHeader="Mostrar/Ocultar Senha" />
         <Image
             HorizontalAlignment="Left"
             Height="88"

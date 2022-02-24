@@ -6,6 +6,14 @@ namespace SisMaper.Models.Views;
 [View(ViewName = "ListarClientes")]
 public class ListarClientes
 {
+    public ListarClientes() { }
+
+    public ListarClientes(Cliente cliente)
+    {
+        Id = cliente.Id;
+        Nome = cliente.Nome;
+    }
+
     public enum Pessoa
     {
         Juridica,

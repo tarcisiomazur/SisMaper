@@ -23,10 +23,15 @@ public static class FocusExtension
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        var uie = (UIElement) d;
-        if ((bool) e.NewValue)
+        if (e.NewValue is not true) return;
+        switch (d)
         {
-            uie.Focus(); // Don't care about false values.
+            case MyPasswordBox mpb:
+                mpb.Focus();
+                break;
+            case UIElement uie:
+                uie.Focus();
+                break;
         }
     }
 }

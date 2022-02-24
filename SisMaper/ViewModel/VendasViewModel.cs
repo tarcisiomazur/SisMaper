@@ -107,9 +107,9 @@ public class VendasViewModel : BaseViewModel
                     return;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                //
+                Logger.Error(ex.ToString());
             }
 
             OnShowMessage("Excluir Pedido",

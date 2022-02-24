@@ -7,7 +7,6 @@
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
-    xmlns:local="clr-namespace:SisMaper.Views"
     mc:Ignorable="d"
     Title="Escolher Lote"
     templates:DialogParticipation.MyRegister="{Binding}"

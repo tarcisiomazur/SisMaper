@@ -148,11 +148,11 @@
             Height="32"
             Width="32">
             <iconpacks:PackIconMaterial
-                    Kind="AccountEditOutline"
-                    Height="20"
-                    Width="20"
-                    Foreground="#FF939393"
-                    HorizontalAlignment="Left" />
+                Kind="AccountEditOutline"
+                Height="20"
+                Width="20"
+                Foreground="#FF939393"
+                HorizontalAlignment="Left" />
         </Button>
         <Button
             Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -165,11 +165,11 @@
             Width="32"
             Height="32">
             <iconpacks:PackIconMaterial
-                    Kind="AccountPlusOutline"
-                    Height="20"
-                    Width="20"
-                    Foreground="#FF939393"
-                    HorizontalAlignment="Left" />
+                Kind="AccountPlusOutline"
+                Height="20"
+                Width="20"
+                Foreground="#FF939393"
+                HorizontalAlignment="Left" />
             <Button.ContextMenu>
                 <ContextMenu
                     HorizontalAlignment="Right"
@@ -454,11 +454,14 @@
                                             Orientation="Vertical">
                                             <TextBlock
                                                 Text="{Binding Produto.Descricao}" />
-                                            <TextBlock Style="{StaticResource MahApps.Styles.TextBlock}"
-                                                Visibility="{Binding Lote, Converter={StaticResource NullToVisibilityConverter}}"
-                                                >
-                                                <Run Text="lote: " Foreground="Blue"/>
-                                                <Run Text="{Binding Lote.Descricao}"/>
+                                            <TextBlock
+                                                Style="{StaticResource MahApps.Styles.TextBlock}"
+                                                Visibility="{Binding Lote, Converter={StaticResource NullToVisibilityConverter}}">
+                                                <Run
+                                                    Text="lote: "
+                                                    Foreground="Blue" />
+                                                <Run
+                                                    Text="{Binding Lote.Descricao}" />
                                             </TextBlock>
                                         </StackPanel>
                                     </DataTemplate>

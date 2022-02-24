@@ -6,30 +6,30 @@ namespace SisMaper.ViewModel;
 
 public class FullCmd<T> : ICommand
 {
-    public FullCmd(Action<T> execute = null, Predicate<T> canExecute = null)
+    public FullCmd(Action<T?> execute = null, Predicate<T?> canExecute = null)
     {
         CanExecuteDelegate = canExecute;
         ExecuteDelegate = execute;
     }
 
-    public FullCmd(Action<T> execute, Func<bool> canExecute)
+    public FullCmd(Action<T?> execute, Func<bool> canExecute)
     {
         CanExecuteDelegate = _ => canExecute();
         ExecuteDelegate = execute;
     }
 
-    public Predicate<T>? CanExecuteDelegate { get; set; }
+    public Predicate<T?>? CanExecuteDelegate { get; set; }
 
-    public Action<T>? ExecuteDelegate { get; set; }
+    public Action<T?> ExecuteDelegate { get; set; }
 
     public bool CanExecute(object? parameter)
     {
-        return CanExecuteDelegate == null || parameter is not T tParameter || CanExecuteDelegate(tParameter);
+        return CanExecuteDelegate == null || CanExecuteDelegate(parameter is T ? (T) parameter : default);
     }
 
     public void Execute(object? parameter)
     {
-        if (parameter is T tParameter) ExecuteDelegate?.Invoke(tParameter);
+        ExecuteDelegate?.Invoke(parameter is T ? (T) parameter : default);
     }
 
     public event EventHandler? CanExecuteChanged
@@ -39,7 +39,7 @@ public class FullCmd<T> : ICommand
     }
 }
 
-public class SimpleCommand : BaseCommand
+public class SimpleCommand : ICommand
 {
     public SimpleCommand(Action<object> execute = null, Predicate<object> canExecute = null)
     {
@@ -69,7 +69,7 @@ public class SimpleCommand : BaseCommand
 
     public Action<object> ExecuteDelegate { get; set; }
 
-    public override bool CanExecute(object parameter)
+    public bool CanExecute(object parameter)
     {
         return CanExecuteDelegate == null || CanExecuteDelegate(parameter);
     }
@@ -80,7 +80,7 @@ public class SimpleCommand : BaseCommand
         remove => CommandManager.RequerySuggested -= value;
     }
 
-    public override void Execute(object parameter)
+    public void Execute(object parameter)
     {
         try
         {
@@ -92,27 +92,4 @@ public class SimpleCommand : BaseCommand
             throw;
         }
     }
-}
-
-public abstract class BaseCommand : ICommand
-{
-    public event EventHandler CanExecuteChanged
-    {
-        add => CommandManager.RequerySuggested += value;
-        remove => CommandManager.RequerySuggested -= value;
-    }
-
-    public virtual bool CanExecute(object parameter)
-    {
-        return true;
-    }
-
-    public abstract void Execute(object parameter);
-
-    /*
-    public void RaiseCanExecuteChanged()
-    {
-        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-    }
-    */
 }

@@ -10,6 +10,7 @@
     xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:vm="clr-namespace:SisMaper.ViewModel"
     xmlns:sismaper="clr-namespace:SisMaper"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
     xmlns:converter="clr-namespace:MahApps.Metro.IconPacks.Converter;assembly=MahApps.Metro.IconPacks.Core"
@@ -21,13 +22,19 @@
     Width="1489"
     SaveWindowPosition="True">
     <mah:MetroWindow.DataContext>
-        <vm:MainViewModel/>
+        <vm:MainViewModel />
     </mah:MetroWindow.DataContext>
     <mah:MetroWindow.RightWindowCommands>
-        <mah:WindowCommands ShowLastSeparator="False">
-            <Button Click="Logout"
-                    Content="Encerrar Sessão"
-                    ToolTip="Clique para Desconectar este Usuário" />
+        <mah:WindowCommands
+            ShowLastSeparator="False">
+            <Button
+                Click="Logout"
+                Content="Encerrar Sessão"
+                ToolTip="Clique para Desconectar este Usuário" />
+            <Button
+                Command="{Binding Source={x:Static tools:HelpWebService.OpenHelp}}"
+                Content="Help"
+                ToolTip="Abrir Help" />
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <mah:MetroWindow.TitleTemplate>
@@ -418,30 +425,30 @@
             x:Name="TabCtrl"
             Margin="0,0,0,22"
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-            <TabItem Visibility="Collapsed"/>
+            <TabItem
+                Visibility="Collapsed" />
             <TabItem
                 Visibility="{Binding PVendas, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}"
                 x:Name="Vendas"
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF1B4441">
                 <TabItem.Header>
-                        <StackPanel
-                            Orientation="Vertical"
-                            VerticalAlignment="Center">
-                            <icons:PackIconMaterial
-                                Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
-                                Kind="PointOfSale" />
-                            <TextBlock
-                                Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
-                                Text="Vendas" />
-                        </StackPanel>
+                    <StackPanel
+                        Orientation="Vertical"
+                        VerticalAlignment="Center">
+                        <icons:PackIconMaterial
+                            Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
+                            Kind="PointOfSale" />
+                        <TextBlock
+                            Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
+                            Text="Vendas" />
+                    </StackPanel>
                 </TabItem.Header>
                 <local:ViewVendas
                     Width="auto"
-                            Height="auto"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch">
-                </local:ViewVendas>
+                    Height="auto"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
             </TabItem>
             <TabItem
                 Visibility="{Binding PRecebimento, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -463,10 +470,10 @@
                     </ItemContainerTemplate>
                 </TabItem.HeaderTemplate>
                 <local:ViewRecebimentos
-                            Width="auto"
-                            Height="auto"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"/>
+                    Width="auto"
+                    Height="auto"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
             </TabItem>
             <TabItem
                 x:Name="Cadastros"
@@ -474,18 +481,19 @@
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF843700">
                 <TabItem.Header>
-                        <StackPanel
-                            Orientation="Vertical"
-                            VerticalAlignment="Center">
-                            <icons:PackIconMaterial
-                                Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
-                                Kind="BookEdit" />
-                            <TextBlock
-                                Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
-                                Text="Cadastros" />
-                        </StackPanel>
+                    <StackPanel
+                        Orientation="Vertical"
+                        VerticalAlignment="Center">
+                        <icons:PackIconMaterial
+                            Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
+                            Kind="BookEdit" />
+                        <TextBlock
+                            Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
+                            Text="Cadastros" />
+                    </StackPanel>
                 </TabItem.Header>
-                <TabControl SelectedItem="{Binding CadastroSelecionado, Mode=TwoWay}"
+                <TabControl
+                    SelectedItem="{Binding CadastroSelecionado, Mode=TwoWay}"
                     Margin="0">
                     <TabItem
                         Name="Produtos"
@@ -539,16 +547,16 @@
                         x:Name="Usuários"
                         Style="{DynamicResource SisMaper.MainWindow.TabItem.SubMenu}">
                         <TabItem.Header>
-                                <StackPanel
-                                    Orientation="Vertical"
-                                    VerticalAlignment="Center">
-                                    <icons:PackIconMaterial
-                                        Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
-                                        Kind="AccountLock" />
-                                    <TextBlock
-                                        Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
-                                        Text="{Binding Name, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}" />
-                                </StackPanel>
+                            <StackPanel
+                                Orientation="Vertical"
+                                VerticalAlignment="Center">
+                                <icons:PackIconMaterial
+                                    Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
+                                    Kind="AccountLock" />
+                                <TextBlock
+                                    Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
+                                    Text="{Binding Name, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}" />
+                            </StackPanel>
                         </TabItem.Header>
                         <Grid />
                     </TabItem>
@@ -559,16 +567,16 @@
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#CC25A0FF">
                 <TabItem.Header>
-                        <StackPanel
-                            Orientation="Vertical"
-                            VerticalAlignment="Center">
-                            <icons:PackIconModern
-                                Style="{DynamicResource MainWindow.Menu.PackIconModern}"
-                                Kind="GraphBar" />
-                            <TextBlock
-                                Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
-                                Text="Relatórios" />
-                        </StackPanel>
+                    <StackPanel
+                        Orientation="Vertical"
+                        VerticalAlignment="Center">
+                        <icons:PackIconModern
+                            Style="{DynamicResource MainWindow.Menu.PackIconModern}"
+                            Kind="GraphBar" />
+                        <TextBlock
+                            Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
+                            Text="Relatórios" />
+                    </StackPanel>
                 </TabItem.Header>
             </TabItem>
             <TabItem
@@ -577,16 +585,16 @@
                 PreviewMouseLeftButtonDown="OpenConfig"
                 Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}">
                 <TabItem.Header>
-                        <StackPanel
-                            Orientation="Vertical"
-                            VerticalAlignment="Center">
-                            <icons:PackIconModern
-                                Style="{DynamicResource MainWindow.Menu.PackIconModern}"
-                                Kind="Settings" />
-                            <TextBlock
-                                Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
-                                Text="{Binding Name, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabItem}}}" />
-                        </StackPanel>
+                    <StackPanel
+                        Orientation="Vertical"
+                        VerticalAlignment="Center">
+                        <icons:PackIconModern
+                            Style="{DynamicResource MainWindow.Menu.PackIconModern}"
+                            Kind="Settings" />
+                        <TextBlock
+                            Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
+                            Text="{Binding Name, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabItem}}}" />
+                    </StackPanel>
                 </TabItem.Header>
 
             </TabItem>
@@ -594,10 +602,12 @@
 
         <StatusBar
             DockPanel.Dock="Bottom"
-            VerticalAlignment="Bottom" Background="{DynamicResource SisMaper.Dark.Theme}">
+            VerticalAlignment="Bottom"
+            Background="{DynamicResource SisMaper.Dark.Theme}">
             <StatusBarItem
-                 HorizontalAlignment="Right">
-                <StackPanel Orientation="Horizontal">
+                HorizontalAlignment="Right">
+                <StackPanel
+                    Orientation="Horizontal">
                     <Label
                         Content="Usuário: "
                         VerticalAlignment="Center"

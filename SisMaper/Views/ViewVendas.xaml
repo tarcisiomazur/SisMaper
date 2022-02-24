@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -19,9 +18,9 @@
     templates:DialogParticipation.MyRegister="{Binding}">
 
     <UserControl.DataContext>
-        <viewModels:VendasViewModel/>
+        <viewModels:VendasViewModel />
     </UserControl.DataContext>
-    
+
     <Grid
         Background="White">
         <Grid.RowDefinitions>
@@ -39,9 +38,11 @@
                 <StackPanel
                     Orientation="Horizontal">
                     <Button
-                        CommandParameter="{Binding}"
                         Command="{Binding NovoPedidoCmd}"
-                        Style="{StaticResource SisMaper.ToolBar.Button}">
+                        Style="{StaticResource SisMaper.ToolBar.Button}"
+                        templates:HelperPopupToolTip.HelpHeader="Novo Pedido"
+                        templates:HelperPopupToolTip.HelpContent="Criar um novo pedido em branco."
+                        templates:HelperPopupToolTip.HelpLink="Vendas#NovoPedido">
                         <StackPanel>
                             <iconpacks:PackIconPixelartIcons
                                 Kind="AddBox"
@@ -55,9 +56,10 @@
                         </StackPanel>
                     </Button>
                     <Button
-                        CommandParameter="{Binding}"
                         Command="{Binding EditarPedidoCmd}"
-                        Style="{StaticResource SisMaper.ToolBar.Button}">
+                        Style="{StaticResource SisMaper.ToolBar.Button}"
+                        templates:HelperPopupToolTip.HelpHeader="Editar Pedido"
+                        templates:HelperPopupToolTip.HelpContent="Abrir o pedido selecionado para visualização e edição.">
                         <StackPanel>
                             <iconpacks:PackIconModern
                                 Kind="EditBox"
@@ -71,9 +73,11 @@
                         </StackPanel>
                     </Button>
                     <Button
-                        CommandParameter="{Binding}"
                         Command="{Binding ExcluirPedidoCmd}"
-                        Style="{StaticResource SisMaper.ToolBar.Button}">
+                        Style="{StaticResource SisMaper.ToolBar.Button}"
+                        templates:HelperPopupToolTip.HelpHeader="Excluir Pedido"
+                        templates:HelperPopupToolTip.HelpContent="Excluir o pedido selecionado na lista.&#xA;&#xA;Pedidos Encerrados e/ou Faturados não podem ser excluídos."
+                        templates:HelperPopupToolTip.HelpLink="Vendas#EditarPedido">
                         <StackPanel>
                             <iconpacks:PackIconMaterial
                                 Kind="DeleteForever"
@@ -104,8 +108,9 @@
                         VerticalAlignment="Top"
                         Width="136"
                         mah:TextBoxHelper.Watermark="Status"
-                        Height="28
-                        " />
+                        Height="28"
+                        templates:HelperPopupToolTip.HelpHeader="Filtrar por Status"
+                        templates:HelperPopupToolTip.HelpContent="Filtrar Pedido pelo seu Status atual.&#xA;&#xA;Desmarcar a opção desabilitará este filtro." />
                     <TextBlock
                         HorizontalAlignment="Left"
                         Margin="154,11,0,0"
@@ -126,7 +131,9 @@
                         Width="110"
                         VerticalContentAlignment="Center"
                         mah:TextBoxHelper.Watermark=" "
-                        Height="28" />
+                        Height="28"
+                        templates:HelperPopupToolTip.HelpHeader="Filtrar por Data de Início"
+                        templates:HelperPopupToolTip.HelpContent="Filtrar os Pedido à partir da Data de Início.&#xA;&#xA;Desmarcar a opção desabilitará este filtro." />
                     <TextBlock
                         HorizontalAlignment="Left"
                         Margin="312,11,0,0"
@@ -144,7 +151,9 @@
                         VerticalAlignment="Top"
                         Height="28"
                         Width="110"
-                        VerticalContentAlignment="Center" />
+                        VerticalContentAlignment="Center"
+                        templates:HelperPopupToolTip.HelpHeader="Filtrar por Data Final"
+                        templates:HelperPopupToolTip.HelpContent="Filtrar os Pedido até da Data selecionada.&#xA;&#xA;Desmarcar a opção desabilitará este filtro." />
                     <ComboBox
                         x:Name="Intervalo"
                         templates:SaveUIProperty.SaveSelected="True"
@@ -157,28 +166,25 @@
                         SelectedValue="{Binding IntervaloSelecionado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SelectedValuePath="Uid"
                         Height="28"
-                        Margin="480,6,0,0">
+                        Margin="480,6,0,0"
+                        templates:HelperPopupToolTip.HelpHeader="Filtrar por Intervalo"
+                        templates:HelperPopupToolTip.HelpContent="Filtrar os pedidos que estão no intervalo selecionado.&#xA;&#xA;A seleção do intervalo alterará as data de Início e Fim. Desmarcar a opção desabilitará os filtros por data.">
                         <ComboBox.Items>
                             <TextBlock
                                 Uid="0"
-                                Text="Hoje">
-                            </TextBlock>
+                                Text="Hoje" />
                             <TextBlock
                                 Uid="1"
-                                Text="Esta Semana">
-                            </TextBlock>
+                                Text="Esta Semana" />
                             <TextBlock
                                 Uid="2"
-                                Text="Este Mês">
-                            </TextBlock>
+                                Text="Este Mês" />
                             <TextBlock
                                 Uid="3"
-                                Text="Últimos 60d">
-                            </TextBlock>
+                                Text="Últimos 60d" />
                             <TextBlock
                                 Uid="4"
-                                Text="Todos">
-                            </TextBlock>
+                                Text="Todos" />
                         </ComboBox.Items>
                     </ComboBox>
                     <TextBox

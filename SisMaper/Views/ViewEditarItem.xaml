@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -29,14 +28,19 @@
             <Setter
                 Property="TextTrimming"
                 Value="None" />
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter
+                Property="VerticalAlignment"
+                Value="Top" />
+            <Setter
+                Property="HorizontalAlignment"
+                Value="Left" />
             <Setter
                 Property="FontSize"
                 Value="16" />
         </Style>
     </mah:MetroWindow.Resources>
-    <Grid Margin="-2,-1,2,1">
+    <Grid
+        Margin="-2,-1,2,1">
 
         <TextBlock
             Margin="20,22,0,0"
@@ -64,8 +68,9 @@
             Background="White"
             HorizontalAlignment="Left">
             <Button.ToolTip>
-                <templates:MyToolTip AutoMove="True"
-            Text="Alterar Produto." />
+                <templates:MyToolTip
+                    AutoMove="True"
+                    Text="Alterar Produto." />
             </Button.ToolTip>
             <StackPanel>
                 <iconpacks:PackIconMaterial
@@ -75,44 +80,46 @@
                     Height="18" />
             </StackPanel>
         </Button>
-        <Grid Visibility="{Binding HasLotes, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+        <Grid
+            Visibility="{Binding HasLotes, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
             <TextBlock
-            Margin="442,22,0,0"
-            Text="Lote" />
+                Margin="442,22,0,0"
+                Text="Lote" />
 
             <ComboBox
-            ItemsSource="{Binding ItemChanged.Produto.Lotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            SelectedItem="{Binding Lote, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
-            Grid.Row="0"
-            Height="32"
-            Width="151"
-            Margin="442,48,0,0"
-            FontSize="16"
-            MaxDropDownHeight="125"
-            mah:TextBoxHelper.WatermarkAlignment="Right"
-            mah:TextBoxHelper.AutoWatermark="True"
-            VerticalAlignment="Top"
-            HorizontalAlignment="Left"
-            DisplayMemberPath="Descricao" />
+                ItemsSource="{Binding ItemChanged.Produto.Lotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding Lote, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Row="0"
+                Height="32"
+                Width="151"
+                Margin="442,48,0,0"
+                FontSize="16"
+                MaxDropDownHeight="125"
+                mah:TextBoxHelper.WatermarkAlignment="Right"
+                mah:TextBoxHelper.AutoWatermark="True"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                DisplayMemberPath="Descricao" />
             <Button
-            Width="32"
-            Height="32"
-            Margin="595,48,0,0"
-            VerticalAlignment="Top"
-            Focusable="false"
-            Command="{Binding OpenEscolherLoteCmd}"
-            Background="White"
-            HorizontalAlignment="Left">
+                Width="32"
+                Height="32"
+                Margin="595,48,0,0"
+                VerticalAlignment="Top"
+                Focusable="false"
+                Command="{Binding OpenEscolherLoteCmd}"
+                Background="White"
+                HorizontalAlignment="Left">
                 <Button.ToolTip>
-                    <templates:MyToolTip AutoMove="True"
-                    Text="Buscar Lote" />
+                    <templates:MyToolTip
+                        AutoMove="True"
+                        Text="Buscar Lote" />
                 </Button.ToolTip>
                 <StackPanel>
                     <iconpacks:PackIconMaterial
-                    Kind="MagnifyPlus"
-                    Foreground="Green"
-                    Width="18"
-                    Height="18" />
+                        Kind="MagnifyPlus"
+                        Foreground="Green"
+                        Width="18"
+                        Height="18" />
                 </StackPanel>
             </Button>
         </Grid>
@@ -144,8 +151,7 @@
             Number="{Binding ItemChanged.Produto.PrecoVenda, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="180"
-            MinimumValue="0"
-            Height="32" />
+            MinimumValue="0" />
         <TextBlock
             Margin="352,205,0,0"
             Text="Desconto" />
@@ -162,11 +168,10 @@
             MaximumValue="100"
             MinimumValue="0"
             IsNegative="False"
-            Padding="20,4,20,4"
-            Height="32" />
+            Padding="20,4,20,4" />
         <TextBlock
             Text="%"
-            Margin="609,204,0,0"/>
+            Margin="609,204,0,0" />
         <TextBlock
             Margin="22,254,0,0"
             Text="Valor Unitário" />
@@ -181,11 +186,10 @@
             MaximumValue="{Binding ItemChanged.Produto.PrecoVenda, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             MinimumValue="0"
             VerticalAlignment="Top"
-            Width="180"
-            Height="32" />
+            Width="180" />
         <TextBlock
             Margin="352,254,0,0"
-            Text="Valor Total"/>
+            Text="Valor Total" />
         <templates:CurrencyTextBox
             Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"

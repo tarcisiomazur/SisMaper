@@ -1,32 +1,29 @@
 ﻿using System.Windows;
 using MahApps.Metro.Controls;
-using Persistence;
-using SisMaper.Models;
 using SisMaper.ViewModel;
 
-namespace SisMaper.Views
+namespace SisMaper.Views;
+
+public partial class ViewEscolherLote : MetroWindow
 {
-    public partial class ViewEscolherLote : MetroWindow
+    public ViewEscolherLote()
     {
-        public ViewEscolherLote()
+        InitializeComponent();
+        DataContextChanged += SetActions;
+    }
+
+    private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is EscolherLoteViewModel newViewModel)
         {
-            InitializeComponent();
-            DataContextChanged += SetActions;
+            newViewModel.OnOk += Close;
+            newViewModel.OnCancel += Close;
         }
 
-        private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
+        if (e.OldValue is EscolherLoteViewModel oldViewModel)
         {
-            if (e.NewValue is EscolherLoteViewModel newViewModel)
-            {
-                newViewModel.OnOk += Close;
-                newViewModel.OnCancel += Close;
-            }
-
-            if (e.OldValue is EscolherLoteViewModel oldViewModel)
-            {
-                oldViewModel.OnOk -= Close;
-                oldViewModel.OnCancel -= Close;
-            }
+            oldViewModel.OnOk -= Close;
+            oldViewModel.OnCancel -= Close;
         }
     }
 }

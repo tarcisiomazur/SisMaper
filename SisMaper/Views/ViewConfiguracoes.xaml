@@ -6,9 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    xmlns:local="clr-namespace:SisMaper.Views"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
-    xmlns:tools="clr-namespace:SisMaper.Tools"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
@@ -34,7 +32,7 @@
             Height="23"
             Width="92"
             FontSize="14"
-            Text="Razão Social"/>
+            Text="Razão Social" />
         <TextBox
             Style="{StaticResource MahApps.Styles.TextBox}"
             HorizontalAlignment="Left"
@@ -53,7 +51,7 @@
             Height="23"
             Width="92"
             FontSize="14"
-            Text="CNPJ"/>
+            Text="CNPJ" />
         <xctk:MaskedTextBox
             Style="{StaticResource MahApps.Styles.TextBox}"
             Mask="00\.000\.000/0000-00"
