@@ -99,6 +99,7 @@
                     FontWeight="Bold"
                     TextWrapping="Wrap"
                     MaxWidth="150"
+                    FontSize="12"
                     Foreground="{DynamicResource MahApps.Brushes.Accent}"
                     Text="{Binding HelpHeader, ElementName=userControl}" />
                 <Button
@@ -119,6 +120,7 @@
             </Grid>
             <TextBlock
                 MaxWidth="200"
+                FontSize="12"
                 TextWrapping="Wrap"
                 Visibility="{Binding HelpContent, ElementName=userControl, Converter={StaticResource StringToVisibilityConverter}}"
                 Text="{Binding HelpContent, ElementName=userControl}" />

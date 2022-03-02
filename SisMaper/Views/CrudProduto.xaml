@@ -11,7 +11,6 @@
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:m="clr-namespace:SisMaper.ViewModel"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     templates:DialogParticipation.MyRegister="{Binding}"
     x:Class="SisMaper.Views.CrudProduto"
     x:Name="this"
@@ -23,7 +22,6 @@
     Width="750"
     >
     <mah:MetroWindow.Resources>
-        <Dialog:DialogCoordinator x:Key="dialogCoordinator"/>
         <Style
             TargetType="{x:Type TextBlock}">
             <Setter
@@ -36,127 +34,20 @@
                 Property="FontSize"
                 Value="16" />
         </Style>
-        <Style
-            x:Key="TextBoxStyle1"
-            TargetType="{x:Type TextBox}"
-            BasedOn="{StaticResource MahApps.Styles.TextBox}">
-            <Setter
-                Property="FontSize"
-                Value="16" />
-            <Setter
-                Property="Height"
-                Value="32" />
-        </Style>
-        <Style
-            x:Key="OptionsButtonStyle"
-            TargetType="{x:Type Button}">
-            <Setter
-                Property="FocusVisualStyle"
-                Value="{DynamicResource FocusVisual}" />
-            <Setter
-                Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter
-                Property="HorizontalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="VerticalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="Padding"
-                Value="10,4" />
-            <Setter
-                Property="FontSize"
-                Value="14" />
-            <Setter
-                Property="Height"
-                Value="31" />
-            <Setter
-                Property="Width"
-                Value="auto" />
-
-            <Setter
-                Property="Template">
-                <Setter.Value>
-                    <ControlTemplate
-                        TargetType="{x:Type Button}">
-                        <Border
-                            x:Name="border"
-                            CornerRadius="3,3,3,3"
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}"
-                            SnapsToDevicePixels="true"
-                            Visibility="Visible"
-                            BorderBrush="#FF939393">
-                            <ContentPresenter
-                                x:Name="contentPresenter"
-                                Focusable="False"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                Margin="{TemplateBinding Padding}"
-                                RecognizesAccessKey="True"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger
-                                Property="IsDefaulted"
-                                Value="true">
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsMouseOver"
-                                Value="true">
-                                <Setter
-                                    Property="BorderThickness"
-                                    TargetName="border"
-                                    Value="1" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsPressed"
-                                Value="true">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Pressed.Background}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsEnabled"
-                                Value="false">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Background}" />
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Border}" />
-                                <Setter
-                                    Property="TextElement.Foreground"
-                                    TargetName="contentPresenter"
-                                    Value="{StaticResource Button.Disabled.Foreground}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </mah:MetroWindow.Resources>
     
 
     
     <Grid x:Name="grid"  >
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Margin="0,0,95,17" 
             Click="CancelarButtonClick"/>
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
@@ -186,7 +77,7 @@
                 Text="Id" /></TextBlock>
         <TextBox
             IsEnabled="False"
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             Margin="424,44,0,0"
             TextWrapping="Wrap"
@@ -241,7 +132,7 @@
                 Language="pt-br"
                 Text="Categoria" /></TextBlock>
         <TextBox
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             Margin="144,88,0,0"
             TextWrapping="Wrap"
@@ -258,7 +149,7 @@
                 Text="Código de Barras" /></TextBlock>
 
         <TextBox  
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             Margin="144,43,0,0"
             TextWrapping="Wrap"
@@ -346,7 +237,7 @@
             TextWrapping="Wrap"
             VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Preço de Custo"/><LineBreak/><Run Language="pt-br"/></TextBlock>
         <templates:CurrencyTextBox
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Right"
             Margin="144,292,0,0"
@@ -361,7 +252,7 @@
             TextWrapping="Wrap"
             VerticalAlignment="Top" Height="32" Width="122"><Run Language="pt-br" Text="Margem"/></TextBlock>
         <TextBox
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Right"
             Margin="144,336,0,0"
@@ -379,7 +270,7 @@
             TextWrapping="Wrap"
             VerticalAlignment="Top" Height="32" Width="122"><Run Text="Preço de "/><Run Language="pt-br" Text="Venda"/><LineBreak/><Run/></TextBlock>
         <templates:CurrencyTextBox
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             Margin="144,378,0,0"
             HorizontalContentAlignment="Right"

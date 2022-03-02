@@ -16,9 +16,6 @@
     Height="599"
     Width="812"
     SaveWindowPosition="True">
-
-    
-    
     <mah:MetroWindow.Resources>
         <Style
             TargetType="{x:Type TextBlock}">
@@ -31,113 +28,6 @@
             <Setter
                 Property="FontSize"
                 Value="16" />
-        </Style>
-        <Style
-            x:Key="TextBoxStyle1"
-            TargetType="{x:Type TextBox}"
-            BasedOn="{StaticResource MahApps.Styles.TextBox}">
-            <Setter
-                Property="FontSize"
-                Value="16" />
-            <Setter
-                Property="Height"
-                Value="32" />
-        </Style>
-        <Style
-            x:Key="OptionsButtonStyle"
-            TargetType="{x:Type Button}">
-            <Setter
-                Property="FocusVisualStyle"
-                Value="{DynamicResource FocusVisual}" />
-            <Setter
-                Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter
-                Property="HorizontalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="VerticalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="Padding"
-                Value="10,4" />
-            <Setter
-                Property="FontSize"
-                Value="14" />
-            <Setter
-                Property="Height"
-                Value="31" />
-            <Setter
-                Property="Width"
-                Value="auto" />
-
-            <Setter
-                Property="Template">
-                <Setter.Value>
-                    <ControlTemplate
-                        TargetType="{x:Type Button}">
-                        <Border
-                            x:Name="border"
-                            CornerRadius="3,3,3,3"
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}"
-                            SnapsToDevicePixels="true"
-                            Visibility="Visible"
-                            BorderBrush="#FF939393">
-                            <ContentPresenter
-                                x:Name="contentPresenter"
-                                Focusable="False"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                Margin="{TemplateBinding Padding}"
-                                RecognizesAccessKey="True"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger
-                                Property="IsDefaulted"
-                                Value="true">
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsMouseOver"
-                                Value="true">
-                                <Setter
-                                    Property="BorderThickness"
-                                    TargetName="border"
-                                    Value="1" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsPressed"
-                                Value="true">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Pressed.Background}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsEnabled"
-                                Value="false">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Background}" />
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Border}" />
-                                <Setter
-                                    Property="TextElement.Foreground"
-                                    TargetName="contentPresenter"
-                                    Value="{StaticResource Button.Disabled.Foreground}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
     </mah:MetroWindow.Resources>
     <Grid >
@@ -160,14 +50,14 @@
                 Text="Cliente" /></TextBlock>
 
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Margin="0,0,84,20" 
             PreviewMouseLeftButtonDown="CloseWindow"/>
         <Button
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
@@ -195,7 +85,7 @@
             Text="Status" />
         <TextBox
             IsEnabled="False"
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Right"
             Margin="0,24,396,0"
             TextWrapping="Wrap"
@@ -204,7 +94,7 @@
             Width="80" />
         <TextBox
             IsEnabled="False"
-            Style="{DynamicResource TextBoxStyle1}"
+            Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
             Margin="151,24,0,0"
             TextWrapping="Wrap"
@@ -268,7 +158,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
+                        Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Adicionar"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
@@ -277,7 +167,7 @@
                     <TextBox
                         IsEnabled="False"
                         x:Name="ValorTotal"
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         HorizontalAlignment="Right"
                         Margin="0,0,10,1"
                         TextWrapping="Wrap"
@@ -295,14 +185,14 @@
                             Language="pt-br"
                             Text="Valor Total" /></TextBlock>
                     <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
+                        Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Receber"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="96,10,0,0" 
                         Command="{Binding EditarParcelaCmd}"/>
                     <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
+                        Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Remover"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
@@ -348,14 +238,14 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
+                        Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Remover"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="10,10,0,0" />
                     <TextBox
                         IsEnabled="False"
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         HorizontalAlignment="Right"
                         Margin="0,0,10,1"
                         TextWrapping="Wrap"
@@ -388,7 +278,7 @@
             Text="{Binding ClienteSelecionado.Nome}"/>
         
         <Button x:Name="ChangeFaturaButton"
-            Style="{DynamicResource OptionsButtonStyle}"
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Command="{Binding AlterarStatusFaturaCmd}"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"

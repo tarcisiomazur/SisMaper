@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
+using System.Windows.Media;
 using MahApps.Metro.Controls;
 
 namespace SisMaper.Views.Templates;
@@ -75,20 +75,44 @@ public static class HelperPopupToolTip
         {
             throw new NotSupportedException($"HelpNotSuported {d.GetType()}");
         }
+        
+        var newHelpToolTip = new PopupToolTip(fe);
 
-
-        while (dp != null && dp is not Panel)
-            dp = dp.GetParentObject();
+        while (dp is not Panel && dp.GetParentObject() is { } next)
+            dp = next;
 
         if (dp is not Panel p)
         {
-            throw new NotSupportedException("HelpNotSuported");
+            fe.Loaded += AttachOnInitialize;
+            return newHelpToolTip;
         }
 
-        var newHelpToolTip = new PopupToolTip(fe);
-        
+
         p.Children.Add(newHelpToolTip);
         return newHelpToolTip;
+    }
+
+    private static void AttachOnInitialize(object sender, RoutedEventArgs routedEventArgs)
+    {
+        if (sender is FrameworkElement fe) fe.Loaded -= AttachOnInitialize;
+        if (sender is not DependencyObject dp) return;
+        if(dp.GetValue(PopupToolTipProperty) is not PopupToolTip toolTip) return;
+        while (true)
+        {
+            var next = dp.GetParentObject() ?? VisualTreeHelper.GetParent(dp);
+
+            switch (next)
+            {
+                case null:
+                    throw new NotSupportedException($"HelpNotSuported {sender.GetType()}");
+                case Grid p:
+                    p.Children.Add(toolTip);
+                    return;
+                default:
+                    dp = next;
+                    break;
+            }
+        }
     }
 }
 
@@ -111,13 +135,13 @@ public partial class PopupToolTip : Popup
             typeof(string),
             typeof(PopupToolTip),
             new FrameworkPropertyMetadata(null, HelpLinkPropertyChangedCallback));
-    
+
     public static readonly DependencyProperty IsOpeningProperty =
         DependencyProperty.RegisterAttached("IsOpening",
             typeof(bool),
             typeof(PopupToolTip),
             new FrameworkPropertyMetadata(false, ChangeIsOpen));
-    
+
     public static readonly DependencyProperty ResetOpeningProperty =
         DependencyProperty.RegisterAttached("ResetOpening",
             typeof(bool),
@@ -137,9 +161,18 @@ public partial class PopupToolTip : Popup
     {
         PlacementTarget = fe;
         fe.MouseMove += ResetOpeningAction;
+        fe.PreviewMouseDown += CloseToolTip;
         InitializeComponent();
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
+    }
+
+    private void CloseToolTip(object sender, MouseButtonEventArgs e)
+    {
+        if (IsOpen)
+        {
+            IsOpen = false;
+        }
     }
 
     private void ResetOpeningAction(object sender, MouseEventArgs e)

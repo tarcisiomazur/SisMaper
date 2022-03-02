@@ -23,7 +23,6 @@
 
 
     <mah:MetroWindow.Resources>
-        <Dialog:DialogCoordinator x:Key="dialogCoordinator"/>
         <Style
             TargetType="{x:Type TextBlock}">
             <Setter
@@ -35,113 +34,6 @@
             <Setter
                 Property="FontSize"
                 Value="16" />
-        </Style>
-        <Style
-            x:Key="TextBoxStyle1"
-            TargetType="{x:Type TextBox}"
-            BasedOn="{StaticResource MahApps.Styles.TextBox}">
-            <Setter
-                Property="FontSize"
-                Value="16" />
-            <Setter
-                Property="Height"
-                Value="32" />
-        </Style>
-        <Style
-            x:Key="OptionsButtonStyle"
-            TargetType="{x:Type Button}">
-            <Setter
-                Property="FocusVisualStyle"
-                Value="{DynamicResource FocusVisual}" />
-            <Setter
-                Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter
-                Property="HorizontalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="VerticalContentAlignment"
-                Value="Center" />
-            <Setter
-                Property="Padding"
-                Value="10,4" />
-            <Setter
-                Property="FontSize"
-                Value="14" />
-            <Setter
-                Property="Height"
-                Value="31" />
-            <Setter
-                Property="Width"
-                Value="auto" />
-
-            <Setter
-                Property="Template">
-                <Setter.Value>
-                    <ControlTemplate
-                        TargetType="{x:Type Button}">
-                        <Border
-                            x:Name="border"
-                            CornerRadius="3,3,3,3"
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}"
-                            SnapsToDevicePixels="true"
-                            Visibility="Visible"
-                            BorderBrush="#FF939393">
-                            <ContentPresenter
-                                x:Name="contentPresenter"
-                                Focusable="False"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                Margin="{TemplateBinding Padding}"
-                                RecognizesAccessKey="True"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger
-                                Property="IsDefaulted"
-                                Value="true">
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsMouseOver"
-                                Value="true">
-                                <Setter
-                                    Property="BorderThickness"
-                                    TargetName="border"
-                                    Value="1" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsPressed"
-                                Value="true">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Pressed.Background}" />
-                            </Trigger>
-                            <Trigger
-                                Property="IsEnabled"
-                                Value="false">
-                                <Setter
-                                    Property="Background"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Background}" />
-                                <Setter
-                                    Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{StaticResource Button.Disabled.Border}" />
-                                <Setter
-                                    Property="TextElement.Foreground"
-                                    TargetName="contentPresenter"
-                                    Value="{StaticResource Button.Disabled.Foreground}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
     </mah:MetroWindow.Resources>
 
@@ -162,7 +54,7 @@
                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,0,0,0">
                     <TextBlock Margin="10,10,0,0" Text="Valor da Parcela" FontSize="20" Height="28" Width="200"/>
                     <templates:CurrencyTextBox
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         Height="28"
                         FontSize="16"
                         BorderThickness="1"
@@ -191,7 +83,7 @@
                 
                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,0,0,0">
                     <TextBlock Margin="10,10,0,0" Text="Data de Pagamento" FontSize="20" Height="28" Width="200"/>
-                    <TextBox  Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                    <TextBox  Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                     Height="28"
                     FontSize="16"
                     HorizontalAlignment="Left"
@@ -207,7 +99,7 @@
                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,10,0,0">
                     <TextBlock Margin="10,10,0,0" Text="Valor total da fatura" FontSize="20" Height="28" Width="200"/>
                     <templates:CurrencyTextBox
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         Height="28"
                         FontSize="18"
                         BorderThickness="0"
@@ -226,7 +118,7 @@
                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,0,0,0">
                     <TextBlock Margin="10,10,0,0" Text="Valor pago da fatura" FontSize="20" Height="28" Width="200"/>
                     <templates:CurrencyTextBox
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         Height="28"
                         FontSize="18"
                         BorderThickness="0"
@@ -247,7 +139,7 @@
                         <Run Language="pt-br" Text="Valor registrado em outras parcelas"/>
                     </TextBlock>
                     <templates:CurrencyTextBox Height="60"
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         FontSize="18"
                         BorderThickness="0"
                         HorizontalContentAlignment="Right"
@@ -291,7 +183,7 @@
                     <TextBlock Text="Valor" Margin="20,20,0,0" Height="36" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
 
                     <templates:CurrencyTextBox
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         Height="36"
                         FontSize="18"
                         HorizontalContentAlignment="Right"
@@ -355,7 +247,7 @@
                 <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,10,0,0" HorizontalAlignment="Right">
                     <TextBlock Margin="10,10,0,0" Text="Total" FontSize="20" Height="28" Width="60" VerticalAlignment="Bottom"/>
                     <templates:CurrencyTextBox
-                        Style="{DynamicResource TextBoxStyle1}"
+                        Style="{DynamicResource SisMaper.TextBox}"
                         Height="28"
                         FontSize="18"
                         BorderThickness="0"
@@ -377,7 +269,7 @@
 
         <StackPanel Orientation="Horizontal" Height="60" VerticalAlignment="Bottom" Margin="0,0,0,15">
             <Button
-                Style="{DynamicResource OptionsButtonStyle}" 
+                Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}" 
                 FontSize="16"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Left"
@@ -386,14 +278,14 @@
                 Command="{Binding SalvarParcelaCmd}"/>
 
             <Button
-                Style="{DynamicResource OptionsButtonStyle}" 
+                Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}" 
                 FontSize="16"
                 VerticalAlignment="Top"
                 Margin="20,0,0,0"
                 Content="Cancelar"
                 PreviewMouseLeftButtonDown="CancelarButtonPress"/>
             <Button
-                Style="{DynamicResource OptionsButtonStyle}" 
+                Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}" 
                 Height="50"
                 FontSize="16"
                 VerticalAlignment="Top"

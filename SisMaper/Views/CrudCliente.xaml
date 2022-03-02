@@ -35,17 +35,6 @@
                 Property="FontSize"
                 Value="16" />
         </Style>
-        <Style
-            x:Key="TextBoxStyle1"
-            TargetType="{x:Type TextBox}"
-            BasedOn="{StaticResource MahApps.Styles.TextBox}">
-            <Setter
-                Property="FontSize"
-                Value="16" />
-            <Setter
-                Property="Height"
-                Value="32" />
-        </Style>
     </mah:MetroWindow.Resources>
 
 
@@ -59,7 +48,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Nome" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -72,7 +61,7 @@
                         <TextBlock Language="pt-br" Text="CPF" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
                         <xctk:MaskedTextBox  
-                            Style="{DynamicResource TextBoxStyle1}" 
+                            Style="{DynamicResource SisMaper.TextBox}" 
                             BorderThickness="2" Mask="000\.000\.000-00" 
                             ValueDataType="{x:Type system:String}" 
                             x:Name="CPFMaskedTextBox" 
@@ -126,7 +115,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Endereço" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             Text="{Binding PessoaFisica.Endereco}"
@@ -138,7 +127,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Bairro" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -150,7 +139,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" FontSize="22" Margin="20,20,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="pt-br" Text="CEP"/></TextBlock>
                        <xctk:MaskedTextBox Mask="00\.000-000" 
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -163,7 +152,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Número" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -181,7 +170,7 @@
                                 Language="pt-br"
                                 Text="Limite de crédito" /></TextBlock>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,30,0,0"
                             TextWrapping="Wrap"
@@ -219,7 +208,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Nome" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -236,7 +225,7 @@
                             ValueDataType="{x:Type system:String}" 
                             x:Name="CNPJMaskedTextBox" 
                             SelectionChanged="MaskedTextBox_SelectionChanged"
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -255,7 +244,7 @@
                                 Language="pt-br"
                                 Text="Razão Social" /></TextBlock>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -273,7 +262,7 @@
                                 Language="pt-br"
                                 Text="Inscrição Estadual" /></TextBlock>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -322,7 +311,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Endereço" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -333,7 +322,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="pt-br" Text="Bairro"/></TextBlock>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -345,7 +334,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="pt-br" Text="CEP"/></TextBlock>
                         <xctk:MaskedTextBox Mask="00\.000-000" 
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
@@ -365,7 +354,7 @@
                                 Language="pt-br"
                                 Text="Limite de crédito" /></TextBlock>
                         <TextBox  
-                            Style="{DynamicResource TextBoxStyle1}" BorderThickness="2"
+                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"

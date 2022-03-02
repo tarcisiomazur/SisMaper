@@ -111,7 +111,9 @@
             Height="32"
             Width="211"
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
-            SelectedDate="{Binding Data, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}" />
+            SelectedDate="{Binding Data, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}" 
+            templates:HelperPopupToolTip.HelpHeader="Data"
+            templates:HelperPopupToolTip.HelpContent="Data de lançamento do pedido.&#xA;&#xA;A data de lançamento não pode ser futura"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="26,75,0,0"
@@ -137,7 +139,9 @@
             mah:TextBoxHelper.AutoWatermark="True"
             mah:TextBoxHelper.ClearTextButton="True"
             Grid.IsSharedSizeScope="True"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top" 
+            templates:HelperPopupToolTip.HelpHeader="Cliente"
+            templates:HelperPopupToolTip.HelpContent="Digite o Nome do Cliente para buscá-lo"/>
         <Button
             Margin="0,70,373,0"
             Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -146,7 +150,9 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Height="32"
-            Width="32">
+            Width="32"
+            templates:HelperPopupToolTip.HelpHeader="Alterar Cliente"
+            templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar o Cliente selecionado">
             <iconpacks:PackIconMaterial
                 Kind="AccountEditOutline"
                 Height="20"
@@ -163,7 +169,9 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Width="32"
-            Height="32">
+            Height="32"
+            templates:HelperPopupToolTip.HelpHeader="Adicionar Cliente"
+            templates:HelperPopupToolTip.HelpContent="Cadastrar um novo Cliente">
             <iconpacks:PackIconMaterial
                 Kind="AccountPlusOutline"
                 Height="20"
@@ -181,7 +189,9 @@
                     <MenuItem
                         Header="Pessoa Física"
                         Command="{Binding AdicionarClienteCmd}"
-                        CommandParameter="PF">
+                        CommandParameter="PF"
+                        templates:HelperPopupToolTip.HelpHeader="Adicionar Cliente"
+                        templates:HelperPopupToolTip.HelpContent="Cadastrar um novo Cliente Pessoa Física">
                         <MenuItem.Icon>
                             <iconpacks:PackIconOcticons
                                 Kind="Person" />
@@ -190,7 +200,9 @@
                     <MenuItem
                         Header="Pessoa Jurídica"
                         Command="{Binding AdicionarClienteCmd}"
-                        CommandParameter="PJ">
+                        CommandParameter="PJ"
+                        templates:HelperPopupToolTip.HelpHeader="Adicionar Cliente"
+                        templates:HelperPopupToolTip.HelpContent="Cadastrar um novo Cliente Pessoa Jurídica">
                         <MenuItem.Icon>
                             <iconpacks:PackIconOcticons
                                 Kind="Organization" />
@@ -226,7 +238,9 @@
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             DisplayMemberPath="Descricao"
             HorizontalAlignment="Right"
-            Width="211" />
+            Width="211" 
+            templates:HelperPopupToolTip.HelpHeader="Natureza"
+            templates:HelperPopupToolTip.HelpContent="Seleciona a Natureza de Operação"/>
         <TabControl
             Margin="20,123,20,66"
             mah:TabControlHelper.UnderlineBrush="Black"
@@ -259,7 +273,9 @@
                             mah:TextBoxHelper.Watermark="Buscar Produto"
                             Grid.IsSharedSizeScope="True"
                             TextSearch.TextPath="Descricao"
-                            AlternationCount="2">
+                            AlternationCount="2"
+                            templates:HelperPopupToolTip.HelpHeader="Buscar Produto"
+                            templates:HelperPopupToolTip.HelpContent="Digite o Produto desejado, Código de Barras ou Identificação">
                             <myInteractions:Interaction.MyTriggers>
                                 <i:KeyTrigger
                                     Key="Enter">
@@ -306,7 +322,9 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Width="34"
-                            Height="33">
+                            Height="33"
+                            templates:HelperPopupToolTip.HelpHeader="Listar Produtos"
+                            templates:HelperPopupToolTip.HelpContent="Listar em uma nova janela todos os produtos">
                             <StackPanel>
                                 <iconpacks:PackIconMaterial
                                     Kind="MagnifyPlus"
@@ -349,7 +367,9 @@
                             Focusable="True"
                             Command="{Binding AddItemCmd}"
                             CommandParameter="{Binding ''}"
-                            Margin="0,10,10,0" />
+                            Margin="0,10,10,0"
+                            templates:HelperPopupToolTip.HelpHeader="Adicionar Item ao Pedido"
+                            templates:HelperPopupToolTip.HelpContent="Adicionar um novo Item contendo o Produto e a Quantidade escolhida.&#xA;&#xA;Também é possível adicionar o item pressionando [ENTER] nos campos Quantidade e Buscar Produto"/>
                     </Grid>
                     <Grid
                         DockPanel.Dock="Bottom">
@@ -667,7 +687,9 @@
                         VerticalAlignment="Top"
                         Height="32"
                         Width="32"
-                        Margin="0,8,12,0">
+                        Margin="0,8,12,0"
+                        templates:HelperPopupToolTip.HelpHeader="Abrir Fatura"
+                        templates:HelperPopupToolTip.HelpContent="Abrir Fatura em uma nova janela para visualizar ou alterar.">
                         <StackPanel>
                             <iconpacks:PackIconMaterial
                                 Kind="OpenInNew"
@@ -699,7 +721,9 @@
                         Width="336"
                         Margin="10,62,420,47"
                         BorderBrush="#FFD2D2D2"
-                        HorizontalAlignment="Left">
+                        HorizontalAlignment="Left"
+                        templates:HelperPopupToolTip.HelpHeader="Notas Fiscais"
+                        templates:HelperPopupToolTip.HelpContent="Selecione uma Nota Fiscal para Visualizar, Imprimir ou Atualizar.">
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Width="80*"
@@ -757,14 +781,18 @@
                         HorizontalAlignment="Left"
                         Margin="10,18,0,0"
                         VerticalAlignment="Top"
-                        Command="{Binding PrintCommand, ElementName=WebBrowser}" />
+                        Command="{Binding PrintCommand, ElementName=WebBrowser}" 
+                        templates:HelperPopupToolTip.HelpHeader="Imprimir Nota Fiscal"
+                        templates:HelperPopupToolTip.HelpContent="Realizar a Impressão da Nota Fiscal escolhida abaixo."/>
                     <Button
                         Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Atualizar Situação"
                         HorizontalAlignment="Left"
                         Margin="214,18,0,0"
                         VerticalAlignment="Top"
-                        Command="{Binding AtualizarSituacaoCmd}" />
+                        Command="{Binding AtualizarSituacaoCmd}"
+                        templates:HelperPopupToolTip.HelpHeader="Atualizar Situação da Nota Fiscal"
+                        templates:HelperPopupToolTip.HelpContent="Atualiza a Situação da Nota Fiscal na SEFAZ." />
                 </Grid>
             </TabItem>
         </TabControl>
@@ -775,7 +803,9 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="20,0,0,20"
-            Width="77" />
+            Width="77"
+            templates:HelperPopupToolTip.HelpHeader="Faturar"
+            templates:HelperPopupToolTip.HelpContent="Abrir o menu para Faturação do Pedido.&#xA;&#xA;Após faturado, o Pedido é automaticamente salvo." />
         <Button
             Content="Emitir Nota Fiscal"
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
@@ -784,7 +814,9 @@
             Margin="111,0,0,20"
             Width="138"
             Command="{Binding EmitirNotaFiscalContextMenuCmd}"
-            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+            CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
+            templates:HelperPopupToolTip.HelpHeader="Emitir de Nota Fiscal"
+            templates:HelperPopupToolTip.HelpContent="Realizar a Emissão da Nota Fiscal do Pedido.">
             <Button.ContextMenu>
                 <ContextMenu
                     HorizontalAlignment="Left"
