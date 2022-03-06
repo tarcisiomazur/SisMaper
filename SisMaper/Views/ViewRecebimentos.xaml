@@ -54,8 +54,7 @@
                     </Button>
                     <Button
                         Style="{StaticResource SisMaper.ToolBar.Button}"
-                        CommandParameter="{Binding}"
-                        Command="{Binding DeletarFatura}">
+                        Command="{Binding ExcluirFaturaCmd}">
                         <StackPanel>
                             <icons:PackIconMaterial
                                 Kind="DeleteForever"

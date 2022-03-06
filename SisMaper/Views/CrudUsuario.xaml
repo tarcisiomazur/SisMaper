@@ -1,0 +1,369 @@
+﻿<mah:MetroWindow 
+    x:Class="SisMaper.Views.CrudUsuario"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
+    xmlns:myInteractions="clr-namespace:SisMaper.Views.Templates.MyInteractions"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
+    mc:Ignorable="d"
+    Height="700"
+    Width="400"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    Title="Usuário"
+    templates:DialogParticipation.MyRegister="{Binding}">
+
+    <Window.Resources>
+        <tools:StringToSha512 x:Key="StringToSha512"/>
+        <Style
+            x:Key="ToggleButtonImage"
+            TargetType="{x:Type templates:ToggleImage}">
+            <Setter
+                Property="Background"
+                Value="{DynamicResource  MahApps.Brushes.Transparent}" />
+            <Setter
+                Property="BorderBrush"
+                Value="{DynamicResource  MahApps.Brushes.Transparent}" />
+            <Setter
+                Property="BorderThickness"
+                Value="0" />
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource  MahApps.Brushes.Transparent}" />
+            <Setter
+                Property="MinHeight"
+                Value="0" />
+            <Setter
+                Property="Padding"
+                Value="0 0" />
+
+            <Setter
+                Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+                        TargetType="templates:ToggleImage">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="Auto" />
+                                <RowDefinition
+                                    Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Image
+                                Source="{TemplateBinding Image}"
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Margin="0" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style
+            x:Key="TextBoxUsuario"
+            TargetType="{x:Type TextBox}">
+            <Setter
+                Property="Background"
+                Value="{DynamicResource MahApps.Brushes.Control.Background}" />
+            <Setter
+                Property="BorderBrush"
+                Value="Gray" />
+            <Setter
+                Property="VerticalContentAlignment"
+                Value="Center" />
+            <Setter
+                Property="BorderThickness"
+                Value="1" />
+            <Setter
+                Property="CaretBrush"
+                Value="{DynamicResource  MahApps.Brushes.ThemeForeground}" />
+            <Setter
+                Property="ContextMenu"
+                Value="{DynamicResource  MahApps.TextBox.ContextMenu}" />
+            <Setter
+                Property="FontSize"
+                Value="16" />
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource  MahApps.Brushes.Text}" />
+            <Setter
+                Property="Padding"
+                Value="4" />
+            <Setter
+                Property="SelectionBrush"
+                Value="{DynamicResource  MahApps.Brushes.Highlight}" />
+            <Setter
+                Property="SnapsToDevicePixels"
+                Value="True" />
+        </Style>
+
+        <Style TargetType="CheckBox" x:Key="MyCheckBoxStyle" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked,ElementName=AdminCheckBox}" Value="True">
+                    <Setter Property="IsChecked" Value="True"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+    </Window.Resources>
+
+
+    <Grid>
+
+        <StackPanel Margin="10,0,0,0">
+
+            <TextBlock Text="Usuário" FontSize="32"/>
+            <Separator Margin="0,0,10,0"/>
+
+            <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0">
+
+                <TextBlock Text="Nome" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
+                <TextBox
+                    Style="{StaticResource TextBoxUsuario}"
+                    VerticalAlignment="Bottom"
+                    Margin="20,0,0,0"
+                    Width="220"
+                    FontSize="15"
+                    Text="{Binding Usuario.Nome, Mode=TwoWay}" 
+                    Height="32" 
+                    MaxLength="45"/>
+
+            </StackPanel>
+
+
+            <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0">
+
+                <TextBlock Text="Login" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
+                <TextBox
+                    Style="{StaticResource TextBoxUsuario}"
+                    VerticalAlignment="Bottom"
+                    Margin="20,0,0,0"
+                    Width="220"
+                    FontSize="15"
+                    Text="{Binding Usuario.Login, Mode=TwoWay}" 
+                    Height="32" 
+                    MaxLength="45"/>
+
+            </StackPanel>
+
+            <StackPanel 
+                Orientation="Horizontal" 
+                Height="32" 
+                Margin="0,20,0,0" mah:VisibilityHelper.IsCollapsed="false"
+                Visibility="{Binding IsNovoUsuario, Mode=OneTime, Converter={StaticResource boolToVisibilityConverter}}">
+
+
+
+                <TextBlock Text="Senha" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
+                <templates:MyPasswordBox
+                        VerticalAlignment="Bottom"
+                        Password="{Binding NovaSenha, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToSha512}, Mode=OneWayToSource}"
+                        Width="220"
+                        Margin="20,0,0,0"
+                        Height="32"                   
+                        FontSize="15"
+                        IsShow="{Binding IsChecked, ElementName=ToggleSenha, Mode=TwoWay}"
+                        ContentPadding="4,4,28,4"
+                        MaxLength="30"
+                        PreviewKeyDown="PasswordBoxKeyDown"/>
+
+                <templates:ToggleImage
+                            x:Name="ToggleSenha"
+                            Style="{DynamicResource ToggleButtonImage}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Height="19"
+                            Width="27"
+                            Margin="-27,0,0,0"
+                            Padding="0,0,0,0"
+                            CheckImage="/Images/Hide.png"
+                            UncheckImage="/Images/Show.png"
+                            Image="/Images/Show.png"
+                            Opacity=".5"
+                            Focusable="False"
+                            ClickMode="Press" />
+
+            </StackPanel>
+
+
+            <Expander
+                Margin="0,20,10,0" 
+                Header="Alterar Senha" 
+                mah:HeaderedControlHelper.HeaderBackground="DeepSkyBlue">
+
+                <Expander.Style>
+                    <Style TargetType="Expander" BasedOn="{StaticResource MahApps.Styles.Expander}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsNovoUsuario, Mode=OneTime}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Expander.Style>
+
+                <StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,10">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsUserAdmin, Mode=OneTime}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <TextBlock Text="Senha Atual" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120"/>
+                        <templates:MyPasswordBox
+                            VerticalAlignment="Bottom"
+                            Password="{Binding SenhaAtual, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToSha512}, Mode=OneWayToSource}"
+                            Width="200"
+                            Margin="20,0,0,0"
+                            Height="32"                   
+                            FontSize="15"
+                            IsShow="{Binding IsChecked, ElementName=ToggleSenhaAtual, Mode=TwoWay}"
+                            ContentPadding="4,4,28,4"
+                            MaxLength="30"
+                            PreviewKeyDown="PasswordBoxKeyDown"/>
+
+                        <templates:ToggleImage
+                            x:Name="ToggleSenhaAtual"
+                            Style="{DynamicResource ToggleButtonImage}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Height="19"
+                            Width="27"
+                            Margin="-27,0,0,0"
+                            Padding="0,0,0,0"
+                            CheckImage="/Images/Hide.png"
+                            UncheckImage="/Images/Show.png"
+                            Image="/Images/Show.png"
+                            Opacity=".5"
+                            Focusable="False"
+                            ClickMode="Press" />
+
+
+                    </StackPanel>
+
+
+                    <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,10">
+
+                        <TextBlock Text="Nova Senha" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120"/>
+                        <templates:MyPasswordBox
+                            VerticalAlignment="Bottom"
+                            Password="{Binding NovaSenha, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToSha512}, Mode=OneWayToSource}"
+                            Width="200"
+                            Margin="20,0,0,0"
+                            Height="32"                   
+                            FontSize="15"
+                            IsShow="{Binding IsChecked, ElementName=ToggleSenhaNova, Mode=TwoWay}"
+                            ContentPadding="4,4,28,4"
+                            MaxLength="30"
+                            PreviewKeyDown="PasswordBoxKeyDown"/>
+
+                        <templates:ToggleImage
+                            x:Name="ToggleSenhaNova"
+                            Style="{DynamicResource ToggleButtonImage}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Height="19"
+                            Width="27"
+                            Margin="-27,0,0,0"
+                            Padding="0,0,0,0"
+                            CheckImage="/Images/Hide.png"
+                            UncheckImage="/Images/Show.png"
+                            Image="/Images/Show.png"
+                            Opacity=".5"
+                            Focusable="False"
+                            ClickMode="Press" />
+
+
+                    </StackPanel>
+
+
+                </StackPanel>
+
+            </Expander>
+
+            <Separator Margin="0,10,10,0"/>
+
+            
+            <TextBlock Text="Permissões" FontSize="20" Margin="0,20,0,0" HorizontalAlignment="Left"/>
+
+
+            <Border 
+                Width="200"
+                Height="170"
+                Margin="0,5,0,0" 
+                BorderThickness="3" 
+                BorderBrush="Gray" 
+                CornerRadius="10" 
+                Background="White"
+                HorizontalAlignment="Left">
+
+                <StackPanel Margin="10">
+
+                    <CheckBox 
+                        Style="{StaticResource MyCheckBoxStyle}"
+                        Content="Cadastro" 
+                        FontSize="20"
+                        IsChecked="{Binding PermissaoCadastro, Mode=TwoWay}"/>
+                    
+                    <CheckBox 
+                        Style="{StaticResource MyCheckBoxStyle}"
+                        Content="Venda" 
+                        FontSize="20" 
+                        Margin="0,10,0,0"
+                        IsChecked="{Binding PermissaoVenda, Mode=TwoWay}"/>
+                    
+                    <CheckBox 
+                        Style="{StaticResource MyCheckBoxStyle}"
+                        Content="Recebimento" 
+                        FontSize="20" 
+                        Margin="0,10,0,0"
+                        IsChecked="{Binding PermissaoRecebimento, Mode=TwoWay}"/>
+                    
+                    <CheckBox 
+                        Style="{StaticResource MahApps.Styles.CheckBox}"
+                        Content="Administrador" 
+                        x:Name="AdminCheckBox" 
+                        FontSize="20" 
+                        Margin="0,10,0,0"
+                        IsChecked="{Binding PermissaoAdmin, Mode=TwoWay}"/>
+
+                </StackPanel>
+
+                
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
+
+                <Button 
+                    Style="{StaticResource SisMaper.Button.OptionsButtonStyle}" 
+                    Margin="0"
+                    Content="Salvar"
+                    Command="{Binding SalvarUsuarioCmd}"/>
+
+                <Button 
+                    Style="{StaticResource SisMaper.Button.OptionsButtonStyle}" 
+                    Margin="40,0,0,0"
+                    Content="Cancelar"
+                    PreviewMouseDown="CancelarButtonPressed"/>
+
+            </StackPanel>
+
+
+        </StackPanel>
+
+    </Grid>
+</mah:MetroWindow>

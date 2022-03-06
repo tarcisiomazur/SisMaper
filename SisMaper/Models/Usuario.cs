@@ -10,6 +10,7 @@ public class Usuario : DAO
     [Flags]
     public enum Tipo_Permissao
     {
+        Nenhum = 0x00,
         Venda = 0x01,
         Recebimento = 0x02,
         Cadastros = 0x04,

@@ -54,8 +54,8 @@ namespace SisMaper.ViewModel
             set { SetField(ref _cidades, value); }
         }
 
+        
         public SimpleCommand SalvarPessoaFisicaCmd => new(SalvarPessoaFisica);
-
         public SimpleCommand SalvarPessoaJuridicaCmd => new(SalvarPessoaJuridica);
 
         public Action? ClienteSaved { get; set; }
@@ -183,7 +183,7 @@ namespace SisMaper.ViewModel
                 digito2 = 0;
 
 
-            String digitos = digito1.ToString() + digito2.ToString();
+            string digitos = digito1.ToString() + digito2.ToString();
 
             return (cpf.EndsWith(digitos));
         }
@@ -225,13 +225,34 @@ namespace SisMaper.ViewModel
         }
        
 
+        private void CheckCEP(ref string? cep)
+        {
+            if (cep is null || cep.Equals("00.000-000"))
+            {
+                cep = null;
+                return;
+            }
+
+            cep = cep.Replace(".", "").Replace("-", "");
+
+            if (cep.Contains('_'))
+            {
+                throw new InvalidOperationException("CEP Incompleto");
+            }
+        }
+
+
 
         private void SalvarCliente(Cliente clienteParameter)
         {
+            //Console.WriteLine($"CEPP === {CepString}");
 
-          
             if (clienteParameter is PessoaFisica pf)
             {
+                //Console.WriteLine($"CPFFF ===   {pf.CPF}");
+
+                Console.WriteLine($"CEPP === {pf.CEP}");
+
                 if(CidadeSelecionada is not null)
                 {
                     pf.Cidade = CidadeSelecionada;
@@ -241,15 +262,14 @@ namespace SisMaper.ViewModel
                     pf.Cidade = null;
                 }
 
+
                 if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
                 {
                     throw new InvalidOperationException("CPF não pode ser vazio");
                 }
 
-                if (pf.CPF.Length == 14)
-                {
-                    pf.CPF = pf.CPF.Replace(".", "").Replace("-", "");
-                }
+
+                pf.CPF = pf.CPF.Replace(".", "").Replace("-", "");
 
                 if (pf.CPF.Contains('_'))
                 {
@@ -266,15 +286,26 @@ namespace SisMaper.ViewModel
                     throw new InvalidOperationException("CPF já registrado");
                 }
 
- 
+                string cep = pf.CEP;
+                CheckCEP(ref cep);
+                pf.CEP = cep;
+
+
+
                 string? nome = pf.Nome;
                 string? endereco = pf.Endereco;
+                string? bairro = pf.Bairro;
+                string? numero = pf.Numero;
 
                 NullText(ref nome);
                 NullText(ref endereco);
+                NullText(ref bairro);
+                NullText(ref numero);
 
                 pf.Nome = nome;
                 pf.Endereco = endereco;
+                pf.Bairro = bairro;
+                pf.Numero = numero;
 
                 pf.Save();
 
@@ -291,6 +322,7 @@ namespace SisMaper.ViewModel
                 {
                     pj.Cidade = null;
                 }
+
 
                 if (pj.CNPJ is null || pj.CNPJ.Equals("__.___.___/____-__"))
                 {
@@ -317,18 +349,28 @@ namespace SisMaper.ViewModel
                     throw new InvalidOperationException("CNPJ já registrado");
                 }
 
+                string cep = pj.CEP;
+                CheckCEP(ref cep);
+                pj.CEP = cep;
+
 
                 string? nome = pj.Nome;
                 string? endereco = pj.Endereco;
                 string? razaoSocial = pj.RazaoSocial;
+                string? numero = pj.Numero;
+                string? bairro = pj.Bairro;
 
                 NullText(ref nome);
                 NullText(ref endereco);
                 NullText(ref razaoSocial);
+                NullText(ref numero);
+                NullText(ref bairro);
 
                 pj.Nome = nome;
                 pj.Endereco = endereco;
                 pj.RazaoSocial = razaoSocial;
+                pj.Numero = numero;
+                pj.Bairro = bairro;
 
                 pj.Save();
                     
