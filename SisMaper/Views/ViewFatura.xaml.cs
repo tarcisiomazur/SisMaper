@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using MahApps.Metro.Controls;
 //using System.Windows;
 //using System.Windows.Data;
 //using Google.Protobuf.WellKnownTypes;
-using SisMaper.Models;
 using SisMaper.Tools;
 using SisMaper.ViewModel;
 
@@ -15,10 +10,6 @@ namespace SisMaper.Views
 {
     public sealed partial class ViewFatura
     {
-        public ObservableCollection<Parcela> ListParcelas = new();
-
-        private bool isClientePessoaFisica = true;
-
         public ViewFatura()
         {
             DataContextChanged += SetActions;
@@ -35,6 +26,7 @@ namespace SisMaper.Views
                 newViewModel.OpenViewCliente += OpenViewCliente;
                 newViewModel.OpenCrudParcela += OpenCrudParcela;
                 newViewModel.FaturaChanged += ChangeFatura;
+                newViewModel.OpenGerarParcelas += GerarParcelas;
                 newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             }
 
@@ -44,6 +36,7 @@ namespace SisMaper.Views
                 oldViewModel.OpenViewCliente -= OpenViewCliente;
                 oldViewModel.OpenCrudParcela -= OpenCrudParcela;
                 oldViewModel.FaturaChanged -= ChangeFatura;
+                oldViewModel.OpenGerarParcelas -= GerarParcelas;
                 oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             }
         }
@@ -68,6 +61,10 @@ namespace SisMaper.Views
             ChangeFaturaButton.Content = ((string)ChangeFaturaButton.Content == "Encerrar Fatura") ? "Reabrir Fatura" : "Encerrar Fatura";
         }
 
+        private void GerarParcelas(FaturaViewModel viewModel)
+        {
+            new ViewGerarParcelas() { DataContext = viewModel, Owner = this }.ShowDialog();
+        }
 
 
         private void ViewFatura_Loaded(object sender, RoutedEventArgs e)

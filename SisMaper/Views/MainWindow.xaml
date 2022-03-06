@@ -545,20 +545,27 @@
                     </TabItem>
                     <TabItem
                         x:Name="Usuários"
+                        Visibility="{Binding PAdmin, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}"
                         Style="{DynamicResource SisMaper.MainWindow.TabItem.SubMenu}">
-                        <TabItem.Header>
-                            <StackPanel
-                                Orientation="Vertical"
-                                VerticalAlignment="Center">
-                                <icons:PackIconMaterial
-                                    Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
-                                    Kind="AccountLock" />
-                                <TextBlock
-                                    Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
-                                    Text="{Binding Name, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}" />
-                            </StackPanel>
-                        </TabItem.Header>
-                        <Grid />
+                        <TabItem.HeaderTemplate>
+                            <ItemContainerTemplate>
+                                <StackPanel
+                                    Orientation="Vertical"
+                                    VerticalAlignment="Center">
+                                    <icons:PackIconMaterial
+                                        Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
+                                        Kind="Account" />
+                                    <TextBlock
+                                        Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
+                                        Text="{Binding Name, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}" />
+                                </StackPanel>
+                            </ItemContainerTemplate>
+                        </TabItem.HeaderTemplate>
+                        <local:ViewUsuarios
+                            Width="auto"
+                            Height="auto"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch" />
                     </TabItem>
                 </TabControl>
             </TabItem>

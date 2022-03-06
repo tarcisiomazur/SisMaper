@@ -1,0 +1,89 @@
+﻿<Window x:Class="SisMaper.Views.ViewGerarParcelas"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SisMaper.Views"
+        xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
+        xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+        mc:Ignorable="d"
+        Title="Gerar Parcelas" 
+        Height="400" 
+        Width="200"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid>
+            
+        <TextBlock Margin="20,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Text="Valor Total" />
+        <templates:CurrencyTextBox 
+            Style="{StaticResource MahApps.Styles.TextBox}"
+            Height="36"
+            Width="160"
+            FontSize="18"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Bottom"
+            Margin="20,40,0,0"
+            TextWrapping="Wrap"
+            IsNegative="False"
+            IsReadOnly="True"
+            Number="{Binding Fatura.ValorTotal}"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left"
+            BorderThickness="0"/>
+
+        <TextBlock Margin="20,100,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="18" Width="95"> 
+            <Run
+                Language="pt-br"
+                Text="Número de Parcelas" />
+        </TextBlock>
+        <TextBox
+            Style="{StaticResource MahApps.Styles.TextBox}"
+            Height="36"
+            Width="60"
+            FontSize="18"
+            BorderThickness="2"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Bottom"
+            Margin="20,155,0,0"
+            MaxLength="2"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left"
+            Text="{Binding NumeroParcelas, Mode=TwoWay}"
+            PreviewKeyDown="NumeroParcelasTextBoxKeyDown"/>
+
+        <TextBlock Margin="20,215,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="18" Width="95"> 
+            <Run
+                Language="pt-br"
+                Text="Dia de Pagamento" />
+        </TextBlock>
+        <ComboBox
+            Height="36"
+            Width="60"
+            FontSize="18"
+            BorderThickness="2"
+            Margin="20,270,0,0"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left"
+            ItemsSource="{Binding DiasPagamento, Mode=OneWay}"
+            SelectedItem="{Binding DiaPagamentoSelecionado, Mode=TwoWay}"/>
+
+        <Button 
+            Style="{StaticResource SisMaper.Button.OptionsButtonStyle}" 
+            Margin="20,300,0,10"
+            Content="Gerar"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Command="{Binding ConfirmarGerarParcelasCmd}"/>
+        
+        <Button 
+            Style="{StaticResource SisMaper.Button.OptionsButtonStyle}" 
+            Margin="90,300,0,10"
+            Content="Cancelar"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            PreviewMouseDown="CancelarButtonPressed"/>
+
+    </Grid>
+    
+</Window>

@@ -1,7 +1,5 @@
-﻿using SisMaper.Models.Views;
-using SisMaper.Tools;
+﻿using SisMaper.Tools;
 using SisMaper.ViewModel;
-using SisMaper.Views.Templates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,46 +12,41 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SisMaper.Views
 {
     /// <summary>
-    /// Interação lógica para ViewRecebimentos.xaml
+    /// Lógica interna para CrudUsuario.xaml
     /// </summary>
-    public partial class ViewRecebimentos : MyUserControl
+    public partial class CrudUsuario
     {
-        public ViewRecebimentos()
+        public CrudUsuario()
         {
             DataContextChanged += SetActions;
             InitializeComponent();
-
         }
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(e.NewValue is RecebimentosViewModel newViewModel)
+            if(e.NewValue is UsuariosViewModel.CrudUsuarioViewModel newViewModel)
             {
-                Show += newViewModel.Initialize;
-                Hide += newViewModel.Clear;
-                newViewModel.OpenFatura += OpenFatura;
+                newViewModel.UsuarioSaved += Close;
                 newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             }
-            if(e.OldValue is RecebimentosViewModel oldViewModel)
+
+            if (e.OldValue is UsuariosViewModel.CrudUsuarioViewModel oldViewModel)
             {
-                Show -= oldViewModel.Initialize;
-                Hide -= oldViewModel.Clear;
-                oldViewModel.OpenFatura -= OpenFatura;
+                oldViewModel.UsuarioSaved -= Close;
                 oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             }
         }
 
-        private void OpenFatura(FaturaViewModel viewModel)
-        {
-            new ViewFatura { DataContext = viewModel, Owner = Window }.ShowDialog();
-            OnShow();
-        }
+        private void CancelarButtonPressed(object sender, MouseButtonEventArgs e) => Close();
 
+        private void PasswordBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space || e.Key == Key.Tab) e.Handled = true;
+        }
     }
 }

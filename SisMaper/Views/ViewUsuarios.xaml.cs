@@ -1,6 +1,4 @@
-﻿using SisMaper.Models.Views;
-using SisMaper.Tools;
-using SisMaper.ViewModel;
+﻿using SisMaper.ViewModel;
 using SisMaper.Views.Templates;
 using System;
 using System.Collections.Generic;
@@ -20,40 +18,38 @@ using System.Windows.Shapes;
 namespace SisMaper.Views
 {
     /// <summary>
-    /// Interação lógica para ViewRecebimentos.xaml
+    /// Interação lógica para ViewUsuarios.xam
     /// </summary>
-    public partial class ViewRecebimentos : MyUserControl
+    public partial class ViewUsuarios : MyUserControl
     {
-        public ViewRecebimentos()
+        public ViewUsuarios()
         {
             DataContextChanged += SetActions;
             InitializeComponent();
-
         }
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(e.NewValue is RecebimentosViewModel newViewModel)
+            if(e.NewValue is UsuariosViewModel newViewModel)
             {
                 Show += newViewModel.Initialize;
                 Hide += newViewModel.Clear;
-                newViewModel.OpenFatura += OpenFatura;
-                newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
+                newViewModel.OpenCrudUsuario += OpenCrudUsuario;
             }
-            if(e.OldValue is RecebimentosViewModel oldViewModel)
+
+            if (e.OldValue is UsuariosViewModel oldViewModel)
             {
                 Show -= oldViewModel.Initialize;
                 Hide -= oldViewModel.Clear;
-                oldViewModel.OpenFatura -= OpenFatura;
-                oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
+                oldViewModel.OpenCrudUsuario -= OpenCrudUsuario;
             }
         }
 
-        private void OpenFatura(FaturaViewModel viewModel)
+
+        private void OpenCrudUsuario(UsuariosViewModel.CrudUsuarioViewModel viewModel)
         {
-            new ViewFatura { DataContext = viewModel, Owner = Window }.ShowDialog();
+            new CrudUsuario { DataContext = viewModel, Owner = Window}.ShowDialog();
             OnShow();
         }
-
     }
 }

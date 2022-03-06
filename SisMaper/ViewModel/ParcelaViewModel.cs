@@ -86,7 +86,7 @@ namespace SisMaper.ViewModel
             Parcela = parcelaSelecionada;
 
 
-            Fatura = DAO.Load<Fatura>((faturaSelecionada as Fatura).Id);
+            Fatura = DAO.Load<Fatura>(faturaSelecionada.Id);
 
 
             FillPagamentos();

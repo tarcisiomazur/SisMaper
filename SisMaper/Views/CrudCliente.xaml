@@ -64,7 +64,6 @@
                             Style="{DynamicResource SisMaper.TextBox}" 
                             BorderThickness="2" Mask="000\.000\.000-00" 
                             ValueDataType="{x:Type system:String}" 
-                            x:Name="CPFMaskedTextBox" 
                             SelectionChanged="MaskedTextBox_SelectionChanged"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
@@ -138,16 +137,17 @@
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" FontSize="22" Margin="20,20,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="pt-br" Text="CEP"/></TextBlock>
-                       <xctk:MaskedTextBox Mask="00\.000-000" 
+                        <xctk:MaskedTextBox Mask="00\.000-000" 
                             Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
                             HorizontalAlignment="Left"
                             Margin="30,20,0,0"
                             TextWrapping="Wrap"
-                            IncludeLiteralsInValue="False"
                             ValueDataType="{x:Type system:String}"
-                            Value="{Binding PessoaFisica.CEP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding PessoaFisica.CEP}"
                             VerticalAlignment="Top"
+                            SelectionChanged="MaskedTextBox_SelectionChanged"
                             Width="250" />
+
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Language="pt-br" Text="Número" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -160,7 +160,6 @@
                             VerticalAlignment="Top"
                             Width="250" />
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
                             HorizontalAlignment="Left" FontSize="22"

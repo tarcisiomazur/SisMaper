@@ -24,6 +24,7 @@ namespace SisMaper.ViewModel
         public Action<FaturaViewModel> OpenFatura { get; set; }
 
         public SimpleCommand EditarFaturaCmd => new( () => OpenFatura?.Invoke(new FaturaViewModel(FaturaSelecionada.Id)), () => FaturaSelecionada != null);
+        public SimpleCommand ExcluirFaturaCmd => new( ExcluirFatura, () => FaturaSelecionada != null );
 
 
         public RecebimentosViewModel()

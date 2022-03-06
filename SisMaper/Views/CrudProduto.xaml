@@ -63,7 +63,7 @@
             <Run
                 Language="pt-br"
                 Text="*"
-                FontWeight="UltraBold"
+                FontWeight="Bold"
                 BaselineAlignment="TextTop"
                 FontSize="20"
                 Foreground="Red"/>
@@ -321,14 +321,14 @@
             <Run
                 Language="pt-br"
                 Text="*"
-                FontWeight="UltraBold"
+                FontWeight="Bold"
                 FontSize="20"
                 BaselineAlignment="Subscript"
                 Foreground="Red"/>
             <Run
                 Language="pt-br"
                 Text=" - Campos Obrigatórios"
-                FontWeight="UltraBold"
+                FontWeight="Bold"
                 BaselineAlignment="TextTop"
                 FontSize="14"
                 Foreground="Red"/>
