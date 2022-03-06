@@ -138,7 +138,7 @@
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition
-                            Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
+                            Binding="{Binding Header.IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
                             Value="True" />
                     </MultiDataTrigger.Conditions>
                     <Setter
@@ -430,13 +430,13 @@
             <TabItem
                 Visibility="{Binding PVendas, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}"
                 x:Name="Vendas"
-                Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
+                Style="{StaticResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF1B4441">
                 <TabItem.Header>
                     <StackPanel
-                        Orientation="Vertical"
-                        VerticalAlignment="Center">
+                        Style="{DynamicResource SisMaper.MainWindow.MainMenu.Header}">
                         <icons:PackIconMaterial
+                            Margin="0,20,0,0"
                             Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
                             Kind="PointOfSale" />
                         <TextBlock
@@ -453,22 +453,20 @@
             <TabItem
                 Visibility="{Binding PRecebimento, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                 x:Name="Recebimento"
-                Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
+                Style="{StaticResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF117200">
-                <TabItem.HeaderTemplate>
-                    <ItemContainerTemplate>
-                        <StackPanel
-                            Orientation="Vertical"
-                            VerticalAlignment="Center">
-                            <icons:PackIconMaterial
-                                Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
-                                Kind="CashMultiple" />
-                            <TextBlock
-                                Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
-                                Text="{Binding Name, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabItem}}}" />
-                        </StackPanel>
-                    </ItemContainerTemplate>
-                </TabItem.HeaderTemplate>
+                <TabItem.Header>
+                    <StackPanel
+                        Style="{DynamicResource SisMaper.MainWindow.MainMenu.Header}">
+                        <icons:PackIconMaterial
+                            Margin="0,20,0,0"
+                            Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
+                            Kind="CashMultiple" />
+                        <TextBlock
+                            Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
+                            Text="{Binding Name, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabItem}}}" />
+                    </StackPanel>
+                </TabItem.Header>
                 <local:ViewRecebimentos
                     Width="auto"
                     Height="auto"
@@ -478,13 +476,13 @@
             <TabItem
                 x:Name="Cadastros"
                 Visibility="{Binding PCadastro, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
+                Style="{StaticResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#FF843700">
                 <TabItem.Header>
                     <StackPanel
-                        Orientation="Vertical"
-                        VerticalAlignment="Center">
+                        Style="{StaticResource SisMaper.MainWindow.MainMenu.Header}">
                         <icons:PackIconMaterial
+                            Margin="0,20,0,0"
                             Style="{DynamicResource MainWindow.Menu.PackIconMaterial}"
                             Kind="BookEdit" />
                         <TextBlock
@@ -571,13 +569,13 @@
             </TabItem>
             <TabItem
                 Visibility="Collapsed"
-                Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}"
+                Style="{StaticResource SisMaper.MainWindow.TabItem.Menu}"
                 Foreground="#CC25A0FF">
                 <TabItem.Header>
                     <StackPanel
-                        Orientation="Vertical"
-                        VerticalAlignment="Center">
+                        Style="{StaticResource SisMaper.MainWindow.MainMenu.Header}">
                         <icons:PackIconModern
+                            Margin="0,20,0,0"
                             Style="{DynamicResource MainWindow.Menu.PackIconModern}"
                             Kind="GraphBar" />
                         <TextBlock
@@ -590,12 +588,12 @@
                 Visibility="{Binding PAdmin, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                 x:Name="Configuações"
                 PreviewMouseLeftButtonDown="OpenConfig"
-                Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}">
+                Style="{StaticResource SisMaper.MainWindow.TabItem.Menu}">
                 <TabItem.Header>
                     <StackPanel
-                        Orientation="Vertical"
-                        VerticalAlignment="Center">
+                        Style="{StaticResource SisMaper.MainWindow.MainMenu.Header}">
                         <icons:PackIconModern
+                            Margin="0,20,0,0"
                             Style="{DynamicResource MainWindow.Menu.PackIconModern}"
                             Kind="Settings" />
                         <TextBlock

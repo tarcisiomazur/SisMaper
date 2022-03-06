@@ -49,7 +49,14 @@
                         </BeginStoryboard>
                     </DataTrigger.ExitActions>
                 </DataTrigger>
-
+                <Trigger 
+                    Property="Popup.IsOpen"
+                    Value="False">
+                    <Trigger.EnterActions>
+                        <PauseStoryboard
+                            BeginStoryboardName="OpenPopupStoryBoard"  />
+                    </Trigger.EnterActions>
+                </Trigger>
                 <Trigger
                     Property="ResetOpening"
                     Value="True">

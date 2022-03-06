@@ -3,22 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:tools="clr-namespace:SisMaper.Tools">
-    <Style
-        x:Key="FocusVisualButton">
-        <Setter
-            Property="Control.Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle
-                        Margin="2"
-                        SnapsToDevicePixels="true"
-                        Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
-                        StrokeThickness="1"
-                        StrokeDashArray="1 2" />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <tools:NullToVisibility
         IfNull="{x:Static Visibility.Collapsed}"
         IfNotNull="{x:Static Visibility.Visible}"
@@ -61,7 +45,57 @@
     <SolidColorBrush
         x:Key="Button.Disabled.Foreground"
         Color="#FF838383" />
-
+    <SolidColorBrush
+        x:Key="TabItemForegroundIsSelectedBrush"
+        Color="#FF404040" />
+    <SolidColorBrush
+        x:Key="TabItemBackgroundIsSelectedBrush"
+        Color="#FFCED9D8" />
+    <Style
+        x:Key="FocusVisualButton">
+        <Setter
+            Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle
+                        Margin="2"
+                        SnapsToDevicePixels="true"
+                        Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                        StrokeThickness="1"
+                        StrokeDashArray="1 2" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style
+        x:Key="SisMaper.MainWindow.TabItem.Menu"
+        BasedOn="{StaticResource MahApps.Styles.TabItem}"
+        TargetType="{x:Type TabItem}">
+        <Setter
+            Property="HorizontalAlignment"
+            Value="Center" />
+        <Setter
+            Property="VerticalAlignment"
+            Value="Center" />
+        <Setter
+            Property="Padding"
+            Value="5" />
+        <Setter
+            Property="Width"
+            Value="110" />
+        <Setter
+            Property="Height"
+            Value="90" />
+        <Style.Triggers>
+            <Trigger
+                Property="IsSelected"
+                Value="True">
+                <Setter
+                    Property="Background"
+                    Value="{StaticResource TabItemBackgroundIsSelectedBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style
         x:Key="SisMaper.DataGrid.HeaderStyle.Right"
         TargetType="DataGridColumnHeader"
@@ -94,7 +128,7 @@
         TargetType="{x:Type Button}">
         <Setter
             Property="FocusVisualStyle"
-            Value="{DynamicResource FocusVisual}" />
+            Value="{DynamicResource FocusVisualButton}" />
         <Setter
             Property="Foreground"
             Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
@@ -386,7 +420,7 @@
         TargetType="{x:Type Button}">
         <Setter
             Property="FocusVisualStyle"
-            Value="{DynamicResource FocusVisual}" />
+            Value="{DynamicResource FocusVisualButton}" />
         <Setter
             Property="Foreground"
             Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
@@ -478,35 +512,6 @@
         </Setter>
     </Style>
     <Style
-        x:Key="SisMaper.MainWindow.TabItem.Menu"
-        BasedOn="{StaticResource MahApps.Styles.TabItem}"
-        TargetType="{x:Type TabItem}">
-        <Setter
-            Property="HorizontalAlignment"
-            Value="Center" />
-        <Setter
-            Property="VerticalAlignment"
-            Value="Center" />
-        <Setter
-            Property="Padding"
-            Value="5,20,5,20" />
-        <Setter
-            Property="Width"
-            Value="110" />
-        <Setter
-            Property="Height"
-            Value="90" />
-        <Style.Triggers>
-            <Trigger
-                Property="IsSelected"
-                Value="True">
-                <Setter
-                    Property="Background"
-                    Value="{DynamicResource TabItemBackgroundIsSelectedBrush}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style
         x:Key="SisMaper.MainWindow.TabItem.SubMenu"
         BasedOn="{StaticResource MahApps.Styles.TabItem}"
         TargetType="{x:Type TabItem}">
@@ -534,7 +539,7 @@
                 Value="True">
                 <Setter
                     Property="Background"
-                    Value="{DynamicResource TabItemBackgroundIsSelectedBrush}" />
+                    Value="{StaticResource TabItemBackgroundIsSelectedBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -561,7 +566,60 @@
             Property="Foreground"
             Value="Black" />
     </Style>
+    <Style
+        x:Key="SisMaper.MainWindow.MainMenu.Header"
+        TargetType="{x:Type StackPanel}">
+        <Setter
+            Property="Orientation"
+            Value="Vertical" />
+        <Setter
+            Property="Background"
+            Value="Transparent" />
 
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition
+                        Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+                        Value="True" />
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.Setters>
+                    <Setter
+                        Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform
+                                ScaleX="1.05"
+                                ScaleY="1.05" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter
+                        Property="RenderTransformOrigin"
+                        Value="0.5,0.5" />
+                </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition
+                        Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
+                        Value="True" />
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.Setters>
+                    <Setter
+                        Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform
+                                ScaleX="1.05"
+                                ScaleY="1.05" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter
+                        Property="RenderTransformOrigin"
+                        Value="0.5,0.5" />
+                </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+        </Style.Triggers>
+
+    </Style>
     <Style
         x:Key="SisMaper.MainWindow.MainMenu.Head"
         TargetType="{x:Type TextBlock}"
@@ -584,21 +642,5 @@
         <Setter
             Property="Foreground"
             Value="Black" />
-        <Style.Triggers>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition
-                        Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
-                        Value="True" />
-                </MultiDataTrigger.Conditions>
-                <Setter
-                    Property="Foreground"
-                    Value="{DynamicResource TabItemForegroundIsSelectedBrush}" />
-            </MultiDataTrigger>
-        </Style.Triggers>
     </Style>
-    <SolidColorBrush
-        x:Key="TabItemForegroundIsSelectedBrush"
-        Color="#FF606060" />
-
 </ResourceDictionary>

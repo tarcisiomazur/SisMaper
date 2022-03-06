@@ -11,42 +11,19 @@
     xmlns:views="clr-namespace:SisMaper.Views"
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
     xmlns:converter="clr-namespace:MahApps.Metro.IconPacks.Converter;assembly=MahApps.Metro.IconPacks.Core"
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     templates:DialogParticipation.MyRegister="{Binding}"
     mc:Ignorable="d"
-    Height="500" Width="1000"
-    
-    
-    >
-
-
-
+    Height="500" Width="1000">
     <UserControl.DataContext>
         <viewModels:ClientesViewModel/>
     </UserControl.DataContext>
 
     <UserControl.Resources>
-
-
-        <SolidColorBrush x:Key="TabItemForegroundIsSelectedBrush" Color="#FF606060" />
-        <SolidColorBrush x:Key="TabItemBackgroundIsSelectedBrush" Color="#FFC0C0C0" />
         <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource MahApps.Styles.ToolTip}">
             <Setter Property="OpacityMask" Value="#80000000" />
-        </Style>
-        <Style x:Key="Tab1" BasedOn="{StaticResource MahApps.Styles.TabItem}" TargetType="{x:Type TabItem}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Padding" Value="5,20,5,20" />
-            <Setter Property="Width" Value="110" />
-            <Setter Property="Height" Value="90" />
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource TabItemBackgroundIsSelectedBrush}" />
-                </Trigger>
-            </Style.Triggers>
         </Style>
         <Style x:Key="Tab2" BasedOn="{StaticResource MahApps.Styles.TabItem}" TargetType="{x:Type TabItem}">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -57,17 +34,9 @@
             <Setter Property="Margin" Value="5"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource TabItemBackgroundIsSelectedBrush}" />
+                    <Setter Property="Background" Value="{StaticResource TabItemBackgroundIsSelectedBrush}" />
                 </Trigger>
             </Style.Triggers>
-        </Style>
-        <Style x:Key="Head2" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
-            <Setter Property="TextWrapping" Value="NoWrap" />
-            <Setter Property="TextTrimming" Value="None" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="Black" />
         </Style>
         <Style x:Key="Head1" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
             <Setter Property="TextWrapping" Value="NoWrap" />
@@ -76,115 +45,6 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Foreground" Value="Black" />
-            <Style.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition
-                            Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
-                            Value="True" />
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="Foreground" Value="{DynamicResource TabItemForegroundIsSelectedBrush}" />
-                </MultiDataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <ControlTemplate x:Key="MahApps.Templates.PackIconMaterial" TargetType="{x:Type iconPacks:PackIconMaterial}">
-            <Grid>
-                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                <Grid x:Name="PART_InnerGrid" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                      Margin="{TemplateBinding BorderThickness}" RenderTransformOrigin="0.5 0.5"
-                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                    <Grid.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform x:Name="FlipTransform"
-                                            ScaleX="{Binding Flip, Converter={converter:FlipToScaleXValueConverter}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                            ScaleY="{Binding Flip, Converter={converter:FlipToScaleYValueConverter}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <RotateTransform x:Name="RotationTransform"
-                                             Angle="{Binding RotationAngle, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <RotateTransform x:Name="SpinTransform" />
-                        </TransformGroup>
-                    </Grid.RenderTransform>
-                    <Viewbox Margin="{TemplateBinding Padding}">
-                        <Path
-                            Data="{Binding Data, Converter={converter:NullToUnsetValueConverter}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                            Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="False" Stretch="Uniform"
-                            UseLayoutRounding="False" />
-                    </Viewbox>
-                </Grid>
-            </Grid>
-        </ControlTemplate>
-        <Style x:Key="MenuPackIconMaterial" TargetType="{x:Type iconPacks:PackIconMaterial}">
-            <Setter Property="Height" Value="24" />
-            <Setter Property="Width" Value="24" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="FlowDirection" Value="LeftToRight" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="IsTabStop" Value="False" />
-            <Setter Property="SnapsToDevicePixels" Value="False" />
-            <Setter Property="UseLayoutRounding" Value="False" />
-            <Setter Property="Template" Value="{DynamicResource MahApps.Templates.PackIconMaterial}" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="Foreground"
-                    Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}, Path=(TextElement.Foreground)}" />
-
-            <Style.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition
-                            Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}}"
-                            Value="True" />
-                    </MultiDataTrigger.Conditions>
-                    <Setter Property="Foreground" Value="{DynamicResource TabItemForegroundIsSelectedBrush}" />
-                </MultiDataTrigger>
-            </Style.Triggers>
-        </Style>
-        <ControlTemplate x:Key="MahApps.Templates.PackIconModern" TargetType="{x:Type icons:PackIconModern}">
-            <Grid>
-                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                <Grid x:Name="PART_InnerGrid" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                      Margin="{TemplateBinding BorderThickness}" RenderTransformOrigin="0.5 0.5"
-                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                    <Grid.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform x:Name="FlipTransform"
-                                            ScaleX="{Binding Flip, Converter={converter:FlipToScaleXValueConverter}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                            ScaleY="{Binding Flip, Converter={converter:FlipToScaleYValueConverter}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <RotateTransform x:Name="RotationTransform"
-                                             Angle="{Binding RotationAngle, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <RotateTransform x:Name="SpinTransform" />
-                        </TransformGroup>
-                    </Grid.RenderTransform>
-                    <Viewbox Margin="{TemplateBinding Padding}">
-                        <Path
-                            Data="{Binding Data, Converter={converter:NullToUnsetValueConverter}, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                            Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="False" Stretch="Uniform"
-                            UseLayoutRounding="False" />
-                    </Viewbox>
-                </Grid>
-            </Grid>
-        </ControlTemplate>
-        <Style x:Key="MenuPackIconModern" TargetType="{x:Type icons:PackIconModern}">
-            <Setter Property="Height" Value="24" />
-            <Setter Property="Width" Value="24" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="FlowDirection" Value="LeftToRight" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="IsTabStop" Value="False" />
-            <Setter Property="SnapsToDevicePixels" Value="False" />
-            <Setter Property="UseLayoutRounding" Value="False" />
-            <Setter Property="Template" Value="{StaticResource MahApps.Templates.PackIconModern}" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="Foreground"
-                    Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TabItem}}, Path=(TextElement.Foreground)}" />
-
             <Style.Triggers>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -250,152 +110,7 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="styleTabControl" TargetType="{x:Type TabControl}">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="TabStripPlacement" Value="Left" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TabControl}">
-                        <Grid KeyboardNavigation.TabNavigation="Local" ShowGridLines="False">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid Name="Header"
-                                  Background="{DynamicResource MahApps.Brushes.Window.Background}"
-                                  Grid.Column="0"
-                                  Grid.Row="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Border Background="#FFEFEFEF"
-                                        BorderBrush="#FFEFEFEF"
-                                        BorderThickness="1,1,0,1"
-                                        CornerRadius="4"
-                                        Grid.Column="0"
-                                        Grid.Row="1"
-                                        KeyboardNavigation.TabIndex="1"
-                                        Margin="6"
-                                        Panel.ZIndex="1">
-                                    <StackPanel Name="HeaderPanel"
-                                                IsItemsHost="True"
-                                                Orientation="Vertical" />
-                                    <Border.BitmapEffect>
-                                        <DropShadowBitmapEffect Color="#FFEFEFEF"
-                                                                Direction="180"
-                                                                ShadowDepth="1"
-                                                                Opacity="1"
-                                                                Softness="1" />
-                                    </Border.BitmapEffect>
-                                </Border>
-                            </Grid>
-                            <ContentPresenter Grid.Column="1" ContentSource="SelectedContent" Margin="5"
-                                              KeyboardNavigation.DirectionalNavigation="Contained"
-                                              KeyboardNavigation.TabIndex="2"
-                                              KeyboardNavigation.TabNavigation="Local" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="MahApps.Styles.Thumb.ToolBar" TargetType="{x:Type Thumb}">
-            <Setter Property="Cursor" Value="SizeAll"/>
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Border Background="Transparent" Margin="0 3 0 3" SnapsToDevicePixels="True">
-                            <Rectangle Width="4.9">
-                                <Rectangle.Fill>
-                                    <DrawingBrush TileMode="Tile" ViewboxUnits="Absolute" Viewbox="0,0,5,4" ViewportUnits="Absolute" Viewport="0,0,5,4">
-                                        <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{DynamicResource MahApps.Brushes.Gray3}">
-                                                <GeometryDrawing.Geometry>
-                                                    <GeometryGroup>
-                                                        <RectangleGeometry Rect="0,0,1,1"/>
-                                                        <RectangleGeometry Rect="4,0,1,1"/>
-                                                        <RectangleGeometry Rect="2,2,1,1"/>
-                                                    </GeometryGroup>
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                        </DrawingBrush.Drawing>
-                                    </DrawingBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="MahApps.Styles.ToggleButton.ToolBarOverflow" TargetType="{x:Type ToggleButton}">
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border x:Name="Bd" Background="Transparent" CornerRadius="0,3,3,0" SnapsToDevicePixels="true">
-                            <Grid>
-                                <Rectangle x:Name="Rectangle" Fill="{DynamicResource MahApps.Brushes.ThemeForeground}" Height="1" Margin="2 8" VerticalAlignment="Bottom" Width="6"/>
-                                <Path x:Name="Arrow" Data="F0 M 0,0 L 6,0 3,3 Z" Fill="{DynamicResource MahApps.Brushes.ThemeForeground}" Margin="2 3" VerticalAlignment="Bottom"/>
-                                <ContentPresenter/>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Fill" TargetName="Arrow" Value="{DynamicResource MahApps.Brushes.Accent}"/>
-                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource MahApps.Brushes.Gray7}"/>
-                                <Setter Property="Fill" TargetName="Rectangle" Value="{DynamicResource MahApps.Brushes.Accent}"/>
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="true">
-                                <Setter Property="Fill" TargetName="Arrow" Value="{DynamicResource MahApps.Brushes.Accent}"/>
-                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource MahApps.Brushes.Gray7}"/>
-                                <Setter Property="Fill" TargetName="Rectangle" Value="{DynamicResource MahApps.Brushes.Accent}"/>
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="true">
-                                <Setter Property="Fill" TargetName="Arrow" Value="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource MahApps.Brushes.Accent}"/>
-                                <Setter Property="Fill" TargetName="Rectangle" Value="{DynamicResource MahApps.Brushes.ThemeForeground}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Fill" TargetName="Arrow" Value="{DynamicResource MahApps.Brushes.Transparent}"/>
-                                <Setter Property="Fill" TargetName="Rectangle" Value="{DynamicResource MahApps.Brushes.Transparent}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ToolBarStyle" TargetType="{x:Type ToolBar}">
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToolBar}">
-                        <Border x:Name="Border" Background="{DynamicResource MahApps.Brushes.Transparent}" BorderBrush="{DynamicResource MahApps.Brushes.Transparent}" BorderThickness="1" CornerRadius="2">
-                            <DockPanel>
-                                <ToggleButton ClickMode="Press" IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" IsEnabled="{TemplateBinding HasOverflowItems}" Style="{StaticResource MahApps.Styles.ToggleButton.ToolBarOverflow}">
-                                    <Popup x:Name="OverflowPopup" AllowsTransparency="true" Focusable="false" IsOpen="{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PopupAnimation="Slide" StaysOpen="false">
-                                        <Border x:Name="DropDownBorder" Background="{DynamicResource MahApps.Brushes.Control.Background}" BorderBrush="{DynamicResource MahApps.Brushes.Control.Border}" BorderThickness="1">
-                                            <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel" FocusVisualStyle="{x:Null}" Focusable="true" Margin="2" WrapWidth="200"/>
-                                        </Border>
-                                    </Popup>
-                                </ToggleButton>
-                                <ToolBarPanel x:Name="PART_ToolBarPanel" IsItemsHost="true" Margin="0 1 2 2"/>
-                            </DockPanel>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
-
-
-
     <Grid Background="#FFF6F6F6" >
         <DockPanel>
             <ToolBar DockPanel.Dock="Top" >
@@ -423,10 +138,7 @@
                     </Fluent:RibbonGroupBox>
 
             </ToolBar>
-
-
-
-                <TabControl Margin="0" Background="#FFF6F6F6">
+            <TabControl Margin="0" Background="#FFF6F6F6">
                 <TabItem Style="{DynamicResource Tab2}" Width="150 " x:Name="PessoaFisicaTabItem" GotFocus="PessoaFisicaTabItem_GotFocus" >
                     <TabItem.Header>
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
@@ -482,8 +194,6 @@
                                 IsReadOnly="True"/>
 
                             </DataGrid.Columns>
-
-
                         </DataGrid>
                     </Border>
 
@@ -547,8 +257,7 @@
                                 Header="Razão Social"
                                 Binding="{Binding RazaoSocial}"
                                 IsReadOnly="True"/>
-
-
+                                
                                 <DataGridTextColumn 
                                 Width="40*"
                                 Header="Inscrição Estadual"
@@ -556,19 +265,10 @@
                                 IsReadOnly="True"/>
 
                             </DataGrid.Columns>
-
-
                         </DataGrid>
                     </Border>
-
                 </TabItem>
-                    
-                </TabControl>
-
-            
-
+            </TabControl>
         </DockPanel>
     </Grid>
-
-
 </templates:MyUserControl>

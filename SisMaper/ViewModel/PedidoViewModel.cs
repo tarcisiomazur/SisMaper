@@ -277,42 +277,57 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     private void AddItem()
     {
-        if (NovoItem.Produto is not null)
+        if (NovoItem.Produto is null)
         {
-            if (NovoItem.Quantidade == 0) NovoItem.Quantidade = 1;
-            if (!NovoItem.Produto.Fracionado && !NovoItem.Quantidade.IsNatural())
+            ListarProdutos? prod = null;
+            if (long.TryParse(TextoFiltro, out var num))
             {
-                OnShowMessage("Adicionar Item", "O item não aceita quantidade fracionada!");
+                prod = ProdutosAtivos.FirstOrDefault(p => p.Id == num);
+            }
+
+            if (prod is null && TextoFiltro.Length > 3)
+            {
+                prod = ProdutosAtivos.FirstOrDefault(p => p.CodigoBarras == TextoFiltro);
+            }
+
+            if (prod is not null)
+            {
+                AbrirBuscarProduto();
                 return;
             }
 
-            NovoItem.Produto.Lotes.Load();
-            if (NovoItem.Produto.Lotes?.Count > 0)
-            {
-                var vm = new EscolherLoteViewModel(NovoItem.Produto.Lotes);
-                OpenEscolherLote?.Invoke(vm);
-                if (vm.LoteSelecionado != null)
-                {
-                    NovoItem.Lote = vm.LoteSelecionado;
-                }
-                else
-                {
-                    return;
-                }
-            }
+            NovoItem.Produto = PersistenceContext.Get<Produto>(prod.Id);
+        }
 
-            NovoItem.Valor = NovoItem.Produto.PrecoVenda;
-            Pedido.Itens.Add(NovoItem);
-            SumPedido();
-            NovoItem = new Item {Pedido = Pedido, Context = PersistenceContext};
-            QuantidadeItem = "";
-            TextoFiltro = "";
-            ProdutoSelecionado = null;
-        }
-        else
+        if (NovoItem.Quantidade == 0) NovoItem.Quantidade = 1;
+        if (!NovoItem.Produto.Fracionado && !NovoItem.Quantidade.IsNatural())
         {
-            AbrirBuscarProduto();
+            OnShowMessage("Adicionar Item", "O item não aceita quantidade fracionada!");
+            return;
         }
+
+        NovoItem.Produto.Lotes.Load();
+        if (NovoItem.Produto.Lotes?.Count > 0)
+        {
+            var vm = new EscolherLoteViewModel(NovoItem.Produto.Lotes);
+            OpenEscolherLote?.Invoke(vm);
+            if (vm.LoteSelecionado != null)
+            {
+                NovoItem.Lote = vm.LoteSelecionado;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        NovoItem.Valor = NovoItem.Produto.PrecoVenda;
+        Pedido.Itens.Add(NovoItem);
+        SumPedido();
+        NovoItem = new Item {Pedido = Pedido, Context = PersistenceContext};
+        QuantidadeItem = "";
+        TextoFiltro = "";
+        ProdutoSelecionado = null;
     }
 
     private void ReceberPedido()

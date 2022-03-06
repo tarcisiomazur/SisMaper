@@ -152,7 +152,8 @@
             Height="32"
             Width="32"
             templates:HelperPopupToolTip.HelpHeader="Alterar Cliente"
-            templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar o Cliente selecionado">
+            templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar o Cliente selecionado"
+            templates:HelperPopupToolTip.HelpLink="Cliente#EditarCliente">
             <iconpacks:PackIconMaterial
                 Kind="AccountEditOutline"
                 Height="20"
@@ -171,7 +172,8 @@
             Width="32"
             Height="32"
             templates:HelperPopupToolTip.HelpHeader="Adicionar Cliente"
-            templates:HelperPopupToolTip.HelpContent="Cadastrar um novo Cliente">
+            templates:HelperPopupToolTip.HelpContent="Cadastrar um novo Cliente"
+            templates:HelperPopupToolTip.HelpLink="Cliente#AdicionarCliente">
             <iconpacks:PackIconMaterial
                 Kind="AccountPlusOutline"
                 Height="20"

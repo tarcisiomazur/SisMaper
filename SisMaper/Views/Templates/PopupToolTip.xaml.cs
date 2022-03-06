@@ -96,7 +96,7 @@ public static class HelperPopupToolTip
     {
         if (sender is FrameworkElement fe) fe.Loaded -= AttachOnInitialize;
         if (sender is not DependencyObject dp) return;
-        if(dp.GetValue(PopupToolTipProperty) is not PopupToolTip toolTip) return;
+        if (dp.GetValue(PopupToolTipProperty) is not PopupToolTip toolTip) return;
         while (true)
         {
             var next = dp.GetParentObject() ?? VisualTreeHelper.GetParent(dp);
@@ -161,18 +161,18 @@ public partial class PopupToolTip : Popup
     {
         PlacementTarget = fe;
         fe.MouseMove += ResetOpeningAction;
-        fe.PreviewMouseDown += CloseToolTip;
+        fe.PreviewMouseDown += (_, _) => CloseToolTip();
+        fe.KeyDown += (_, _) => CloseToolTip();
+        fe.GotFocus += (_, _) => CloseToolTip();
         InitializeComponent();
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
     }
 
-    private void CloseToolTip(object sender, MouseButtonEventArgs e)
+    private void CloseToolTip()
     {
-        if (IsOpen)
-        {
-            IsOpen = false;
-        }
+        SetValue(IsOpeningProperty, false);
+        IsOpen = false;
     }
 
     private void ResetOpeningAction(object sender, MouseEventArgs e)
@@ -215,8 +215,6 @@ public partial class PopupToolTip : Popup
         get => (bool) GetValue(ResetOpeningProperty);
         set => SetValue(ResetOpeningProperty, value);
     }
-
-    public bool IsClosing { get; set; } = false;
 
     public string HelpHeader
     {
