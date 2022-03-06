@@ -34,6 +34,8 @@ public class MainViewModel : BaseViewModel
 
     public bool PVendas { get; set; }
 
+    public bool NoAdmin => !PAdmin;
+
     public TabItem? SelectedItem
     {
         get => _selectedItem;

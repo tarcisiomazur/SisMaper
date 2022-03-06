@@ -113,7 +113,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
     </Window.Resources>
 
 
@@ -124,7 +124,7 @@
             <TextBlock Text="Usuário" FontSize="32"/>
             <Separator Margin="0,0,10,0"/>
 
-            <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0">
+            <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0" IsEnabled="{Binding IsUserAdmin}">
 
                 <TextBlock Text="Nome" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
                 <TextBox
@@ -140,7 +140,7 @@
             </StackPanel>
 
 
-            <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0">
+            <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0" Visibility="{Binding IsUserAdmin, Converter={StaticResource boolToVisibilityConverter}}">
 
                 <TextBlock Text="Login" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
                 <TextBox
@@ -212,7 +212,7 @@
 
                 <StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,10">
+                    <StackPanel>
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Style.Triggers>
@@ -223,34 +223,54 @@
                             </Style>
                         </StackPanel.Style>
 
-                        <TextBlock Text="Senha Atual" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120"/>
-                        <templates:MyPasswordBox
-                            VerticalAlignment="Bottom"
-                            Password="{Binding SenhaAtual, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToSha512}, Mode=OneWayToSource}"
-                            Width="200"
-                            Margin="20,0,0,0"
-                            Height="32"                   
-                            FontSize="15"
-                            IsShow="{Binding IsChecked, ElementName=ToggleSenhaAtual, Mode=TwoWay}"
-                            ContentPadding="4,4,28,4"
-                            MaxLength="30"
-                            PreviewKeyDown="PasswordBoxKeyDown"/>
+                        <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0">
 
-                        <templates:ToggleImage
-                            x:Name="ToggleSenhaAtual"
-                            Style="{DynamicResource ToggleButtonImage}"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Height="19"
-                            Width="27"
-                            Margin="-27,0,0,0"
-                            Padding="0,0,0,0"
-                            CheckImage="/Images/Hide.png"
-                            UncheckImage="/Images/Show.png"
-                            Image="/Images/Show.png"
-                            Opacity=".5"
-                            Focusable="False"
-                            ClickMode="Press" />
+                            <TextBlock Text="Login" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120"/>
+                            <TextBox
+                                Style="{StaticResource TextBoxUsuario}"
+                                VerticalAlignment="Bottom"
+                                Margin="20,0,0,0"
+                                Width="200"
+                                FontSize="15"
+                                Text="{Binding Login, Mode=OneWayToSource}" 
+                                Height="32" 
+                                MaxLength="45"/>
+
+                        </StackPanel>
+
+
+                        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+
+                            <TextBlock Text="Senha" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120"/>
+                            <templates:MyPasswordBox
+                                VerticalAlignment="Bottom"
+                                Password="{Binding SenhaAtual, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToSha512}, Mode=OneWayToSource}"
+                                Width="200"
+                                Margin="20,0,0,0"
+                                Height="32"                   
+                                FontSize="15"
+                                IsShow="{Binding IsChecked, ElementName=ToggleSenhaAtual, Mode=TwoWay}"
+                                ContentPadding="4,4,28,4"
+                                MaxLength="30"
+                                PreviewKeyDown="PasswordBoxKeyDown"/>
+
+                            <templates:ToggleImage
+                                x:Name="ToggleSenhaAtual"
+                                Style="{DynamicResource ToggleButtonImage}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Height="19"
+                                Width="27"
+                                Margin="-27,0,0,0"
+                                Padding="0,0,0,0"
+                                CheckImage="/Images/Hide.png"
+                                UncheckImage="/Images/Show.png"
+                                Image="/Images/Show.png"
+                                Opacity=".5"
+                                Focusable="False"
+                                ClickMode="Press" />
+
+                        </StackPanel>
 
 
                     </StackPanel>
@@ -297,11 +317,11 @@
 
             <Separator Margin="0,10,10,0"/>
 
-            
+
             <TextBlock Text="Permissões" FontSize="20" Margin="0,20,0,0" HorizontalAlignment="Left"/>
 
 
-            <Border 
+            <Border IsEnabled="{Binding IsUserAdmin, Mode=OneWay}"
                 Width="200"
                 Height="170"
                 Margin="0,5,0,0" 
@@ -318,21 +338,21 @@
                         Content="Cadastro" 
                         FontSize="20"
                         IsChecked="{Binding PermissaoCadastro, Mode=TwoWay}"/>
-                    
+
                     <CheckBox 
                         Style="{StaticResource MyCheckBoxStyle}"
                         Content="Venda" 
                         FontSize="20" 
                         Margin="0,10,0,0"
                         IsChecked="{Binding PermissaoVenda, Mode=TwoWay}"/>
-                    
+
                     <CheckBox 
                         Style="{StaticResource MyCheckBoxStyle}"
                         Content="Recebimento" 
                         FontSize="20" 
                         Margin="0,10,0,0"
                         IsChecked="{Binding PermissaoRecebimento, Mode=TwoWay}"/>
-                    
+
                     <CheckBox 
                         Style="{StaticResource MahApps.Styles.CheckBox}"
                         Content="Administrador" 
@@ -343,7 +363,7 @@
 
                 </StackPanel>
 
-                
+
             </Border>
 
             <StackPanel Orientation="Horizontal" Margin="0,40,0,0">

@@ -54,9 +54,18 @@ public partial class MainWindow
         e.Handled = true;
     }
 
+    private void OpenUser(object sender, RoutedEventArgs e)
+    {
+        var vm = new UsuariosViewModel();
+        new CrudUsuario { Owner = this, DataContext = new UsuariosViewModel.CrudUsuarioViewModel(false, Main.Usuario.Id, vm.Usuarios) }.ShowDialog();
+        e.Handled = true;
+    }
+
     private void Logout(object sender, RoutedEventArgs e)
     {
         (Application.Current.MainWindow = new Login()).Show();
         Close();
     }
+
+
 }

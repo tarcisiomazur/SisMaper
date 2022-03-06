@@ -586,7 +586,7 @@
             </TabItem>
             <TabItem
                 Visibility="{Binding PAdmin, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                x:Name="Configuações"
+                x:Name="Configurações"
                 PreviewMouseLeftButtonDown="OpenConfig"
                 Style="{StaticResource SisMaper.MainWindow.TabItem.Menu}">
                 <TabItem.Header>
@@ -603,6 +603,29 @@
                 </TabItem.Header>
 
             </TabItem>
+
+
+            <TabItem
+                Visibility="{Binding NoAdmin, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                PreviewMouseLeftButtonDown="OpenUser"
+                Style="{DynamicResource SisMaper.MainWindow.TabItem.Menu}">
+                <TabItem.Header>
+                    <StackPanel
+                            Orientation="Vertical"
+                            VerticalAlignment="Center">
+                        <icons:PackIconModern
+                                Style="{DynamicResource MainWindow.Menu.PackIconModern}"
+                                Kind="User" />
+                        <TextBlock
+                                Style="{DynamicResource SisMaper.MainWindow.MainMenu.Head}"
+                                Text="Usuário" />
+                    </StackPanel>
+                </TabItem.Header>
+
+            </TabItem>
+
+
+
         </TabControl>
 
         <StatusBar

@@ -21,8 +21,8 @@ namespace SisMaper.ViewModel
         public Usuario? UsuarioSelecionado { get; set; }
 
 
-        public SimpleCommand NovoUsuarioCmd => new( () => OpenCrudUsuario?.Invoke(new CrudUsuarioViewModel(true, 0, Usuarios)));
-        public SimpleCommand EditarUsuarioCmd => new( () => OpenCrudUsuario?.Invoke(new CrudUsuarioViewModel(false, UsuarioSelecionado.Id, Usuarios)), () => UsuarioSelecionado is not null );
+        public SimpleCommand NovoUsuarioCmd => new(() => OpenCrudUsuario?.Invoke(new CrudUsuarioViewModel(true, 0, Usuarios)));
+        public SimpleCommand EditarUsuarioCmd => new(() => OpenCrudUsuario?.Invoke(new CrudUsuarioViewModel(false, UsuarioSelecionado.Id, Usuarios)), () => UsuarioSelecionado is not null);
 
 
         public Action<CrudUsuarioViewModel>? OpenCrudUsuario;
@@ -95,6 +95,7 @@ namespace SisMaper.ViewModel
             public bool IsUserAdmin => Main.Usuario.Permissao.HasFlag(Usuario.Tipo_Permissao.Gerenciamento);
 
 
+            public string Login { get; set; }
             public string SenhaAtual { get; set; }
             public string NovaSenha { get; set; }
 
@@ -107,7 +108,7 @@ namespace SisMaper.ViewModel
                 IsNovoUsuario = isNovoUsuario;
                 this.usuarios = usuarios;
 
-                if(IsNovoUsuario)
+                if (IsNovoUsuario)
                 {
                     Usuario = new Usuario();
                 }
@@ -174,7 +175,7 @@ namespace SisMaper.ViewModel
                 }
 
                 //se não tem nenhum outro admin, o admin não pode tirar a própria permissão
-                if (!permissao.HasFlag(Usuario.Tipo_Permissao.Gerenciamento) && !usuarios.Any(u => (u.Id != Usuario.Id && u.Permissao.HasFlag(Usuario.Tipo_Permissao.Gerenciamento)) ))
+                if (!permissao.HasFlag(Usuario.Tipo_Permissao.Gerenciamento) && !usuarios.Any(u => (u.Id != Usuario.Id && u.Permissao.HasFlag(Usuario.Tipo_Permissao.Gerenciamento))))
                 {
                     OnShowMessage("Erro ao salvar usuário", "Deve existir um administrador");
                     return false;
@@ -191,13 +192,13 @@ namespace SisMaper.ViewModel
 
                 if (Usuario is null) return null;
 
-                bool senhaAtualVazia = SenhaAtual.Equals(Encrypt.ToSha512("")) ;
+                bool senhaAtualVazia = SenhaAtual.Equals(Encrypt.ToSha512(""));
                 bool novaSenhaVazia = NovaSenha.Equals(Encrypt.ToSha512(""));
 
                 // se for um novo usuario
                 if (IsNovoUsuario)
                 {
-                    if(novaSenhaVazia)
+                    if (novaSenhaVazia)
                     {
                         OnShowMessage("Erro ao salvar usuário", "Senha Inválida");
                         return false;
@@ -212,19 +213,25 @@ namespace SisMaper.ViewModel
 
                 if (!IsUserAdmin)
                 {
-                    if (senhaAtualVazia)
+                    Console.WriteLine($"LOGIN ==> {Login}           SENHA ==> {senhaAtualVazia}");
+
+                    if (string.IsNullOrWhiteSpace(Login) || senhaAtualVazia)
                     {
-                        if(!novaSenhaVazia) OnShowMessage("Erro ao salvar usuário", "Você deve informar a sua senha atual");
+                        if (!novaSenhaVazia)
+                        {
+                            OnShowMessage("Erro ao salvar usuário", "Você deve informar a seu login e senha");
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    if (SenhaAtual != Usuario.Senha || Login != Usuario.Login)
+                    {
+                        OnShowMessage("Erro ao salvar usuário", "Login ou senha incorreto");
                         return false;
                     }
 
-                    if (SenhaAtual != Usuario.Senha)
-                    {
-                        OnShowMessage("Erro ao salvar usuário", "Senha Atual Incorreta");
-                        return false;
-                    }
-
-                    if(novaSenhaVazia)
+                    if (novaSenhaVazia)
                     {
                         OnShowMessage("Erro ao salvar usuário", "Nova Senha Inválida");
                         return false;
@@ -265,7 +272,7 @@ namespace SisMaper.ViewModel
 
                 if (SearchNomeAndLogin() != false || CheckPermissoes() != true || CheckSenha() != true) return;
 
-                
+
                 try
                 {
                     if (Usuario.Save())
@@ -273,7 +280,7 @@ namespace SisMaper.ViewModel
                         OnShowMessage("Salvar Usuário", "Usuário salvo com sucesso");
                         UsuarioSaved?.Invoke();
                     }
-                    
+
                 }
                 catch
                 {
