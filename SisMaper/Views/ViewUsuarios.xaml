@@ -109,7 +109,6 @@
                 <DataGrid
                     Style="{DynamicResource MahApps.Styles.DataGrid}"
                     HorizontalContentAlignment="Stretch"
-                    FontSize="20"
                     ColumnWidth="*"
                     ItemsSource="{Binding UsuariosFiltrados}"
                     AutoGenerateColumns="False"
@@ -125,7 +124,6 @@
                     </DataGrid.InputBindings>
                     <DataGrid.Columns>
                         <DataGridTextColumn
-                            FontSize="20"
                             Width="40*"
                             Header="Nome"
                             Binding="{Binding Nome}"

@@ -18,8 +18,8 @@
     Title="Cliente"
     TitleCharacterCasing="Normal"
     ResizeMode="NoResize"
-    Height="720"
-    Width="480"
+    Height="580"
+    Width="750"
     >
     <mah:MetroWindow.Resources>
         <Dialog:DialogCoordinator x:Key="dialogCoordinator"/>
@@ -40,152 +40,172 @@
 
 
 
-    <Grid x:Name="grid" IsEnabled="{Binding IsGridEnabled}">
+
+
+    <Grid x:Name="grid">
         <TabControl>
-            <TabItem x:Name="PessoaFisicaTabItem" Visibility="Hidden"> 
+            <TabItem x:Name="PessoaFisicaTabItem" Visibility="Hidden">
                 <StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Nome" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaFisica.Nome}"
-                            VerticalAlignment="Top"
-                            Width="250" />
+                    <TextBlock Text="Dados Pessoais" FontSize="30" Margin="18,20,0,0" />
+                    <Separator Margin="20,5,20,0"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="CPF" HorizontalAlignment="Left"/>
+                            <xctk:MaskedTextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                Mask="000\.000\.000-00" 
+                                ValueDataType="{x:Type system:String}" 
+                                SelectionChanged="MaskedTextBox_SelectionChanged"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaFisica.CPF, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Top"
+                                Width="180" />
+                        </StackPanel>
+
+                        <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding ConsultaCpfCmd}" Background="White" >
+                            <StackPanel>
+                                <iconpacks:PackIconMaterial Kind="AccountSearchOutline" Width="18" Height="18"/>
+                            </StackPanel>
+                        </Button>
+
+                        <StackPanel Margin="18,0,0,0">
+                            <TextBlock Text="Nome" HorizontalAlignment="Left"/>
+                            <TextBox  
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaFisica.Nome}"
+                                VerticalAlignment="Top"
+                                Width="300" />
+                        </StackPanel>
+
+                        <StackPanel Margin="18,0,0,0">
+                            <TextBlock Text="Limite de Crédito" HorizontalAlignment="Left"/>
+                            <templates:CurrencyTextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                HorizontalAlignment="Left"
+                                Margin="0,5,0,0"
+                                HorizontalContentAlignment="Right"
+                                TextWrapping="Wrap"
+                                MinimumValue="{x:Static system:Decimal.Zero}"
+                                Number="{Binding PessoaFisica.LimiteCredito, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Top"
+                                Width="144" />
+                        </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="CPF" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Separator Margin="20,10,20,0"></Separator>
 
-                        <xctk:MaskedTextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" 
-                            BorderThickness="2" Mask="000\.000\.000-00" 
-                            ValueDataType="{x:Type system:String}" 
-                            SelectionChanged="MaskedTextBox_SelectionChanged"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaFisica.CPF}"
-                            VerticalAlignment="Top"
-                            Width="250" />
+                    <TextBlock Text="Endereço" FontSize="30" Margin="18,40,0,0" />
+                    <Separator Margin="20,5,20,0"/>
 
-                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="CEP" HorizontalAlignment="Left"/>
+                            <xctk:MaskedTextBox Mask="00\.000-000"
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                HorizontalAlignment="Left"
+                                Margin="0,5,0,0"
+                                TextWrapping="Wrap"
+                                ValueDataType="{x:Type system:String}"
+                                Text="{Binding PessoaFisica.CEP, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Top"
+                                SelectionChanged="MaskedTextBox_SelectionChanged"
+                                Width="180" />
+                        </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Estado" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}"
-                            SelectedItem="{Binding EstadoSelecionado, Mode=TwoWay}"
-                            Grid.Row="0" BorderThickness="2"
-                            Height="32"
-                            Width="250"
-                            Margin="30,20,0,0"
-                            FontSize="16"
-                            mah:TextBoxHelper.Watermark="Buscar Estado"
-                            IsEditable="false"
-                            MaxDropDownHeight="125"
-                            mah:TextBoxHelper.WatermarkAlignment="Right"
-                            mah:TextBoxHelper.AutoWatermark="True"
-                            VerticalAlignment="Top" 
-                            HorizontalAlignment="Left"/>
-                    </StackPanel>
+                        <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding PessoaFisicaConsultaCepCmd}" Background="White">
+                            <StackPanel>
+                                <iconpacks:PackIconVaadinIcons Kind="Search"  Width="18" Height="18"/>
+                            </StackPanel>
+                        </Button>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Cidade" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <ComboBox ItemsSource="{Binding Cidades, Mode=OneWay}"
-                            SelectedItem="{Binding CidadeSelecionada, Mode=TwoWay}"
-                            Grid.Row="0" BorderThickness="2"
-                            Height="32"
-                            Width="250"
-                            Margin="30,20,0,0"
-                            FontSize="16"
-                            mah:TextBoxHelper.Watermark="Buscar Cidade"
-                            IsEditable="false"
-                            MaxDropDownHeight="125"
-                            mah:TextBoxHelper.WatermarkAlignment="Right"
-                            mah:TextBoxHelper.AutoWatermark="True"
-                            VerticalAlignment="Top" 
-                            HorizontalAlignment="Left"
-                            mah:TextBoxHelper.ClearTextButton="True"/>
-                    </StackPanel>
+                        <StackPanel Margin="18,0,0,0">
+                            <TextBlock Text="Estado" HorizontalAlignment="Left"/>
+                            <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}"
+                                SelectedItem="{Binding EstadoSelecionado, Mode=TwoWay}"
+                                Grid.Row="0"
+                                Height="32"
+                                Width="222"
+                                Margin="0,5,0,0"
+                                FontSize="16"
+                                mah:TextBoxHelper.Watermark="Buscar Estado"
+                                IsEditable="false"
+                                MaxDropDownHeight="125"
+                                mah:TextBoxHelper.WatermarkAlignment="Right"
+                                mah:TextBoxHelper.AutoWatermark="True"
+                                VerticalAlignment="Top" 
+                                HorizontalAlignment="Left"/>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Endereço" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            Text="{Binding PessoaFisica.Endereco}"
-                            VerticalAlignment="Top"
-                            TextWrapping="Wrap"
-                            Height="70"
-                            Width="250" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Bairro" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaFisica.Bairro}"
-                            VerticalAlignment="Top"
-                            Width="250" />
+                        <StackPanel Margin="18,0,0,0">
+                            <TextBlock Text="Cidade" HorizontalAlignment="Left"/>
+                            <ComboBox ItemsSource="{Binding Cidades, Mode=OneWay}"
+                                SelectedItem="{Binding CidadeSelecionada, Mode=TwoWay}"
+                                Grid.Row="0"
+                                Height="32"
+                                Width="222"
+                                Margin="0,5,0,0"
+                                FontSize="16"
+                                mah:TextBoxHelper.Watermark="Buscar Cidade"
+                                IsEditable="false"
+                                MaxDropDownHeight="125"
+                                mah:TextBoxHelper.WatermarkAlignment="Right"
+                                mah:TextBoxHelper.AutoWatermark="True"
+                                VerticalAlignment="Top" 
+                                HorizontalAlignment="Left"
+                                mah:TextBoxHelper.ClearTextButton="True"/>
+                        </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" FontSize="22" Margin="20,20,0,0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="pt-br" Text="CEP"/></TextBlock>
-                        <xctk:MaskedTextBox Mask="00\.000-000" 
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            ValueDataType="{x:Type system:String}"
-                            Text="{Binding PessoaFisica.CEP}"
-                            VerticalAlignment="Top"
-                            SelectionChanged="MaskedTextBox_SelectionChanged"
-                            Width="250" />
+                    <StackPanel Orientation="Horizontal" Margin="20,20,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Endereço" HorizontalAlignment="Left"/>
+                            <TextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaFisica.Endereco}"
+                                VerticalAlignment="Top"
+                                Width="340" />
+                        </StackPanel>
+
+                        <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="Bairro" HorizontalAlignment="Left"/>
+                            <TextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaFisica.Bairro}"
+                                VerticalAlignment="Top"
+                                Width="200" />
+                        </StackPanel>
+
+                        <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="Número" HorizontalAlignment="Left"/>
+                            <TextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaFisica.Numero}"
+                                VerticalAlignment="Top"
+                                Width="120" />
+                        </StackPanel>
 
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Número" FontSize="22" Margin="20, 20, 0, 0" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaFisica.Numero}"
-                            VerticalAlignment="Top"
-                            Width="250" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            HorizontalAlignment="Left" FontSize="22"
-                            Margin="20,20,0,0"
-                            TextWrapping="Wrap"
-                            VerticalAlignment="Top" Height="60" Width="100"><Run
-                                Language="pt-br"
-                                Text="Limite de crédito" /></TextBlock>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,30,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaFisica.LimiteCredito}"
-                            VerticalAlignment="Top"
-                            Width="250" />
-                    </StackPanel>
+
+                    <Separator Margin="20,10,20,0"/>
+
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
-                            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-                            Content="Cancelar"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Margin="0, 30, 30, 0"/>
-
                         <Button
                             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                             Content="Salvar"
@@ -194,197 +214,240 @@
                             Margin="0, 30, 30, 0"
                             Command="{Binding SalvarPessoaFisicaCmd}"/>
 
-                    </StackPanel>
-
-
-                </StackPanel>
-
-            </TabItem>
-
-            <TabItem x:Name="PessoaJuridicaTabItem" Visibility="Hidden">
-                <StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Nome" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaJuridica.Nome}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="CNPJ" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-
-                        <xctk:MaskedTextBox 
-                            Mask="00\.000\.000/0000-00" 
-                            ValueDataType="{x:Type system:String}" 
-                            x:Name="CNPJMaskedTextBox" 
-                            SelectionChanged="MaskedTextBox_SelectionChanged"
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaJuridica.CNPJ}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            HorizontalAlignment="Left" FontSize="22"
-                            Margin="20,20,0,0"
-                            TextWrapping="Wrap"
-                            VerticalAlignment="Top" Width="180"><Run
-                                Language="pt-br"
-                                Text="Razão Social" /></TextBlock>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaJuridica.RazaoSocial}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            HorizontalAlignment="Left" FontSize="22"
-                            Margin="20,20,0,0"
-                            TextWrapping="Wrap"
-                            VerticalAlignment="Top" Width="180"><Run
-                                Language="pt-br"
-                                Text="Inscrição Estadual" /></TextBlock>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaJuridica.InscricaoEstadual}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Estado" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}" x:Name="cat"
-                            SelectedItem="{Binding EstadoSelecionado, Mode=TwoWay}"
-                            Grid.Row="0" BorderThickness="2"
-                            Height="32"
-                            Width="220"
-                            Margin="30,20,0,0"
-                            FontSize="16"
-                            mah:TextBoxHelper.Watermark="Buscar Estado"
-                            IsEditable="false"
-                            MaxDropDownHeight="125"
-                            mah:TextBoxHelper.WatermarkAlignment="Right"
-                            mah:TextBoxHelper.AutoWatermark="True"
-                            VerticalAlignment="Top" 
-                            HorizontalAlignment="Left"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Cidade" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <ComboBox ItemsSource="{Binding Cidades, Mode=OneWay}"
-                            SelectedItem="{Binding CidadeSelecionada, Mode=TwoWay}"
-                            Grid.Row="0" BorderThickness="2"
-                            Height="32"
-                            Width="220"
-                            Margin="30,20,0,0"
-                            FontSize="16"
-                            mah:TextBoxHelper.Watermark="Buscar Cidade"
-                            IsEditable="false"
-                            MaxDropDownHeight="125"
-                            mah:TextBoxHelper.WatermarkAlignment="Right"
-                            mah:TextBoxHelper.AutoWatermark="True"
-                            VerticalAlignment="Top" 
-                            HorizontalAlignment="Left"
-                            mah:TextBoxHelper.ClearTextButton="True"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" Text="Endereço" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaJuridica.Endereco}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="pt-br" Text="Bairro"/></TextBlock>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaJuridica.Bairro}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Language="pt-br" FontSize="22" Margin="20,20,0,0" Width="180" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="pt-br" Text="CEP"/></TextBlock>
-                        <xctk:MaskedTextBox Mask="00\.000-000" 
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            IncludeLiteralsInValue="False"
-                            ValueDataType="{x:Type system:String}"
-                            Value="{Binding PessoaJuridica.CEP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            HorizontalAlignment="Left" FontSize="22"
-                            Margin="20,20,0,0"
-                            TextWrapping="Wrap"
-                            VerticalAlignment="Top" Width="180"><Run
-                                Language="pt-br"
-                                Text="Limite de crédito" /></TextBlock>
-                        <TextBox  
-                            Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                            HorizontalAlignment="Left"
-                            Margin="30,20,0,0"
-                            TextWrapping="Wrap"
-                            Text="{Binding PessoaJuridica.LimiteCredito}"
-                            VerticalAlignment="Top"
-                            Width="220" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button 
                             PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
                             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                             Content="Cancelar"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
-                            Margin="0, 30, 30, 0"/>
+                            Margin="0, 30, 20, 0"/>
 
+                    </StackPanel>
+
+                </StackPanel>
+
+            </TabItem>
+            
+            
+            
+
+            <TabItem x:Name="PessoaJuridicaTabItem" Visibility="Hidden">
+                <StackPanel>
+
+                    <TextBlock Text="Dados da Empresa" FontSize="30" Margin="18,20,0,0" />
+                    <Separator Margin="20,5,20,0"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="CNPJ" HorizontalAlignment="Left"/>
+
+                            <xctk:MaskedTextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                Mask="00\.000\.000/0000-00"
+                                ValueDataType="{x:Type system:String}" 
+                                SelectionChanged="MaskedTextBox_SelectionChanged"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaJuridica.CNPJ, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Top"
+                                Width="180" />
+                        </StackPanel>
+
+                        <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding ConsultaCnpjCmd}" Background="White" >
+                            <StackPanel>
+                                <iconpacks:PackIconMaterial Kind="BriefcaseSearchOutline" Width="18" Height="18"/>
+                            </StackPanel>
+                        </Button>
+
+                        <StackPanel Margin="18,0,0,0">
+                            <TextBlock Text="Nome" HorizontalAlignment="Left"/>
+                            <TextBox  
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaJuridica.Nome}"
+                                VerticalAlignment="Top"
+                                Width="300" />
+                        </StackPanel>
+
+                        <StackPanel Margin="18,0,0,0">
+                            <TextBlock Text="Limite de Crédito" HorizontalAlignment="Left"/>
+                            <templates:CurrencyTextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                HorizontalAlignment="Left"
+                                Margin="0,5,0,0"
+                                HorizontalContentAlignment="Right"
+                                TextWrapping="Wrap"
+                                MinimumValue="{x:Static system:Decimal.Zero}"
+                                Number="{Binding PessoaJuridica.LimiteCredito, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Top"
+                                Width="144" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="20,20,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Razão Social" HorizontalAlignment="Left"/>
+                            <TextBox  
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaJuridica.RazaoSocial}"
+                                VerticalAlignment="Top"
+                                Width="340" />
+                        </StackPanel>
+
+                        <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="Inscrição Estadual" HorizontalAlignment="Left"/>
+                            <TextBox  
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaJuridica.InscricaoEstadual}"
+                                VerticalAlignment="Top"
+                                Width="340" />
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <Separator Margin="20,10,20,0"></Separator>
+
+                    <TextBlock Text="Endereço" FontSize="30" Margin="18,40,0,0" />
+                    <Separator Margin="20,5,20,0"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="CEP" HorizontalAlignment="Left"/>
+
+                            <xctk:MaskedTextBox Mask="00\.000-000"
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                HorizontalAlignment="Left"
+                                Margin="0,5,0,0"
+                                TextWrapping="Wrap"
+                                ValueDataType="{x:Type system:String}"
+                                Text="{Binding PessoaJuridica.CEP, UpdateSourceTrigger=PropertyChanged}"
+                                VerticalAlignment="Top"
+                                SelectionChanged="MaskedTextBox_SelectionChanged"
+                                Width="180" />
+                        </StackPanel>
+
+                        <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding PessoaJuridicaConsultaCepCmd}" Background="White" >
+                            <StackPanel>
+                                <iconpacks:PackIconVaadinIcons Kind="Search"  Width="18" Height="18"/>
+                            </StackPanel>
+                        </Button>
+
+                        <StackPanel Margin="18,0,0,0">
+                            <TextBlock Text="Estado" HorizontalAlignment="Left"/>
+                            <ComboBox ItemsSource="{Binding Estados, Mode=OneWay}"
+                                SelectedItem="{Binding EstadoSelecionado, Mode=TwoWay}"
+                                Grid.Row="0"
+                                Height="32"
+                                Width="222"
+                                Margin="0,5,0,0"
+                                FontSize="16"
+                                mah:TextBoxHelper.Watermark="Buscar Estado"
+                                IsEditable="false"
+                                MaxDropDownHeight="125"
+                                mah:TextBoxHelper.WatermarkAlignment="Right"
+                                mah:TextBoxHelper.AutoWatermark="True"
+                                VerticalAlignment="Top" 
+                                HorizontalAlignment="Left"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="18,0,0,0">
+                            <TextBlock Text="Cidade" HorizontalAlignment="Left"/>
+                            <ComboBox ItemsSource="{Binding Cidades, Mode=OneWay}"
+                                SelectedItem="{Binding CidadeSelecionada, Mode=TwoWay}"
+                                Grid.Row="0"
+                                Height="32"
+                                Width="222"
+                                Margin="0,5,0,0"
+                                FontSize="16"
+                                mah:TextBoxHelper.Watermark="Buscar Cidade"
+                                IsEditable="false"
+                                MaxDropDownHeight="125"
+                                mah:TextBoxHelper.WatermarkAlignment="Right"
+                                mah:TextBoxHelper.AutoWatermark="True"
+                                VerticalAlignment="Top" 
+                                HorizontalAlignment="Left"
+                                mah:TextBoxHelper.ClearTextButton="True"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="20,20,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Endereço" HorizontalAlignment="Left"/>
+                            <TextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaJuridica.Endereco}"
+                                VerticalAlignment="Top"
+                                Width="340" />
+                        </StackPanel>
+
+                        <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="Bairro" HorizontalAlignment="Left"/>
+                            <TextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaJuridica.Bairro}"
+                                VerticalAlignment="Top"
+                                Width="200" />
+                        </StackPanel>
+
+                        <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="Número" HorizontalAlignment="Left"/>
+                            <TextBox
+                                Style="{DynamicResource SisMaper.TextBox}"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Left"
+                                TextWrapping="Wrap"
+                                Text="{Binding PessoaJuridica.Numero}"
+                                VerticalAlignment="Top"
+                                Width="120" />
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <Separator Margin="20,10,20,0"/>
+
+
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button
                             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                             Content="Salvar"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Margin="0, 30, 30, 0"
                             Command="{Binding SalvarPessoaJuridicaCmd}"/>
+
+                        <Button 
+                            PreviewMouseLeftButtonDown="CancelarButtonLeftClick"
+                            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+                            Content="Cancelar"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="0, 30, 20, 0"/>
+
                     </StackPanel>
 
 
                 </StackPanel>
-
             </TabItem>
 
         </TabControl>
 
     </Grid>
+
 </mah:MetroWindow>
 

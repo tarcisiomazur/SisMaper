@@ -162,36 +162,36 @@
 
                             <DataGrid.Columns>
                                 <DataGridTextColumn
-                                Width="50*"
-                                Header="Nome"
-                                Binding="{Binding Nome}"
-                                IsReadOnly="True" />
+                                    Width="50*"
+                                    Header="Nome"
+                                    Binding="{Binding Nome}"
+                                    IsReadOnly="True" />
                                 
                                 <DataGridTextColumn
-                                Width="40*"
-                                Header="Cidade"
-                                Binding="{Binding Cidade}"
-                                IsReadOnly="True" />
+                                    Width="40*"
+                                    Header="Cidade"
+                                    Binding="{Binding Cidade}"
+                                    IsReadOnly="True" />
                                 
                                 <DataGridTextColumn
-                                Width="40*"
-                                Header="Endereço"
-                                Binding="{Binding Endereco}"
-                                IsReadOnly="True" />
+                                    Width="40*"
+                                    Header="Endereço"
+                                    Binding="{Binding Endereco}"
+                                    IsReadOnly="True" />
 
                                 <mah:DataGridNumericUpDownColumn
-                                Width="40*"
-                                Header="Limite de crédito(R$)"
-                                StringFormat="{}{0:N2}"
-                                Culture="pt-BR"
-                                Binding="{Binding LimiteCredito}"
-                                IsReadOnly="true" />
+                                    Width="40*"
+                                    Header="Limite de crédito(R$)"
+                                    StringFormat="{}{0:N2}"
+                                    Culture="pt-BR"
+                                    Binding="{Binding LimiteCredito}"
+                                    IsReadOnly="true" />
 
                                 <DataGridTextColumn 
-                                Width="40*"
-                                Header="CPF"
-                                Binding="{Binding CPF_CNPJ}"
-                                IsReadOnly="True"/>
+                                    Width="40*"
+                                    Header="CPF"
+                                    Binding="{Binding CPF_CNPJ}"
+                                    IsReadOnly="True"/>
 
                             </DataGrid.Columns>
                         </DataGrid>
@@ -220,49 +220,49 @@
                             </DataGrid.InputBindings>
                             <DataGrid.Columns>
                                 <DataGridTextColumn
-                                Width="40*"
-                                Header="Nome"
-                                Binding="{Binding Nome}"
-                                IsReadOnly="True" />
+                                    Width="40*"
+                                    Header="Nome"
+                                    Binding="{Binding Nome}"
+                                    IsReadOnly="True" />
 
                                 <DataGridTextColumn
-                                Width="40*"
-                                Header="Cidade"
-                                Binding="{Binding Cidade}"
-                                IsReadOnly="True" />
+                                    Width="40*"
+                                    Header="Cidade"
+                                    Binding="{Binding Cidade}"
+                                    IsReadOnly="True" />
 
                                 <DataGridTextColumn
-                                Width="40*"
-                                Header="Endereço"
-                                Binding="{Binding Endereco}"
-                                IsReadOnly="True" />
+                                    Width="40*"
+                                    Header="Endereço"
+                                    Binding="{Binding Endereco}"
+                                    IsReadOnly="True" />
 
                                 <mah:DataGridNumericUpDownColumn
-                                Width="40*"
-                                Header="Limite de crédito(R$)"
-                                StringFormat="{}{0:N2}"
-                                Culture="pt-BR"
-                                Binding="{Binding LimiteCredito}"
-                                IsReadOnly="true" />
+                                    Width="40*"
+                                    Header="Limite de crédito(R$)"
+                                    StringFormat="{}{0:N2}"
+                                    Culture="pt-BR"
+                                    Binding="{Binding LimiteCredito}"
+                                    IsReadOnly="true" />
 
                                 <DataGridTextColumn 
-                                Width="40*"
-                                Header="CNPJ"
-                                Binding="{Binding CPF_CNPJ}"
-                                IsReadOnly="True"/>
+                                    Width="40*"
+                                    Header="CNPJ"
+                                    Binding="{Binding CPF_CNPJ}"
+                                    IsReadOnly="True"/>
 
 
                                 <DataGridTextColumn 
-                                Width="40*"
-                                Header="Razão Social"
-                                Binding="{Binding RazaoSocial}"
-                                IsReadOnly="True"/>
+                                    Width="40*"
+                                    Header="Razão Social"
+                                    Binding="{Binding RazaoSocial}"
+                                    IsReadOnly="True"/>
                                 
                                 <DataGridTextColumn 
-                                Width="40*"
-                                Header="Inscrição Estadual"
-                                Binding="{Binding InscricaoEstadual}"
-                                IsReadOnly="True"/>
+                                    Width="40*"
+                                    Header="Inscrição Estadual"
+                                    Binding="{Binding InscricaoEstadual}"
+                                    IsReadOnly="True"/>
 
                             </DataGrid.Columns>
                         </DataGrid>

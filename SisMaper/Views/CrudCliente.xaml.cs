@@ -58,12 +58,14 @@ namespace SisMaper.Views
             {
                 PessoaFisicaTabItem.IsSelected = true;
                 PessoaJuridicaTabItem.IsEnabled = false;
+                Height = 500;
             }
 
             else
             {
                 PessoaJuridicaTabItem.IsSelected = true;
                 PessoaFisicaTabItem.IsEnabled = false;
+                Height = 580;
             }
 
             grid.IsEnabled = IsGridEnabled;
@@ -90,5 +92,6 @@ namespace SisMaper.Views
 
             }
         }
+
     }
 }

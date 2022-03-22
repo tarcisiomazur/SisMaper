@@ -106,18 +106,13 @@
 
             </ComboBox>
 
-            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarCategoriasCmd}" Background="White" >
+            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarCategoriasCmd}" Background="White" 
+                templates:HelperPopupToolTip.HelpHeader="Alterar Categorias"
+                templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar as categorias">
+                
                 <StackPanel>
                     <iconpacks:PackIconMaterial Kind="Pencil" Foreground="Green" Width="18" Height="18"/>
                 </StackPanel>
-
-                <Button.ToolTip>
-                    <TextBlock
-                        Foreground="Black"
-                        Text="Editar Categorias">
-                    </TextBlock>
-                </Button.ToolTip>
-
 
             </Button>
 
@@ -179,17 +174,13 @@
 
             </ComboBox>
 
-            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarUnidadesCmd}" Background="White" >
+            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarUnidadesCmd}" Background="White" 
+                templates:HelperPopupToolTip.HelpHeader="Alterar Unidades"
+                templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar as unidades">
+
                 <StackPanel>
                     <iconpacks:PackIconMaterial Kind="Pencil" Foreground="Green" Width="18" Height="18"/>
                 </StackPanel>
-
-                <Button.ToolTip>
-                    <TextBlock
-                        Foreground="Black"
-                        Text="Editar Unidades">
-                    </TextBlock>
-                </Button.ToolTip>
 
 
             </Button>

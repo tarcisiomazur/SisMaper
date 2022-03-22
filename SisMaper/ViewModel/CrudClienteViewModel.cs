@@ -1,4 +1,5 @@
-﻿using Persistence;
+﻿using MahApps.Metro.Controls.Dialogs;
+using Persistence;
 using SisMaper.Models;
 using SisMaper.Models.Views;
 using System;
@@ -54,9 +55,20 @@ namespace SisMaper.ViewModel
             set { SetField(ref _cidades, value); }
         }
 
-        
+
+        private CorreiosWebService.enderecoERP? enderecoConfirmado; //informações do endereço depois de consultar no webService do correio
+        private string? cepConfirmado; //cep pra verificar se o ultimo cep confirmado é igual ao cep atual
+
+
         public SimpleCommand SalvarPessoaFisicaCmd => new(SalvarPessoaFisica);
         public SimpleCommand SalvarPessoaJuridicaCmd => new(SalvarPessoaJuridica);
+
+        //public SimpleCommand ConsultaCpfCmd => new(() => ConsultaCEP(true));
+        //public SimpleCommand ConsultaCnpjCmd => new(() => ConsultaCEP(false));
+
+        public SimpleCommand PessoaFisicaConsultaCepCmd => new(() => ConsultaCEP(PessoaFisica));
+        public SimpleCommand PessoaJuridicaConsultaCepCmd => new(() => ConsultaCEP(PessoaJuridica));
+
 
         public Action? ClienteSaved { get; set; }
 
@@ -68,16 +80,13 @@ namespace SisMaper.ViewModel
 
             Estados = DAO.All<Estado>();
 
-            //SavePessoaFisica = new SavePessoaFisicaCommand();
-            //SavePessoaJuridica = new SavePessoaJuridicaCommand();
-
-            if (cliente is not null)
+            if (cliente is not null && Estados.Any())
             {
                 if (cliente.Tipo == ListarClientes.Pessoa.Fisica)
                 {
                     PessoaFisica = DAO.Load<PessoaFisica>(cliente.Id);
 
-                    if (PessoaFisica.Cidade is not null)
+                    if (PessoaFisica?.Cidade is not null)
                     {
                         EstadoSelecionado = Estados.Where(e => e.Id == PessoaFisica.Cidade.Estado.Id).FirstOrDefault();
                         CidadeSelecionada = Cidades.Where(c => c.Id == PessoaFisica.Cidade.Id).FirstOrDefault();
@@ -87,7 +96,7 @@ namespace SisMaper.ViewModel
                 else
                 {
                     PessoaJuridica = DAO.Load<PessoaJuridica>(cliente.Id);
-                    if (PessoaJuridica.Cidade is not null)
+                    if (PessoaJuridica?.Cidade is not null)
                     {
                         EstadoSelecionado = Estados.Where(e => e.Id == PessoaJuridica.Cidade.Estado.Id).FirstOrDefault();
                         CidadeSelecionada = Cidades.Where(c => c.Id == PessoaJuridica.Cidade.Id).FirstOrDefault();
@@ -227,31 +236,104 @@ namespace SisMaper.ViewModel
 
         private void CheckCEP(ref string? cep)
         {
-            if (cep is null || cep.Equals("00.000-000"))
+            if (cep is null || cep.Equals("__.___-___"))
             {
                 cep = null;
                 return;
             }
 
             cep = cep.Replace(".", "").Replace("-", "");
-
+            
             if (cep.Contains('_'))
             {
                 throw new InvalidOperationException("CEP Incompleto");
             }
         }
+        
 
+        private void ConsultaCEP(Cliente cliente)
+        {
+            enderecoConfirmado = null;
+            
+            try
+            {
+                cepConfirmado = cliente.CEP;
+                CheckCEP(ref cepConfirmado);
+                cliente.CEP = cepConfirmado;
+
+                var ws = new CorreiosWebService.AtendeClienteClient();
+                enderecoConfirmado = ws.consultaCEPAsync(cepConfirmado).Result.@return;
+
+                EstadoSelecionado = Estados.Where(e => e.UF == enderecoConfirmado.uf).FirstOrDefault();
+                CidadeSelecionada = Cidades.Where(c => c.Nome == enderecoConfirmado.cidade).FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(enderecoConfirmado.bairro)) cliente.Bairro = enderecoConfirmado.bairro;
+                if (!string.IsNullOrWhiteSpace(enderecoConfirmado.end)) cliente.Endereco = enderecoConfirmado.end;
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException is not null && ex.InnerException is System.ServiceModel.EndpointNotFoundException)
+                {
+                    OnShowMessage("Erro ao consultar CEP", "Verifique seu acesso a Internet");
+                    return;
+                }
+
+                else
+                {
+                    OnShowMessage("Erro ao consultar CEP", "CEP Inválido ou não encontrado");
+                    return;
+                }
+
+            }
+        }
+
+        // retorna true se o endereço ta correspondente ao cep ou se o usuário ignorar a confirmação
+        private bool ComparaEndereco(Cliente cliente)
+        {
+            //caso o cep não foi confirmado e tem alguma informação de endereço (pode não ter nenhum cep também)
+            //ou se o cep confirmado é diferente do cep atual
+            //ou se tem um cep e não foi confirmado (sem outras informações de endereço)
+            if( (!string.IsNullOrWhiteSpace(cliente.CEP) && enderecoConfirmado is null) || 
+                (enderecoConfirmado is not null && cepConfirmado != cliente.CEP) || 
+                    (enderecoConfirmado is null && 
+                        (CidadeSelecionada is not null || 
+                            !string.IsNullOrWhiteSpace(cliente.Endereco) ||
+                            !string.IsNullOrWhiteSpace(cliente.Bairro) || 
+                            !string.IsNullOrWhiteSpace(cliente.Numero))))
+            {
+                MessageDialogResult resultado = OnShowMessage("CEP Não Confirmado", "O CEP não foi confirmado. Continuar?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
+                return resultado == MessageDialogResult.Affirmative; 
+            }
+
+            
+            //quando o alguma informação não corresponde ao endereço obtido com a consulta do cep
+            if(enderecoConfirmado is not null && cepConfirmado == cliente.CEP)
+            {
+                string? uf = enderecoConfirmado.uf;
+                string? cidade = enderecoConfirmado.cidade;
+                string? end = enderecoConfirmado.end;
+                string? bairro = enderecoConfirmado.bairro;
+
+                bool ufDiferente = (EstadoSelecionado?.UF != uf);
+                bool cidadeDiferente = (cliente.Cidade?.Nome != cidade);
+                bool enderecoDiferente = ( !string.IsNullOrWhiteSpace(end) && end != cliente.Endereco );
+                bool bairroDiferente = ( !string.IsNullOrWhiteSpace(bairro) && bairro != cliente.Bairro );
+
+                if(ufDiferente || cidadeDiferente || bairroDiferente || enderecoDiferente)
+                {
+                    MessageDialogResult resultado = OnShowMessage("Endereço Não Correspondente", "As informações de endereço não correspondem ao CEP. Continuar?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
+                    return resultado == MessageDialogResult.Affirmative;
+                }
+            }
+
+            return true;
+        }
 
 
         private void SalvarCliente(Cliente clienteParameter)
         {
-            //Console.WriteLine($"CEPP === {CepString}");
 
             if (clienteParameter is PessoaFisica pf)
             {
-                //Console.WriteLine($"CPFFF ===   {pf.CPF}");
-
-                Console.WriteLine($"CEPP === {pf.CEP}");
 
                 if(CidadeSelecionada is not null)
                 {
@@ -290,7 +372,7 @@ namespace SisMaper.ViewModel
                 CheckCEP(ref cep);
                 pf.CEP = cep;
 
-
+                if (!ComparaEndereco(pf)) return;
 
                 string? nome = pf.Nome;
                 string? endereco = pf.Endereco;
@@ -308,6 +390,7 @@ namespace SisMaper.ViewModel
                 pf.Numero = numero;
 
                 pf.Save();
+                ClienteSaved?.Invoke();
 
 
             }
@@ -349,9 +432,11 @@ namespace SisMaper.ViewModel
                     throw new InvalidOperationException("CNPJ já registrado");
                 }
 
-                string cep = pj.CEP;
+                string? cep = pj.CEP;
                 CheckCEP(ref cep);
                 pj.CEP = cep;
+
+                if (!ComparaEndereco(pj)) return;
 
 
                 string? nome = pj.Nome;
@@ -373,7 +458,9 @@ namespace SisMaper.ViewModel
                 pj.Bairro = bairro;
 
                 pj.Save();
-                    
+                ClienteSaved?.Invoke();
+
+
             }
 
             
@@ -382,17 +469,15 @@ namespace SisMaper.ViewModel
 
 
         private void SalvarPessoaFisica()
-        {
+        {      
             try
             {
                 SalvarCliente(PessoaFisica);
-                ClienteSaved?.Invoke();
             }
             catch (Exception ex)
             {
                 OnShowMessage("Erro ao salvar Cliente", "Erro: " + ex.Message);
             }
-
         }
 
         private void SalvarPessoaJuridica()
@@ -400,7 +485,6 @@ namespace SisMaper.ViewModel
             try
             {
                 SalvarCliente(PessoaJuridica);
-                ClienteSaved?.Invoke();
             }
             catch (Exception ex)
             {
