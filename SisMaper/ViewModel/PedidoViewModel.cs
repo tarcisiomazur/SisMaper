@@ -485,11 +485,11 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
         if (Pedido.Cliente is { } and not PessoaFisica and not PessoaJuridica)
         {
-            if (PersistenceContext.Get<PessoaFisica>(Pedido.Cliente.Id) is var pf and not null)
+            if (PersistenceContext.TryGet<PessoaFisica>(Pedido.Cliente.Id) is var pf and not null)
             {
                 Pedido.Cliente = pf;
             }
-            else if (PersistenceContext.Get<PessoaJuridica>(Pedido.Cliente.Id) is var pj and not null)
+            else if (PersistenceContext.TryGet<PessoaJuridica>(Pedido.Cliente.Id) is var pj and not null)
             {
                 Pedido.Cliente = pj;
             }

@@ -44,7 +44,7 @@ public abstract class INotaFiscal
             if (string.IsNullOrEmpty(pessoaJuridica.CNPJ)) return "Cliente não possui CNPJ";
             if (string.IsNullOrEmpty(pessoaJuridica.RazaoSocial)) return "Cliente não possui Razão Social";
             if (!pessoaJuridica.CNPJ.IsCnpj()) return "CNPJ incorreto";
-            NF_Cliente.CNPJ = int.Parse(pessoaJuridica.CNPJ).ToString(@"00\.000\.000/000\-00");
+            NF_Cliente.CNPJ = long.Parse(pessoaJuridica.CNPJ).ToString(@"00\.000\.000/000\-00");
             NF_Cliente.RazaoSocial = pessoaJuridica.RazaoSocial;
             NF_Cliente.InscricaoEstadual = pessoaJuridica.InscricaoEstadual;
             NF_NotaFiscal.Cliente = NF_Cliente;
