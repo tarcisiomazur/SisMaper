@@ -77,7 +77,7 @@ public static class HelpWebService
             var path = context.Request.Url.LocalPath;
             if (path == "/" || string.IsNullOrEmpty(path))
                 path = "SisMaper.html";
-            path = "C:\\Users\\tarci\\Documents\\HelpNDoc\\Output\\html\\" + path;
+            path = ".\\Help\\HTML\\" + path;
             try
             {
                 var st = response.OutputStream;
