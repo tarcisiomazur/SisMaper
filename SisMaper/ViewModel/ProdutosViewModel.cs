@@ -34,16 +34,14 @@ namespace SisMaper.ViewModel
 
 
         public ProdutosViewModel()
-        {
-            Produtos = View.Execute<ListarProdutos>();       
+        {     
             PropertyChanged += UpdateFilter;
-            ProdutosFiltrados = Produtos;
-
         }
 
         public void Initialize(object? sender, EventArgs e)
         {
             Produtos = View.Execute<ListarProdutos>();
+            ProdutosFiltrados = Produtos;
         }
 
         public void Clear(object? sender, EventArgs e)

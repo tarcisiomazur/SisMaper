@@ -29,8 +29,6 @@ namespace SisMaper.ViewModel
 
         public UsuariosViewModel()
         {
-            Usuarios = DAO.All<Usuario>();
-            UsuariosFiltrados = Usuarios;
             PropertyChanged += UdpateFilter;
         }
 

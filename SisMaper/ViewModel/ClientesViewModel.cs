@@ -32,17 +32,15 @@ namespace SisMaper.ViewModel
 
         public Action<CrudClienteViewModel?>? OpenCrudCliente { get; set; }
 
-        public ClientesViewModel()
-        { 
-            Initialize(null, EventArgs.Empty);
-            ClienteSelecionado = null;
-        }
+        public ClientesViewModel() { }
 
 
         public void Initialize(object? sender, EventArgs e)
         {
-            PessoaFisicaList = View.Execute<ListarClientes>().FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Fisica);
-            PessoaJuridicaList = View.Execute<ListarClientes>().FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Juridica);
+            List<ListarClientes>? listaClientes = View.Execute<ListarClientes>();
+            PessoaFisicaList = listaClientes.FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Fisica);
+            PessoaJuridicaList = listaClientes.FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Juridica);
+            ClienteSelecionado = null;
         }
 
         public void Clear(object? sender, EventArgs e)
