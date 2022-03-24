@@ -1,23 +1,22 @@
 ﻿using Persistence;
-using System;
 
 namespace SisMaper.Models.Views;
 
 [View(ViewName = "ListarClientes")]
 public class ListarClientes
 {
+    public enum Pessoa
+    {
+        Juridica,
+        Fisica
+    }
+
     public ListarClientes() { }
 
     public ListarClientes(Cliente cliente)
     {
         Id = cliente.Id;
         Nome = cliente.Nome;
-    }
-
-    public enum Pessoa
-    {
-        Juridica,
-        Fisica
     }
 
     public Fatura.Fatura_Status Status { get; set; }

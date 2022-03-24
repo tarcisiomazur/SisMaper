@@ -15,7 +15,7 @@
     x:Class="SisMaper.Views.CrudProduto"
     x:Name="this"
     mc:Ignorable="d"
-    Title="{Binding Produto.Id, StringFormat='{}Produto - {0:00000}', FallbackValue='Novo Produto', Converter={StaticResource NotZero}}"
+    Title="{Binding Produto.CodigoInterno, StringFormat='{}Produto - {0}', FallbackValue='Novo Produto', Converter={StaticResource NotNullOrEmpty}}"
     TitleCharacterCasing="Normal"
     ResizeMode="NoResize"
     Height="500"
@@ -35,31 +35,49 @@
                 Value="16" />
         </Style>
     </mah:MetroWindow.Resources>
-    
-
-    
     <Grid x:Name="grid"  >
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Cancelar"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Margin="0,0,95,17" 
-            Click="CancelarButtonClick"/>
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Salvar"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Margin="0,0,31,17"
-            Command="{Binding SalvarProdutoCmd}"/>
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="20,48,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top" Width="94"><Run
+                Language="pt-br"
+                Text="Identificação" /></TextBlock>
+        <TextBox  
+            Style="{DynamicResource SisMaper.TextBox}"
+            HorizontalAlignment="Left"
+            Margin="144,43,0,0"
+            TextWrapping="Wrap"
+            Text="{Binding Produto.CodigoInterno, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            VerticalAlignment="Top"
+            Width="142" 
+            MaxLength="13" />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="301,37,0,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top" Height="46" Width="79"><Run
+                                                               Language="pt-br"
+                                                               Text="Código de Barras" /></TextBlock>
+        <TextBox
+            Style="{DynamicResource SisMaper.TextBox}"
+            HorizontalAlignment="Left"
+            Margin="380,44,0,0"
+            TextWrapping="Wrap"
+            Text="{Binding Produto.CodigoBarras}"
+            VerticalAlignment="Top"
+            Width="142" 
+            MaxLength="13"
+            PreviewKeyDown="CodigoDeBarrasTextBoxKeyDown" />
+        <CheckBox IsEnabled="True" FontSize="16" Content="Fracionado" HorizontalAlignment="Left" Margin="536,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produto.Fracionado}"/>
+        <CheckBox FontSize="16" Content="Inativo" HorizontalAlignment="Left" Margin="647,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produto.Inativo}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="20,93,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top"><Run
-                Language="pt-br"
-                Text="Descrição" />
+                                        Language="pt-br"
+                                        Text="Descrição" />
             <Run
                 Language="pt-br"
                 Text="*"
@@ -68,64 +86,6 @@
                 FontSize="20"
                 Foreground="Red"/>
         </TextBlock>
-        <TextBlock
-            HorizontalAlignment="Left"
-            Margin="396,50,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top"><Run
-                Language="pt-br"
-                Text="Id" /></TextBlock>
-        <TextBox
-            IsEnabled="False"
-            Style="{DynamicResource SisMaper.TextBox}"
-            HorizontalAlignment="Left"
-            Margin="424,44,0,0"
-            TextWrapping="Wrap"
-            Text="{Binding Produto.Id}"
-            VerticalAlignment="Top"
-            Width="63" />
-
-        <StackPanel Orientation="Horizontal" Margin="144,164,0,0" Height="32" Width="204" HorizontalAlignment="left" VerticalAlignment="Top"> 
-        
-            <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
-                Grid.Row="0"
-                Height="32"
-                Width="165"
-                Margin="0"
-                FontSize="16"
-                mah:TextBoxHelper.Watermark="Categoria"
-                IsEditable="false"
-                MaxDropDownHeight="125"
-                mah:TextBoxHelper.WatermarkAlignment="Right"
-                mah:TextBoxHelper.AutoWatermark="True"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Left"
-                DisplayMemberPath="Descricao"
-                mah:TextBoxHelper.ClearTextButton="True">
-
-            </ComboBox>
-
-            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarCategoriasCmd}" Background="White" 
-                templates:HelperPopupToolTip.HelpHeader="Alterar Categorias"
-                templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar as categorias">
-                
-                <StackPanel>
-                    <iconpacks:PackIconMaterial Kind="Pencil" Foreground="Green" Width="18" Height="18"/>
-                </StackPanel>
-
-            </Button>
-
-        </StackPanel>
-
-
-        <TextBlock
-            HorizontalAlignment="Left"
-            Margin="20,168,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top"><Run
-                Language="pt-br"
-                Text="Categoria" /></TextBlock>
         <TextBox
             Style="{DynamicResource SisMaper.TextBox}"
             HorizontalAlignment="Left"
@@ -134,44 +94,66 @@
             Text = "{Binding Produto.Descricao, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="576" Height="64" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" mah:ScrollViewerHelper.IsHorizontalScrollWheelEnabled="True" />
-        <CheckBox FontSize="16" Content="Inativo" HorizontalAlignment="Left" Margin="647,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produto.Inativo}"/>
         <TextBlock
             HorizontalAlignment="Left"
-            Margin="20,36,0,0"
+            Margin="20,168,0,0"
             TextWrapping="Wrap"
-            VerticalAlignment="Top" Height="46" Width="84"><Run
-                Language="pt-br"
-                Text="Código de Barras" /></TextBlock>
+            VerticalAlignment="Top"><Run
+                                        Language="pt-br"
+                                        Text="Categoria" /></TextBlock>
+        <StackPanel Orientation="Horizontal" Margin="144,164,0,0" Height="32" Width="204" HorizontalAlignment="left" VerticalAlignment="Top">
 
-        <TextBox  
-            Style="{DynamicResource SisMaper.TextBox}"
+            <ComboBox ItemsSource="{Binding Categorias, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding CategoriaSelecionada, Mode=TwoWay}"
+                      Grid.Row="0"
+                      Height="32"
+                      Width="165"
+                      Margin="0"
+                      FontSize="16"
+                      mah:TextBoxHelper.Watermark="Categoria"
+                      IsEditable="false"
+                      MaxDropDownHeight="125"
+                      mah:TextBoxHelper.WatermarkAlignment="Right"
+                      mah:TextBoxHelper.AutoWatermark="True"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Left"
+                      DisplayMemberPath="Descricao"
+                      mah:TextBoxHelper.ClearTextButton="True">
+
+            </ComboBox>
+
+            <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarCategoriasCmd}" Background="White" 
+                    templates:HelperPopupToolTip.HelpHeader="Alterar Categorias"
+                    templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar as categorias">
+
+                <StackPanel>
+                    <iconpacks:PackIconMaterial Kind="Pencil" Foreground="Green" Width="18" Height="18"/>
+                </StackPanel>
+
+            </Button>
+
+        </StackPanel>
+        <TextBlock
             HorizontalAlignment="Left"
-            Margin="144,43,0,0"
+            Margin="20,210,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Produto.CodigoBarras, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            VerticalAlignment="Top"
-            Width="216" 
-            MaxLength="13" PreviewKeyDown="CodigoDeBarrasTextBoxKeyDown" />
-
-
+            VerticalAlignment="Top"><Run Language="pt-br" Text="Unidade"/></TextBlock>
         <StackPanel Orientation="Horizontal" Margin="144,206,0,0" Height="32" Width="204" HorizontalAlignment="left" VerticalAlignment="Top">
-        
             <ComboBox ItemsSource="{Binding Unidades, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedItem="{Binding UnidadeSelecionada, Mode=TwoWay}"
-                Grid.Row="0"
-                Height="32"
-                Width="165"
-                Margin="0"
-                FontSize="16"
-                mah:TextBoxHelper.Watermark="Unidade"
-                IsEditable="false"
-                MaxDropDownHeight="125"
-                mah:TextBoxHelper.WatermarkAlignment="Right"
-                mah:TextBoxHelper.AutoWatermark="True"
-                VerticalAlignment="Top"
-                DisplayMemberPath="Descricao"
-                mah:TextBoxHelper.ClearTextButton="True">
-
+                      SelectedItem="{Binding UnidadeSelecionada, Mode=TwoWay}"
+                      Grid.Row="0"
+                      Height="32"
+                      Width="165"
+                      Margin="0"
+                      FontSize="16"
+                      mah:TextBoxHelper.Watermark="Unidade"
+                      IsEditable="false"
+                      MaxDropDownHeight="125"
+                      mah:TextBoxHelper.WatermarkAlignment="Right"
+                      mah:TextBoxHelper.AutoWatermark="True"
+                      VerticalAlignment="Top"
+                      DisplayMemberPath="Descricao"
+                      mah:TextBoxHelper.ClearTextButton="True">
             </ComboBox>
 
             <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarUnidadesCmd}" Background="White" 
@@ -186,28 +168,26 @@
             </Button>
 
         </StackPanel>
-        
         <TextBlock
             HorizontalAlignment="Left"
-            Margin="20,210,0,0"
+            Margin="20,252,0,0"
             TextWrapping="Wrap"
-            VerticalAlignment="Top"><Run Language="pt-br" Text="Unidade"/></TextBlock>
-
+            VerticalAlignment="Top"><Run Language="pt-br" Text="NCM"/></TextBlock>
         <ComboBox ItemsSource="{Binding ListaNCM}"
-            SelectedItem="{Binding NCMSelecionado, Mode=TwoWay}"
-            DisplayMemberPath="Descricao"
-            Grid.Row="0"
-            Height="32"
-            Margin="144,248,441,0"
-            FontSize="16"
-            mah:TextBoxHelper.Watermark="NCM"
-            IsEditable="false"
-            MaxDropDownHeight="125"
-            mah:TextBoxHelper.WatermarkAlignment="Right"
-            mah:TextBoxHelper.AutoWatermark="True"
-            VerticalAlignment="Top"
+                  SelectedItem="{Binding NCMSelecionado, Mode=TwoWay}"
+                  DisplayMemberPath="Descricao"
+                  Grid.Row="0"
+                  Height="32"
+                  Margin="144,248,441,0"
+                  FontSize="16"
+                  mah:TextBoxHelper.Watermark="NCM"
+                  IsEditable="false"
+                  MaxDropDownHeight="125"
+                  mah:TextBoxHelper.WatermarkAlignment="Right"
+                  mah:TextBoxHelper.AutoWatermark="True"
+                  VerticalAlignment="Top"
                   
-            >
+        >
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="ComboBoxItem">
                     <Setter Property="Width" Value="700"/>
@@ -215,13 +195,6 @@
             </ComboBox.ItemContainerStyle>
 
         </ComboBox>
-
-        <TextBlock
-            HorizontalAlignment="Left"
-            Margin="20,252,0,0"
-            TextWrapping="Wrap"
-            VerticalAlignment="Top"><Run Language="pt-br" Text="NCM"/></TextBlock>
-        <CheckBox IsEnabled="True" FontSize="16" Content="Fracionado" HorizontalAlignment="Left" Margin="515,49,0,0" VerticalAlignment="Top" IsChecked="{Binding Produto.Fracionado}"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="20,293,0,0"
@@ -250,7 +223,6 @@
             TextWrapping="Wrap"
             Text="{Binding Produto.Porcentagem, ConverterCulture={x:Static sysglob:CultureInfo.CurrentCulture}, StringFormat={}{0:#0.000}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
-            IsEnabled="False"
             Width="165" Padding="20,4,20,4" />
         <TextBlock 
             Text="%"
@@ -275,15 +247,6 @@
             Margin="365,169,0,0"
             TextWrapping="Wrap"
             VerticalAlignment="Top" Height="27"><Run Language="pt-br" Text="Lotes"/><LineBreak/><Run Language="pt-br"/></TextBlock>
-        <DataGrid BorderThickness="1" Margin="365,206,31,63" BorderBrush="#CC5A5A5A" CanUserAddRows="false"  CanUserDeleteRows="false" AutoGenerateColumns="false" IsReadOnly="false" SelectionMode="Single" ItemsSource="{Binding Lotes, Mode=TwoWay}" SelectedItem="{Binding LoteSelecionado}" x:Name="LotesDataGrid">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding Descricao}"/>
-                <DataGridTextColumn Header="Informações" Width="*" Binding="{Binding Informacoes}"/>
-
-
-            </DataGrid.Columns>
-        </DataGrid>
-
         <Button
             Style="{DynamicResource MahApps.Styles.Button}"  
             Content="Adicionar" HorizontalAlignment="Left" 
@@ -292,7 +255,6 @@
             FontFamily="Segoe UI"
             Command="{Binding AdicionarLoteCmd}">
         </Button>
-
         <Button
             Style="{DynamicResource MahApps.Styles.Button}"  
             Content="Remover" HorizontalAlignment="Left" 
@@ -301,7 +263,14 @@
             FontWeight="Normal"
             Command="{Binding RemoverLoteCmd}">
         </Button>
+        <DataGrid BorderThickness="1" Margin="365,206,31,63" BorderBrush="#CC5A5A5A" CanUserAddRows="false"  CanUserDeleteRows="false" AutoGenerateColumns="false" IsReadOnly="false" SelectionMode="Single" ItemsSource="{Binding Lotes, Mode=TwoWay}" SelectedItem="{Binding LoteSelecionado}" x:Name="LotesDataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding Descricao}"/>
+                <DataGridTextColumn Header="Informações" Width="*" Binding="{Binding Informacoes}"/>
 
+
+            </DataGrid.Columns>
+        </DataGrid>
         <TextBlock
             TextWrapping="Wrap"
             HorizontalAlignment="left"
@@ -324,6 +293,19 @@
                 FontSize="14"
                 Foreground="Red"/>
         </TextBlock>
-
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Cancelar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,95,17" 
+            Click="CancelarButtonClick"/>
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Salvar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,31,17"
+            Command="{Binding SalvarProdutoCmd}"/>
     </Grid>
 </mah:MetroWindow>

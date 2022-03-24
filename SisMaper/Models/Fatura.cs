@@ -18,6 +18,9 @@ public class Fatura : DAO
         Status = Fatura_Status.Aberta;
         Data = DateTime.Today;
     }
+    
+    [Field(FieldType = SqlDbType.BigInt)]
+    public long Numero { get; set; }
 
     [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
     public decimal ValorTotal { get; set; }

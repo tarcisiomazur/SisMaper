@@ -79,6 +79,19 @@ public class NotZero : IValueConverter
     }
 }
 
+public class NotNullOrEmpty : IValueConverter
+{
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value is string {Length: 0} or null ? DependencyProperty.UnsetValue : value;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotSupportedException();
+    }
+}
+
 public class ParamIfTrue : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)

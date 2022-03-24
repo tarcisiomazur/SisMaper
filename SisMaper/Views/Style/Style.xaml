@@ -14,6 +14,8 @@
         x:Key="PedidoStatusIsEditable" />
     <tools:ParamIfTrue
         x:Key="ParamIfTrue" />
+    <tools:NotNullOrEmpty
+        x:Key="NotNullOrEmpty" />
     <tools:NotZero
         x:Key="NotZero" />
     <tools:PedidoStatusToBoolean

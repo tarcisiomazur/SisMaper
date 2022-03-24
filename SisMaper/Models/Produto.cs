@@ -6,7 +6,7 @@ namespace SisMaper.Models;
 [Table(Name = "Produto")]
 public class Produto : DAO
 {
-    [Field(FieldType = SqlDbType.VarChar, Length = 10)]
+    [Field(FieldType = SqlDbType.VarChar, Length = 13)]
     public string CodigoInterno { get; set; }
     
     [Field(FieldType = SqlDbType.VarChar, Length = 13)]

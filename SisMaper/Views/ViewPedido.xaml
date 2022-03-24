@@ -460,6 +460,13 @@
                                 Culture="pt-BR"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
+                                HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
+                                Width="35*"
+                                MinWidth="110"
+                                Header="Identificação"
+                                Binding="{Binding Produto.CodigoInterno}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
                                 Width="18*"
                                 MinWidth="50"
                                 Header="Un"

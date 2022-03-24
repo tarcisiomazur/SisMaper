@@ -83,7 +83,13 @@
                     <DataGridTextColumn
                         Width="40*"
                         MinWidth="100"
-                        Header="Código"
+                        Header="Identificação"
+                        Binding="{Binding CodigoInterno}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Width="40*"
+                        MinWidth="100"
+                        Header="Código de Barras"
                         Binding="{Binding CodigoBarras}"
                         IsReadOnly="True" />
                     <DataGridTextColumn

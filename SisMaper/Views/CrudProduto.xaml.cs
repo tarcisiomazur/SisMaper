@@ -58,11 +58,11 @@ namespace SisMaper.Views
 
         private void CodigoDeBarrasTextBoxKeyDown(object sender, KeyEventArgs e)
         {
-            if (!( (e.Key >= Key.D0 && e.Key <= Key.D9) || (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9) || e.Key == Key.Back))
+            if (e.Key is >= Key.D0 and <= Key.D9 or >= Key.NumPad0 and <= Key.NumPad9 or Key.Back or Key.Tab)
             {
-                e.Handled = true;
+                return;
             }
-            
+            e.Handled = true;
         }
     }
 
