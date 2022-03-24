@@ -25,4 +25,8 @@ public class Cliente : DAO
 
     [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
     public decimal LimiteCredito { get; set; }
+
+    [OneToMany(Fetch = Fetch.Lazy)]
+    public PList<Fatura> Faturas { get; set; }
+    
 }

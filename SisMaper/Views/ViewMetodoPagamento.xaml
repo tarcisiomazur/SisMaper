@@ -6,47 +6,88 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     mc:Ignorable="d"
     Height="172"
-    WindowStartupLocation="CenterScreen"
+    WindowStartupLocation="CenterOwner"
     WindowStyle="None"
+    ShowInTaskbar="False"
     AllowsTransparency="True"
     Width="246">
-    <Border CornerRadius="6" BorderBrush="Black" BorderThickness="1">
+    <Border
+        CornerRadius="6"
+        BorderBrush="Black"
+        BorderThickness="1">
         <Grid>
-            <TextBlock  Text="Selecione o Tipo de Pagamento" Margin="20,10,20,0" Height="22" FontSize="14" VerticalAlignment="Top"/>
+            <TextBlock
+                Text="Selecione o Tipo de Pagamento"
+                Margin="20,10,20,0"
+                Height="22"
+                FontSize="14"
+                VerticalAlignment="Top" />
             <Button
                 x:Name="NovaFatura"
-                    Margin="0,81,0,0"
+                Margin="0,81,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Width="165"
+                Height="32"
+                HorizontalContentAlignment="Center"
+                FontSize="14"
+                Click="Button_Click">
+                <StackPanel
+                    Orientation="Horizontal"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Width="165"
-                    Height="32" HorizontalContentAlignment="Center" FontSize="14" Click="Button_Click">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="22" Margin="0,-2,0,0">
-                    <TextBlock Margin="10,0,5,0"
-                            Text="Nova Fatura" Width="84" Foreground="#FF500000" />
+                    Height="22"
+                    Margin="0,-2,0,0">
+                    <TextBlock
+                        Margin="10,0,5,0"
+                        Text="Nova Fatura"
+                        Width="84"
+                        Foreground="#FF500000" />
                 </StackPanel>
             </Button>
             <Button
                 x:Name="FaturaExistente"
-                    Margin="0,118,0,0"
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Top"
-                    Width="165"
-                    Height="32" FontSize="14" Click="Button_Click">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="22" Width="118">
-                    <TextBlock Margin="10,0,5,0"
-                            Text="Fatura Existente" Width="110" Foreground="#FF500000" />
+                Margin="0,118,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Width="165"
+                Height="32"
+                FontSize="14"
+                Click="Button_Click">
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Height="22"
+                    Width="118">
+                    <TextBlock
+                        Margin="10,0,5,0"
+                        Text="Fatura Existente"
+                        Width="110"
+                        Foreground="#FF500000" />
                 </StackPanel>
             </Button>
             <Button
                 x:Name="AVista"
-                    Margin="0,44,0,0"
+                Margin="0,44,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Width="165"
+                Height="32"
+                HorizontalContentAlignment="Center"
+                FontSize="14"
+                Click="Button_Click">
+                <StackPanel
+                    Orientation="Horizontal"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Width="165"
-                    Height="32" HorizontalContentAlignment="Center" FontSize="14" Click="Button_Click">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="22" Margin="0,-2,0,0">
-                    <TextBlock Margin="10,0,5,0"
-                            Width="50" Foreground="#FF199800" ><Run Language="pt-br" Text="A Vista"/></TextBlock>
+                    Height="22"
+                    Margin="0,-2,0,0">
+                    <TextBlock
+                        Margin="10,0,5,0"
+                        Width="50"
+                        Foreground="#FF199800">
+                        <Run
+                            Language="pt-br"
+                            Text="A Vista" />
+                    </TextBlock>
                 </StackPanel>
             </Button>
         </Grid>

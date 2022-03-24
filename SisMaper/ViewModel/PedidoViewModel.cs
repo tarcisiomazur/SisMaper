@@ -63,6 +63,8 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     public event Action? Save;
 
+    public event Action<Action<ViewMetodoPagamento.OptionPagamento>>? OpenMetodoPagamento;
+
     public event Action<BuscarProdutoViewModel>? OpenBuscarProduto;
 
     public event Action<CrudClienteViewModel, bool>? OpenCrudCliente;
@@ -72,6 +74,8 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     public event Action<EscolherLoteViewModel>? OpenEscolherLote;
 
     public event Action<FaturaViewModel>? OpenFatura;
+
+    public event Action<SelecionarFaturaViewModel>? OpenSelecionarFatura;
 
     #endregion
 
@@ -239,7 +243,6 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     private void AbrirFaturaPedido()
     {
         OpenFatura?.Invoke(new FaturaViewModel(Pedido.Fatura.Id));
-        Save?.Invoke();
     }
 
     private void AtualizarSituacaoNF()
@@ -332,15 +335,12 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     private void ReceberPedido()
     {
-        var metodopagamento = new ViewMetodoPagamento();
-        metodopagamento.Closed += MetodoSelecionado;
-        metodopagamento.Show();
+        OpenMetodoPagamento?.Invoke(MetodoSelecionado);
     }
 
-    private void MetodoSelecionado(object? sender, EventArgs e)
+    private void MetodoSelecionado(ViewMetodoPagamento.OptionPagamento pgmto)
     {
-        if (sender is not ViewMetodoPagamento pgmto ||
-            pgmto.Selecionado == ViewMetodoPagamento.OptionPagamento.Null)
+        if (pgmto == ViewMetodoPagamento.OptionPagamento.Null)
         {
             return;
         }
@@ -352,7 +352,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
             return;
         }
 
-        switch (pgmto.Selecionado)
+        switch (pgmto)
         {
             case ViewMetodoPagamento.OptionPagamento.AVista:
                 ProcessarPagamentoAVista();
@@ -361,9 +361,57 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
                 ProcessarPagamentoNovaFatura();
                 break;
             case ViewMetodoPagamento.OptionPagamento.FaturaExistente:
+                ProcessarPagamentoFaturaExistente();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private void ProcessarPagamentoFaturaExistente()
+    {
+        if (Pedido.Cliente is null)
+        {
+            OnShowMessage("Cliente não informado", "Um cliente deve ser informado no pedido");
+            return;
+        }
+
+        if (!Pedido.Cliente.Faturas.Load())
+        {
+            OnShowMessage("Erro ao Buscar Faturas",
+                $"Não foi possível buscar faturas para o cliente {Pedido.Cliente.Nome}.");
+            return;
+        }
+
+        var faturas = Pedido.Cliente.Faturas
+            .Where(f => f is {Status: Fatura.Fatura_Status.Aberta, Parcelas.Count: 0}).ToList();
+
+        if (faturas.Count == 0)
+        {
+            OnShowMessage("Fatura não encontrada", "Nenhuma fatura aberta foi encontrada.");
+            return;
+        }
+
+        var vm = new SelecionarFaturaViewModel(faturas);
+        OpenSelecionarFatura?.Invoke(vm);
+        if (vm.FaturaSelecionada is null)
+        {
+            return;
+        }
+
+        Pedido.Fatura = vm.FaturaSelecionada;
+        Pedido.Fatura.Pedidos.Add(Pedido);
+        Pedido.Status = Pedido.Pedido_Status.Fechado;
+        if (!Pedido.Fatura.Save())
+        {
+            OnShowMessage("Salvar Fatura", "A fatura do pedido não pode ser salva!");
+            Cancel?.Invoke();
+        }
+
+        {
+            Pedido.Fatura.Load();
+            SystemSounds.Beep.Play();
+            AbrirFaturaPedido();
         }
     }
 
@@ -371,8 +419,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     {
         if (Pedido.Cliente == null)
         {
-            OnShowMessage("Salvar Fatura",
-                "O cliente não pode estar em branco!");
+            OnShowMessage("Cliente não informado", "Um cliente deve ser informado no pedido");
             return;
         }
 

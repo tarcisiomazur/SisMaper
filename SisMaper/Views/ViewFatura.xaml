@@ -201,7 +201,7 @@
                         Command="{Binding ExcluirParcelaCmd}"/>
 
                     <Button
-                        Style="{DynamicResource OptionsButtonStyle}"
+                        Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Gerar Parcelas"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"

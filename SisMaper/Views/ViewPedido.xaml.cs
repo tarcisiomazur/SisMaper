@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using CefSharp;
 using CefSharp.Wpf;
 using SisMaper.Tools;
@@ -28,6 +29,8 @@ public partial class ViewPedido
             newViewModel.OpenEditarItem += OpenEditarItem;
             newViewModel.OpenCrudCliente += OpenCrudCliente;
             newViewModel.OpenEscolherLote += OpenEscolherLote;
+            newViewModel.OpenMetodoPagamento += OpenMetodoPagamento;
+            newViewModel.OpenSelecionarFatura += OpenSelecionarFatura;
             newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             newViewModel.ShowProgress += Helper.MahAppsDefaultProgress;
         }
@@ -41,6 +44,8 @@ public partial class ViewPedido
             oldViewModel.OpenEditarItem -= OpenEditarItem;
             oldViewModel.OpenCrudCliente -= OpenCrudCliente;
             oldViewModel.OpenEscolherLote -= OpenEscolherLote;
+            oldViewModel.OpenMetodoPagamento -= OpenMetodoPagamento;
+            oldViewModel.OpenSelecionarFatura -= OpenSelecionarFatura;
             oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             oldViewModel.ShowProgress -= Helper.MahAppsDefaultProgress;
         }
@@ -69,7 +74,29 @@ public partial class ViewPedido
 
     private void OpenFatura(FaturaViewModel viewModel)
     {
+        Hide();
         new ViewFatura {DataContext = viewModel, Owner = this}.ShowDialog();
+        Show();
+    }
+    
+    private void OpenMetodoPagamento(Action<ViewMetodoPagamento.OptionPagamento> callback)
+    {
+        var metodopagamento = new ViewMetodoPagamento {Owner = this};
+        metodopagamento.Show();
+        metodopagamento.Closed += (_, _) =>
+        {
+            
+            Activate();
+            Topmost = true;  // important
+            Topmost = false; // important
+            Focus();         // important
+            callback.Invoke(metodopagamento.Selecionado);
+        };
+    }
+    
+    private void OpenSelecionarFatura(SelecionarFaturaViewModel viewModel)
+    {
+        new ViewSelecionarFatura() {DataContext = viewModel, Owner = this}.ShowDialog();
     }
 
     private void SetZoom(object? sender, FrameLoadEndEventArgs frameLoadEndEventArgs)

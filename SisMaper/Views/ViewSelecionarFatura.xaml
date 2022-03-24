@@ -1,0 +1,97 @@
+﻿<mah:MetroWindow
+    x:Class="SisMaper.Views.ViewSelecionarFatura"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:templates="clr-namespace:SisMaper.Views.Templates"
+    xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
+    mc:Ignorable="d"
+    templates:DialogParticipation.MyRegister="{Binding}"
+    SaveWindowPosition="True"
+    ShowInTaskbar="False"
+    Title="Selecionar Fatura para o Pedido"
+    Height="400"
+    Width="500"
+    d:DataContext="{d:DesignInstance viewModel:SelecionarFaturaViewModel}"
+    TitleCharacterCasing="Normal">
+    <Grid>
+        <TextBlock
+            Margin="10,23,30,0"
+            Height="22"
+            FontSize="14"
+            VerticalAlignment="Top">
+            <Run
+                Text="Selecione " />
+            <Run
+                Language="pt-br"
+                Text="um" />
+            <Run
+                Text="a Fatura a qual deseja inserir o pedido" />
+        </TextBlock>
+
+        <Border
+            BorderBrush="#FFADADAD"
+            BorderThickness="2"
+            CornerRadius="3"
+            Margin="10,66,10,49">
+            <DataGrid
+                Style="{DynamicResource MahApps.Styles.DataGrid}"
+                HorizontalContentAlignment="Stretch"
+                x:Name="SelecionarFaturaDataGrid"
+                ColumnWidth="*"
+                templates:SaveUIProperty.SaveSizes="True"
+                ItemsSource="{Binding Faturas}"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                IsReadOnly="True"
+                SelectionMode="Single"
+                SelectedItem="{Binding Selecionado, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <mah:DataGridNumericUpDownColumn
+                        HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
+                        Width="80*"
+                        MinWidth="80"
+                        Header="Número"
+                        Binding="{Binding Id}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Width="25*"
+                        MinWidth="75"
+                        Header="Data"
+                        Binding="{Binding Data, StringFormat=\{0:dd/MM/yyyy\}}"
+                        IsReadOnly="True" />
+                    <mah:DataGridNumericUpDownColumn
+                        HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
+                        Width="80*"
+                        MinWidth="125"
+                        Header="Valor Total(R$)"
+                        StringFormat="{}{0:N2}"
+                        Culture="pt-BR"
+                        Binding="{Binding ValorTotal}"
+                        IsReadOnly="true" />
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Selecionar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding SelecionarCmd}"
+            Margin="0,0,10,10"
+            Height="30"
+            Width="92" />
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Cancelar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding CancelarCmd}"
+            Margin="0,0,112,10"
+            Height="30"
+            Width="81" />
+    </Grid>
+</mah:MetroWindow>
