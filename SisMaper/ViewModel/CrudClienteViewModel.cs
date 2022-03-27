@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Persistence;
 using RestSharp;
+using SisMaper.API.CnpjWs;
 using SisMaper.API.ViaCEP;
 using SisMaper.Models;
 using SisMaper.Models.Views;
@@ -12,6 +13,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+
 
 namespace SisMaper.ViewModel
 {
@@ -60,15 +65,14 @@ namespace SisMaper.ViewModel
 
 
         private CepResponse enderecoConfirmado; // informações de endereço depois de usar a api
-        private string? cepConfirmado; //cep pra verificar se o ultimo cep confirmado é igual ao cep atual
 
-        
+        private CnpjResponse? cnpjConfirmado;
 
         public SimpleCommand SalvarPessoaFisicaCmd => new(SalvarPessoaFisica);
         public SimpleCommand SalvarPessoaJuridicaCmd => new(SalvarPessoaJuridica);
 
         //public SimpleCommand ConsultaCpfCmd => new(() => ConsultaCEP(true));
-        //public SimpleCommand ConsultaCnpjCmd => new(() => ConsultaCEP(false));
+        public SimpleCommand ConsultaCnpjCmd => new( ConsultaCNPJ );
 
         public SimpleCommand PessoaFisicaConsultaCepCmd => new(() => ConsultaCEP(PessoaFisica));
         public SimpleCommand PessoaJuridicaConsultaCepCmd => new(() => ConsultaCEP(PessoaJuridica));
@@ -124,7 +128,7 @@ namespace SisMaper.ViewModel
             if (e is not null)
             {
                 Cidades = e.Cidades;
-                if(Cidades is not null && Cidades.Count > 0)
+                if(Cidades is not null && Cidades.Any())
                 {
                     CidadeSelecionada = Cidades.First();
                 }
@@ -236,7 +240,35 @@ namespace SisMaper.ViewModel
             return (cnpj.EndsWith(digitos));
 
         }
-       
+
+
+        private void CheckCNPJ()
+        {
+            if (PessoaJuridica.CNPJ is null || PessoaJuridica.CNPJ.Equals("__.___.___/____-__"))
+            {
+                throw new InvalidOperationException("CNPJ não pode ser vazio");
+            }
+
+            if (PessoaJuridica.CNPJ.Length == 18)
+            {
+                PessoaJuridica.CNPJ = PessoaJuridica.CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
+            }
+
+            if (PessoaJuridica.CNPJ.Contains('_'))
+            {
+                throw new InvalidOperationException("CNPJ incompleto");
+            }
+
+            if (!CheckDigitoVerificadorCNPJ(PessoaJuridica.CNPJ))
+            {
+                throw new InvalidOperationException("CNPJ Inválido");
+            }
+
+            if (SearchCliente(PessoaJuridica))
+            {
+                throw new InvalidOperationException("CNPJ já registrado");
+            }
+        }
 
         private void CheckCEP(ref string? cep)
         {
@@ -254,23 +286,24 @@ namespace SisMaper.ViewModel
             }
         }
         
-
+        
         private void ConsultaCEP(Cliente cliente)
         {
             enderecoConfirmado = null;
             
             try
             {
-                cepConfirmado = cliente.CEP;
-                CheckCEP(ref cepConfirmado);
-                cliente.CEP = cepConfirmado;
+                string? cep = cliente.CEP;
+                CheckCEP(ref cep);
+                cliente.CEP = cep;
 
-                enderecoConfirmado = ViaCepConnector.Consultar(cepConfirmado);
+                enderecoConfirmado = ViaCepConnector.ConsultarCEP(cep);
 
                 EstadoSelecionado = Estados.Where(e => e.UF == enderecoConfirmado?.UF).FirstOrDefault();
                 CidadeSelecionada = Cidades?.Where(c => c.Nome == enderecoConfirmado?.Cidade).FirstOrDefault();
                 cliente.Bairro = enderecoConfirmado.Bairro;
                 cliente.Endereco = enderecoConfirmado.Endereco;
+                if(!string.IsNullOrWhiteSpace(enderecoConfirmado.Numero)) cliente.Numero = enderecoConfirmado.Numero;
             }
             catch (Exception ex)
             {
@@ -281,16 +314,18 @@ namespace SisMaper.ViewModel
         // retorna true se o endereço ta correspondente ao cep ou se o usuário ignorar a confirmação
         private bool ComparaEndereco(Cliente cliente)
         {
+            //indica se não tem nenhuma informação de endereço
+            bool isEnderecoEmpty = !(CidadeSelecionada is not null ||
+                                    !string.IsNullOrWhiteSpace(cliente.Endereco) ||
+                                    !string.IsNullOrWhiteSpace(cliente.Bairro) ||
+                                    !string.IsNullOrWhiteSpace(cliente.Numero));
+
             //caso o cep não foi confirmado e tem alguma informação de endereço (pode não ter nenhum cep também)
             //ou se o cep confirmado é diferente do cep atual
             //ou se tem um cep e não foi confirmado (sem outras informações de endereço)
-            if( (!string.IsNullOrWhiteSpace(cliente.CEP) && enderecoConfirmado is null) || 
-                (enderecoConfirmado is not null && cepConfirmado != cliente.CEP) || 
-                    (enderecoConfirmado is null && 
-                        (CidadeSelecionada is not null || 
-                            !string.IsNullOrWhiteSpace(cliente.Endereco) ||
-                            !string.IsNullOrWhiteSpace(cliente.Bairro) || 
-                            !string.IsNullOrWhiteSpace(cliente.Numero))))
+            if ( (!string.IsNullOrWhiteSpace(cliente.CEP) && enderecoConfirmado is null) || 
+                    enderecoConfirmado is not null && enderecoConfirmado.CEP != cliente.CEP || 
+                        enderecoConfirmado is null && !isEnderecoEmpty)
             {
                 MessageDialogResult resultado = OnShowMessage("CEP Não Confirmado", "O CEP não foi confirmado. Continuar?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
                 return resultado == MessageDialogResult.Affirmative; 
@@ -298,7 +333,7 @@ namespace SisMaper.ViewModel
 
             
             //quando o alguma informação não corresponde ao endereço obtido com a consulta do cep
-            if(enderecoConfirmado is not null && cepConfirmado == cliente.CEP)
+            if(enderecoConfirmado is not null && enderecoConfirmado.CEP == cliente.CEP)
             {
                 string? uf = enderecoConfirmado.UF;
                 string? cidade = enderecoConfirmado.Cidade;
@@ -313,6 +348,75 @@ namespace SisMaper.ViewModel
                 if(ufDiferente || cidadeDiferente || bairroDiferente || enderecoDiferente)
                 {
                     MessageDialogResult resultado = OnShowMessage("Endereço Não Correspondente", "As informações de endereço não correspondem ao CEP. Continuar?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
+                    return resultado == MessageDialogResult.Affirmative;
+                }
+            }
+
+            return true;
+        }
+
+
+        private void ConsultaCNPJ()
+        {
+            try
+            {
+                cnpjConfirmado = null;
+                CheckCNPJ();
+                cnpjConfirmado = CnpjWs.ConsultarCNPJ(PessoaJuridica.CNPJ);
+
+                PessoaJuridica.Nome = cnpjConfirmado.Nome;
+                PessoaJuridica.RazaoSocial = cnpjConfirmado.RazaoSocial;
+                PessoaJuridica.InscricaoEstadual = cnpjConfirmado.InscricaoEstadual;
+
+                //Informa caso a situação cadastral não seja ativa (suspensa/inapta/baixada/nula)
+                if(cnpjConfirmado.SituacaoCadastral != "Ativa")
+                {
+                    OnShowMessage("Informação Sobre Situação Cadastral", $"Situação cadastral {cnpjConfirmado.SituacaoCadastral}");
+                }
+
+                PessoaJuridica.CEP = cnpjConfirmado.Cep;
+                ConsultaCEP(PessoaJuridica);
+            }
+            catch (Exception ex)
+            {
+                OnShowMessage("Erro ao consultar CNPJ", ex.Message);
+            }
+        }
+
+
+        private bool ComparaCNPJ()
+        {
+            //indica se não tem nenhuma informação da empresa (fora o endereço)
+            bool isInformacoesEmpty = !(!string.IsNullOrWhiteSpace(PessoaJuridica.Nome) || 
+                                        !string.IsNullOrWhiteSpace(PessoaJuridica.RazaoSocial) || 
+                                        !string.IsNullOrWhiteSpace(PessoaJuridica.InscricaoEstadual) || 
+                                        !string.IsNullOrWhiteSpace(PessoaJuridica.CEP));
+
+            if (cnpjConfirmado is null || 
+                cnpjConfirmado is not null && cnpjConfirmado.CNPJ != PessoaJuridica.CNPJ || 
+                    cnpjConfirmado is null && !isInformacoesEmpty)
+            {
+                MessageDialogResult resultado = OnShowMessage("CNPJ Não Confirmado", "O CNPJ não foi confirmado. Continuar?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
+                return resultado == MessageDialogResult.Affirmative;
+            }
+
+
+            //quando o alguma informação não corresponde as informações obtidas com a consulta do cnpj
+            if (cnpjConfirmado is not null && cnpjConfirmado.CNPJ == PessoaJuridica.CNPJ)
+            {
+                string? nome = cnpjConfirmado.Nome;
+                string? razaoSocial = cnpjConfirmado.RazaoSocial;
+                string? inscricaoEstadual = cnpjConfirmado.InscricaoEstadual;
+                string? cep = cnpjConfirmado.Cep;
+
+                bool nomeDiferente = !string.IsNullOrWhiteSpace(nome) && nome != PessoaJuridica.Nome;
+                bool razaoSocialDiferente = !string.IsNullOrWhiteSpace(razaoSocial) && razaoSocial != PessoaJuridica.RazaoSocial;
+                bool inscricaoEstadualDiferente = !string.IsNullOrWhiteSpace(inscricaoEstadual) && inscricaoEstadual != PessoaJuridica.InscricaoEstadual;
+                bool cepDiferente = !string.IsNullOrWhiteSpace(cep) && cep != PessoaJuridica.CEP;
+
+                if (nomeDiferente || razaoSocialDiferente || inscricaoEstadualDiferente || cepDiferente)
+                {
+                    MessageDialogResult resultado = OnShowMessage("Informações Não Correspondentes", "As informações de não correspondem ao CNPJ. Continuar?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings { AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
                     return resultado == MessageDialogResult.Affirmative;
                 }
             }
@@ -381,6 +485,7 @@ namespace SisMaper.ViewModel
                 pf.Bairro = bairro;
                 pf.Numero = numero;
 
+                
                 pf.Save();
                 ClienteSaved?.Invoke();
 
@@ -399,36 +504,14 @@ namespace SisMaper.ViewModel
                 }
 
 
-                if (pj.CNPJ is null || pj.CNPJ.Equals("__.___.___/____-__"))
-                {
-                    throw new InvalidOperationException("CNPJ não pode ser vazio");
-                }
-
-                if (pj.CNPJ.Length == 18)
-                {
-                    pj.CNPJ = pj.CNPJ.Replace(".", "").Replace("/", "").Replace("-", "");
-                }
-
-                if (pj.CNPJ.Contains('_'))
-                {
-                    throw new InvalidOperationException("CNPJ incompleto");
-                }
-
-                if (!CheckDigitoVerificadorCNPJ(pj.CNPJ))
-                {
-                    throw new InvalidOperationException("CNPJ Inválido");
-                }
-
-                if (SearchCliente(pj))
-                {
-                    throw new InvalidOperationException("CNPJ já registrado");
-                }
+                CheckCNPJ();
 
                 string? cep = pj.CEP;
                 CheckCEP(ref cep);
                 pj.CEP = cep;
 
-                if (!ComparaEndereco(pj)) return;
+
+                if (!ComparaCNPJ() || !ComparaEndereco(pj)) return;
 
 
                 string? nome = pj.Nome;
@@ -449,6 +532,8 @@ namespace SisMaper.ViewModel
                 pj.Numero = numero;
                 pj.Bairro = bairro;
 
+
+                
                 pj.Save();
                 ClienteSaved?.Invoke();
 
@@ -462,7 +547,7 @@ namespace SisMaper.ViewModel
 
         private void SalvarPessoaFisica()
         {
-   
+            
             try
             {
                 SalvarCliente(PessoaFisica);
@@ -472,6 +557,7 @@ namespace SisMaper.ViewModel
                 OnShowMessage("Erro ao salvar Cliente", "Erro: " + ex.Message);
             }
             
+
         }
 
         private void SalvarPessoaJuridica()

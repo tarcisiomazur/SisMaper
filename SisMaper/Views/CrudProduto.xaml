@@ -221,6 +221,7 @@
             HorizontalContentAlignment="Right"
             Margin="144,336,0,0"
             TextWrapping="Wrap"
+            IsReadOnly="True"
             Text="{Binding Produto.Porcentagem, ConverterCulture={x:Static sysglob:CultureInfo.CurrentCulture}, StringFormat={}{0:#0.000}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="165" Padding="20,4,20,4" />
