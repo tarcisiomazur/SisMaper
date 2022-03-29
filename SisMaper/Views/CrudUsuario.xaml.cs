@@ -21,11 +21,25 @@ namespace SisMaper.Views
     /// </summary>
     public partial class CrudUsuario
     {
+
+        //alturas
+        //usuario sem admin - 620 com expander / 450 sem expander
+        //usuario com admin - 500 novo usuario e editar usuario sem expander / 570 com expander 
+
+        const double notAdminWithExpanderHeight = 620;
+        const double notAdminWithoutExpanderHeight = 450;
+
+        const double adminWithoutExpanderHeight = 500;
+        const double adminWithExpanderHeight = 570;
+
         public CrudUsuario()
         {
             DataContextChanged += SetActions;
+            Loaded += CrudUsuario_Loaded;
+            
             InitializeComponent();
         }
+
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -48,5 +62,39 @@ namespace SisMaper.Views
         {
             if (e.Key == Key.Space || e.Key == Key.Tab) e.Handled = true;
         }
+
+
+
+
+
+        private void CrudUsuario_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!PermissoesBorder.IsEnabled)
+                Height = notAdminWithoutExpanderHeight;
+
+            else
+                Height = adminWithoutExpanderHeight;
+        }
+
+        private void SenhaExpander_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!SenhaExpander.IsExpanded)
+            {
+                if (!PermissoesBorder.IsEnabled)
+                    Height = notAdminWithoutExpanderHeight;
+
+                else
+                    Height = adminWithoutExpanderHeight;
+            }
+            else
+            {
+                if (!PermissoesBorder.IsEnabled)
+                    Height = notAdminWithExpanderHeight;
+
+                else
+                    Height = adminWithExpanderHeight;
+            }
+        }
+
     }
 }

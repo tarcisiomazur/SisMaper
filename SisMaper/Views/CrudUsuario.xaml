@@ -13,7 +13,7 @@
     xmlns:myInteractions="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     xmlns:tools="clr-namespace:SisMaper.Tools"
     mc:Ignorable="d"
-    Height="700"
+    Height="620"
     Width="400"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
@@ -121,12 +121,31 @@
 
         <StackPanel Margin="10,0,0,0">
 
-            <TextBlock Text="Usuário" FontSize="32"/>
+            <StackPanel Orientation="Horizontal">
+                
+                <TextBlock Text="Usuário" FontSize="32"/>
+                <TextBlock 
+                    Visibility="{Binding IsEditUsuario, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    Text="Identificação:" 
+                    FontSize="20" 
+                    VerticalAlignment="Center" 
+                    Margin="60,0,0,0"/>
+                <TextBox 
+                    Visibility="{Binding IsEditUsuario, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                    IsReadOnly="True" 
+                    Width="90" 
+                    Text="{Binding Usuario.Id, Mode=OneTime}" 
+                    HorizontalContentAlignment="Right" 
+                    Margin="10,0,0,0" 
+                    VerticalAlignment="Center" 
+                    FontSize="20"/>
+                
+            </StackPanel>
             <Separator Margin="0,0,10,0"/>
 
             <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0" IsEnabled="{Binding IsUserAdmin}">
 
-                <TextBlock Text="Nome" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
+                <TextBlock Text="Nome" FontSize="16" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
                 <TextBox
                     Style="{StaticResource TextBoxUsuario}"
                     VerticalAlignment="Bottom"
@@ -142,7 +161,7 @@
 
             <StackPanel Orientation="Horizontal" Height="32" Margin="0,20,0,0" Visibility="{Binding IsUserAdmin, Converter={StaticResource boolToVisibilityConverter}}">
 
-                <TextBlock Text="Login" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
+                <TextBlock Text="Login" FontSize="16" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
                 <TextBox
                     Style="{StaticResource TextBoxUsuario}"
                     VerticalAlignment="Bottom"
@@ -163,7 +182,7 @@
 
 
 
-                <TextBlock Text="Senha" FontSize="20" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
+                <TextBlock Text="Senha" FontSize="16" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="70"/>
                 <templates:MyPasswordBox
                         VerticalAlignment="Bottom"
                         Password="{Binding NovaSenha, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToSha512}, Mode=OneWayToSource}"
@@ -195,7 +214,64 @@
             </StackPanel>
 
 
+
+
+            <Separator Margin="0,10,10,0"/>
+
+
+            <TextBlock Text="Permissões" FontSize="20" Margin="0,10,0,0" HorizontalAlignment="Left"/>
+
+
+            <Border
+                x:Name="PermissoesBorder"
+                IsEnabled="{Binding IsUserAdmin, Mode=OneWay}"
+                Width="160"
+                Height="150"
+                Margin="0,5,0,0" 
+                BorderThickness="3" 
+                BorderBrush="Gray" 
+                CornerRadius="10" 
+                Background="White"
+                HorizontalAlignment="Left">
+
+                <StackPanel Margin="10">
+
+                    <CheckBox 
+                        Style="{StaticResource MyCheckBoxStyle}"
+                        Content="Cadastro" 
+                        FontSize="16"
+                        IsChecked="{Binding PermissaoCadastro, Mode=TwoWay}"/>
+
+                    <CheckBox 
+                        Style="{StaticResource MyCheckBoxStyle}"
+                        Content="Venda" 
+                        FontSize="16" 
+                        Margin="0,10,0,0"
+                        IsChecked="{Binding PermissaoVenda, Mode=TwoWay}"/>
+
+                    <CheckBox 
+                        Style="{StaticResource MyCheckBoxStyle}"
+                        Content="Recebimento" 
+                        FontSize="16" 
+                        Margin="0,10,0,0"
+                        IsChecked="{Binding PermissaoRecebimento, Mode=TwoWay}"/>
+
+                    <CheckBox 
+                        Style="{StaticResource MahApps.Styles.CheckBox}"
+                        Content="Administrador" 
+                        x:Name="AdminCheckBox" 
+                        FontSize="16" 
+                        Margin="0,10,0,0"
+                        IsChecked="{Binding PermissaoAdmin, Mode=TwoWay}"/>
+
+                </StackPanel>
+
+
+            </Border>
+
             <Expander
+                x:Name="SenhaExpander"
+                SizeChanged="SenhaExpander_SizeChanged"
                 Margin="0,20,10,0" 
                 Header="Alterar Senha" 
                 mah:HeaderedControlHelper.HeaderBackground="DeepSkyBlue">
@@ -212,7 +288,7 @@
 
                 <StackPanel>
 
-                    <StackPanel>
+                    <StackPanel x:Name="LoginSenhaStackPanel">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Style.Triggers>
@@ -315,58 +391,7 @@
 
             </Expander>
 
-            <Separator Margin="0,10,10,0"/>
-
-
-            <TextBlock Text="Permissões" FontSize="20" Margin="0,20,0,0" HorizontalAlignment="Left"/>
-
-
-            <Border IsEnabled="{Binding IsUserAdmin, Mode=OneWay}"
-                Width="200"
-                Height="170"
-                Margin="0,5,0,0" 
-                BorderThickness="3" 
-                BorderBrush="Gray" 
-                CornerRadius="10" 
-                Background="White"
-                HorizontalAlignment="Left">
-
-                <StackPanel Margin="10">
-
-                    <CheckBox 
-                        Style="{StaticResource MyCheckBoxStyle}"
-                        Content="Cadastro" 
-                        FontSize="20"
-                        IsChecked="{Binding PermissaoCadastro, Mode=TwoWay}"/>
-
-                    <CheckBox 
-                        Style="{StaticResource MyCheckBoxStyle}"
-                        Content="Venda" 
-                        FontSize="20" 
-                        Margin="0,10,0,0"
-                        IsChecked="{Binding PermissaoVenda, Mode=TwoWay}"/>
-
-                    <CheckBox 
-                        Style="{StaticResource MyCheckBoxStyle}"
-                        Content="Recebimento" 
-                        FontSize="20" 
-                        Margin="0,10,0,0"
-                        IsChecked="{Binding PermissaoRecebimento, Mode=TwoWay}"/>
-
-                    <CheckBox 
-                        Style="{StaticResource MahApps.Styles.CheckBox}"
-                        Content="Administrador" 
-                        x:Name="AdminCheckBox" 
-                        FontSize="20" 
-                        Margin="0,10,0,0"
-                        IsChecked="{Binding PermissaoAdmin, Mode=TwoWay}"/>
-
-                </StackPanel>
-
-
-            </Border>
-
-            <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,10,0">
 
                 <Button 
                     Style="{StaticResource SisMaper.Button.OptionsButtonStyle}" 
@@ -376,7 +401,7 @@
 
                 <Button 
                     Style="{StaticResource SisMaper.Button.OptionsButtonStyle}" 
-                    Margin="40,0,0,0"
+                    Margin="10,0,0,0"
                     Content="Cancelar"
                     PreviewMouseDown="CancelarButtonPressed"/>
 

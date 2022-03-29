@@ -54,14 +54,14 @@
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,84,20" 
+            Margin="0,0,20,20" 
             PreviewMouseLeftButtonDown="CloseWindow"/>
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,20,20" 
+            Margin="0,0,104,20" 
             Command="{Binding SalvarFaturaCmd}"/>
         <TextBlock
             HorizontalAlignment="Left"

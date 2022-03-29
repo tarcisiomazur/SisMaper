@@ -1,4 +1,4 @@
-﻿/* ========== Text Styles ========== */
+/* ========== Text Styles ========== */
 hr { color: #000000}
 .main-content, .main-content table span.rvts0 /* Normal text */
 {
@@ -110,6 +110,11 @@ span.rvts20
 {
  font-weight: bold;
 }
+span.rvts21
+{
+ font-size: 12pt;
+ text-decoration: underline;
+}
 /* ========== Para Styles ========== */
 p,ul,ol /* Paragraph Style */
 {
@@ -159,6 +164,12 @@ p,ul,ol /* Paragraph Style */
  line-height: 1.50;
 }
 .rvps9
+{
+ text-indent: 48px;
+ line-height: 1.50;
+ margin: 0px 0px 0px 48px;
+}
+.rvps10
 {
  text-indent: -24px;
  margin: 0px 0px 0px 48px;

@@ -29,10 +29,10 @@ namespace SisMaper.ViewModel
 
         public UsuariosViewModel()
         {
-            PropertyChanged += UdpateFilter;
+            PropertyChanged += UpdateFilter;
         }
 
-        private void UdpateFilter(object? sender, PropertyChangedEventArgs e)
+        private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
         {
             if (Usuarios != null && e.PropertyName is nameof(TextoFiltro))
             {
@@ -52,8 +52,6 @@ namespace SisMaper.ViewModel
             Usuarios = null;
             UsuariosFiltrados = null;
         }
-
-
 
 
 
@@ -90,6 +88,8 @@ namespace SisMaper.ViewModel
 
 
             public bool IsNovoUsuario { get; private set; }
+            public bool IsEditUsuario => !IsNovoUsuario;    // pra mostrar o Id na interface
+
             public bool IsUserAdmin => Main.Usuario.Permissao.HasFlag(Usuario.Tipo_Permissao.Gerenciamento);
 
 
@@ -125,24 +125,15 @@ namespace SisMaper.ViewModel
             }
 
 
-            //retorna se achou um nome ou um login igual
-            private bool? SearchNomeAndLogin()
+            //retorna se achou um login igual
+            private bool? SearchLogin()
             {
                 if (usuarios is null || Usuario is null) return null;
 
-                foreach (Usuario u in usuarios)
+                if( usuarios.Where(u => u.Id != Usuario.Id && u.Login.Equals(Usuario.Login)).Any() )
                 {
-                    if (u.Id != Usuario.Id && u.Nome.Equals(Usuario.Nome))
-                    {
-                        OnShowMessage("Erro ao salvar usuário", "Nome já existe");
-                        return true;
-                    }
-
-                    if (u.Id != Usuario.Id && u.Login.Equals(Usuario.Login))
-                    {
-                        OnShowMessage("Erro ao salvar usuário", "Login já existe");
-                        return true;
-                    }
+                    OnShowMessage("Erro ao salvar usuário", "Login já existe");
+                    return true;
                 }
 
                 return false;
@@ -211,9 +202,7 @@ namespace SisMaper.ViewModel
 
                 if (!IsUserAdmin)
                 {
-                    Console.WriteLine($"LOGIN ==> {Login}           SENHA ==> {senhaAtualVazia}");
-
-                    if (string.IsNullOrWhiteSpace(Login) || senhaAtualVazia)
+                     if (string.IsNullOrWhiteSpace(Login) || senhaAtualVazia)
                     {
                         if (!novaSenhaVazia)
                         {
@@ -268,7 +257,7 @@ namespace SisMaper.ViewModel
                     return;
                 }
 
-                if (SearchNomeAndLogin() != false || CheckPermissoes() != true || CheckSenha() != true) return;
+                if (SearchLogin() != false || CheckPermissoes() != true || CheckSenha() != true) return;
 
 
                 try

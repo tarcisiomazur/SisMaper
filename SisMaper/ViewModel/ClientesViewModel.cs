@@ -5,11 +5,8 @@ using SisMaper.Models;
 using SisMaper.Models.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace SisMaper.ViewModel
 {
@@ -23,8 +20,12 @@ namespace SisMaper.ViewModel
             set { SetField(ref _clienteSelecionado, value); }
         }
 
-        public List<ListarClientes>? PessoaFisicaList { get; set; }
-        public List<ListarClientes>? PessoaJuridicaList { get; set; }
+        public string TextoFiltro { get; set; }
+
+        private List<ListarClientes>? clientes;
+        private IEnumerable<ListarClientes>? clientesFiltrados;
+        public IEnumerable<ListarClientes>? PessoaFisicaList { get; set; }
+        public IEnumerable<ListarClientes>? PessoaJuridicaList { get; set; }
 
         public SimpleCommand NovoClienteCmd => new( () => OpenCrudCliente?.Invoke(new CrudClienteViewModel(null)) );
         public SimpleCommand EditarClienteCmd => new( () => OpenCrudCliente?.Invoke(new CrudClienteViewModel(ClienteSelecionado)), () => ClienteSelecionado != null );
@@ -32,21 +33,40 @@ namespace SisMaper.ViewModel
 
         public Action<CrudClienteViewModel?>? OpenCrudCliente { get; set; }
 
-        public ClientesViewModel() { }
+        public ClientesViewModel() { PropertyChanged += UpdateFilter; }
+
+
+        private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
+        {
+            if (clientes != null && e.PropertyName is nameof(TextoFiltro))
+            {
+
+                clientesFiltrados = clientes.Where(c =>
+                    (!string.IsNullOrWhiteSpace(c.Nome) && c.Nome.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase)) ||
+                    (!string.IsNullOrWhiteSpace(c.CPF_CNPJ) && c.CPF_CNPJ.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase))
+                );
+
+                PessoaFisicaList = clientesFiltrados.Where(cliente => cliente.Tipo == ListarClientes.Pessoa.Fisica);
+                PessoaJuridicaList = clientesFiltrados.Where(cliente => cliente.Tipo == ListarClientes.Pessoa.Juridica);
+            }
+        }
 
 
         public void Initialize(object? sender, EventArgs e)
         {
-            List<ListarClientes>? listaClientes = View.Execute<ListarClientes>();
-            PessoaFisicaList = listaClientes.FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Fisica);
-            PessoaJuridicaList = listaClientes.FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Juridica);
+            clientes = View.Execute<ListarClientes>();
+            PessoaFisicaList = clientes.FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Fisica);
+            PessoaJuridicaList = clientes.FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Juridica);
             ClienteSelecionado = null;
         }
 
         public void Clear(object? sender, EventArgs e)
         {
+            clientes = null;
             PessoaFisicaList = null;
             PessoaJuridicaList = null;
+            clientesFiltrados = null;
+            TextoFiltro = string.Empty;
         }
 
         

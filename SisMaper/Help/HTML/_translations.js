@@ -1,4 +1,4 @@
-﻿
+
 function hnd_ut(a){
 a.TRANSLATIONS['Search term too short'] = "Search term too short";
 a.TRANSLATIONS['No results'] = "No results";

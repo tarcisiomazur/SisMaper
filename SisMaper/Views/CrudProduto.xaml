@@ -123,8 +123,9 @@
             </ComboBox>
 
             <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarCategoriasCmd}" Background="White" 
-                    templates:HelperPopupToolTip.HelpHeader="Alterar Categorias"
-                    templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar as categorias">
+                    templates:HelperPopupToolTip.HelpHeader="Editar Categorias"
+                    templates:HelperPopupToolTip.HelpContent="Abre uma tela para criar, editar e excluir categorias"
+                    templates:HelperPopupToolTip.HelpLink="CategoriasUnidades#EditarCategoriasUnidades_crudProduto">
 
                 <StackPanel>
                     <iconpacks:PackIconMaterial Kind="Pencil" Foreground="Green" Width="18" Height="18"/>
@@ -157,8 +158,9 @@
             </ComboBox>
 
             <Button Width="32" Height="32" Margin="4,0" VerticalAlignment="Bottom" Focusable="false" Command="{Binding EditarUnidadesCmd}" Background="White" 
-                templates:HelperPopupToolTip.HelpHeader="Alterar Unidades"
-                templates:HelperPopupToolTip.HelpContent="Visualizar e Alterar as unidades">
+                    templates:HelperPopupToolTip.HelpHeader="Editar Unidades"
+                    templates:HelperPopupToolTip.HelpContent="Abre uma tela para criar, editar e excluir unidades"
+                    templates:HelperPopupToolTip.HelpLink="CategoriasUnidades#EditarCategoriasUnidades_crudProduto">
 
                 <StackPanel>
                     <iconpacks:PackIconMaterial Kind="Pencil" Foreground="Green" Width="18" Height="18"/>
@@ -296,17 +298,18 @@
         </TextBlock>
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Cancelar"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Margin="0,0,95,17" 
-            Click="CancelarButtonClick"/>
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,31,17"
+            Margin="0,0,115,17"
             Command="{Binding SalvarProdutoCmd}"/>
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Cancelar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,31,17" 
+            Click="CancelarButtonClick"/>
+
     </Grid>
 </mah:MetroWindow>

@@ -1,5 +1,4 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
-using Newtonsoft.Json.Linq;
 using Persistence;
 using RestSharp;
 using SisMaper.API.CnpjWs;
@@ -7,12 +6,7 @@ using SisMaper.API.ViaCEP;
 using SisMaper.Models;
 using SisMaper.Models.Views;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -71,7 +65,7 @@ namespace SisMaper.ViewModel
         public SimpleCommand SalvarPessoaFisicaCmd => new(SalvarPessoaFisica);
         public SimpleCommand SalvarPessoaJuridicaCmd => new(SalvarPessoaJuridica);
 
-        //public SimpleCommand ConsultaCpfCmd => new(() => ConsultaCEP(true));
+        public SimpleCommand ConsultaCpfCmd => new( ConsultaCPF );
         public SimpleCommand ConsultaCnpjCmd => new( ConsultaCNPJ );
 
         public SimpleCommand PessoaFisicaConsultaCepCmd => new(() => ConsultaCEP(PessoaFisica));
@@ -241,6 +235,30 @@ namespace SisMaper.ViewModel
 
         }
 
+        private void CheckCPF()
+        {
+            if (PessoaFisica.CPF is null || PessoaFisica.CPF.Equals("___.___.___-__"))
+            {
+                throw new InvalidOperationException("CPF não pode ser vazio");
+            }
+
+            PessoaFisica.CPF = PessoaFisica.CPF.Replace(".", "").Replace("-", "");
+
+            if (PessoaFisica.CPF.Contains('_'))
+            {
+                throw new InvalidOperationException("CPF incompleto");
+            }
+
+            if (!CheckDigitoVerificadorCPF(PessoaFisica.CPF))
+            {
+                throw new InvalidOperationException("CPF Inválido");
+            }
+
+            if (SearchCliente(PessoaFisica))
+            {
+                throw new InvalidOperationException("CPF já registrado");
+            }
+        }
 
         private void CheckCNPJ()
         {
@@ -425,6 +443,67 @@ namespace SisMaper.ViewModel
         }
 
 
+        private void ConsultaCPF()
+        {
+            IWebDriver driver = null;
+            try
+            {
+                CheckCPF();
+
+                const string url = "https://cpf.ltsolucoes.com/";
+
+                var request = new RestRequest(url, Method.GET);
+                IRestResponse response = new RestClient().Execute(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound) throw new Exception("URL utilizada não existe mais");
+
+
+                ChromeOptions options = new ChromeOptions();
+                options.AddArgument("--incognito");
+                options.AddArgument("--headless");
+                driver = new ChromeDriver(options);
+
+                driver.Navigate().GoToUrl(url);
+                driver.FindElement(By.CssSelector("#numero")).SendKeys(PessoaFisica.CPF);
+                driver.FindElement(By.CssSelector("#consultar")).Click();
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                wait.Until(_ => driver.FindElements(By.CssSelector("#corpo > tbody > tr:nth-child(2) > td > div > p")).Any());
+                
+                IWebElement e = driver.FindElement(By.CssSelector("#corpo > tbody > tr:nth-child(2) > td > div > p"));
+                string[] dados = e.Text.Split('\n');
+
+                PessoaFisica.Nome = dados[1].Split(':')[1].Trim();
+
+                driver.Close();
+                driver.Quit();
+
+            }
+            catch (Exception ex)
+            {
+                if (driver is not null)
+                {
+                    driver.Close();
+                    driver.Quit();
+                }
+
+                if(ex is WebDriverException)
+                {
+                    if(ex is WebDriverTimeoutException)
+                    {
+                        OnShowMessage("Erro ao consultar CPF", "CPF não encontrado");
+                        return;
+                    }
+
+                    OnShowMessage("Erro ao consultar CPF", "Verifique seu acesso a Internet");
+                    return;
+                }
+
+                OnShowMessage("Erro ao consultar CPF", ex.Message);
+                return;
+            }
+        }
+
+
         private void SalvarCliente(Cliente clienteParameter)
         {
 
@@ -441,28 +520,7 @@ namespace SisMaper.ViewModel
                 }
 
 
-                if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
-                {
-                    throw new InvalidOperationException("CPF não pode ser vazio");
-                }
 
-
-                pf.CPF = pf.CPF.Replace(".", "").Replace("-", "");
-
-                if (pf.CPF.Contains('_'))
-                {
-                    throw new InvalidOperationException("CPF incompleto");
-                }
-
-                if (!CheckDigitoVerificadorCPF(pf.CPF))
-                {
-                    throw new InvalidOperationException("CPF Inválido");
-                }
-
-                if (SearchCliente(pf))
-                {
-                    throw new InvalidOperationException("CPF já registrado");
-                }
 
                 string cep = pf.CEP;
                 CheckCEP(ref cep);
@@ -547,7 +605,7 @@ namespace SisMaper.ViewModel
 
         private void SalvarPessoaFisica()
         {
-            
+
             try
             {
                 SalvarCliente(PessoaFisica);

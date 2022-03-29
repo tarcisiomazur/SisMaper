@@ -86,7 +86,7 @@ public static class HelperPopupToolTip
             fe.Loaded += AttachOnInitialize;
             return newHelpToolTip;
         }
-
+        
 
         p.Children.Add(newHelpToolTip);
         return newHelpToolTip;

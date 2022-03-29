@@ -48,7 +48,7 @@ namespace SisMaper.ViewModel
         {
             Produtos = null;
         }
-
+        
         private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
         {
             if (Produtos != null && e.PropertyName is nameof(CategoriaSelecionada) or nameof(Produtos) or nameof(TextoFiltro) or nameof(Inativos))
