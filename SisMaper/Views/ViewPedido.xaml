@@ -258,7 +258,7 @@
                     Margin="0">
                     <Grid
                         DockPanel.Dock="Top"
-                        Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox
                             Grid.Row="0"
                             VerticalAlignment="Top"

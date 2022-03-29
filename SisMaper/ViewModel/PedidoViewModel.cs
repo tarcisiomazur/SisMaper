@@ -366,6 +366,9 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
+        Pedido.Load();
+        RaisePropertyChanged(nameof(IsOpen));
     }
 
     private void ProcessarPagamentoFaturaExistente()
@@ -484,7 +487,6 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         var fatura = new Fatura
         {
             Cliente = Pedido.Cliente,
-            ValorTotal = Pedido.ValorTotal,
             Data = DateTime.Now,
             Context = PersistenceContext
         };

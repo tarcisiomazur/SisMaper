@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using Persistence;
+using Nullable = Persistence.Nullable;
 
 namespace SisMaper.Models;
 
@@ -19,8 +20,8 @@ public class Fatura : DAO
         Data = DateTime.Today;
     }
     
-    [Field(FieldType = SqlDbType.BigInt)]
-    public long Numero { get; set; }
+    [Field(FieldType = SqlDbType.BigInt, Nullable = Nullable.Null)]
+    public long? Numero { get; set; }
 
     [Field(FieldType = SqlDbType.Decimal, Length = 10, Precision = 2)]
     public decimal ValorTotal { get; set; }
