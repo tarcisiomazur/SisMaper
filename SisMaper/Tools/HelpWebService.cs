@@ -28,21 +28,38 @@ public static class HelpWebService
                 path += ".html";
         }
         
+        
         if (Window is null)
         {
             CancelSource = new CancellationTokenSource();
             ServerThread = new Thread(() => StartWebServer(CancelSource.Token));
             ServerThread.Start();
-            Window = new ViewHelpBrowser();
-            Window.Show();
-            Window.Closed += CloseHelp;
+            var thread = new Thread(() =>
+            {
+                Window = new ViewHelpBrowser
+                {
+                    URL = URL + path
+                };
+                Window.Show();
+                Window.Closed += CloseHelp;
+                System.Windows.Threading.Dispatcher.Run();
+            
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
         }
         else
         {
-            Window.Focus();
+            Window.Dispatcher.Invoke(() =>
+            {
+                Window.Topmost = true;
+                Window.Focus();
+                Window.Topmost = false;
+                Window.URL = URL + path;
+            });
         }
 
-        Window.URL = URL + path;
     }
 
     private static void CloseHelp(object? sender, EventArgs eventArgs)
