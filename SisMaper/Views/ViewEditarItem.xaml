@@ -143,7 +143,7 @@
             HorizontalContentAlignment="Right"
             Margin="144,148,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Quantidade, ConverterCulture={x:Static Globalization:CultureInfo.CurrentCulture}, Mode=OneWayToSource, StringFormat=\{0:#.#########\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+            Text="{Binding Quantidade, ConverterCulture={x:Static Globalization:CultureInfo.CurrentCulture}, Mode=TwoWay, StringFormat=\{0:#.#########\}, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"
             VerticalAlignment="Top"
             Width="180"
             Padding="20,4,20,4" />

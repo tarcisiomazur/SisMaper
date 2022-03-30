@@ -182,7 +182,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
     public SimpleCommand OpenBuscarProdutoCmd => new(AbrirBuscarProduto, IsPedidoAberto());
 
-    public SimpleCommand ReceberCmd => new(ReceberPedido, _ => Pedido.IsOpen() && Pedido.Itens.Count > 0);
+    public SimpleCommand ReceberCmd => new(ReceberPedido, _ => !HasFatura && Pedido.Itens.Count > 0);
 
     public SimpleCommand RemoverItemCmd => new(RemoverItem);
 
@@ -243,6 +243,8 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     private void AbrirFaturaPedido()
     {
         OpenFatura?.Invoke(new FaturaViewModel(Pedido.Fatura.Id));
+        Pedido.Refresh();
+        RaisePropertyChanged(nameof(HasFatura));
     }
 
     private void AtualizarSituacaoNF()

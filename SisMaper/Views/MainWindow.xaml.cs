@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using SisMaper.Tools;
 using SisMaper.ViewModel;
@@ -10,6 +11,15 @@ namespace SisMaper.Views;
 /// </summary>
 public partial class MainWindow
 {
+    protected override void OnClosed(EventArgs eventArgs)
+    {
+        if (Application.Current.MainWindow == null)
+        {
+            Environment.Exit(0);
+        }
+        base.OnClosed(eventArgs);
+    }
+    
     public MainWindow()
     {
         Instance = this;
