@@ -59,18 +59,21 @@ a.rvts10, span.rvts10
 }
 a.rvts11, span.rvts11
 {
- color: #0000ff;
- text-decoration: underline;
-}
-a.rvts12, span.rvts12
-{
- font-family: 'Courier New', 'Courier', monospace;
+ font-size: 12pt;
+ color: ;
  text-decoration: none;
+}
+span.rvts12
+{
+ font-size: 12pt;
+ color: ;
 }
 a.rvts13, span.rvts13
 {
+ font-size: 12pt;
  font-style: italic;
  font-weight: bold;
+ color: ;
  text-decoration: none;
 }
 span.rvts14 /* Font Style */
@@ -107,19 +110,32 @@ a.rvts19, span.rvts19
  color: #0000ff;
  text-decoration: underline;
 }
-span.rvts20
+a.rvts20, span.rvts20
+{
+ font-style: italic;
+ font-weight: bold;
+ text-decoration: none;
+}
+span.rvts21
 {
  font-weight: bold;
 }
-a.rvts21, span.rvts21
+a.rvts22, span.rvts22
+{
+ font-size: 12pt;
+ font-style: italic;
+ font-weight: bold;
+ text-decoration: none;
+}
+span.rvts23
+{
+ font-size: 12pt;
+ text-decoration: underline;
+}
+a.rvts24, span.rvts24
 {
  font-size: 12pt;
  color: #0000ff;
- text-decoration: underline;
-}
-span.rvts22
-{
- font-size: 12pt;
  text-decoration: underline;
 }
 /* ========== Para Styles ========== */
@@ -141,7 +157,18 @@ p,ul,ol /* Paragraph Style */
 {
  text-align: center;
 }
-.rvps4 /* Paragraph Style */
+.rvps4
+{
+ text-indent: 48px;
+ line-height: 2.00;
+}
+.rvps5
+{
+ text-indent: 48px;
+ line-height: 2.00;
+ margin: 0px 0px 0px 48px;
+}
+.rvps6 /* Paragraph Style */
 {
  text-align: center;
  border-color: #c0c0c0;
@@ -152,77 +179,67 @@ p,ul,ol /* Paragraph Style */
  padding: 2px 0px 2px 0px;
  margin: 7px 0px 7px 0px;
 }
-.rvps5
-{
- line-height: 1.50;
-}
-.rvps6
-{
- text-align: center;
- line-height: 1.50;
-}
 .rvps7
 {
- text-align: justify;
- text-justify: inter-word;
- text-align-last: auto;
  line-height: 1.50;
 }
 .rvps8
 {
- line-height: 2.00;
+ text-align: center;
+ line-height: 1.50;
 }
 .rvps9
 {
  text-align: justify;
  text-justify: inter-word;
  text-align-last: auto;
- line-height: 2.00;
+ line-height: 1.50;
 }
 .rvps10
 {
- text-align: justify;
- text-justify: inter-word;
- text-align-last: auto;
- text-indent: 48px;
- line-height: 1.50;
+ line-height: 2.00;
 }
 .rvps11
 {
  text-align: justify;
  text-justify: inter-word;
  text-align-last: auto;
- text-indent: 48px;
  line-height: 2.00;
 }
 .rvps12
 {
+ text-align: justify;
+ text-justify: inter-word;
+ text-align-last: auto;
  text-indent: 48px;
+ line-height: 1.50;
 }
 .rvps13
+{
+ text-align: justify;
+ text-justify: inter-word;
+ text-align-last: auto;
+ text-indent: 48px;
+ line-height: 2.00;
+}
+.rvps14
+{
+ text-indent: 48px;
+}
+.rvps15
 {
  text-align: center;
  line-height: 2.00;
 }
-.rvps14
+.rvps16
 {
  text-align: justify;
  text-justify: inter-word;
  text-align-last: auto;
 }
-.rvps15
-{
- text-align: center;
- text-indent: 48px;
- line-height: 1.50;
-}
-.rvps16
-{
- text-indent: 48px;
- line-height: 2.00;
-}
 .rvps17
 {
+ text-align: center;
  text-indent: 48px;
  line-height: 1.50;
 }
@@ -230,12 +247,17 @@ p,ul,ol /* Paragraph Style */
 {
  text-indent: 48px;
  line-height: 1.50;
- margin: 0px 0px 0px 48px;
 }
 .rvps19
 {
- text-indent: -24px;
+ text-indent: 48px;
  line-height: 1.50;
+ margin: 0px 0px 0px 48px;
+}
+.rvps20
+{
+ text-indent: -24px;
+ line-height: 2.00;
  margin: 0px 0px 0px 48px;
 }
 /* ========== Lists ========== */

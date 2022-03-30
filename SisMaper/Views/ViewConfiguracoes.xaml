@@ -15,10 +15,8 @@
     mc:Ignorable="d"
     TitleCharacterCasing="Normal"
     Title="{Binding Empresa.Razao_Social, StringFormat='Configurações - {0}'}"
-    MinHeight="450"
-    MinWidth="708"
-    MaxHeight="450"
-    MaxWidth="708"
+    Height="375"
+    Width="708"
     ResizeMode="NoResize"
     SaveWindowPosition="True"
     ShowInTaskbar="False"
@@ -35,6 +33,39 @@
     </mah:MetroWindow.RightWindowCommands>
     <Grid
         Margin="1,0,-1,0">
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Alterar Naturezas"
+            PreviewMouseLeftButtonDown="AlterarNaturezas"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,10,287,0"
+            Width="131"
+            templates:HelperPopupToolTip.HelpHeader="Alterar Naturezas"
+            templates:HelperPopupToolTip.HelpLink="Configuracoes"
+            templates:HelperPopupToolTip.HelpContent="Abre uma nova tela para cadastro de Naturezas." />
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Importar PEM"
+            PreviewMouseLeftButtonDown="ImportPem"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,10,159,0"
+            Width="123"
+            templates:HelperPopupToolTip.HelpHeader="Importar PEM"
+            templates:HelperPopupToolTip.HelpLink="Configuracoes"
+            templates:HelperPopupToolTip.HelpContent="Importa o certificado de segurança para utilização da API.&#xA;&#xA;Todos os dispositivos necessitam a mesma chave para consumir os recursos da API."  />
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Atualizar NCMs"
+            PreviewMouseLeftButtonDown="AtualizarNCMs"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,10,31,0"
+            Width="123" 
+            templates:HelperPopupToolTip.HelpHeader="Atualizar NCMs"
+            templates:HelperPopupToolTip.HelpLink="Configuracoes"
+            templates:HelperPopupToolTip.HelpContent="Selecione o arquivo disponibilizado pela WebMania para Atualizar a Lista de NCMs."  />
         <TextBlock
             HorizontalAlignment="Left"
             Margin="28,108,0,0"
@@ -94,7 +125,10 @@
             templates:UnSecurePassword.UnSecurePassword="{Binding ConsumerKey, Mode=TwoWay}"
             templates:UnSecurePassword.UnSecure="True"
             Width="196"
-            Height="30" />
+            Height="30" 
+            templates:HelperPopupToolTip.HelpHeader="Consumer Key"
+            templates:HelperPopupToolTip.HelpContent="Disponibilizado pelo Painel da API WebMania"
+            templates:HelperPopupToolTip.HelpLink="Configuracoes"/>
         <TextBlock
             HorizontalAlignment="Left"
             Margin="28,233,0,0"
@@ -114,7 +148,10 @@
             templates:UnSecurePassword.UnSecure="true"
             mah:TextBoxHelper.SelectAllOnFocus="true"
             Width="196"
-            Height="30" />
+            Height="30"
+            templates:HelperPopupToolTip.HelpHeader="Access Token"
+            templates:HelperPopupToolTip.HelpContent="Disponibilizado pelo Painel da API WebMania"
+            templates:HelperPopupToolTip.HelpLink="Configuracoes" />
         <TextBlock
             HorizontalAlignment="Right"
             Margin="0,190,234,0"
@@ -133,7 +170,10 @@
             templates:UnSecurePassword.UnSecurePassword="{Binding ConsumerSecret, Mode=TwoWay}"
             templates:UnSecurePassword.UnSecure="true"
             Width="196"
-            Height="30" />
+            Height="30" 
+            templates:HelperPopupToolTip.HelpHeader="Consumer Secret"
+            templates:HelperPopupToolTip.HelpContent="Disponibilizado pelo Painel da API WebMania"
+            templates:HelperPopupToolTip.HelpLink="Configuracoes"/>
         <TextBlock
             HorizontalAlignment="Right"
             Margin="0,232,234,0"
@@ -152,31 +192,10 @@
             templates:UnSecurePassword.UnSecure="true"
             mah:TextBoxHelper.SelectAllOnFocus="true"
             Width="196"
-            Height="30" />
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Atualizar NCMs"
-            PreviewMouseLeftButtonDown="AtualizarNCMs"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Margin="0,10,31,0"
-            Width="123" />
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Alterar Naturezas"
-            PreviewMouseLeftButtonDown="AlterarNaturezas"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Margin="0,10,287,0"
-            Width="131" />
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Importar PEM"
-            PreviewMouseLeftButtonDown="ImportPem"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Margin="0,10,159,0"
-            Width="123" />
+            Height="30" 
+            templates:HelperPopupToolTip.HelpHeader="Access Token Secret"
+            templates:HelperPopupToolTip.HelpContent="Disponibilizado pelo Painel da API WebMania"
+            templates:HelperPopupToolTip.HelpLink="Configuracoes"/>
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"

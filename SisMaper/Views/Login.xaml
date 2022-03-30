@@ -31,6 +31,7 @@
             ShowLastSeparator="False">
             <Button
                 Command="{Binding Source={x:Static tools:HelpWebService.OpenHelp}}"
+                CommandParameter="Login"
                 Content="Help"
                 ToolTip="Abrir Help" />
         </mah:WindowCommands>
