@@ -21,8 +21,10 @@ public static class DialogParticipation
             case MetroWindow metroWindow:
                 metroWindow.Closed += UnRegister;
                 break;
-            case Control control:
+            case MyUserControl control:
                 control.Unloaded += UnRegister;
+                control.Hide += UnRegister;
+                control.Show += ReRegister;
                 break;
         }
 
@@ -35,9 +37,17 @@ public static class DialogParticipation
 
     private static void UnRegister(object? sender, EventArgs eventArgs)
     {
-        if (sender is DependencyObject dp)
+        if (sender is Control control)
         {
-            MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(dp, null);
+            MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(control, null);
+        }
+    }
+
+    private static void ReRegister(object? sender, EventArgs eventArgs)
+    {
+        if (sender is Control control)
+        {
+            MahApps.Metro.Controls.Dialogs.DialogParticipation.SetRegister(control, GetMyRegister(control));
         }
     }
 

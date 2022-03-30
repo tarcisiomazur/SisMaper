@@ -49,7 +49,6 @@ public partial class MainWindow
     {
         var vm = new ConfiguracoesViewModel();
         var window = new ViewConfiguracoes {Owner = this, DataContext = vm};
-        window.Loaded += (_, _) => vm.Initialize(Main.Empresa);
         window.ShowDialog();
         e.Handled = true;
     }
@@ -63,6 +62,7 @@ public partial class MainWindow
 
     private void Logout(object sender, RoutedEventArgs e)
     {
+        Instance = null;
         (Application.Current.MainWindow = new Login()).Show();
         Close();
     }

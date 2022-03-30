@@ -9,9 +9,11 @@ public partial class ViewConfiguracoes
 {
     public ViewConfiguracoes()
     {
-        DataContextChanged += SetActions;
+        Loaded += (_, _) =>
+                    (DataContext as ConfiguracoesViewModel)?.Initialize(Main.Empresa);
+            DataContextChanged += SetActions;
         InitializeComponent();
-    }
+        }
 
     private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
     {
