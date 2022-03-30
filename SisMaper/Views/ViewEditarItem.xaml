@@ -8,6 +8,7 @@
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:Globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
     x:Class="SisMaper.Views.ViewEditarItem"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance {x:Type viewModels:EditarItemViewModel}}"
@@ -19,6 +20,16 @@
     Width="649"
     ResizeMode="NoResize"
     TitleCharacterCasing="Normal">
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands
+            ShowLastSeparator="False">
+            <Button
+                Command="{Binding Source={x:Static tools:HelpWebService.OpenHelp}}"
+                CommandParameter="ComoInserireEditarItens/EditarItem"
+                Content="Help"
+                ToolTip="Abrir Help" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
     <mah:MetroWindow.Resources>
         <Style
             TargetType="{x:Type TextBlock}">
@@ -203,17 +214,17 @@
             Width="180" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Cancelar"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Margin="0,0,87,15"
-            Command="{Binding CancelarCmd}" />
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="0,0,22,15"
-            Command="{Binding SalvarCmd}" />
+            Command="{Binding SalvarCmd}"
+            Margin="0,0,104,10" />
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Cancelar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding CancelarCmd}"
+            Margin="0,0,20,10" />
     </Grid>
 </mah:MetroWindow>

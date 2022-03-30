@@ -293,7 +293,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
                 prod = ProdutosAtivos.FirstOrDefault(p => p.CodigoBarras == TextoFiltro);
             }
 
-            if (prod is not null)
+            if (prod is null)
             {
                 AbrirBuscarProduto();
                 return;
@@ -358,32 +358,36 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
                 ProcessarPagamentoAVista();
                 break;
             case ViewMetodoPagamento.OptionPagamento.NovaFatura:
-                ProcessarPagamentoNovaFatura();
+                if (!ProcessarPagamentoNovaFatura())
+                    return;
                 break;
             case ViewMetodoPagamento.OptionPagamento.FaturaExistente:
-                ProcessarPagamentoFaturaExistente();
+                if (!ProcessarPagamentoFaturaExistente())
+                    return;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
 
         Pedido.Load();
+        RaisePropertyChanged(nameof(Pedido));
+        RaisePropertyChanged(nameof(HasFatura));
         RaisePropertyChanged(nameof(IsOpen));
     }
 
-    private void ProcessarPagamentoFaturaExistente()
+    private bool ProcessarPagamentoFaturaExistente()
     {
         if (Pedido.Cliente is null)
         {
             OnShowMessage("Cliente não informado", "Um cliente deve ser informado no pedido");
-            return;
+            return false;
         }
 
         if (!Pedido.Cliente.Faturas.Load())
         {
             OnShowMessage("Erro ao Buscar Faturas",
                 $"Não foi possível buscar faturas para o cliente {Pedido.Cliente.Nome}.");
-            return;
+            return false;
         }
 
         var faturas = Pedido.Cliente.Faturas
@@ -392,14 +396,14 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         if (faturas.Count == 0)
         {
             OnShowMessage("Fatura não encontrada", "Nenhuma fatura aberta foi encontrada.");
-            return;
+            return false;
         }
 
         var vm = new SelecionarFaturaViewModel(faturas);
         OpenSelecionarFatura?.Invoke(vm);
         if (vm.FaturaSelecionada is null)
         {
-            return;
+            return false;
         }
 
         Pedido.Fatura = vm.FaturaSelecionada;
@@ -409,21 +413,21 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         {
             OnShowMessage("Salvar Fatura", "A fatura do pedido não pode ser salva!");
             Cancel?.Invoke();
+            return false;
         }
 
-        {
-            Pedido.Fatura.Load();
-            SystemSounds.Beep.Play();
-            AbrirFaturaPedido();
-        }
+        Pedido.Fatura.Load();
+        SystemSounds.Beep.Play();
+        AbrirFaturaPedido();
+        return true;
     }
 
-    private void ProcessarPagamentoNovaFatura()
+    private bool ProcessarPagamentoNovaFatura()
     {
         if (Pedido.Cliente == null)
         {
             OnShowMessage("Cliente não informado", "Um cliente deve ser informado no pedido");
-            return;
+            return false;
         }
 
         Pedido.Fatura = CreateFatura();
@@ -432,13 +436,13 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         {
             OnShowMessage("Salvar Fatura", "A fatura do pedido não pode ser salva!");
             Cancel?.Invoke();
+            return false;
         }
-        else
-        {
-            Pedido.Fatura.Load();
-            SystemSounds.Beep.Play();
-            AbrirFaturaPedido();
-        }
+
+        Pedido.Fatura.Load();
+        SystemSounds.Beep.Play();
+        AbrirFaturaPedido();
+        return true;
     }
 
     private void ProcessarPagamentoAVista()
@@ -471,8 +475,6 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
             {
                 Pedido.Fatura.Load();
                 OnShowMessage("Receber Pedido", "O pedido foi salvo e recebido!");
-                RaisePropertyChanged(nameof(Pedido));
-                RaisePropertyChanged(nameof(HasFatura));
                 SystemSounds.Beep.Play();
                 return;
             }

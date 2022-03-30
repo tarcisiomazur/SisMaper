@@ -10,6 +10,7 @@
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
     templates:DialogParticipation.MyRegister="{Binding }"
     mc:Ignorable="d"
     TitleCharacterCasing="Normal"
@@ -22,6 +23,16 @@
     SaveWindowPosition="True"
     ShowInTaskbar="False"
     d:DataContext="{d:DesignInstance viewModels:ConfiguracoesViewModel}">
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands
+            ShowLastSeparator="False">
+            <Button
+                Command="{Binding Source={x:Static tools:HelpWebService.OpenHelp}}"
+                CommandParameter="Configuracoes"
+                Content="Help"
+                ToolTip="Abrir Help" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
     <Grid
         Margin="1,0,-1,0">
         <TextBlock

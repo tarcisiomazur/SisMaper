@@ -11,6 +11,7 @@
     xmlns:viewModels="clr-namespace:SisMaper.ViewModel"
     xmlns:mi="clr-namespace:SisMaper.Views.Templates.MyInteractions"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
     mc:Ignorable="d"
     Height="450"
     Width="945"

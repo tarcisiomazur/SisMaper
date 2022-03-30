@@ -7,6 +7,7 @@
     xmlns:templates="clr-namespace:SisMaper.Views.Templates"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:viewModel="clr-namespace:SisMaper.ViewModel"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
     mc:Ignorable="d"
     Title="Buscar Produto"
     SaveWindowPosition="True"
@@ -16,6 +17,15 @@
     Height="450"
     Width="800"
     d:DataContext="{d:DesignInstance viewModel:BuscarProdutoViewModel}">
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands
+            ShowLastSeparator="False">
+            <Button
+                Command="{Binding Source={x:Static tools:HelpWebService.OpenHelp}}"
+                Content="Help"
+                ToolTip="Abrir Help" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
     <Grid>
         <ComboBox
             Margin="0,16,140,0"
@@ -117,21 +127,19 @@
         </Border>
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Selecionar"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Command="{Binding SelecionarCmd}"
-            Margin="0,0,10,10"
-            Height="30"
-            Width="92" />
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding CancelarCmd}"
-            Margin="0,0,112,10"
-            Height="30"
-            Width="81" />
+            Margin="0,0,10,10"
+            Height="30"/>
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Selecionar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding SelecionarCmd}"
+            Margin="0,0,95,10"
+            Height="30" />
     </Grid>
 </mah:MetroWindow>

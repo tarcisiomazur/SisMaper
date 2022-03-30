@@ -86,7 +86,7 @@
                         Foreground="#FF199800">
                         <Run
                             Language="pt-br"
-                            Text="A Vista" />
+                            Text="À Vista" />
                     </TextBlock>
                 </StackPanel>
             </Button>

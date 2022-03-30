@@ -15,10 +15,11 @@
     xmlns:iconpacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:cfsharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     xmlns:myInteractions="clr-namespace:SisMaper.Views.Templates.MyInteractions"
+    xmlns:tools="clr-namespace:SisMaper.Tools"
     templates:DialogParticipation.MyRegister="{Binding}"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:PedidoViewModel}"
-    Title="{Binding Pedido.Id, StringFormat='{}Pedido - {0:00000}', FallbackValue='Novo Pedido', Converter={StaticResource NotZero}}"
+    Title="{Binding Pedido.Id, StringFormat='{}Pedido - {0:00000}', FallbackValue='Novo Pedido', Converter={StaticResource NotZero}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
     TitleCharacterCasing="Normal"
     Height="599"
     Width="812"
@@ -26,6 +27,16 @@
     MinWidth="812"
     SaveWindowPosition="True"
     ShowInTaskbar="False">
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands
+            ShowLastSeparator="False">
+            <Button
+                Command="{Binding Source={x:Static tools:HelpWebService.OpenHelp}}"
+                CommandParameter="Vendas"
+                Content="Help"
+                ToolTip="Abrir Help" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
     <mah:MetroWindow.Resources>
         <ContextMenu
             x:Key="RowMenu">
@@ -75,7 +86,7 @@
             HorizontalAlignment="Left"
             Margin="151,24,0,0"
             TextWrapping="Wrap"
-            Text="{Binding Pedido.Id, StringFormat='{}{0:00000}', FallbackValue='-', Converter={StaticResource NotZero}}"
+            Text="{Binding Pedido.Id, StringFormat='{}{0:00000}', FallbackValue='-', Converter={StaticResource NotZero},Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"
             VerticalAlignment="Top"
             Width="66" />
         <TextBlock
@@ -418,6 +429,7 @@
                         <DataGrid.Columns>
                             <DataGridTemplateColumn
                                 Visibility="{Binding DataContext.IsOpen, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Reference Name=Proxy}}"
+                                MinWidth="50"
                                 Width="50"
                                 CanUserSort="False"
                                 CanUserResize="False"
@@ -461,9 +473,9 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
-                                Width="35*"
-                                MinWidth="110"
-                                Header="Identificação"
+                                Width="25*"
+                                MinWidth="80"
+                                Header="Cód. Int."
                                 Binding="{Binding Produto.CodigoInterno}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
@@ -861,17 +873,17 @@
         </Button>
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Content="Cancelar"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Command="{Binding CancelarCmd}"
-            Margin="0,0,84,20" />
-        <Button
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Salvar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding SalvarCmd}"
+            Margin="0,0,104,20" />
+        <Button
+            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
+            Content="Cancelar"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding CancelarCmd}"
             Margin="0,0,20,20" />
 
 
