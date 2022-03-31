@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <Win32Resource />
@@ -13,6 +13,7 @@
     <Platforms>x86;x64</Platforms>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <StartupObject>SisMaper.Program</StartupObject>
+    <ApplicationIcon>Images\ico.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(PlatformTarget)' == 'x86'">
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x86</RuntimeIdentifier>
@@ -58,6 +59,10 @@
     <Content Include="Help\HTML\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\ico.ico" />
+    <None Update="DataBase.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

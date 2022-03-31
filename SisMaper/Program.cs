@@ -11,15 +11,23 @@ namespace SisMaper
 {
     public static class Program
     {
-        [DllImport(@"kernel32.dll")]
-        static extern bool AllocConsole();
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
 
         [STAThread]
         public static void Main(string[] args)
         {
             InitChromium(args);
             if (args.Any(arg => arg.Contains("--type="))) return;
-            AllocConsole();
+#if !DEBUG
+            ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
             var app = new App();
             app.InitializeComponent();
             app.Run();

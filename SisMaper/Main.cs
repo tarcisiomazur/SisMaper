@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Threading;
+using Microsoft.Win32;
 using MySqlConnector;
 using Persistence;
 using SisMaper.API.WebMania;
@@ -14,6 +16,8 @@ namespace SisMaper
     public class Main : INotifyPropertyChanged
     {
         private const string DbCfg = "Database.cfg";
+        
+        private static string Path;
         public static Main Instance { get; set; }
         public static string Version => "Versão: " + Application.ResourceAssembly.GetName().Version;
         public string Status { get; set; } = "Desconectado";
@@ -31,7 +35,11 @@ namespace SisMaper
         {
             try
             {
-                MySqlProtocol = new MySqlProtocol(DbCfg) {ForwardEngineer = false, SkipVerification = true};
+                Path = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Agromaper\SisMaper").GetValue("Path").ToString();
+                var x = Path + "DataBase.sql";
+                Console.WriteLine(x);
+                string dll = File.ReadAllText(x);
+                MySqlProtocol = new MySqlProtocol(Path + DbCfg, dll) {ForwardEngineer = false, SkipVerification = true};
                 MySqlProtocol.Connected += Connected;
                 MySqlProtocol.Disconnected += Disconnected;
                 MySqlProtocol.Reconnecting += Reconnecting;

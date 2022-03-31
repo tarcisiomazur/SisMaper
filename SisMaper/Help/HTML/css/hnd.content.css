@@ -57,18 +57,12 @@ a.rvts10, span.rvts10
  color: #008000;
  text-decoration: underline;
 }
-a.rvts11, span.rvts11
-{
- font-size: 12pt;
- color: ;
- text-decoration: none;
-}
-span.rvts12
+span.rvts11
 {
  font-size: 12pt;
  color: ;
 }
-a.rvts13, span.rvts13
+a.rvts12, span.rvts12
 {
  font-size: 12pt;
  font-style: italic;
@@ -76,32 +70,38 @@ a.rvts13, span.rvts13
  color: ;
  text-decoration: none;
 }
-span.rvts14 /* Font Style */
+span.rvts13 /* Font Style */
 {
  font-family: 'Tahoma', 'Geneva', sans-serif;
  font-style: italic;
  color: #c0c0c0;
 }
-a.rvts15, span.rvts15 /* Font Style */
+a.rvts14, span.rvts14 /* Font Style */
 {
  font-family: 'Tahoma', 'Geneva', sans-serif;
  font-style: italic;
  color: #6666ff;
  text-decoration: underline;
 }
-a.rvts16, span.rvts16
-{
- font-family: 'Courier New', 'Courier', monospace;
- text-decoration: none;
-}
-span.rvts17
+span.rvts15
 {
  font-size: 12pt;
- font-weight: bold;
+}
+span.rvts16
+{
+ font-size: 12pt;
+ font-style: italic;
+}
+a.rvts17, span.rvts17
+{
+ font-size: 12pt;
+ color: ;
+ text-decoration: none;
 }
 span.rvts18
 {
  font-size: 12pt;
+ font-weight: bold;
 }
 a.rvts19, span.rvts19
 {
@@ -135,6 +135,11 @@ span.rvts23
 a.rvts24, span.rvts24
 {
  font-size: 12pt;
+ color: #0000ff;
+ text-decoration: underline;
+}
+a.rvts25, span.rvts25
+{
  color: #0000ff;
  text-decoration: underline;
 }
@@ -181,6 +186,9 @@ p,ul,ol /* Paragraph Style */
 }
 .rvps7
 {
+ text-align: justify;
+ text-justify: inter-word;
+ text-align-last: auto;
  line-height: 1.50;
 }
 .rvps8
@@ -190,9 +198,6 @@ p,ul,ol /* Paragraph Style */
 }
 .rvps9
 {
- text-align: justify;
- text-justify: inter-word;
- text-align-last: auto;
  line-height: 1.50;
 }
 .rvps10

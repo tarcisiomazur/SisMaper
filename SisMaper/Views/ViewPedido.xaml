@@ -150,9 +150,9 @@
             mah:TextBoxHelper.AutoWatermark="True"
             mah:TextBoxHelper.ClearTextButton="True"
             Grid.IsSharedSizeScope="True"
-            VerticalAlignment="Top" 
+            VerticalAlignment="Top"
             templates:HelperPopupToolTip.HelpHeader="Cliente"
-            templates:HelperPopupToolTip.HelpContent="Digite o Nome do Cliente para buscá-lo"/>
+            templates:HelperPopupToolTip.HelpContent="Digite o Nome do Cliente para buscá-lo" />
         <Button
             Margin="0,70,373,0"
             Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -251,9 +251,9 @@
             IsEnabled="{Binding Pedido.Status, Converter={StaticResource PedidoStatusIsEditable}}"
             DisplayMemberPath="Descricao"
             HorizontalAlignment="Right"
-            Width="211" 
+            Width="211"
             templates:HelperPopupToolTip.HelpHeader="Natureza"
-            templates:HelperPopupToolTip.HelpContent="Seleciona a Natureza de Operação"/>
+            templates:HelperPopupToolTip.HelpContent="Seleciona a Natureza de Operação" />
         <TabControl
             Margin="20,123,20,66"
             mah:TabControlHelper.UnderlineBrush="Black"
@@ -264,8 +264,7 @@
             mah:HeaderedControlHelper.HeaderFontSize="18">
             <TabItem
                 Header="  Itens  "
-                mah:HeaderedControlHelper.HeaderBackground="Black"
-                templates:HelperPopupToolTip.HelpHeader="Guia de Itens do Pedido">
+                mah:HeaderedControlHelper.HeaderBackground="Black">
                 <DockPanel
                     Margin="0">
                     <Grid
@@ -384,9 +383,8 @@
                             Command="{Binding AddItemCmd}"
                             CommandParameter="{Binding ''}"
                             Margin="0,10,10,0"
-                            
                             templates:HelperPopupToolTip.HelpHeader="Adicionar Item ao Pedido"
-                            templates:HelperPopupToolTip.HelpContent="Adicionar um novo Item contendo o Produto e a Quantidade escolhida.&#xA;&#xA;Também é possível adicionar o item pressionando [ENTER] nos campos Quantidade e Buscar Produto"/>
+                            templates:HelperPopupToolTip.HelpContent="Adicionar um novo Item contendo o Produto e a Quantidade escolhida.&#xA;&#xA;Também é possível adicionar o item pressionando [ENTER] nos campos Quantidade e Buscar Produto" />
                     </Grid>
                     <Grid
                         DockPanel.Dock="Bottom">
@@ -546,8 +544,7 @@
             <TabItem
                 Visibility="{Binding HasFatura, Converter={StaticResource BooleanToVisibilityConverter}}"
                 IsSelected="{Binding FaturaTabItemIsSelected}"
-                Header="  Financeiro  "
-                templates:HelperPopupToolTip.HelpHeader="Guia da Fatura do Pedido">
+                Header="  Financeiro  ">
                 <Grid>
                     <TextBlock
                         HorizontalAlignment="Left"
@@ -729,8 +726,7 @@
             <TabItem
                 Visibility="{Binding HasNotaFiscal, Converter={StaticResource BooleanToVisibilityConverter}}"
                 IsSelected="{Binding NotaFiscalTabItemIsSelected}"
-                Header="  Nota Fiscal  "
-                templates:HelperPopupToolTip.HelpHeader="Guia das Notas Fiscais do Pedido">
+                Header="  Nota Fiscal  ">
                 <Grid>
                     <DataGrid
                         x:Name="DataGridNotasFiscais"
@@ -808,9 +804,9 @@
                         HorizontalAlignment="Left"
                         Margin="10,18,0,0"
                         VerticalAlignment="Top"
-                        Command="{Binding PrintCommand, ElementName=WebBrowser}" 
+                        Command="{Binding PrintCommand, ElementName=WebBrowser}"
                         templates:HelperPopupToolTip.HelpHeader="Imprimir Nota Fiscal"
-                        templates:HelperPopupToolTip.HelpContent="Realizar a Impressão da Nota Fiscal escolhida abaixo."/>
+                        templates:HelperPopupToolTip.HelpContent="Realizar a Impressão da Nota Fiscal escolhida abaixo." />
                     <Button
                         Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Atualizar Situação"
@@ -886,16 +882,15 @@
             VerticalAlignment="Bottom"
             Command="{Binding SalvarCmd}"
             Margin="0,0,104,20"
-            templates:HelperPopupToolTip.HelpHeader="Salvar e fechar o Pedido"
-            />
+            templates:HelperPopupToolTip.HelpHeader="Salvar e fechar o Pedido" />
         <Button
             Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
             Content="Cancelar"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding CancelarCmd}"
-            Margin="0,0,20,20" 
-            templates:HelperPopupToolTip.HelpHeader="Descarta todas as alterações feitas no pedido"/>
+            Margin="0,0,20,20"
+            templates:HelperPopupToolTip.HelpHeader="Descarta todas as alterações feitas no pedido" />
 
 
     </Grid>
