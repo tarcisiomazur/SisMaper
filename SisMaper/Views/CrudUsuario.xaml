@@ -232,7 +232,9 @@
                 BorderBrush="Gray" 
                 CornerRadius="10" 
                 Background="White"
-                HorizontalAlignment="Left">
+                HorizontalAlignment="Left"
+                templates:HelperPopupToolTip.HelpHeader="Permissoes"
+                templates:HelperPopupToolTip.HelpLink="Permissoes">
 
                 <StackPanel Margin="10">
 

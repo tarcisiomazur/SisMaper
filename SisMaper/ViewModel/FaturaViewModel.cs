@@ -213,10 +213,13 @@ namespace SisMaper.ViewModel
 
             DateTime dataVencimento;
 
-            if (!(Fatura.Parcelas.Count == 0))
+            if ((Fatura.Parcelas.Count == 0))
                 dataVencimento = new DateTime(DateTime.Today.Year, DateTime.Today.Month, diaPagamento).AddMonths(1);
             else
-                dataVencimento = Fatura.Parcelas[Fatura.Parcelas.Count - 1].DataVencimento.AddMonths(1);
+            {
+                var ultimaData = Fatura.Parcelas[Fatura.Parcelas.Count - 1].DataVencimento;
+                dataVencimento = new DateTime(ultimaData.Year, ultimaData.Month, diaPagamento).AddMonths(1);
+            }
 
 
             int index = Fatura.Parcelas.Count + 1; 

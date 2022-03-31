@@ -184,6 +184,11 @@ namespace SisMaper.ViewModel
         {
             try 
             {
+                if(Produto.PrecoCusto > Produto.PrecoVenda)
+                {
+                    OnShowMessage("Preço Inválido", "Margem negativa", MessageDialogStyle.Affirmative, new MetroDialogSettings() { AffirmativeButtonText = "Ok" });
+                    return;
+                }
                 
                 PList<Lote> listaLotesPraAdicionar = new PList<Lote>();
 
