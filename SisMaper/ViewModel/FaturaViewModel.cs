@@ -34,6 +34,7 @@ namespace SisMaper.ViewModel
         public bool IsFaturaAberta { get; private set; }
 
         public decimal ValorTotalParcelas { get; private set; }
+        public decimal ValorPendente { get; private set; }
 
         public int NumeroParcelas { get; set; } = 1;
         private PList<Parcela> parcelas = new();
@@ -100,6 +101,7 @@ namespace SisMaper.ViewModel
 
         public void ResetFatura()
         {
+            parcelas = new();
             Fatura = DAO.Load<Fatura>(faturaId);
             Fatura?.Pedidos.Load();
             Fatura?.Parcelas.Load();
@@ -146,24 +148,34 @@ namespace SisMaper.ViewModel
         private void GerarParcelas()
         {
 
-            foreach(Parcela p in Fatura.Parcelas)
-            {
-                if(p.Status == Parcela.Status_Parcela.Pago)
-                {
-                    OnShowMessage("Gerar Parcelas", "Para gerar as parcelas, a fatura não pode ter nenhuma parcela paga");
-                    return;
-                }
-            }
+            ValorPendente = Fatura.ValorTotal - Fatura.ValorPago;
 
             OpenGerarParcelas?.Invoke(this);
-            
 
             if(parcelas.Count > 0)
             {
-                foreach(Parcela p in parcelas)
+                try
                 {
-                    p.Fatura = Fatura;
-                    p.Save();
+                    foreach (Parcela p in parcelas)
+                    {
+                        p.Fatura = Fatura;
+                        p.Save();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException?.InnerException is MySqlException e)
+                    {
+                        if (e.Number == 40004)   //erro da falta de crédito
+                        {
+                            OnShowMessage("Erro ao salvar parcela", e.Message);
+                        }
+                    }
+
+                    else
+                    {
+                        OnShowMessage("Erro ao salvar parcela", ex.Message);
+                    }
                 }
                 ResetFatura();
             }
@@ -172,11 +184,23 @@ namespace SisMaper.ViewModel
 
         private void ConfirmarGerarParcelas()
         {
-            if (Fatura.Parcelas.DeleteAll())
+            try
             {
-                parcelas = CalculaParcelas(Fatura.ValorTotal, NumeroParcelas, DiaPagamentoSelecionado);
+                foreach (Parcela p in Fatura.Parcelas)
+                {
+                    if (p.Status == Parcela.Status_Parcela.Pendente) p.Delete();
+                }
+
+                Fatura.Parcelas.Load();
+
+                parcelas = CalculaParcelas(ValorPendente, NumeroParcelas, DiaPagamentoSelecionado);
                 ParcelasGeradas?.Invoke();
             }
+            catch
+            {
+                OnShowMessage("Gerar Parcelas", "Não foi possível gerar as parcelas");
+            }
+
         }
 
 
@@ -187,7 +211,15 @@ namespace SisMaper.ViewModel
 
             PList<Parcela> parcelas = new();
 
-            DateTime dataVencimento = new DateTime(DateTime.Today.Year, DateTime.Today.Month, diaPagamento);
+            DateTime dataVencimento;
+
+            if (!(Fatura.Parcelas.Count == 0))
+                dataVencimento = new DateTime(DateTime.Today.Year, DateTime.Today.Month, diaPagamento).AddMonths(1);
+            else
+                dataVencimento = Fatura.Parcelas[Fatura.Parcelas.Count - 1].DataVencimento.AddMonths(1);
+
+
+            int index = Fatura.Parcelas.Count + 1; 
 
             for (int i = 0; i < qtdParcelas; i++)
             {
@@ -197,7 +229,7 @@ namespace SisMaper.ViewModel
                 valorParcela = decimal.Round(valorParcela, 2);
                 
 
-                parcelas.Add( new Parcela() { Indice = i+1, DataVencimento = dataVencimento, Valor = valorParcela} );
+                parcelas.Add( new Parcela() { Indice = index + i, DataVencimento = dataVencimento, Valor = valorParcela} );
 
                 dataVencimento = dataVencimento.AddMonths(1);
             }

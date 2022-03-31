@@ -410,6 +410,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
 
         Pedido.Fatura = vm.FaturaSelecionada;
         Pedido.Fatura.Pedidos.Add(Pedido);
+        Pedido.Fatura.ValorTotal += Pedido.ValorTotal;
         Pedido.Status = Pedido.Pedido_Status.Fechado;
         if (!Pedido.Fatura.Save())
         {
@@ -433,6 +434,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
         }
 
         Pedido.Fatura = CreateFatura();
+        Pedido.Fatura.ValorTotal = Pedido.ValorTotal;
         Pedido.Status = Pedido.Pedido_Status.Fechado;
         if (!Pedido.Fatura.Save())
         {
@@ -450,6 +452,7 @@ public class PedidoViewModel : BaseViewModel, IDataErrorInfo
     private void ProcessarPagamentoAVista()
     {
         Pedido.Fatura = CreateFatura();
+        Pedido.Fatura.ValorTotal = Pedido.ValorTotal;
         Pedido.Fatura.Parcelas.Add(new Parcela
         {
             Indice = 0,
