@@ -15,7 +15,7 @@ namespace SisMaper.ViewModel
     {
         public ListarProdutos ProdutoSelecionado { get; set; }
         public List<ListarProdutos>? Produtos { get; set; }
-        public IEnumerable<ListarProdutos> ProdutosFiltrados { get; set; }
+        public IEnumerable<ListarProdutos>? ProdutosFiltrados { get; set; }
         
         public Categoria? CategoriaSelecionada { get; set; }
         public PList<Categoria> Categorias { get; set; }
@@ -41,17 +41,18 @@ namespace SisMaper.ViewModel
         public void Initialize(object? sender, EventArgs e)
         {
             Produtos = View.Execute<ListarProdutos>();
-            ProdutosFiltrados = Produtos;
+            RaisePropertyChanged(nameof(TextoFiltro));
         }
 
         public void Clear(object? sender, EventArgs e)
         {
             Produtos = null;
+            TextoFiltro = String.Empty;
         }
         
         private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
         {
-            if (Produtos != null && e.PropertyName is nameof(CategoriaSelecionada) or nameof(Produtos) or nameof(TextoFiltro) or nameof(Inativos))
+            if (Produtos != null && e.PropertyName is nameof(CategoriaSelecionada) or nameof(TextoFiltro) or nameof(Inativos))
             {
                 ProdutosFiltrados = Produtos.Where(p =>
                     (string.IsNullOrEmpty(TextoFiltro) ||
@@ -106,9 +107,6 @@ namespace SisMaper.ViewModel
                     if (ex.InnerException.Message.StartsWith("Cannot delete or update a parent row")) OnShowMessage("Erro ao excluir produto", "O produto está vinculado em alguma venda");
                 }
             }
-
-
-
         }
     }
 

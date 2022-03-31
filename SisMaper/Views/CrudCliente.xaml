@@ -20,6 +20,7 @@
     ResizeMode="NoResize"
     Height="580"
     Width="750"
+    WindowStartupLocation="CenterScreen"
     >
     <mah:MetroWindow.Resources>
         <Dialog:DialogCoordinator x:Key="dialogCoordinator"/>
@@ -84,6 +85,7 @@
                             <TextBlock Text="Nome" HorizontalAlignment="Left"/>
                             <TextBox  
                                 Style="{DynamicResource SisMaper.TextBox}"
+                                MaxLength="60"
                                 Margin="0,5,0,0"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaFisica.Nome}"
@@ -183,6 +185,7 @@
                             <TextBox
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="60"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaFisica.Endereco}"
                                 VerticalAlignment="Top"
@@ -194,6 +197,7 @@
                             <TextBox
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="60"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaFisica.Bairro}"
                                 VerticalAlignment="Top"
@@ -205,6 +209,7 @@
                             <TextBox
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="10"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaFisica.Numero}"
                                 VerticalAlignment="Top"
@@ -284,6 +289,7 @@
                             <TextBox  
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="60"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaJuridica.Nome}"
                                 VerticalAlignment="Top"
@@ -310,6 +316,7 @@
                             <TextBox  
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="255"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaJuridica.RazaoSocial}"
                                 VerticalAlignment="Top"
@@ -321,6 +328,7 @@
                             <TextBox  
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="9"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaJuridica.InscricaoEstadual}"
                                 VerticalAlignment="Top"
@@ -393,6 +401,7 @@
                             <TextBox
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="60"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaJuridica.Endereco}"
                                 VerticalAlignment="Top"
@@ -404,6 +413,7 @@
                             <TextBox
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="60"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaJuridica.Bairro}"
                                 VerticalAlignment="Top"
@@ -415,6 +425,7 @@
                             <TextBox
                                 Style="{DynamicResource SisMaper.TextBox}"
                                 Margin="0,5,0,0"
+                                MaxLength="10"
                                 HorizontalAlignment="Left"
                                 Text="{Binding PessoaJuridica.Numero}"
                                 VerticalAlignment="Top"

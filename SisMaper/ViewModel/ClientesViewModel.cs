@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 
 namespace SisMaper.ViewModel
 {
@@ -20,7 +22,7 @@ namespace SisMaper.ViewModel
             set { SetField(ref _clienteSelecionado, value); }
         }
 
-        public string TextoFiltro { get; set; }
+        public string TextoFiltro { get; set; } = String.Empty;
 
         private List<ListarClientes>? clientes;
         private IEnumerable<ListarClientes>? clientesFiltrados;
@@ -29,11 +31,14 @@ namespace SisMaper.ViewModel
 
         public SimpleCommand NovoClienteCmd => new( () => OpenCrudCliente?.Invoke(new CrudClienteViewModel(null)) );
         public SimpleCommand EditarClienteCmd => new( () => OpenCrudCliente?.Invoke(new CrudClienteViewModel(ClienteSelecionado)), () => ClienteSelecionado != null );
-        public SimpleCommand ExcluirClienteCmd => new( DeletarCliente, () => ClienteSelecionado != null);
+        public SimpleCommand ExcluirClienteCmd => new(DeletarCliente, _ => ClienteSelecionado != null);
 
         public Action<CrudClienteViewModel?>? OpenCrudCliente { get; set; }
 
-        public ClientesViewModel() { PropertyChanged += UpdateFilter; }
+        public ClientesViewModel() 
+        { 
+            PropertyChanged += UpdateFilter;
+        }
 
 
         private void UpdateFilter(object? sender, PropertyChangedEventArgs e)
@@ -44,7 +49,7 @@ namespace SisMaper.ViewModel
                 clientesFiltrados = clientes.Where(c =>
                     (!string.IsNullOrWhiteSpace(c.Nome) && c.Nome.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase)) ||
                     (!string.IsNullOrWhiteSpace(c.CPF_CNPJ) && c.CPF_CNPJ.Contains(TextoFiltro, StringComparison.InvariantCultureIgnoreCase))
-                );
+                ).OrderBy(c => c.Nome);
 
                 PessoaFisicaList = clientesFiltrados.Where(cliente => cliente.Tipo == ListarClientes.Pessoa.Fisica);
                 PessoaJuridicaList = clientesFiltrados.Where(cliente => cliente.Tipo == ListarClientes.Pessoa.Juridica);
@@ -55,8 +60,7 @@ namespace SisMaper.ViewModel
         public void Initialize(object? sender, EventArgs e)
         {
             clientes = View.Execute<ListarClientes>();
-            PessoaFisicaList = clientes.FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Fisica);
-            PessoaJuridicaList = clientes.FindAll(cliente => cliente.Tipo == ListarClientes.Pessoa.Juridica);
+            RaisePropertyChanged(nameof(TextoFiltro));
             ClienteSelecionado = null;
         }
 
@@ -74,20 +78,19 @@ namespace SisMaper.ViewModel
         {
             try
             {
-
                 MessageDialogResult confirmacao = OnShowMessage("Excluir Cliente", "Deseja Excluir cliente selecionado?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() {AffirmativeButtonText = "Sim", NegativeButtonText = "Não" });
 
                 if(confirmacao.Equals(MessageDialogResult.Affirmative))
                 {
-                    if(ClienteSelecionado.Tipo == ListarClientes.Pessoa.Fisica)
+                    if(ClienteSelecionado?.Tipo == ListarClientes.Pessoa.Fisica)
                     {
                         PessoaFisica clienteToDelete = DAO.Load<PessoaFisica>(ClienteSelecionado.Id);
-                        clienteToDelete.Delete();
+                        clienteToDelete?.Delete();
                     }
                     else
                     {
                         PessoaJuridica clienteToDelete = DAO.Load<PessoaJuridica>(ClienteSelecionado.Id);
-                        clienteToDelete.Delete();
+                        clienteToDelete?.Delete();
                     }
 
                     Initialize(null, EventArgs.Empty);

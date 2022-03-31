@@ -14,8 +14,6 @@ namespace SisMaper.Views
         {
             DataContextChanged += SetActions;
             InitializeComponent();
-            Loaded += ViewFatura_Loaded;
-
         }
 
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
@@ -25,7 +23,6 @@ namespace SisMaper.Views
                 newViewModel.FaturaSaved += Close;
                 newViewModel.OpenViewCliente += OpenViewCliente;
                 newViewModel.OpenCrudParcela += OpenCrudParcela;
-                newViewModel.FaturaChanged += ChangeFatura;
                 newViewModel.OpenGerarParcelas += GerarParcelas;
                 newViewModel.ShowMessage += Helper.MahAppsDefaultMessage;
             }
@@ -35,7 +32,6 @@ namespace SisMaper.Views
                 oldViewModel.FaturaSaved -= Close;
                 oldViewModel.OpenViewCliente -= OpenViewCliente;
                 oldViewModel.OpenCrudParcela -= OpenCrudParcela;
-                oldViewModel.FaturaChanged -= ChangeFatura;
                 oldViewModel.OpenGerarParcelas -= GerarParcelas;
                 oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
             }
@@ -56,36 +52,16 @@ namespace SisMaper.Views
         }
 
 
-        private void ChangeFatura()
-        {
-            ChangeFaturaButton.Content = ((string)ChangeFaturaButton.Content == "Encerrar Fatura") ? "Reabrir Fatura" : "Encerrar Fatura";
-        }
 
         private void GerarParcelas(FaturaViewModel viewModel)
         {
             new ViewGerarParcelas() { DataContext = viewModel, Owner = this }.ShowDialog();
         }
 
-
-        private void ViewFatura_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (ParcelasDataGrid.IsEnabled)
-            {
-                ChangeFaturaButton.Content = "Encerrar Fatura";
-            }
-            else
-            {
-                ChangeFaturaButton.Content = "Reabrir Fatura";
-            }
-
-        }
-
-
         private void CloseWindow(object sender, MouseButtonEventArgs e)
         {
             Close();
         }
-
 
     }
 }

@@ -13,7 +13,7 @@ namespace SisMaper.ViewModel
 {
     public class UnidadeViewModel : BaseViewModel
     {
-        public ObservableCollection<Unidade> Unidades { get; private set; }
+        public List<Unidade> Unidades { get; private set; }
 
         public SimpleCommand AdicionarUnidadeCmd => new(() => AdicionarUnidade());
         public SimpleCommand EditarUnidadeCmd => new(EditarUnidade, () => !string.IsNullOrEmpty(UnidadeSelecionada?.Descricao));
@@ -31,20 +31,8 @@ namespace SisMaper.ViewModel
         
         public UnidadeViewModel()
         {
-            PList<Unidade> listaUnidade = DAO.All<Unidade>();
-
-            Unidades = new ObservableCollection<Unidade>();
-
-
-            
-            foreach(Unidade c in listaUnidade)
-            {
-                Unidades.Add(c);
-            }
-
-
+            Unidades = DAO.All<Unidade>().ToList();
             _unidadeSelecionada = UnidadeSelecionada = new Unidade();
-
         }
 
 
@@ -140,6 +128,7 @@ namespace SisMaper.ViewModel
                 if (SalvarUnidadeNoBanco(u))
                 {
                     Unidades.Add(u);
+                    RaisePropertyChanged(nameof(Unidades));
                     OnShowMessage("Unidade", "Unidade adicionada com sucesso");
                 }
                 return;
@@ -190,6 +179,7 @@ namespace SisMaper.ViewModel
                 if (EditarUnidadeDoBanco(Unidades[Unidades.IndexOf(UnidadeSelecionada)], u))
                 {
                     Unidades[Unidades.IndexOf(UnidadeSelecionada)] = u;
+                    RaisePropertyChanged(nameof(Unidades));
                     OnShowMessage("Unidade", "Unidade editada com sucesso");
                 }
                 return;
@@ -218,6 +208,7 @@ namespace SisMaper.ViewModel
                 if (DeletarUnidadeDoBanco(UnidadeSelecionada))
                 {
                     Unidades.Remove(UnidadeSelecionada);
+                    RaisePropertyChanged(nameof(Unidades));
                     OnShowMessage("Confirmado", "Unidade removida");
                 }
             }

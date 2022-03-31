@@ -5,17 +5,19 @@ using SisMaper.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace SisMaper.ViewModel
 {
     public class CategoriaViewModel : BaseViewModel
     {
-        public ObservableCollection<Categoria> Categorias { get; private set; }
+        public List<Categoria> Categorias { get; private set; }
 
         public SimpleCommand AdicionarCategoriaCmd => new(() => AdicionarCategoria());
         public SimpleCommand EditarCategoriaCmd => new(EditarCategoria, () => !string.IsNullOrEmpty(CategoriaSelecionada?.Descricao));
@@ -30,24 +32,12 @@ namespace SisMaper.ViewModel
             set { SetField(ref _categoriaSelecionada, value); }
         }
 
-
+        
 
         public CategoriaViewModel()
         {
-            PList<Categoria> lista = DAO.All<Categoria>();
-
-            Categorias = new ObservableCollection<Categoria>();
-
-
-
-            foreach(Categoria c in lista)
-            {
-                Categorias.Add(c);
-            }
-
-
+            Categorias = DAO.All<Categoria>().ToList();
             _categoriaSelecionada = CategoriaSelecionada = new Categoria();
-
         }
 
 
@@ -144,6 +134,7 @@ namespace SisMaper.ViewModel
                 if (SalvarCategoriaNoBanco(c))
                 {
                     Categorias.Add(c);
+                    RaisePropertyChanged(nameof(Categorias));
                     OnShowMessage("Categoria", "Categoria adicionada com sucesso");
                 }
                 return;
@@ -192,11 +183,14 @@ namespace SisMaper.ViewModel
 
             if (!string.IsNullOrEmpty(cat) && !string.IsNullOrWhiteSpace(cat))
             {
+                
                 if (EditarCategoriaDoBanco(Categorias[Categorias.IndexOf(CategoriaSelecionada)], c))
                 {
                     Categorias[Categorias.IndexOf(CategoriaSelecionada)] = c;
+                    RaisePropertyChanged(nameof(Categorias));
                     OnShowMessage("Categoria", "Categoria editada com sucesso");
                 }
+                
                 return;
             }
 
@@ -214,17 +208,21 @@ namespace SisMaper.ViewModel
             }
         }
 
+
         public void ExcluirCategoria()
         {
             MessageDialogResult afirmacao = OnShowMessage("Confirmação", "Excluir categoria " + CategoriaSelecionada.Descricao, MessageDialogStyle.AffirmativeAndNegative);
             
             if(afirmacao.Equals(MessageDialogResult.Affirmative))
             {
+                
                 if (DeletarCategoriaDoBanco(CategoriaSelecionada))
                 {
                     Categorias.Remove(CategoriaSelecionada);
+                    RaisePropertyChanged(nameof(Categorias));
                     OnShowMessage("Confirmado", "Categoria removida");
                 }
+                
             }
             
         }

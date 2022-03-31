@@ -14,8 +14,6 @@
     mc:Ignorable="d"
     Height="500" Width="1000">
 
-
-
     <UserControl.DataContext>
         <viewModels:RecebimentosViewModel/>
     </UserControl.DataContext>
@@ -46,18 +44,6 @@
                             <TextBlock
                                 Style="{StaticResource SisMaper.ToolBar.Button.Header}"
                                 Text="Editar" />
-                        </StackPanel>
-                    </Button>
-                    <Button
-                        Style="{DynamicResource Button1}"
-                        Command="{Binding ExcluirFaturaCmd}">
-                        <StackPanel>
-                            <icons:PackIconMaterial
-                                Kind="DeleteForever"
-                                HorizontalAlignment="Center"/>
-                            <TextBlock
-                                Style="{StaticResource SisMaper.ToolBar.Button.Header}"
-                                Text="Excluir" />
                         </StackPanel>
                     </Button>
                 </StackPanel>

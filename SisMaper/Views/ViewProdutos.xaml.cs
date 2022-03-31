@@ -1,13 +1,9 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Persistence;
-using SisMaper.Models;
+using System.Windows.Data;
 using SisMaper.Tools;
 using SisMaper.ViewModel;
-using SisMaper.Views.Templates;
 
 namespace SisMaper.Views
 {
@@ -19,9 +15,7 @@ namespace SisMaper.Views
             DataContextChanged += SetActions;
             InitializeComponent();
             
-        }
-
-        
+        }  
         
         private void SetActions(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -47,8 +41,6 @@ namespace SisMaper.Views
             }
         }
 
-   
-
         private void OpenCrudProduto(CrudProdutoViewModel viewModel)
         {
             new CrudProduto() { DataContext = viewModel, Owner = Window }.ShowDialog();
@@ -69,5 +61,11 @@ namespace SisMaper.Views
             OnShow();
         }
 
+        private void DataGrid_TargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            var firstCol = dataGrid.Columns.First();
+            firstCol.SortDirection = ListSortDirection.Ascending;
+            dataGrid.Items.SortDescriptions.Add(new SortDescription(firstCol.SortMemberPath, ListSortDirection.Ascending));
+        }
     }
 }

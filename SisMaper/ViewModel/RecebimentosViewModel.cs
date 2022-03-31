@@ -1,12 +1,10 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using Persistence;
+﻿using Persistence;
 using SisMaper.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using SisMaper.Models.Views;
-using SisMaper.Tools;
 
 namespace SisMaper.ViewModel
 {
@@ -24,7 +22,6 @@ namespace SisMaper.ViewModel
         public Action<FaturaViewModel> OpenFatura { get; set; }
 
         public SimpleCommand EditarFaturaCmd => new( () => OpenFatura?.Invoke(new FaturaViewModel(FaturaSelecionada.Id)), () => FaturaSelecionada != null);
-        public SimpleCommand ExcluirFaturaCmd => new( ExcluirFatura, () => FaturaSelecionada != null );
 
 
         public RecebimentosViewModel()
@@ -63,23 +60,6 @@ namespace SisMaper.ViewModel
                 );
             }
         }
-
-
-        private void ExcluirFatura()
-        {
-            try
-            {
-                var fat = DAO.Load<Fatura>(FaturaSelecionada.Id);
-                fat.Delete();
-                Initialize(null, EventArgs.Empty);
-            }
-            catch(Exception ex)
-            {
-                OnShowMessage("Erro", ex.Message + "  inner: " + ex.InnerException);
-            }
-        }
-
-
 
 
     }

@@ -106,7 +106,8 @@
                         Command="{Binding EditarUsuarioCmd}" />
                 </DataGrid.InputBindings>
                 <DataGrid.Columns>
-                    <mah:DataGridNumericUpDownColumn                      
+                    <mah:DataGridNumericUpDownColumn
+                        HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
                         Width="120"
                         MinWidth="120"
                         Header="Identificação"

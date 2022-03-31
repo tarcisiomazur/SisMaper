@@ -42,6 +42,7 @@
             Height="30"
             Width="211"/>
         <TextBlock
+            Visibility="{Binding FaturaHasCliente, Converter={StaticResource BooleanToVisibilityConverter}}"
             HorizontalAlignment="Left"
             Margin="26,75,0,0"
             TextWrapping="Wrap"
@@ -165,26 +166,46 @@
                         VerticalAlignment="Top"
                         Margin="10,10,0,0" 
                         Command="{Binding NovaParcelaCmd}"/>
+                    
                     <TextBox
                         IsEnabled="False"
-                        x:Name="ValorTotal"
                         Style="{DynamicResource SisMaper.TextBox}"
                         HorizontalAlignment="Right"
                         Margin="0,0,10,1"
                         TextWrapping="Wrap"
-                        Text="{Binding Fatura.ValorTotal, StringFormat=R$ #\,##0.00}"
-                        
+                        Text="{Binding Fatura.ValorPago, StringFormat=R$ #\,##0.00}"
                         VerticalAlignment="Bottom"
-                        Width="119"
+                        Width="120"
                         HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Bottom" />
                     <TextBlock
                         HorizontalAlignment="Right"
-                        Margin="0,0,134,8"
+                        Margin="0,0,140,8"
                         VerticalAlignment="Bottom"
                         RenderTransformOrigin="0.529,-0.024"><Run
                             Language="pt-br"
-                            Text="Valor Total" /></TextBlock>
+                            Text="Valor Pago" /></TextBlock>
+
+                    <TextBox
+                        IsEnabled="False"
+                        Style="{DynamicResource SisMaper.TextBox}"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,260,1"
+                        TextWrapping="Wrap"
+                        Text="{Binding ValorTotalParcelas, Mode=OneWay, StringFormat=R$ #\,##0.00}"
+                        VerticalAlignment="Bottom"
+                        Width="120"
+                        HorizontalContentAlignment="Right"
+                        VerticalContentAlignment="Bottom" />
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        Margin="0,0,390,8"
+                        VerticalAlignment="Bottom"
+                        RenderTransformOrigin="0.529,-0.024"><Run
+                            Language="pt-br"
+                            Text="Valor Total das Parcelas" /></TextBlock>
+
+
                     <Button
                         Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Receber"
@@ -228,6 +249,13 @@
                         Margin="10,62,10,34"
                         BorderBrush="#FFD2D2D2">
                         <DataGrid.Columns>
+                            <mah:DataGridNumericUpDownColumn
+                                HeaderStyle="{StaticResource SisMaper.DataGrid.HeaderStyle.Right}"
+                                Width="15*"
+                                MinWidth="75"
+                                Header="Número"
+                                Binding="{Binding Id}"
+                                IsReadOnly="True" />
                             <DataGridTextColumn
                                 Width="50*"
                                 Header="Cliente"
@@ -248,53 +276,29 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button
+                        Command="{Binding RemoverPedidoCmd}"
                         Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
                         Content="Remover"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="10,10,0,0" />
-                    <TextBox
-                        IsEnabled="False"
-                        Style="{DynamicResource SisMaper.TextBox}"
-                        HorizontalAlignment="Right"
-                        Margin="0,0,10,1"
-                        TextWrapping="Wrap"
-                        Text="{Binding Fatura.ValorTotal, StringFormat=R$ #\,##0.00}"
-                        VerticalAlignment="Bottom"
-                        Width="119"
-                        HorizontalContentAlignment="Right"
-                        VerticalContentAlignment="Bottom" />
-                    <TextBlock
-                        HorizontalAlignment="Right"
-                        Margin="0,0,134,8"
-                        VerticalAlignment="Bottom"
-                        RenderTransformOrigin="0.529,-0.024"><Run
-                            Language="pt-br"
-                            Text="Valor Total" /></TextBlock>
                 </Grid>
             </TabItem>
         </TabControl>
 
         <TextBox
+            Visibility="{Binding FaturaHasCliente, Converter={StaticResource BooleanToVisibilityConverter}}"
             Grid.Row="0"
             IsReadOnly="True"
             Height="32"
             Margin="96,70,410,0"
             FontSize="16"
-            mah:TextBoxHelper.WatermarkAlignment="Right"
-            mah:TextBoxHelper.AutoWatermark="True"
             Grid.IsSharedSizeScope="True"
             VerticalAlignment="Top"
-            Text="{Binding ClienteSelecionado.Nome}"/>
-        
-        <Button x:Name="ChangeFaturaButton"
-            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"
-            Command="{Binding AlterarStatusFaturaCmd}"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Margin="20,0,0,20" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" />
+            Text="{Binding Fatura.Cliente.Nome, Mode=OneWay}"/>
 
-        <Button 
+        <Button
+            Visibility="{Binding FaturaHasCliente, Converter={StaticResource BooleanToVisibilityConverter}}"
             Margin="0,70,365,0" 
             Width="32" 
             Height="32" 
@@ -307,6 +311,25 @@
                 <iconpacks:PackIconMaterial Kind="AccountDetails" Width="22" Height="22"/>
             </StackPanel>
         </Button>
+
+        <TextBlock
+            Visibility="{Binding FaturaHasCliente, Converter={StaticResource BooleanToVisibilityConverter}}"
+            HorizontalAlignment="Right"
+            Margin="0,75,205,0"
+            TextWrapping="Wrap"
+            VerticalAlignment="Top"><Run
+                Language="pt-br"
+                Text="Valor Total" /></TextBlock>
+
+        <templates:CurrencyTextBox
+            Style="{DynamicResource SisMaper.TextBox}"
+            HorizontalAlignment="Right"
+            IsReadOnly="True"
+            Width="165"
+            Margin="0,70,20,0"
+            HorizontalContentAlignment="Right"
+            VerticalAlignment="Top"
+            Number="{Binding Fatura.ValorTotal, Mode=OneWay}"/>
 
     </Grid>
 </mah:MetroWindow>

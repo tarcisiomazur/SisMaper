@@ -153,14 +153,14 @@
 
             </ToolBar>
 
-            <DataGrid 
+            <DataGrid x:Name="dataGrid"
                 BorderThickness="3"
                 BorderBrush="#FFC4C4C4"
                 Style="{DynamicResource MahApps.Styles.DataGrid}"
                 HorizontalContentAlignment="Stretch"
-                x:Name="ProdutosDataGrid"
                 ColumnWidth="*"
-                ItemsSource="{Binding ProdutosFiltrados}"
+                ItemsSource="{Binding ProdutosFiltrados, NotifyOnTargetUpdated=True}"
+                TargetUpdated="DataGrid_TargetUpdated"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 IsReadOnly="True"

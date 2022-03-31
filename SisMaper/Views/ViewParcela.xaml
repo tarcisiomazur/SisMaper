@@ -11,16 +11,10 @@
         templates:DialogParticipation.MyRegister="{Binding}"
         mc:Ignorable="d"
         Title="Parcela"
-        MinHeight="500"
-        MinWidth="1110"
-        MaxWidth="500"
-        MaxHeight="1110"
-        Height="500" 
-        Width="1110"
+        Height="440" 
+        Width="480"
         ResizeMode="CanMinimize"
-
         WindowStartupLocation="CenterScreen">
-
 
     <mah:MetroWindow.Resources>
         <Style
@@ -38,8 +32,8 @@
     </mah:MetroWindow.Resources>
 
     <Grid IsEnabled="{Binding IsParcelaEditable}">
-        <TextBlock Margin="40,6,0,0" Text="Parcela" FontSize="26" Width="100" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Border BorderThickness="1" Margin="40,40,0,0" CornerRadius="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top" Width="460" Height="350">
+        <TextBlock Margin="10,6,0,0" Text="Parcela" FontSize="26" Width="100" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Border BorderThickness="1" Margin="10,40,0,0" CornerRadius="1" BorderBrush="Black" HorizontalAlignment="Left" VerticalAlignment="Top" Width="460" Height="320">
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top">
                     <TextBlock Margin="10,10,0,0" Text="Indice:" FontSize="20" Height="28"/>
@@ -52,12 +46,11 @@
                 <Separator Margin="10,0,10,0"/>
 
                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,0,0,0">
-                    <TextBlock Margin="10,10,0,0" Text="Valor da Parcela" FontSize="20" Height="28" Width="200"/>
+                    <TextBlock Margin="10,10,0,0" Text="Valor da Parcela" Width="200" VerticalAlignment="Center"/>
                     <templates:CurrencyTextBox
                         Style="{DynamicResource SisMaper.TextBox}"
                         Height="28"
                         FontSize="16"
-                        BorderThickness="1"
                         HorizontalContentAlignment="Right"
                         VerticalContentAlignment="Bottom"
                         Margin="10,0,0,0"
@@ -67,235 +60,89 @@
                         VerticalAlignment="Bottom"
                         Width="200" />
                 </StackPanel>
-                
+
                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,0,0,0">
-                    <TextBlock Margin="10,10,0,0" Text="Data de Vencimento" FontSize="20" Height="28" Width="200"/>
-                    <DatePicker  BorderThickness="2" Name="DataVencimentoDatePicker"
-                    Height="28"
-                    FontSize="14"
-                    HorizontalAlignment="Left"
-                    Margin="10,0,0,0"
-                    VerticalAlignment="Bottom"
-                    Width="200" 
-                    Focusable="False"
-                    SelectedDate="{Binding Parcela.DataVencimento, Mode=TwoWay}"/>
+                    <TextBlock Margin="10,10,0,0" Text="Data de Vencimento" Width="200" VerticalAlignment="Center"/>
+                    <DatePicker  
+                        Name="DataVencimentoDatePicker"
+                        Height="28"
+                        FontSize="14"
+                        HorizontalAlignment="Left"
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Bottom"
+                        Width="200" 
+                        Focusable="False"
+                        SelectedDate="{Binding Parcela.DataVencimento, Mode=TwoWay}"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,0,0,0">
-                    <TextBlock Margin="10,10,0,0" Text="Data de Pagamento" FontSize="20" Height="28" Width="200"/>
-                    <TextBox  Style="{DynamicResource SisMaper.TextBox}" BorderThickness="2"
-                    Height="28"
-                    FontSize="16"
-                    HorizontalAlignment="Left"
-                    Margin="10,0,0,0"
-                    VerticalAlignment="Bottom"
-                    Width="200" 
-                    IsReadOnly="True"
-                    Text="{Binding Parcela.DataPagamento, StringFormat={}{0:dd/MM/yyyy  HH:mm:ss}}"/>
+                    <TextBlock Margin="10,10,0,0" Text="Data de Pagamento" Width="200" VerticalAlignment="Center"/>
+                    <TextBox  
+                        Style="{DynamicResource SisMaper.TextBox}" 
+                        Height="28"
+                        FontSize="16"
+                        HorizontalAlignment="Left"
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Bottom"
+                        Width="200" 
+                        IsReadOnly="True"
+                        Text="{Binding Parcela.DataPagamento, StringFormat={}{0:dd/MM/yyyy  HH:mm:ss}}"/>
                 </StackPanel>
 
                 <Separator Margin="10, 20, 10, 0"/>
 
-                <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,10,0,0">
-                    <TextBlock Margin="10,10,0,0" Text="Valor total da fatura" FontSize="20" Height="28" Width="200"/>
-                    <templates:CurrencyTextBox
-                        Style="{DynamicResource SisMaper.TextBox}"
-                        Height="28"
-                        FontSize="18"
-                        BorderThickness="0"
-                        HorizontalContentAlignment="Right"
-                        VerticalContentAlignment="Top"
-                        Margin="75,0,0,0"
-                        TextWrapping="Wrap"
-                        IsNegative="False"
-                        Number="{Binding Fatura.ValorTotal}"
-                        IsReadOnly="True"
-                        VerticalAlignment="Bottom"
-                        Width="150" />  
+                <Separator Margin="10,35,10,0"/>
+                <StackPanel Margin="10,0,10,0" Orientation="Vertical">
+                    <TextBlock Text="Pagamento" FontSize="20"/>
 
-                </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock Text="Valor" VerticalAlignment="Center"/>
+                        <templates:CurrencyTextBox
+                            Style="{DynamicResource SisMaper.TextBox}"
+                            Height="28"
+                            FontSize="16"
+                            HorizontalContentAlignment="Right"
+                            VerticalContentAlignment="Bottom"
+                            Margin="10,0,0,0"
+                            TextWrapping="Wrap"
+                            IsNegative="False"
+                            Number="{Binding Valor}"
+                            VerticalAlignment="Bottom"
+                            Width="140" />
 
-                <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top" Margin="0,0,0,0">
-                    <TextBlock Margin="10,10,0,0" Text="Valor pago da fatura" FontSize="20" Height="28" Width="200"/>
-                    <templates:CurrencyTextBox
-                        Style="{DynamicResource SisMaper.TextBox}"
-                        Height="28"
-                        FontSize="18"
-                        BorderThickness="0"
-                        HorizontalContentAlignment="Right"
-                        VerticalContentAlignment="Top"
-                        Margin="75,0,0,0"
-                        TextWrapping="Wrap"
-                        IsNegative="False"
-                        Number="{Binding Fatura.ValorPago}"
-                        IsReadOnly="True"
-                        VerticalAlignment="Bottom"
-                        Width="150" />
+                        <Button 
+                            Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}"  
+                            Content="Receber" 
+                            Height="28" 
+                            Margin="10,0,0,0"
+                            Command="{Binding ConfirmarRecebimentoCmd}"/>
 
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" Height="60" VerticalAlignment="Top" Margin="0,0,0,0">
-                    <TextBlock Margin="10,10,0,0" FontSize="18" Width="200" TextWrapping="Wrap">
-                        <Run Language="pt-br" Text="Valor registrado em outras parcelas"/>
-                    </TextBlock>
-                    <templates:CurrencyTextBox Height="60"
-                        Style="{DynamicResource SisMaper.TextBox}"
-                        FontSize="18"
-                        BorderThickness="0"
-                        HorizontalContentAlignment="Right"
-                        VerticalContentAlignment="Center"
-                        Margin="75,0,0,0"
-                        TextWrapping="Wrap"
-                        IsNegative="False"
-                        Number="{Binding ValorRegistrado, Mode=OneWay}"
-                        IsReadOnly="True"
-                        VerticalAlignment="Top"
-                        Width="150" />
-
-                </StackPanel>
-
-            </StackPanel>
-        </Border>
-
-        
-        
-        
-        
-        <TextBlock Margin="546,6,40,0" Text="Pagamento" FontSize="26" Width="140" Height="34" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <Border BorderThickness="1" Margin="0,40,40,0" CornerRadius="1" BorderBrush="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="525" Height="350" >
-            <StackPanel>
-                <TextBlock Text="Adicionar Pagamento" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24"/>
-                <StackPanel Orientation="Horizontal" >
-                    <ComboBox
-                        ItemsSource="{Binding TiposPagamento}"
-                        SelectedItem="{Binding TipoPagamentoSelecionado, Mode=TwoWay}"
-                        IsEditable="False"
-                        Height="36"
-                        Margin="10,20,0,0"
-                        FontSize="18"
-                        mah:TextBoxHelper.Watermark="Tipo de pagamento"
-                        Width="200"
-                        HorizontalAlignment="Left"
-                        mah:TextBoxHelper.WatermarkAlignment="Right"
-                        mah:TextBoxHelper.AutoWatermark="True"
-                        VerticalAlignment="Bottom" />
-
-                    <TextBlock Text="Valor" Margin="20,20,0,0" Height="36" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-
-                    <templates:CurrencyTextBox
-                        Style="{DynamicResource SisMaper.TextBox}"
-                        Height="36"
-                        FontSize="18"
-                        HorizontalContentAlignment="Right"
-                        VerticalContentAlignment="Bottom"
-                        Margin="10,0,0,0"
-                        TextWrapping="Wrap"
-                        IsNegative="False"
-                        Number="{Binding Valor}"
-                        VerticalAlignment="Bottom"
-                        Width="160" />
-
-                    <Button 
-                        Width="36" 
-                        Height="36" 
-                        Margin="10,0,0,0" 
-                        VerticalAlignment="Bottom" 
-                        Focusable="false" 
-                        Command="{Binding ModificarPagamentoCmd}" 
-                        Background="White" >
-                        <StackPanel>
-                            <iconpacks:PackIconMaterial Kind="Plus" Foreground="Green" Width="22" Height="22"/>
-                        </StackPanel>
-                        
-                    </Button>
+                    </StackPanel>
+                    
                     
                 </StackPanel>
-
-                <DataGrid 
-                    Style="{DynamicResource MahApps.Styles.DataGrid}"
-                    HorizontalContentAlignment="Stretch"
-                    ColumnWidth="*"
-                    ItemsSource="{Binding Pagamentos, Mode=OneWay}"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    IsReadOnly="True"
-                    Margin="10,20,10,0" 
-                    SelectedItem="{Binding PagamentoSelecionado}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Width="40*"
-                            Header="Tipo de pagamento"
-                            Binding="{Binding TipoPagamento}"
-                            IsReadOnly="True" 
-                            FontSize="20"/>
-                        <mah:DataGridNumericUpDownColumn
-                            Width="25*"
-                            Header="Valor"
-                            Culture="pt-BR"
-                            StringFormat="{}{0:C}"
-                            Binding="{Binding ValorPagamento}"
-                            IsReadOnly="true"
-                            FontSize="20">
-                        </mah:DataGridNumericUpDownColumn>
-
-
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <Separator Margin="10,10,10,0" />
-
-                <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="0,10,0,0" HorizontalAlignment="Right">
-                    <TextBlock Margin="10,10,0,0" Text="Total" FontSize="20" Height="28" Width="60" VerticalAlignment="Bottom"/>
-                    <templates:CurrencyTextBox
-                        Style="{DynamicResource SisMaper.TextBox}"
-                        Height="28"
-                        FontSize="18"
-                        BorderThickness="0"
-                        HorizontalContentAlignment="Right"
-                        VerticalContentAlignment="Bottom"
-                        Margin="0,0,10,0"
-                        TextWrapping="Wrap"
-                        IsNegative="False"
-                        Number="{Binding TotalPagamentos, Mode=OneWay}"
-                        IsReadOnly="True"
-                        VerticalAlignment="Bottom"
-                        Width="150" />
-
-                </StackPanel>
+                <Separator Margin="10,5,10,0" />
 
             </StackPanel>
-
         </Border>
 
-        <StackPanel Orientation="Horizontal" Height="60" VerticalAlignment="Bottom" Margin="0,0,0,15">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,10">
             <Button
                 Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}" 
                 FontSize="16"
-                VerticalAlignment="Top"
+                VerticalAlignment="Bottom"
                 HorizontalAlignment="Left"
-                Margin="40,0,0,0"
+                Margin="0,0,0,0"
                 Content="Salvar"
                 Command="{Binding SalvarParcelaCmd}"/>
 
             <Button
                 Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}" 
                 FontSize="16"
-                VerticalAlignment="Top"
-                Margin="20,0,0,0"
+                VerticalAlignment="Bottom"
+                Margin="10,0,10,0"
                 Content="Cancelar"
                 PreviewMouseLeftButtonDown="CancelarButtonPress"/>
-            <Button
-                Style="{DynamicResource SisMaper.Button.OptionsButtonStyle}" 
-                Height="50"
-                FontSize="16"
-                VerticalAlignment="Top"
-                Margin="338,0,0,0"
-                Command="{Binding ConfirmarRecebimentoCmd}">
-                <Button.Content>
-                    <TextBlock>Confirmar<LineBreak/> Recebimento</TextBlock>
-                </Button.Content>
-
-            </Button>
 
         </StackPanel>
         

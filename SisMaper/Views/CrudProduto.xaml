@@ -20,6 +20,7 @@
     ResizeMode="NoResize"
     Height="500"
     Width="750"
+    WindowStartupLocation="CenterScreen"
     >
     <mah:MetroWindow.Resources>
         <Style

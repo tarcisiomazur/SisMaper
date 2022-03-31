@@ -15,10 +15,10 @@
     x:Name="this"
     mc:Ignorable="d"
     Title="Unidades"
+    ResizeMode="NoResize"
     Height="400"
     Width="400"
-    MinHeight="400"
-    MinWidth="400">
+    WindowStartupLocation="CenterScreen">
 
     <mah:MetroWindow.DataContext>
         <m:UnidadeViewModel/>
@@ -52,12 +52,12 @@
 
         <Line/>
 
-        <DataGrid BorderThickness="1" Name="dg"
+        <DataGrid BorderThickness="1" Name="dataGrid"
             SelectionMode="Single"
             Style="{DynamicResource MahApps.Styles.DataGrid}" 
             HorizontalContentAlignment="Stretch"        
             ColumnWidth="*"
-            ItemsSource="{Binding Unidades}" 
+            ItemsSource="{Binding Unidades, NotifyOnTargetUpdated=True}" TargetUpdated="DataGrid_TargetUpdated"
             AutoGenerateColumns="false"
             CanUserAddRows="False" 
             IsReadOnly="True" 

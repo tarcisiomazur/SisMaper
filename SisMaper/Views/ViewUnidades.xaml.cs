@@ -3,6 +3,7 @@ using SisMaper.Tools;
 using SisMaper.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,14 @@ namespace SisMaper.Views
                 oldViewModel.ShowMessage -= Helper.MahAppsDefaultMessage;
                 oldViewModel.ShowInput -= Helper.MahAppsDefaultInput;
             }
+        }
+
+
+        private void DataGrid_TargetUpdated(object sender, DataTransferEventArgs e)
+        {
+            var firstCol = dataGrid.Columns.First();
+            firstCol.SortDirection = ListSortDirection.Ascending;
+            dataGrid.Items.SortDescriptions.Add(new SortDescription(firstCol.SortMemberPath, ListSortDirection.Ascending));
         }
     }
 }

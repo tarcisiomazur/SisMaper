@@ -11,7 +11,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 
-
 namespace SisMaper.ViewModel
 {
     public class CrudClienteViewModel : BaseViewModel
@@ -44,6 +43,8 @@ namespace SisMaper.ViewModel
 
         public PessoaFisica PessoaFisica { get; set; } = new();
         public PessoaJuridica PessoaJuridica { get; set; } = new();
+
+        
 
         private ListarClientes? cliente;
 
@@ -211,9 +212,6 @@ namespace SisMaper.ViewModel
 
             for(int i = 0;i < multiplicadores.Length;i++)
             {
-
-                Console.WriteLine(cnpj[i].ToString());
-
                 somaDigito2 += Convert.ToInt16(cnpj[i].ToString()) * multiplicadores[i];
 
                 if(i > 0)
@@ -235,21 +233,21 @@ namespace SisMaper.ViewModel
 
         }
 
-        private void CheckCPF()
+        private void CheckCPF(PessoaFisica pf)
         {
-            if (PessoaFisica.CPF is null || PessoaFisica.CPF.Equals("___.___.___-__"))
+            if (pf.CPF is null || pf.CPF.Equals("___.___.___-__"))
             {
                 throw new InvalidOperationException("CPF não pode ser vazio");
             }
 
-            PessoaFisica.CPF = PessoaFisica.CPF.Replace(".", "").Replace("-", "");
+            pf.CPF = pf.CPF.Replace(".", "").Replace("-", "");
 
-            if (PessoaFisica.CPF.Contains('_'))
+            if (pf.CPF.Contains('_'))
             {
                 throw new InvalidOperationException("CPF incompleto");
             }
 
-            if (!CheckDigitoVerificadorCPF(PessoaFisica.CPF))
+            if (!CheckDigitoVerificadorCPF(pf.CPF))
             {
                 throw new InvalidOperationException("CPF Inválido");
             }
@@ -257,7 +255,7 @@ namespace SisMaper.ViewModel
             if (SearchCliente(PessoaFisica))
             {
                 throw new InvalidOperationException("CPF já registrado");
-            }
+            }   
         }
 
         private void CheckCNPJ()
@@ -303,8 +301,7 @@ namespace SisMaper.ViewModel
                 throw new InvalidOperationException("CEP Incompleto");
             }
         }
-        
-        
+         
         private void ConsultaCEP(Cliente cliente)
         {
             enderecoConfirmado = null;
@@ -448,7 +445,7 @@ namespace SisMaper.ViewModel
             IWebDriver driver = null;
             try
             {
-                CheckCPF();
+                CheckCPF(PessoaFisica);
 
                 const string url = "https://cpf.ltsolucoes.com/";
 
@@ -504,6 +501,8 @@ namespace SisMaper.ViewModel
         }
 
 
+        // da ruim pra salvar se alguma consulta retornar um valor maior que a Length do atributo field
+        // pq mesmo q a textbox tenha maxLength, é só na digitação
         private void SalvarCliente(Cliente clienteParameter)
         {
 
@@ -519,8 +518,9 @@ namespace SisMaper.ViewModel
                     pf.Cidade = null;
                 }
 
+                CheckCPF(pf);
 
-
+                if (string.IsNullOrWhiteSpace(pf.Nome)) throw new Exception("Nome não pode ser vazio");
 
                 string cep = pf.CEP;
                 CheckCEP(ref cep);
@@ -528,25 +528,20 @@ namespace SisMaper.ViewModel
 
                 if (!ComparaEndereco(pf)) return;
 
-                string? nome = pf.Nome;
                 string? endereco = pf.Endereco;
                 string? bairro = pf.Bairro;
                 string? numero = pf.Numero;
 
-                NullText(ref nome);
                 NullText(ref endereco);
                 NullText(ref bairro);
                 NullText(ref numero);
 
-                pf.Nome = nome;
                 pf.Endereco = endereco;
                 pf.Bairro = bairro;
                 pf.Numero = numero;
 
-                
                 pf.Save();
                 ClienteSaved?.Invoke();
-
 
             }
 
@@ -563,6 +558,8 @@ namespace SisMaper.ViewModel
 
 
                 CheckCNPJ();
+
+                if (string.IsNullOrWhiteSpace(pj.Nome)) throw new Exception("Nome não pode ser vazio");
 
                 string? cep = pj.CEP;
                 CheckCEP(ref cep);
@@ -597,8 +594,6 @@ namespace SisMaper.ViewModel
 
 
             }
-
-            
         }
 
 

@@ -16,10 +16,10 @@
     x:Name="this"
     mc:Ignorable="d"
     Title="Categorias"
+    ResizeMode="NoResize"
     Height="400"
     Width="400"
-    MinHeight="400"
-    MinWidth="400"
+    WindowStartupLocation="CenterScreen"
     >
 
     <mah:MetroWindow.DataContext>
@@ -50,15 +50,14 @@
             </Button>
         </StackPanel>
 
-        <DataGrid BorderThickness="1" 
+        <DataGrid BorderThickness="1" x:Name="dataGrid"
             SelectionMode="Single"
             Style="{DynamicResource MahApps.Styles.DataGrid}" 
             HorizontalContentAlignment="Stretch"        
             ColumnWidth="*"
-            ItemsSource="{Binding Categorias}" 
+            ItemsSource="{Binding Categorias,NotifyOnTargetUpdated=True}" TargetUpdated="DataGrid_TargetUpdated"
             AutoGenerateColumns="false"
-            CanUserAddRows="False" 
-            IsReadOnly="True" 
+            CanUserAddRows="False"
             Margin="150,0,0,0"
             SelectedItem="{Binding CategoriaSelecionada}">
 
@@ -69,7 +68,7 @@
                 <DataGridTextColumn
                     Width="*"
                     Header="Categoria"
-                    Binding="{Binding Descricao}"
+                    Binding="{Binding Descricao}" 
                     IsReadOnly="True" />
 
                 
